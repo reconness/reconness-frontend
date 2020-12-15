@@ -1,0 +1,518 @@
+/*!
+ *   Author: Colorlib
+ */
+
+ .main-header .nav-item .image img {
+  height: auto;
+  width: 2.1rem;
+}
+
+.main-text {
+  color: #000000;
+}
+
+.left-aside{
+  background: #F5F6F7 0% 0% no-repeat padding-box;
+}
+
+aside p, span{
+  color: #000000;
+}
+
+a.brand-link{
+  border-bottom: 0px !important;
+  text-align: center;
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active{
+  background-color: #00B1FF
+}
+
+.navbar-light .btn-navbar, .navbar-light .form-control-navbar {
+  background-color: #f2f4f6;
+  border: 0;
+}
+
+.search-component input{
+  background-color: #f2f4f6;  
+}
+
+.blue-text{
+  color: #00B1FF;
+}
+
+
+
+.search-component span{
+  font-size: 18px;
+}
+
+.search-box-container{
+  border-bottom: 1px solid #000000;  
+}
+
+.loged-user-name{
+  padding-right: 10px;
+  padding: 0px;
+  margin: 0px;
+}
+
+ul.app-description li{
+  list-style: none;
+  margin-top: 10px;
+}
+
+/* aside p {
+  color: #000000;
+} */
+
+.brand-link span{
+  color: #000000;
+}
+
+/* ul.right-navbar li{
+  padding-left: 10px;
+} */
+
+ul.right-navbar li a{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.home-main-text{
+  text-align: center;
+}
+
+.home-secondary-text{
+  text-align: center;
+}
+
+.main-header {
+  border-bottom: none;
+}
+
+div.content-wrapper{
+  background-color: #f2f4f6 ;
+}
+
+.main-header.navbar.navbar-expand.navbar-white.navbar-light{
+  background-color: #f2f4f6 ;  
+}
+
+.navbar-nav.ml-auto.right-navbar input{
+  background-color: #f2f4f6;
+}
+
+.refandres{
+  margin-top: 60px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.blueline{
+  width: 76px;
+  border: 7px solid #00B1FF;
+  opacity: 1;
+  height: 0px;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.home-quote{
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.home-quote-box{
+  margin-bottom: 20px;
+  display: inline-block;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 3px 12px 23px #00000017;
+  border-radius: 1;
+  opacity: 1;
+  padding-top: 20px;
+  padding-left: 3%;
+  padding-right: 3%;
+  width: 100%;
+  padding-bottom: 20px;
+  border-radius: 18px;
+}
+
+.url-input{
+  margin-top: 20px
+}
+
+.brand-link div{
+  text-align: left;
+}
+
+.right-sidebar{
+  width: 100%;
+  background: #FBFBFB 0% 0% no-repeat padding-box;
+  box-shadow: 3px 12px 23px #00000017;
+  border-radius: 18px;
+  opacity: 1;
+}
+
+.sidebar-targets-title{
+  padding-left: 10px;
+  margin-top: 20px;
+}
+
+.target-list-header > li{
+  margin-right: 20px;
+}
+
+.right-sidebar-title .target-list-header li{
+  display: inline;
+}
+
+.target-item-home{
+  margin-right: 20px;
+  padding-bottom: 20px
+}
+
+.target-item-home ul{
+  overflow: hidden;
+  margin: 0px 10px 0px 0px;
+  list-style: none;
+  padding: 0;
+}
+
+.domain-names{
+  display: block;
+  background-color: #ffffff;
+  padding: 0 10px 0 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 10px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+div.image img{
+  margin-left: 10px;
+}
+
+.domain-names ul{
+  margin-left: 10px;
+}
+
+.domain-names-target{
+  font-weight: bold;
+}
+
+.right-sidebar-title{
+  overflow: hidden;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.right-sidebar-title > span{
+  font-weight: bold;
+}
+
+.target-logo{
+  width: 50px;
+  height: 50px;
+  background-color: #007bff;
+  float: left;
+}
+
+.target-logo span{
+  color: #FFFFFF;
+}
+
+.rounded-corners{
+  border-radius: 12px !important;
+}
+
+.box-contained{
+  /* width: 10rem;
+  height: 10rem;
+  border-radius: 10px; */
+}
+
+.navbar-nav.ml-auto.right-navbar .img-circle {
+  border-radius: 10%;
+  margin-right: 20px;
+}
+
+.target-list-header{
+  list-style: none;
+  padding: 0;
+  display: flex;
+  margin-top: 20px !important;
+}
+
+.separator-content{
+  margin-top: 52px;
+}
+
+.nav.nav-pills.nav-sidebar.flex-column > li p {
+  vertical-align: super;
+}
+
+.inline-material-icons{
+  display: inline-flex;
+}
+
+.bold-text{
+  font-weight: bold;
+}
+
+/* Listado de agentas */
+/*Un agente*/
+.list-style-none{
+  list-style: none;
+}
+
+/* .right-sidebar-fixed{
+  position: absolute;
+  right: 0;
+  display: block;
+  min-height: 100%;
+  top: calc(3.5rem + 1px);
+} */
+
+
+
+
+
+
+/* .sidebar a.nav-link{
+  display: inline-flex;
+  vertical-align: middle;
+} */
+
+/* .main-sidebar{ */
+  /* transition: margin-left .3s ease-in-out,width .3s ease-in-out; */
+  /* width: 200px;
+} */
+
+/* .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  color: #fff;
+  background-color: #007bff;
+} */
+
+/*****agente*****/
+
+
+.link-color a {
+	  color: #FFF;
+	  
+}
+.under-line {
+text-decoration: underline;
+}
+
+.card-body-inside{
+padding-left: 9px;
+}
+
+.btn-style{
+	padding: .1rem .75rem;
+	background-color: rgba(49, 137, 231, 0);
+	opacity: 0.6;
+  border-radius: 9px;
+	border: 2px solid #FFFFFF;
+}
+.btn-style.btn-outline-primary{
+  border: 1px solid #dad2d2;
+} 
+
+.navbar-light .border-right .nav-link {
+  color: #000000; 
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px;
+}
+
+.border-right  p{
+margin-bottom:0rem;
+margin-right: 8px;
+}
+
+.reset{
+    padding: 1px 0.5rem;
+}
+.reset-margin-top{
+margin-top: .4rem;
+}
+
+
+.link-color hr{
+margin-top: .2rem;
+margin-bottom: 1rem;
+border-width: 1.4px 0px 0px;
+border-style: solid;
+border: 1px solid #EFE6E6;
+opacity: 0.6;
+}
+
+.line-bottom{
+    border: 1px solid #EFE6E6;
+	opacity: 0.6;
+}
+
+.d-flex .float-right{
+  margin-left: 5px;
+  margin-bottom: 0px;	
+}
+
+.color-blue span, .color-blue p{
+  color: #00b1ff;	
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.nav-item button{
+background-color: rgba(230, 233, 237, 0.4);
+border-color: rgba(221, 221, 221, 0.03);
+color: #000000;
+padding: 0.1rem;
+border-radius: 0.4rem;;
+width: 26px;
+height: 27px;
+}
+
+.content{
+	margin-left:30px;
+	margin-right:30px;
+}
+.content .navbar{
+padding: .0rem;
+}
+
+body{
+  background-color: #f2f4f6;
+}
+.card-style{
+	border-radius: 25px;
+	box-shadow: 13px 31px 41px #0C1F6A3B;
+	opacity:1;
+  /*background: transparent linear-gradient(130deg,#03DCED 0%,#0CB8E0 100%) 0% 0% no-repeat padding-box;*/
+	}
+
+.d-flex	.card-title{
+	font-weight: 600;
+}
+.header-style{
+    padding: .5rem .5rem;
+    text-align: left;
+}
+
+.pad{
+	padding-top:20px;
+}
+
+button .material-icons, a .material-icons{
+	font-size: 20px;
+}
+
+.img-icon-nav{
+	vertical-align: baseline;
+    width: 20px;
+}
+
+.dropdown-item p{
+	margin-left: 30px;
+}
+
+.control-sidebar-content {
+  background-color: #ffffff;
+  height: 55px;
+  border-radius: 5px;
+}
+
+.control-sidebar-dark {
+  background: #f2f4f6;
+  box-shadow: 0px 0px 0px rgba(0,0,0,.25),0 0px 5px rgba(0,0,0,.22)!important;
+  border-radius: 5px;
+  width: 270px;
+  right: 26px;
+  overflow: hidden;
+  bottom: calc(3.5rem + 1px);
+  position: absolute;
+  top: 1px;
+  z-index: 2000;
+}
+
+.control-sidebar-content h5{
+  color: #000;
+}
+
+.sidebar-list {
+    box-shadow: 0 0 0px rgba(0,0,0,.125), 0 0px 1px rgba(0,0,0,.1);
+    background: rgba(227, 228, 230, 0.28);
+    min-height: 40px;
+    padding: .5rem;
+    width: 93%;
+    margin: 10px;
+    border-radius: .9rem;
+    overflow: hidden;
+}
+
+.sidebar-list .row, .sidebar-list .reset-col{
+  margin-bottom: 0px;
+}
+
+.control-sidebar-dark .sidebar-right {
+color: #949191;
+}
+
+.control-sidebar-dark a, .control-sidebar-dark i {
+color: #00b1ff;
+font-weight: 600;
+}
+.control-sidebar-dark p{
+color: #000000;
+margin: 0rem;
+font-weight: 600;
+}  
+
+.control-sidebar-content .d-flex > h5 {
+  margin-left: -25px;
+  margin-bottom: 0px;
+}
+
+@media (max-width: 480px) { 
+.color-blue span, .color-blue p{
+  font-size: 14px;
+  font-weight:500;
+}
+
+.control-sidebar-dark {
+  width: 210px;
+}
+
+.control-sidebar-dark i {
+    margin-top: 2px;
+}
+
+.control-sidebar-dark p,.control-sidebar-dark a, .control-sidebar-dark i { 
+  font-size: 12px;
+}
+.control-sidebar-dark .sidebar-right {
+  color: #949191;
+}
+.control-sidebar-content .d-flex > h5 {
+  font-size: 14px;
+  margin-left: -20px;
+}
+.control-sidebar-content {
+  height: 45px;
+}
+.justify-content-between .btn-style {
+  margin-top: -3px;
+}
+}
+.router-link-exact-active  .nav-link p,.router-link-exact-active  .nav-link span{
+  color: #fff;
+}
+.router-link-exact-active  button, .router-link-exact-active  .nav-link{
+  background-color:#00B1FF;
+  color: #fff;
+}
