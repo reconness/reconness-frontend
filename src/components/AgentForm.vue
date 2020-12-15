@@ -142,7 +142,7 @@
                             <div style="margin-top: 20px; box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2); padding: 20px">
                               <div class="row">
                                   <div class="col-4">
-                                      <button type="button" class="btn btn-block btn-default agentform-color-components agentform-color-components-align image-button"></button>
+                                      <button type="button" class="agent-colorpicker btn btn-block btn-default agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
                                       <button type="button" @click="setBlueColor" style="background-color: #4bd6f2;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
@@ -180,8 +180,8 @@
                 </div>
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
-                <button style="color: #00B1FF;" type="button" class="btn create-agent-buttons-main-action">Done</button>
-                <button style="color: #FF4545;" type="button" class="btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+                  <button @click="addAgent(this.agent)" style="color: #00B1FF;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Done</button>
+                  <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
             </div>
@@ -221,6 +221,13 @@
       background-size: 100% 100%;
     }
 
+    .agent-border{
+        border: 1px solid #F1F3F5;
+        border-radius: 12px;
+        width: 90px;
+        height: 47px;
+    }
+
 </style>
 <script>
 export default {
@@ -239,6 +246,17 @@ export default {
     },
     setGreenColor: function () {
       this.agent.background = '#4cb45f'
+    },
+    addAgent () {
+      this.$store.commit('addAgent', this.agent)
+    },
+    close () {
+      this.resetAgentForm()
+    },
+    resetAgentForm () {
+      this.agent = {
+        background: '#7159D3'
+      }
     }
   },
   data () {

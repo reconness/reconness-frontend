@@ -14,6 +14,9 @@ export default createStore({
     ]
   },
   mutations: {
+    addAgent (state, agent) {
+      state.agentListStore.push(agent)
+    }
   },
   actions: {
   },
