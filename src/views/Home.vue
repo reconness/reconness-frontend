@@ -32,7 +32,9 @@
                   </div>
                   <TargetsHighestInteraction :background="'#00B1FF'"></TargetsHighestInteraction>
                   <div class="col-lg-4">
-                    <h1 class="text-center">grafo 2</h1>
+                    <div class="home-chart">
+                      <apexchart width="90%" height="90%" type="line" :options="options" :series="series"></apexchart>
+                    </div>
                   </div><!-- /.col -->
                   <TargetsHighestInteraction :background="'rgb(134, 98, 202)'"></TargetsHighestInteraction>
                   <div class="col-lg-12">
@@ -104,6 +106,27 @@ export default {
   components: {
     HomeRigthSidebar,
     TargetsHighestInteraction
+  },
+  data: function () {
+    return {
+      options: {
+        chart: {
+          id: 'chart-interactions',
+          foreColor: '#FFFFFF',
+          toolbar: {
+            show: false
+          }
+        },
+        xaxis: {
+          categories: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+        }
+      },
+      series: [{
+        name: 'series-1',
+        data: [20, 40, 60, 80]
+      }],
+      colors: ['#FFFFFF']
+    }
   }
 }
 </script>
@@ -150,5 +173,12 @@ blockquote {
 }
 .url-input {
     margin-top: 0px;
+}
+.home-chart{
+  width: 100%;
+  height: 100%;
+  background: transparent linear-gradient(160deg, #F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box;
+  box-shadow: 13px 19px 41px #0C1F6A3B;
+  border-radius: 18px;
 }
 </style>
