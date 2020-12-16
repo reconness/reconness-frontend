@@ -155,11 +155,6 @@ div.content-wrapper{
   opacity: 1;
 }
 
-.sidebar-targets-title{
-  padding-left: 10px;
-  margin-top: 20px;
-}
-
 .target-list-header > li{
   margin-right: 20px;
 }
@@ -201,6 +196,7 @@ div.image img{
 
 .domain-names-target{
   font-weight: bold;
+  font: normal normal 600 16px/33px;
 }
 
 .right-sidebar-title{
