@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xs-12 col-lg-3 offset-lg-1">
+  <div class="col-xs-12 col-lg-3">
     <div class="right-sidebar">
       <div class="target-item-home">
         <div class="right-sidebar-title text-center">
