@@ -93,10 +93,14 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav d-sm-none ml-auto">
         <li class="nav-item float-left border-right">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="#"><router-link to="/agent/list">
             <button type="button" class="btn btn-sm" id="dropdownMenuButton">
-              <i class="material-icons">list</i>
-            </button>
+              <i class="material-icons">format_list_bulleted</i>
+            </button></router-link>
+            <router-link to="/agents/list">
+            <button type="button" class="btn btn-light">
+              <i class="material-icons">grid_view</i>
+            </button></router-link>
           </a>
         </li>
         <li class="nav-item dropdown border-right">
