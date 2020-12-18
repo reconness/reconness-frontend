@@ -133,7 +133,7 @@
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
                                 </div>
                                 <div style="text-align: right;"  class="form-check more-option-padding">
-                                <a href="#"><span class="form-check-label blue-text">More Options</span></a>
+                                <a href="#" @click="showBottomSection" aria-controls="top-section triggers-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span class="form-check-label blue-text">More Options</span></a>
                                 </div>
                             </div>
                             </div><!-- /.card-body -->
@@ -176,19 +176,38 @@
                         </div><!-- /.card-->
                         </div>
                 </div>
-                <div class="row">
+                <div class="row" v-show="isVisibleMiddleSection">
                     <div class="col-12">
                     <div style="min-height: auto;" class="info-box mb-3 agent-containers">
                         <div class="info-box-content">
-                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_down</span></a>
+                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" @click="showMiddleSection" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_down</span></a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     </div><!-- /.col-12 -->
-                    <div id="bottom-section" class="col-12 collapse multi-collapse">
-                    <textarea style="color: #0af31dce; background-color: #000000;" class="form-control" rows="11"></textarea>
-                    </div>
-                </div>
+                    <div  v-if="!isVisibleBottomSection" id="bottom-section" class="col-12 collapse multi-collapse">
+                    <textarea style="color: #0af31dce; background-color: #000000;" class="form-control" rows="11" v-model="agent.script"></textarea>
+                    </div><!-- #bottom-section -->
+                </div><!-- /.row -->
+                <div class="row" v-show="isVisibleBottomSection">
+                  <div class="col-12">
+                    <div id="triggers-section" class="collapse multi-collapse">
+                      <div><b class="triggers-label-space">Triggers</b><a href="#" @click="showTopSection" aria-controls="top-section triggers-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span style="position: absolute; right: 1rem; top: 0;" class="material-icons">keyboard_arrow_down</span></a></div>
+                      <div style="border: 1px solid #EFE6E6;" class="combo-box-left-padding rounded-corners triggers-more-options-area-size">
+                        <div class="form-group triggers-options-space">
+                            <div class="custom-control custom-checkbox form-check">
+                            <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
+                            <label style="opacity: none;" class="form-check-label custom-control-label" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                            </div>
+                            <div class="custom-control custom-checkbox form-check">
+                            <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
+                            <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
+                            </div>
+                        </div><!-- /.form-group -->
+                      </div><!-- /.combo-box-left-padding -->
+                    </div><!-- #triggers-section -->
+                  </div><!-- /.col-12 -->
+                </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
                   <button :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
@@ -303,6 +322,23 @@
       margin-left: 1.5rem;
     }
 
+    .triggers-label-space {
+      margin-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .triggers-options-space {
+      margin-top: 0.5rem;
+    }
+
+    .triggers-container-label-space{
+      margin-bottom: 0.2rem;
+    }
+
+    .triggers-more-options-area-size{
+      height: 335px;
+    }
+
 </style>
 <script>
 import { required } from '@vuelidate/validators'
@@ -336,6 +372,38 @@ export default {
       this.agent = {
         background: '#7159D3'
       }
+    },
+    enableBottomSection () {
+      this.isVisibleBottomSection = true
+    },
+    enableMiddleSection () {
+      this.isVisibleMiddleSection = true
+    },
+    disableBottomSection () {
+      this.isVisibleBottomSection = false
+    },
+    disableMiddleSection () {
+      this.isVisibleMiddleSection = false
+    },
+    enableTopSection () {
+      this.isVisibleTopSection = true
+    },
+    disableTopSection () {
+      this.isVisibleTopSection = false
+    },
+    showBottomSection () {
+      this.disableMiddleSection()
+      this.enableBottomSection()
+      this.disableTopSection()
+    },
+    showMiddleSection () {
+      this.enableMiddleSection()
+      this.disableBottomSection()
+      this.enableTopSection()
+    },
+    showTopSection () {
+      this.enableTopSection()
+      this.enableMiddleSection()
     }
   },
   data () {
@@ -346,14 +414,19 @@ export default {
         repository: '',
         target: '',
         command: '',
-        isTargetType: null,
-        isRootDomainType: null,
-        isSubDomainType: null,
-        isAliveTrigger: null,
-        isHttpOpenTrigger: null,
-        category: ''
+        isTargetType: false,
+        isRootDomainType: false,
+        isSubDomainType: false,
+        isAliveTrigger: false,
+        isHttpOpenTrigger: false,
+        category: '',
+        script: ''
       },
-      colorpickerData: ''
+      colorpickerData: '',
+      isVisibleTopSection: true,
+      isVisibleMiddleSection: true,
+      isVisibleBottomSection: false,
+      middleSection: 'collapse'
     }
   },
   validations: {
