@@ -53,7 +53,7 @@
                           <span :class="{invalid: $v.agent.command.$errors.length}">The field command is required</span>
                         </div>
                         <div class="col-12">
-                        <a href="#" style="margin-bottom: 1rem;" class="blue-text float-right">Learn more</a>
+                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" style="margin-bottom: 1rem;" class="blue-text float-right">Learn more</a>
                         </div><!-- /.col-12 -->
                     </div>
                     <div class="col-12 col-sm-4">
@@ -180,7 +180,7 @@
                     <div class="col-12">
                     <div style="min-height: auto;" class="info-box mb-3 agent-containers">
                         <div class="info-box-content">
-                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="#" class="blue-text">Learn more</a></span><a href="#" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_down</span></a>
+                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_down</span></a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
