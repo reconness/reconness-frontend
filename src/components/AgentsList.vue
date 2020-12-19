@@ -39,17 +39,19 @@
               <hr class="line-bottom" />
             </div>
             <div class="col-5 col-sm-6 col-xl-4">
-              <a href="#" class="btn btn-info float-right btn-style">Edit</a>
+              <a href="#" class="btn btn-info float-right btn-style" @click="setAgentId" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">Edit</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <AgentForm></AgentForm>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import AgentForm from '@/components/AgentForm.vue'
 
 export default {
   name: 'AgentsList',
@@ -67,7 +69,14 @@ export default {
     },
     isSelected (cardIndex) {
       return this.selectedCard === cardIndex
+    },
+    setAgentId (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
     }
+  },
+  components: {
+    AgentForm
   }
 }
 </script>

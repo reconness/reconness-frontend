@@ -17,7 +17,7 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row justify-content-end">
-                            <input  v-model="agent.name" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @blur="$v.agent.name.$touch()">
+                            <input  v-model="agent.name" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @blur="$v.agent.name.$touch()" ><!--:value="loadFormOnEdition"-->
                             <span style="margin: auto" class="material-icons blue-text">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
@@ -153,7 +153,6 @@
                                 <div class="row">
                                     <div class="col-4">
                                       <ColorPicker v-model="colorpickerData"/>
-                                      <!-- <button type="button" class="agent-colorpicker btn btn-block btn-default agentform-color-components agentform-color-components-align image-button"></button> -->
                                   </div>
                                   <div class="col-4">
                                       <button type="button" @click="setBlueColor" style="background-color: #4bd6f2;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
@@ -180,7 +179,7 @@
                     <div class="col-12">
                     <div style="min-height: auto;" class="info-box mb-3 agent-containers">
                         <div class="info-box-content">
-                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" @click="showMiddleSection" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_down</span></a>
+                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" @click="showMiddleSection" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span v-show="arrow_up" style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_up</span><span v-show="arrow_down" style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_down</span></a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -361,7 +360,12 @@ export default {
       this.agent.background = '#4cb45f'
     },
     addAgent () {
-      this.$store.commit('addAgent', this.agent)
+      if (this.editable) {
+        this.agent.id = parseInt(this.$store.getters.idAgent)
+        this.$store.commit('updateAgent', this.agent)
+      } else {
+        this.$store.commit('addAgent', this.agent)
+      }
       this.resetAgentForm()
       this.$v.$reset()
     },
@@ -400,11 +404,21 @@ export default {
       this.enableMiddleSection()
       this.disableBottomSection()
       this.enableTopSection()
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
     },
     showTopSection () {
       this.enableTopSection()
       this.enableMiddleSection()
+    },
+    setData (nameExt) {
+      this.agent.name = nameExt
+    },
+    hideArrow: function () {
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
     }
+
   },
   data () {
     return {
@@ -420,13 +434,17 @@ export default {
         isAliveTrigger: false,
         isHttpOpenTrigger: false,
         category: '',
-        script: ''
+        script: '',
+        id: -1
       },
       colorpickerData: '',
       isVisibleTopSection: true,
       isVisibleMiddleSection: true,
       isVisibleBottomSection: false,
-      middleSection: 'collapse'
+      middleSection: 'collapse',
+      editable: false,
+      arrow_down: true,
+      arrow_up: false
     }
   },
   validations: {
@@ -458,11 +476,29 @@ export default {
         return false
       }
       return true
+    },
+    loadSelectedAgent () {
+      const id = this.$store.getters.idAgent
+      return this.$store.getters.getAgentById(parseInt(id))
     }
   },
   watch: {
     colorpickerData: function (value) {
       this.agent.background = '#' + value
+    },
+    loadSelectedAgent: function (value) {
+      this.agent.name = value.name
+      this.agent.background = value.background
+      this.agent.repository = value.repository
+      this.agent.target = value.target
+      this.agent.command = value.command
+      this.agent.isTargetType = value.isTargetType
+      this.agent.isRootDomainType = value.isRootDomainType
+      this.agent.isSubDomainType = value.isSubDomainType
+      this.agent.isAliveTrigger = value.isAliveTrigger
+      this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
+      this.agent.script = value.script
+      this.editable = true
     }
   }
 }
