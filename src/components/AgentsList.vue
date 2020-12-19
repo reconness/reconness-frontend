@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div v-for="item of agentListStore" :key="item.id"
+    <div v-for="item of arrayFilterList"  :key="item.id"
     @mouseover="hoverCard(item.id)"
     @mouseout="hoverCard(-1)"
     class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
@@ -9,7 +9,7 @@
           <div class="d-flex justify-content-between">
             <h3 class="card-title">{{item.name}}</h3>
             <a href="#">
-              <span class="material-icons">settings</span>
+              <span class="material-icons agent-mini-color-gray">person</span>
             </a>
           </div>
           <hr />
@@ -49,12 +49,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'AgentsList',
   computed: {
-    ...mapState(['agentListStore'])
+    ...mapState(['agentListStore']),
+    ...mapState(['filterColour']),
+    ...mapGetters(['filterByColor']),
+    arrayFilterList () {
+      if (this.filterColour === '') {
+        return this.agentListStore
+      } else {
+        return this.filterByColor(this.filterColour)
+      }
+    }
   },
   data: function () {
     return {
@@ -73,6 +82,10 @@ export default {
 </script>
 
 <style scoped>
+.agent-mini-color-gray{
+  color: #B3B3B3;
+}
+
 .card {
 transition: all .25s ease;
 width:100%;
