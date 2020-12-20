@@ -1,15 +1,15 @@
 <template>
     <div class="col-12">
         <form @submit.prevent="onSubmit">
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content agent-containers">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
-                        <div style="float: left;" class="d-flex flex-row justify-content-end">
+                        <div style="float: left;" class="d-flex flex-row">
                             <input v-model="agent.name" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @blur="$v.agent.name.$touch()">
-                            <span style="margin: auto" class="material-icons blue-text">edit</span>
+                            <span class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
                     </div><!-- /.col-12 -->
                 </div>
@@ -18,7 +18,7 @@
                         <div class="col-12">
                         <div class="d-flex flex-row justify-content-end">
                             <input  v-model="agent.name" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @blur="$v.agent.name.$touch()" ><!--:value="loadFormOnEdition"-->
-                            <span style="margin: auto" class="material-icons blue-text">edit</span>
+                            <span class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="$v.agent.name.$errors.length">
@@ -30,8 +30,13 @@
                             Add
                             <br>
                             your logo
-                            </span>
-                            <span style="opacity: 1; color: #B3B3B3; font-size: 50px;" class="material-icons">note</span>
+                            </span>{{  }}
+                            <input id="uploadimage" type="file" @change="onFileChange">
+                            <label for="uploadimage">
+<span type="file"  style="opacity: 1; color: #B3B3B3; font-size: 50px;" class="material-icons">
+                            note</span>
+
+                            </label>
                         </div><!-- /.d-flex -->
                         </div>
                         <div class="col-12">
@@ -61,7 +66,8 @@
                                 <div class="card-body link-color">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title postal-title">{{agent.name}}</h3>
-                                    <span class="material-icons">person</span>
+                                    <span v-if="!agent.image" class="material-icons">person</span>
+                                    <img v-if="agent.image" class="logo-image" :src="agent.image">
                                 </div>
                                 <hr />
                                 <div class="direct-chat-infos clearfix">
@@ -417,8 +423,19 @@ export default {
     hideArrow: function () {
       this.arrow_down = !this.arrow_down
       this.arrow_up = !this.arrow_up
+    },
+    onFileChange (e) {
+      const files = e.target.files || e.dataTransfer.files
+      if (!files.length) {
+        return
+      }
+      const reader = new FileReader()
+      const vm = this
+      reader.onload = (e) => {
+        vm.agent.image = e.target.result
+      }
+      reader.readAsDataURL(files[0])
     }
-
   },
   data () {
     return {
@@ -435,7 +452,9 @@ export default {
         isHttpOpenTrigger: false,
         category: '',
         script: '',
-        id: -1
+        id: -1,
+        creationDate: new Date().toString(),
+        image: ''
       },
       colorpickerData: '',
       isVisibleTopSection: true,
@@ -503,3 +522,44 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+input[type="file"]{
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow:hidden;
+  position:absolute;
+  z-index: -1;
+}
+
+label[for='uploadimage']{
+  transition: all .5s;
+  cursor: pointer;
+}
+.agent-name-input {
+   width: 50%;
+}
+.logo-image{
+  max-width: 1.2rem;
+  max-height: 1.2rem;
+  width: 1.2rem;
+  max: 1.2rem;
+}
+.form-control {
+  border-radius: 0rem;
+}
+.pencil-align-main {
+  margin: auto;
+    margin-left: 1.5rem;
+}
+.pencil-align-secondary {
+  margin: auto;
+}
+
+@media (max-width: 480px) {
+   .agent-name-input {
+    font-size: 20px;
+   }
+}
+</style>
