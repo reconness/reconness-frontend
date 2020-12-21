@@ -30,7 +30,7 @@
                             Add
                             <br>
                             your logo
-                            </span>{{  }}
+                            </span>
                             <input id="uploadimage" type="file" @change="onFileChange">
                             <label for="uploadimage">
 <span type="file"  style="opacity: 1; color: #B3B3B3; font-size: 50px;" class="material-icons">
