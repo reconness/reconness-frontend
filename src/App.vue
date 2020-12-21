@@ -8,6 +8,7 @@
           <a class="nav-link" v-on:click="changeButton" data-widget="pushmenu" href="#" role="button">
             <span v-show="button_module" class="material-icons">view_module</span>
             <span v-show="button_vert" class="material-icons">more_vert</span>
+             <p class="float-right loc"><strong>{{location}}</strong></p>
             </a>
         </li>
       </ul>
@@ -30,66 +31,12 @@
           <a class="nav-link" data-toggle="dropdown" href="#">
             <span class="material-icons">settings</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="/adminlte/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Brad Diesel
-                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">Call me whenever you can...</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="/adminlte/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    John Pierce
-                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">I got your message bro</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="/adminlte/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Nora Silvester
-                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">The subject goes here</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-          </div>
         </li>
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             <span class="material-icons">notifications_none</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-header">15 Notifications</span>
-          </div>
         </li>
         <li class="nav-item">
           <div class="image">
@@ -116,7 +63,7 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
                <router-link to="/">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link" v-on:click="addLocation('Home')">
                <span class="material-icons">home</span>
                 <p>Home</p>
               </a></router-link>
@@ -141,7 +88,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item"><router-link to="/agents/list">
-                  <a href="#" class="nav-link">
+                  <a href="#" class="nav-link" v-on:click="addLocation('Agents')">
                     <span class="material-icons">font_download</span>
                         <p>Agents</p>
                   </a></router-link>
@@ -189,7 +136,8 @@ export default {
       arrow_up: true,
       hide_logo: false,
       button_module: true,
-      button_vert: false
+      button_vert: false,
+      location: 'Home'
     }
   },
   methods: {
@@ -213,6 +161,9 @@ export default {
         this.button_vert = !this.button_vert
         this.hide_logo = !this.hide_logo
       }
+    },
+    addLocation: function (loc) {
+      this.location = loc
     }
   }
 }
@@ -242,11 +193,6 @@ background-color: #000000;
   padding: 0px;
   font-weight: 100;
 }
-/*.has-treeview a .material-icons{
-    font-size: 16px;
-    margin-right: 15px;
-}*/
-
 .nav-sidebar>.nav-item {
     margin-bottom: 30px;
 }
@@ -270,5 +216,36 @@ background-color: #000000;
 }
 form .input-group {
     display: -webkit-inline-box;
+}
+.input-group-sm>.form-control{
+    padding: 0;
+    font-size: .9rem;
+    border-radius: .2rem;
+    width: 120px;
+}
+.navbar-expand .navbar-nav .nav-link {
+    padding-left: .5rem;
+    padding-top: 3px;
+}
+.form-inline{
+    margin-right: 25px;
+}
+.input-group-append, .input-group-prepend {
+    display: inline-flex;
+}
+@media (max-width: 480px) {
+  .loged-user-name{
+  display: none;
+}
+.navbar-nav.ml-auto.right-navbar input {
+  width: 60px;
+  font-size: small;
+}
+.navbar-expand .navbar-nav .nav-link {
+  padding-right: .1rem;
+}
+.loc{
+  display: none;
+}
 }
 </style>
