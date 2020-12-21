@@ -3,32 +3,29 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     agentListStore: [
-      { name: 'Agente 9', background: '#03DCED', date: '21/02/2020' },
-      { name: 'Agente 5', background: '#6610f2', date: '21/03/2020' },
-      { name: 'Agente 4', background: '#03DCED', date: '21/04/2020' },
-      { name: 'Agente 2', background: '#ff5400', date: '21/05/2020' },
-      { name: 'Agente 3', background: '#FF4343', date: '21/06/2020' },
-      { name: 'Agente 1', background: '#0ee06a', date: '21/07/2020' },
-      { name: 'Agente 7', background: '#03DCED', date: '21/08/2020' },
-      { name: 'Agente 8', background: '#6610f2', date: '21/09/2020' },
-      { name: 'Agente 6', background: '#6610f2', date: '21/09/2020' },
-      { name: 'Agente 9', background: '#03DCED', date: '21/02/2020' },
-      { name: 'Agente 4', background: '#03DCED', date: '21/04/2020' },
-      { name: 'Agente 8', background: '#6610f2', date: '21/09/2020' },
-      { name: 'Agente 6', background: '#6610f2', date: '21/09/2020' },
-      { name: 'Agente 9', background: '#03DCED', date: '21/02/2020' },
-      { name: 'Agente 4', background: '#03DCED', date: '21/04/2020' }
+      { name: 'Agente 1', background: '#03DCED', id: 1, repository: 'repository1.com', target: 'target 1', command: 'command 1', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 1', image: '', date: '21/01/2020' },
+      { name: 'Agente 2', background: '#6610f2', id: 2, repository: 'repository2.com', target: 'target 2', command: 'command 2', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent  2', image: '', date: '21/02/2020' },
+      { name: 'Agente 3', background: '#03DCED', id: 3, repository: 'repository3.com', target: 'target 3', command: 'command 3', isTargetType: true, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 3', image: '', date: '21/03/2020' },
+      { name: 'Agente 4', background: '#ff5400', id: 4, repository: 'repository4.com', target: 'target 4', command: 'command 4', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 4', image: '', date: '21/04/2020' },
+      { name: 'Agente 5', background: '#FF4343', id: 5, repository: 'repository5.com', target: 'target 5', command: 'command 5', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 5', image: '', date: '21/05/2020' },
+      { name: 'Agente 6', background: '#0ee06a', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', isTargetType: true, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020' },
+      { name: 'Agente 7', background: '#03DCED', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020' },
+      { name: 'Agente 8', background: '#6610f2', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '21/08/2020' }
     ],
-    filterColour: ''
-  },
-  getters: {
-    filterByColor (state) {
-      return function (colour) {
-        return state.agentListStore.filter(item => item.background.includes(colour))
-      }
-    }
+    filterColour: '',
+    idAgent: -1
   },
   mutations: {
+    addAgent (state, agent) {
+      state.agentListStore.push(agent)
+    },
+    setIdAgent (state, id) {
+      state.idAgent = id
+    },
+    updateAgent (state, agent) {
+      const item = state.agentListStore.find(item => item.id === agent.id)
+      Object.assign(item, agent)
+    },
     isFilter (state, backg) {
       state.filterColour = backg
     }
@@ -36,5 +33,18 @@ export default createStore({
   actions: {
   },
   modules: {
+  },
+  getters: {
+    idAgent: state => {
+      return state.idAgent
+    },
+    getAgentById: (state) => (id) => {
+      return state.agentListStore.find(agent => agent.id === id)
+    },
+    filterByColor (state) {
+      return function (colour) {
+        return state.agentListStore.filter(item => item.background.includes(colour))
+      }
+    }
   }
 })
