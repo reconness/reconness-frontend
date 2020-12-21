@@ -369,6 +369,7 @@ export default {
       if (this.editable) {
         this.agent.id = parseInt(this.$store.getters.idAgent)
         this.$store.commit('updateAgent', this.agent)
+        this.editable = false
       } else {
         this.$store.commit('addAgent', this.agent)
       }
