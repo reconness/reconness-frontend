@@ -1,24 +1,15 @@
 <template>
     <div class="col-12 col-lg-4">
-        <div style="border-radius: 25px; padding: 25px; background: transparent linear-gradient(135deg, #03DCED 0%, #0CB8E0 100%) 0% 0% no-repeat padding-box; box-shadow: 13px 31px 41px #0C1F6A3B;">
+        <div :style ="{backgroundColor:background}" style="border-radius: 25px; padding: 25px; box-shadow: 13px 31px 41px #0C1F6A3B;">
             <div class="row">
             <div class="col-9">
                 <p style="text-align: left!important;" class="text-center">
-                Targets with the most interactions in the last week
+                <small>Targets with the most interactions in the last week</small>
                 </p>
             </div>
             <div class="col-3">
-                <div style=" display: contents;
-                padding: 2px;
-                display: inline-block;
-                float: right;
-                border: 3px solid #007bff;
-                border-radius: 10px;">
-                <span style="
-                    padding: 5px;
-                    background-color: blue;
-                    border-radius: 10px;
-                    color: white; " class="float-right">
+                <div class = "number">
+                <span class="float-right">
                     36
                 </span>
                 </div>
@@ -27,12 +18,12 @@
             <div class="progress-group">
             <div class="row">
                 <div class="col-12">
-                <span class="float-right"><b>160</b>/200</span>
+                <small class="float-right"><b>160</b>/200</small>
                 </div>
                 <div class="col-12">
-                <span style="width: 100px; line-height: 10px;" class="float-left">
+                <small class="name float-left">
                     Yanet
-                </span>
+                </small>
                 <div class="progress progress-sm">
                     <div class="progress-bar bg-primary" style="width: 80%"></div>
                 </div>
@@ -42,12 +33,12 @@
             <div class="progress-group">
             <div class="row">
                 <div class="col-12">
-                <span class="float-right"><b>160</b>/200</span>
+                <small class="float-right"><b>160</b>/200</small>
                 </div>
                 <div class="col-12">
-                <span style="width: 100px; line-height: 10px;" class="float-left">
+                 <small class="name float-left">
                     Portraite
-                </span>
+                </small>
                 <div class="progress progress-sm line-height: 10px">
                     <div class="progress-bar bg-primary" style="width: 80%"></div>
                 </div>
@@ -57,12 +48,12 @@
             <div class="progress-group">
             <div class="row">
                 <div class="col-12">
-                <span class="float-right"><b>160</b>/200</span>
+                <small class="float-right"><b>160</b>/200</small>
                 </div>
                 <div class="col-12">
-                <span style="width: 100px; line-height: 10px;" class="float-left">
+                 <small class="name float-left">
                     Yanet
-                </span>
+                </small>
                 <div class="progress progress-sm line-height: 10px">
                     <div class="progress-bar bg-primary" style="width: 80%"></div>
                 </div>
@@ -73,12 +64,12 @@
             <div class="progress-group">
             <div class="row">
                 <div class="col-12">
-                <span class="float-right"><b>160</b>/200</span>
+                <small class="float-right"><b>160</b>/200</small>
                 </div>
                 <div class="col-12">
-                <span style="width: 100px; line-height: 10px;" class="float-left">
+                 <small class="name float-left">
                     Portraite
-                </span>
+                </small>
                 <div class="progress progress-sm line-height: 10px">
                     <div class="progress-bar bg-primary" style="width: 80%"></div>
                 </div>
@@ -88,3 +79,39 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+  name: 'TargetsHighestInteraction',
+  props: {
+    background: String
+  }
+}
+</script>
+<style scoped>
+.number{
+    display: contents;
+    padding: 2px;
+    display: inline-block;
+    float: right;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+}
+.number span{
+     padding: 5px;
+     background-color: rgba(255, 255, 255, 0.15);
+     border-radius: 10px;
+     color: white;
+}
+.name{
+    width: 70px;
+    line-height: 10px;
+    color: rgba(253, 253, 253, 0.76);
+}
+.progress-sm {
+    height: 5px;
+}
+.text-center {
+    color: rgba(255, 255, 255, 0.79);
+}
+</style>
