@@ -158,22 +158,24 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-4">
-                                      <ColorPicker v-model="colorpickerData"/>
+                                      <!-- <ColorPicker v-model="colorpickerData"/> -->
+                                      <!-- <button type="button" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button> -->
+                                      <button type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block btn-default agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setBlueColor" style="background-color: #4bd6f2;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setBlueColor" style="background-color: #00d2e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setVioletColor" style="background-color: #9a25b6;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setVioletColor" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setRedColor" style="background-color: #e91013;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setRedColor" style="background-color: #ff1b4c;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setOrangeColor" style="background-color: #f36e1c;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setOrangeColor" style="background-color: #ff7f46;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setGreenColor" style="background-color: #4cb45f;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setGreenColor" style="background-color: #00eb74;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
                                   </div>
                                 </div>
                             </div>
@@ -347,7 +349,7 @@
 </style>
 <script>
 import { required } from '@vuelidate/validators'
-import ColorPicker from 'primevue/colorpicker'
+// import ColorPicker from 'primevue/colorpicker'
 export default {
   methods: {
     setBlueColor: function () {
@@ -436,6 +438,10 @@ export default {
         vm.agent.image = e.target.result
       }
       reader.readAsDataURL(files[0])
+    },
+    setRandomColor () {
+      const predefinedColors = this.$store.state.systemColors
+      this.agent.background = '#' + predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
     }
   },
   data () {
@@ -483,7 +489,7 @@ export default {
     }
   },
   components: {
-    ColorPicker
+    // ColorPicker
   },
   computed: {
     isValid () {
