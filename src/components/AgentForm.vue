@@ -7,18 +7,18 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
-                        <div style="float: left;" class="d-flex flex-row">
-                            <input v-model="agent.name" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @blur="$v.agent.name.$touch()">
-                            <span class="material-icons blue-text pencil-align-secondary">edit</span>
+                        <div style="float: left;" class="d-flex flex-row agent-name-container">
+                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false">
+                            <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
                     </div><!-- /.col-12 -->
                 </div>
                 <div class="row show multi-collapse" id="middle-section">
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
-                        <div class="d-flex flex-row justify-content-end">
-                            <input  v-model="agent.name" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @blur="$v.agent.name.$touch()" ><!--:value="loadFormOnEdition"-->
-                            <span class="material-icons blue-text pencil-align-main">edit</span>
+                        <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
+                            <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" ><!--:value="loadFormOnEdition"-->
+                            <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="$v.agent.name.$errors.length">
@@ -160,22 +160,22 @@
                                     <div class="col-4">
                                       <!-- <ColorPicker v-model="colorpickerData"/> -->
                                       <!-- <button type="button" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button> -->
-                                      <button type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block btn-default agentform-color-components agentform-color-components-align image-button"></button>
+                                      <button type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setBlueColor" style="background-color: #00d2e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setBlueColor" style="background-color: #00d2e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setVioletColor" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setVioletColor" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setRedColor" style="background-color: #ff1b4c;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setRedColor" style="background-color: #ff1b4c;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setOrangeColor" style="background-color: #ff7f46;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setOrangeColor" style="background-color: #ff7f46;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setGreenColor" style="background-color: #00eb74;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align"></button>
+                                      <button type="button" @click="setGreenColor" style="background-color: #00eb74;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
                     <div class="col-12">
                     <div style="min-height: auto;" class="info-box mb-3 agent-containers">
                         <div class="info-box-content">
-                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" @click="showMiddleSection" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span v-show="arrow_up" style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_up</span><span v-show="arrow_down" style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_down</span></a>
+                        <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" @click="showMiddleSection" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span v-show="arrow_up" style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_up</span><span v-show="arrow_down" style="position: absolute; right: 1rem; top: 0.4rem;" class="material-icons">keyboard_arrow_down</span></a>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -258,6 +258,8 @@
       background-image: url('~@/assets/Rect.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
+      width: 32px;
+      height: 32px;
     }
 
     .agent-border{
@@ -442,6 +444,13 @@ export default {
     setRandomColor () {
       const predefinedColors = this.$store.state.systemColors
       this.agent.background = '#' + predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+    },
+    verifyPencilStatus () {
+      if (this.isPencilVisibleAndClick) {
+        this.isPencilVisible = true
+      } else {
+        this.isPencilVisible = false
+      }
     }
   },
   data () {
@@ -470,7 +479,9 @@ export default {
       middleSection: 'collapse',
       editable: false,
       arrow_down: true,
-      arrow_up: false
+      arrow_up: false,
+      isPencilVisible: false,
+      isPencilVisibleAndClick: false
     }
   },
   validations: {
@@ -562,6 +573,26 @@ label[for='uploadimage']{
 }
 .pencil-align-secondary {
   margin: auto;
+  margin-left: 10%;
+}
+.btn-colors-size {
+  border-radius: 7px;
+}
+
+input.agent-name-input:hover{
+  background-color: #afd9e647;
+}
+
+.bordered-input-name-withfocus{
+  border-top: 2px solid #00B1FF;
+  border-right: 2px solid #00B1FF;
+  border-bottom: 2px solid #00B1FF;
+}
+
+.bordered-input-name-withoutfocus{
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
 }
 
 @media (max-width: 480px) {
