@@ -13,7 +13,8 @@ export default createStore({
       { name: 'Agente 8', background: '#6610f2', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '21/08/2020' }
     ],
     filterColour: '',
-    idAgent: -1
+    idAgent: -1,
+    systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74']
   },
   mutations: {
     addAgent (state, agent) {
@@ -45,6 +46,9 @@ export default createStore({
       return function (colour) {
         return state.agentListStore.filter(item => item.background.includes(colour))
       }
+    },
+    getRandomColor: state => {
+      return state.systemColors[Math.floor(Math.random() * state.systemColors.length)]
     }
   }
 })

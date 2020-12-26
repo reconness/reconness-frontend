@@ -112,6 +112,19 @@ transition: all .25s ease;
   min-height: 1px;
   position: relative;
 }
+
+.btn:hover {
+    background-color: rgba(49, 137, 231, 0) !important;
+    opacity: 0.6 !important;
+    border: 2px solid #FFFFFF !important;
+}
+
+.btn-info.focus, .btn-info:focus {
+    background-color: rgba(49, 137, 231, 0);
+    opacity: 0.6;
+    border: 2px solid #FFFFFF;
+}
+
 @media (min-width: 1400px) {
   .col-lgg-5 {
     float: left;
