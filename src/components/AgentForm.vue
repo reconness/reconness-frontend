@@ -375,6 +375,7 @@ export default {
         this.$store.commit('updateAgent', this.agent)
         this.editable = false
       } else {
+        this.agent.id = this.$store.state.agentListStore.length + 1
         this.$store.commit('addAgent', this.agent)
       }
       this.resetAgentForm()
@@ -382,6 +383,7 @@ export default {
     },
     close () {
       this.resetAgentForm()
+      this.$v.$reset()
     },
     resetAgentForm () {
       this.agent = {
@@ -536,6 +538,7 @@ export default {
       this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
       this.agent.script = value.script
       this.editable = true
+      this.agent.id = value.id
     }
   }
 }
