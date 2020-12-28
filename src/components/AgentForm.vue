@@ -351,6 +351,7 @@
 </style>
 <script>
 import { required } from '@vuelidate/validators'
+import jQuery from 'jquery'
 // import ColorPicker from 'primevue/colorpicker'
 export default {
   methods: {
@@ -380,6 +381,7 @@ export default {
       }
       this.resetAgentForm()
       this.$v.$reset()
+      jQuery('#exampleModalCenter').modal('hide')
     },
     close () {
       this.resetAgentForm()
@@ -459,7 +461,7 @@ export default {
     return {
       agent: {
         name: '',
-        background: '#7159D3',
+        background: '#9a25b6',
         repository: '',
         target: '',
         command: '',
