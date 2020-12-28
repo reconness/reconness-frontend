@@ -375,6 +375,7 @@ export default {
         this.agent.id = parseInt(this.$store.getters.idAgent)
         this.$store.commit('updateAgent', this.agent)
         this.editable = false
+        this.$store.commit('setIdAgent', -1)
       } else {
         this.agent.id = this.$store.state.agentListStore.length + 1
         this.$store.commit('addAgent', this.agent)
@@ -389,7 +390,7 @@ export default {
     },
     resetAgentForm () {
       this.agent = {
-        background: '#7159D3'
+        background: '#8929e0'
       }
     },
     enableBottomSection () {
@@ -528,19 +529,21 @@ export default {
       this.agent.background = '#' + value
     },
     loadSelectedAgent: function (value) {
-      this.agent.name = value.name
-      this.agent.background = value.background
-      this.agent.repository = value.repository
-      this.agent.target = value.target
-      this.agent.command = value.command
-      this.agent.isTargetType = value.isTargetType
-      this.agent.isRootDomainType = value.isRootDomainType
-      this.agent.isSubDomainType = value.isSubDomainType
-      this.agent.isAliveTrigger = value.isAliveTrigger
-      this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
-      this.agent.script = value.script
-      this.editable = true
-      this.agent.id = value.id
+      if (value !== undefined) {
+        this.agent.name = value.name
+        this.agent.background = value.background
+        this.agent.repository = value.repository
+        this.agent.target = value.target
+        this.agent.command = value.command
+        this.agent.isTargetType = value.isTargetType
+        this.agent.isRootDomainType = value.isRootDomainType
+        this.agent.isSubDomainType = value.isSubDomainType
+        this.agent.isAliveTrigger = value.isAliveTrigger
+        this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
+        this.agent.script = value.script
+        this.editable = true
+        this.agent.id = value.id
+      }
     }
   }
 }
