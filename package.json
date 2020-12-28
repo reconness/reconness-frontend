@@ -12,6 +12,7 @@
     "@vuelidate/core": "^2.0.0-alpha.8",
     "@vuelidate/validators": "^2.0.0-alpha.5",
     "apexcharts": "3.23.0",
+    "bootstrap": "^4.5.3",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
     "material-icons": "^0.3.1",
