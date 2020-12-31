@@ -18,7 +18,7 @@
               <a href="#" class="float-left">Category</a>
             </em>
             <em>
-              <a href="#" class="float-right under-line">Details</a>
+              <a href="#" class="float-right under-line" @click="setDetailsLink">Details</a>
             </em>
           </div>
           <div class="card-body-inside">
@@ -82,6 +82,11 @@ export default {
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('setDetailsLinks', true)
     }
   },
   components: {

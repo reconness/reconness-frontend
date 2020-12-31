@@ -529,3 +529,28 @@ font-weight: 600;
 .agent-mini-color-gray{
   color: #B3B3B3;
 }
+
+.delete_btn{
+  background-color: #ff4545 !important;
+  border-color: #ff4545 !important;
+}
+
+.dialog-without-lines-header{
+  border-bottom: 0px !important;
+}
+
+.dialog-without-lines-footer{
+  border-top: 0px !important;
+}
+
+.input.invalid input {
+  border: 1px solid red;
+}
+
+.invalid {
+  color: red;
+}
+
+.main-sidebar {
+  height: -webkit-fill-available !important;
+}

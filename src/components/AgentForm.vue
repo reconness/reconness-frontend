@@ -217,6 +217,8 @@
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
+                  <button v-if="this.editable" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <!-- <button type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button> -->
                   <button :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
@@ -348,6 +350,10 @@
       height: 335px;
     }
 
+    button.delete-left-align{
+      margin-right: auto;
+    }
+
 </style>
 <script>
 import { required } from '@vuelidate/validators'
@@ -383,10 +389,13 @@ export default {
       this.resetAgentForm()
       this.$v.$reset()
       jQuery('#exampleModalCenter').modal('hide')
+      this.editable = false
+      this.$v.$reset()
     },
     close () {
       this.resetAgentForm()
       this.$v.$reset()
+      this.editable = false
     },
     resetAgentForm () {
       this.agent = {
@@ -483,6 +492,7 @@ export default {
       isVisibleBottomSection: false,
       middleSection: 'collapse',
       editable: false,
+      fromDetail: false,
       arrow_down: true,
       arrow_up: false,
       isPencilVisible: false,
@@ -505,6 +515,7 @@ export default {
     }
   },
   components: {
+    // AgentConfirmation
     // ColorPicker
   },
   computed: {
