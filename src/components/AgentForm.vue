@@ -309,7 +309,7 @@
     }
 
     .postal-title{
-      overflow: auto;
+      overflow: hidden;
     }
 
     .p-colorpicker-panel .p-colorpicker-color {
