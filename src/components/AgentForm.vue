@@ -8,7 +8,7 @@
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
                         <div style="float: left;" class="d-flex flex-row agent-name-container">
-                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false">
+                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
                     </div><!-- /.col-12 -->
@@ -396,6 +396,7 @@ export default {
       this.resetAgentForm()
       this.$v.$reset()
       this.editable = false
+      this.$store.commit('setIdAgent', -1)
     },
     resetAgentForm () {
       this.agent = {
