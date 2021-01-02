@@ -15,7 +15,7 @@ export default createStore({
     filterColour: '',
     idAgent: -1,
     systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74'],
-    detailsLinkSelected: false
+    fromDetailsLink: false
   },
   mutations: {
     addAgent (state, agent) {
@@ -38,7 +38,7 @@ export default createStore({
       }
     },
     setDetailsLinks (state, isSelected) {
-      state.detailsLinkSelected = isSelected
+      state.fromDetailsLink = isSelected
     }
   },
   actions: {
