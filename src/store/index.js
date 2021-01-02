@@ -14,7 +14,8 @@ export default createStore({
     ],
     filterColour: '',
     idAgent: -1,
-    systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74']
+    systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74'],
+    fromDetailsLink: false
   },
   mutations: {
     addAgent (state, agent) {
@@ -29,6 +30,15 @@ export default createStore({
     },
     isFilter (state, backg) {
       state.filterColour = backg
+    },
+    removeAgent (state, agentName) {
+      const index = state.agentListStore.findIndex(agent => agent.name === agentName)
+      if (index !== -1) {
+        state.agentListStore.splice(index, 1)
+      }
+    },
+    setDetailsLinks (state, isSelected) {
+      state.fromDetailsLink = isSelected
     }
   },
   actions: {

@@ -5,8 +5,8 @@
             <div class="info-box-content">
                 <span class="info-box-text agent-mini-agent-name">{{ name }}</span>
                 <nav class="nav">
-                    <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" href="#">Details</a>
-                    <a class="nav-link agent-mini-agent-edit agent-mini-color-gray" href="#" @click="setAgentId" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Edit</a>
+                    <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setDetailsLink" href="#" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Details</a>
+                    <a class="nav-link agent-mini-agent-edit agent-mini-color-gray" href="#" @click="onEdit" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Edit</a>
                 </nav>
             </div>
             <!-- /.info-box-content -->
@@ -93,6 +93,15 @@ export default {
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
+    },
+    onEdit (e) {
+      this.setAgentId(e)
+      this.$store.commit('setDetailsLinks', false)
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('setDetailsLinks', true)
     }
   }
 }

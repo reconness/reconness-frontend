@@ -18,7 +18,7 @@
               <a href="#" class="float-left">Category</a>
             </em>
             <em>
-              <a href="#" class="float-right under-line">Details</a>
+              <a href="#" class="float-right under-line" @click="setDetailsLink" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">Details</a>
             </em>
           </div>
           <div class="card-body-inside">
@@ -39,7 +39,7 @@
               <hr class="line-bottom" />
             </div>
             <div class="col-5 col-sm-6 col-xl-4">
-              <a href="#" class="btn btn-info float-right btn-style" @click="setAgentId" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">Edit</a>
+              <a href="#" class="btn btn-info float-right btn-style" @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">Edit</a>
             </div>
           </div>
         </div>
@@ -82,6 +82,15 @@ export default {
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('setDetailsLinks', true)
+    },
+    onEdit (e) {
+      this.setAgentId(e)
+      this.$store.commit('setDetailsLinks', false)
     }
   },
   components: {

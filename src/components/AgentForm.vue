@@ -8,7 +8,7 @@
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
                         <div style="float: left;" class="d-flex flex-row agent-name-container">
-                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false">
+                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
                     </div><!-- /.col-12 -->
@@ -17,7 +17,7 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" ><!--:value="loadFormOnEdition"-->
+                            <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"><!--:value="loadFormOnEdition"-->
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
@@ -31,7 +31,7 @@
                             <br>
                             your logo
                             </span>
-                            <input id="uploadimage" type="file" @change="onFileChange">
+                            <input :disabled="$store.state.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
                             <label for="uploadimage">
 <span type="file"  style="opacity: 1; color: #B3B3B3; font-size: 50px;" class="material-icons">
                             note</span>
@@ -40,19 +40,19 @@
                         </div><!-- /.d-flex -->
                         </div>
                         <div class="col-12">
-                          <input v-model="agent.repository" @blur="$v.agent.repository.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @blur="$v.agent.repository.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="$v.agent.repository.$errors.length">
                             <span :class="{invalid: $v.agent.repository.$errors.length}">The field repository is required</span>
                         </div>
                         <div class="col-12">
-                          <input v-model="agent.target" @blur="$v.agent.target.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @blur="$v.agent.target.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="$v.agent.target.$errors.length">
                           <span :class="{invalid: $v.agent.target.$errors.length}">The field target is required</span>
                         </div>
                         <div class="col-12">
-                          <input v-model="agent.command" @blur="$v.agent.command.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.command" @blur="$v.agent.command.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="$v.agent.command.$errors.length">
                           <span :class="{invalid: $v.agent.command.$errors.length}">The field command is required</span>
@@ -104,15 +104,15 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox form-check">
-                                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox1" v-model="agent.isTargetType">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox1" v-model="agent.isTargetType">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
                                 </div>
                                 <div class="custom-control custom-checkbox form-check">
-                                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox2" v-model="agent.isRootDomainType">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox2" v-model="agent.isRootDomainType">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
                                 </div>
                                 <div class="custom-control custom-checkbox form-check">
-                                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox3" v-model="agent.isSubDomainType">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox3" v-model="agent.isSubDomainType">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
                                 </div>
                             </div>
@@ -131,11 +131,11 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox form-check">
-                                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox4">Run Only if it is Alive</label>
                                 </div>
                                 <div class="custom-control custom-checkbox form-check">
-                                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
                                 </div>
                                 <div style="text-align: right;"  class="form-check more-option-padding">
@@ -160,22 +160,22 @@
                                     <div class="col-4">
                                       <!-- <ColorPicker v-model="colorpickerData"/> -->
                                       <!-- <button type="button" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button> -->
-                                      <button type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setBlueColor" style="background-color: #00d2e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background-color: #00d2e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setVioletColor" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setRedColor" style="background-color: #ff1b4c;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background-color: #ff1b4c;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setOrangeColor" style="background-color: #ff7f46;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background-color: #ff7f46;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button type="button" @click="setGreenColor" style="background-color: #00eb74;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background-color: #00eb74;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                 </div>
                             </div>
@@ -193,7 +193,7 @@
                     </div>
                     </div><!-- /.col-12 -->
                     <div  v-if="!isVisibleBottomSection" id="bottom-section" class="col-12 collapse multi-collapse">
-                    <textarea style="color: #0af31dce; background-color: #000000;" class="form-control" rows="11" v-model="agent.script"></textarea>
+                    <textarea :readonly="$store.state.fromDetailsLink" style="color: #0af31dce; background-color: #000000;" class="form-control" rows="11" v-model="agent.script"></textarea>
                     </div><!-- #bottom-section -->
                 </div><!-- /.row -->
                 <div class="row" v-show="isVisibleBottomSection">
@@ -217,7 +217,9 @@
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
-                  <button :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state.fromDetailsLink" :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -348,6 +350,10 @@
       height: 335px;
     }
 
+    button.delete-left-align{
+      margin-right: auto;
+    }
+
 </style>
 <script>
 import { required } from '@vuelidate/validators'
@@ -383,10 +389,14 @@ export default {
       this.resetAgentForm()
       this.$v.$reset()
       jQuery('#exampleModalCenter').modal('hide')
+      this.editable = false
+      this.$v.$reset()
     },
     close () {
       this.resetAgentForm()
       this.$v.$reset()
+      this.editable = false
+      this.$store.commit('setIdAgent', -1)
     },
     resetAgentForm () {
       this.agent = {
@@ -456,6 +466,9 @@ export default {
       } else {
         this.isPencilVisible = false
       }
+    },
+    onEdit () {
+      this.$store.commit('setDetailsLinks', false)
     }
   },
   data () {
@@ -505,6 +518,7 @@ export default {
     }
   },
   components: {
+    // AgentConfirmation
     // ColorPicker
   },
   computed: {
@@ -601,6 +615,11 @@ input.agent-name-input:hover{
   border-top: none !important;
   border-right: none !important;
   border-bottom: none !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: transparent;
+    opacity: 1;
 }
 
 @media (max-width: 480px) {
