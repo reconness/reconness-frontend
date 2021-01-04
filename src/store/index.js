@@ -12,10 +12,15 @@ export default createStore({
       { name: 'Agente 7', background: '#e91013', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020' },
       { name: 'Agente 8', background: '#4bd6f2', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '21/08/2020' }
     ],
+    resources: [
+      { url: 'http://google.com', categories: ['searcher', 'docs'], id: 1 },
+      { url: 'http://yahoo.es', categories: ['searcher'], id: 2 }
+    ],
     filterColour: '',
     idAgent: -1,
     systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74'],
-    fromDetailsLink: false
+    fromDetailsLink: false,
+    idResource: -1
   },
   mutations: {
     addAgent (state, agent) {
@@ -39,6 +44,18 @@ export default createStore({
     },
     setDetailsLinks (state, isSelected) {
       state.fromDetailsLink = isSelected
+    },
+    addResource (state, resource) {
+      state.resources.push(resource)
+    },
+    setSelectedResource (state, idResource) {
+      state.idResource = idResource
+    },
+    removeResource (state, idResource) {
+      const index = state.resources.findIndex(resource => resource.id === idResource)
+      if (index !== -1) {
+        state.resources.splice(index, 1)
+      }
     }
   },
   actions: {

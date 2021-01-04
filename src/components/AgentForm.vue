@@ -312,13 +312,13 @@
       overflow: hidden;
     }
 
-    .p-colorpicker-panel .p-colorpicker-color {
+    /* .p-colorpicker-panel .p-colorpicker-color {
       background: transparent url("/primevue-colorpicker/color.png") no-repeat left top;
     }
 
     .p-colorpicker-panel .p-colorpicker-hue {
       background: transparent url("/primevue-colorpicker/hue.png") no-repeat left top;
-    }
+    } */
 
     .p-colorpicker-preview {
         width: 30px;
@@ -358,7 +358,6 @@
 <script>
 import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
-// import ColorPicker from 'primevue/colorpicker'
 export default {
   methods: {
     setBlueColor: function () {
