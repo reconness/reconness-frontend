@@ -6,9 +6,10 @@
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" v-on:click="changeButton" data-widget="pushmenu" href="#" role="button">
-            <span v-show="button_module" class="material-icons">view_module</span>
+           <button type="button" class="btn btn-light margin-right"> <span v-show="button_module" class="material-icons">view_module</span>
             <span v-show="button_vert" class="material-icons">more_vert</span>
-             <p class="float-right loc"><strong>{{location}}</strong></p>
+              </button>
+             <p style="margin-top: 0.3rem;" class="float-right loc"><strong>{{location}}</strong></p>
             </a>
         </li>
       </ul>
@@ -16,16 +17,12 @@
       <ul class="navbar-nav ml-auto right-navbar">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item">
-          <form class="form-inline ml-3">
-            <div class="input-group input-group-sm search-box-container">
-              <div class="input-group-append search-component">
-                <button class="btn btn-navbar" type="submit">
-                  <span class="material-icons search-icon">search</span>
-                </button>
-              </div>
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-            </div>
-          </form>
+        <form class="form-inline">
+      <div class="form-group has-search input-group-sm">
+                              <span class="material-icons search-icon form-control-feddback">search</span>
+                              <input class="form-control url-input" type="search" placeholder="Search" aria-label="Search">
+                            </div>
+        </form>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
@@ -48,7 +45,7 @@
     </nav>
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4 left-aside" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <aside class="main-sidebar sidebar-dark-primary  left-aside" @mouseenter="mouseenter" @mouseleave="mouseleave">
       <!-- Brand Logo -->
        <router-link to="/">
       <a href="#" class="brand-link">
@@ -62,8 +59,8 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-               <router-link to="/">
-              <a href="#" class="nav-link" v-on:click="addLocation('Home')">
+               <router-link to="/" >
+              <a href="#" class="nav-link" v-on:click="addLocation('Home')" >
                <span class="material-icons">home</span>
                 <p>Home</p>
               </a></router-link>
@@ -87,8 +84,8 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item"><router-link to="/agents/list">
-                  <a href="#" class="nav-link" v-on:click="addLocation('Agents')">
+                <li class="nav-item" ><router-link to="/agents/list">
+                  <a href="#" class="nav-link" v-on:click="addLocation('Agents')" v-bind:class="{'nav2': goAgent}" >
                     <span class="material-icons">font_download</span>
                         <p>Agents</p>
                   </a></router-link>
@@ -135,9 +132,10 @@ export default {
       arrow_down: false,
       arrow_up: true,
       hide_logo: false,
-      button_module: true,
-      button_vert: false,
-      location: 'Home'
+      button_module: false,
+      button_vert: true,
+      location: 'Home',
+      goAgent: false
     }
   },
   methods: {
@@ -146,12 +144,12 @@ export default {
       this.arrow_up = !this.arrow_up
     },
     mouseenter: function () {
-      if (this.button_vert) {
+      if (this.button_module) {
         this.hide_logo = !this.hide_logo
       }
     },
     mouseleave: function () {
-      if (this.button_vert) {
+      if (this.button_module) {
         this.hide_logo = !this.hide_logo
       }
     },
@@ -164,6 +162,11 @@ export default {
     },
     addLocation: function (loc) {
       this.location = loc
+      if (loc === 'Agents') {
+        this.goAgent = true
+      } else {
+        this.goAgent = false
+      }
     }
   }
 }
@@ -199,6 +202,7 @@ background-color: #000000;
 
 .brand-link {
     margin-bottom: 40px;
+    margin-top: 10px;
 }
 
 .nav-sidebar .nav-link>p>.right{
@@ -247,5 +251,22 @@ form .input-group {
 .loc{
   display: none;
 }
+}
+.margin-right{
+  margin-right: 8px;
+}
+.has-search .form-control{
+  padding-left: 2.375rem;
+}
+.has-search .form-control-feddback{
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color:#000;
 }
 </style>

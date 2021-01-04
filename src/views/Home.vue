@@ -2,7 +2,8 @@
 <div class="content-wrapper">
   <div class="container-fluid">
   <div class="row mb-2">
-    <div class="col-xs-12 col-lg-9">
+    <div class="col-12 col-lg-9 col-xll-10">
+      <div class="container">
     <div class="row">
       <div class="col-lg-12">
         <div class="content-header">
@@ -11,12 +12,11 @@
         </div><!-- /.content-header -->
       </div><!-- /.col -->
       <div class="col-lg-12">
-        <div class="content">
           <!-- <div class="container"> -->
             <div class="row">
               <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-12">
+                  <div class="col-lg-8 ml-auto mr-auto">
                     <div class="home-secondary-text">
                       <blockquote class="blockquote text-center">
                       <p class="mb-0 app-description">
@@ -30,13 +30,10 @@
                   <div class="col-lg-12">
                     <p class="float-right bold-text separator-content inline-material-icons">Last week resumee<span class="material-icons search-icon blue-text">keyboard_arrow_right</span></p>
                   </div>
-                  <TargetsHighestInteraction :background="'#00B1FF'"></TargetsHighestInteraction>
-                  <div class="col-lg-4">
-                    <div class="home-chart">
-                      <apexchart width="90%" height="90%" type="line" :options="options" :series="series"></apexchart>
-                    </div>
-                  </div><!-- /.col -->
+                  <TargetsHighestInteraction :background="'#03dced'"></TargetsHighestInteraction>
+                  <DaysHighestInteraction></DaysHighestInteraction>
                   <TargetsHighestInteraction :background="'rgb(134, 98, 202)'"></TargetsHighestInteraction>
+                  </div></div>
                   <div class="col-lg-12">
                     <span class="refandres">References and resources</span><span> ></span>
                   </div><!-- /.col -->
@@ -44,56 +41,68 @@
                     <div class="home-quote-box">
                       <div class="row">
                         <div class="col-lg-12">
-                          <span class="home-quote"><em>"A smart personis not one that knows the answers, but one who knows where to find them..." </em></span>
+                          <span class="home-quote"><em>"A smart person is not one that knows the answers, but one who knows where to find them..." </em></span>
                         </div>
                         <!-- <div class="home-form"> -->
                         <!-- <form class="form-inline ml-3"> -->
                         <div class="col-lg-12">
                           <div class="row">
-                            <div class="col-lg-8">
-                            <div class="form-group has-search input-group-sm">
-                              <span class="material-icons search-icon form-control-feddback">search</span>
-                              <input class="form-control" type="search" placeholder="URL">
+                            <div class="col-lg-6">
+                              <div class="form-group has-search input-group-sm">
+                                <span style="top: -0.2rem;" class="material-icons search-icon form-control-feddback">search</span>
+                                <input class="form-control" type="search" placeholder="URL" v-model="resource.url" @blur="$v.resource.url.$touch();">
+                              </div>
+                              <p v-if="$v.resource.url.required.$invalid" :class="{invalid: $v.resource.url.$invalid}" style="margin-bottom: 0px;">The field URL is required</p>
+                              <p v-if="$v.resource.url.url.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p>
                             </div>
-                            </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                               <div class="row">
-                                <div class="col-lg-6">
-                                  <select class="form-control form-control-sm select2 rounded-lg" style="width: 100%;">
-                                    <option selected="selected">Alabama</option>
+                                <div class="col-lg-7">
+                                  <!-- <select class="form-control form-control-sm select2 rounded" style="width: 100%;">
+                                    <option selected="selected">Categories</option>
                                     <option>Alaska</option>
                                     <option>California</option>
                                     <option>Delaware</option>
                                     <option>Tennessee</option>
                                     <option>Texas</option>
                                     <option>Washington</option>
-                                  </select>
+                                  </select> -->
+                                  <MultiSelect v-model="resource.categories" :options="categories" optionValue="name" placeholder="Categories" optionLabel="name" display="chip"/>
                                 </div>
-                                <div class="col-lg-6">
-                                  <button type="submit" class="btn btn-outline-primary rounded-lg btn-sm btn-block">Add</button>                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                                <div class="col-lg-5">
+                                  <button type="submit" :disabled="$v.resource.url.$invalid || resource.url===''" class="btn button-clolour rounded btn-sm btn-block" @click="addReference">Add</button>                                </div>
+                                </div><!--./col-lg-5-->
+                              </div><!--./row -->
+                            </div><!--./col-lg-6 -->
+                          </div><!--./row -->
                           <!-- </form> -->
                           <!-- </div>           -->
                         <div class="col-lg-12 input-group-sm">
-                          <input type="url" class="form-control url-input" placeholder=">">
+                          <hr v-if="this.resources.length > 0"/>
+                          <div class="row" v-for="item of resources"  :key="item.id">
+                            <div class="col-lg-6">
+                              <a style="color: #007bff;" :href="item.url" class="form-control url-input without-bordered-lines">{{item.url}}</a>
+                            </div>
+                            <div class="col-lg-4">
+                              <input :value="item.categories.toString()" class="form-control url-input without-bordered-lines">
+                            </div>
+                            <div class="col-lg-2">
+                              <button data-target="#simple-confirmation-modal" @click="setSelectedReference" data-toggle="modal" style="font-size: 14px;" :data-id="item.id" type="button" class="btn btn-primary btn-block btn-danger delete_btn rounded-corners">Delete</button>
+                            </div>
+                          </div>
                         </div>
                       </div><!-- /.row -->
                     </div><!-- /.home-quote-box -->
                   </div> <!-- /.col-sm-12 -->
+                  <SimpleConfirmation></SimpleConfirmation>
                 </div><!-- /.row -->
               </div><!-- /.col-sm-12 -->
             </div><!-- /.row -->
-          <!--</div>--><!-- /.container -->
-        </div><!-- /.content -->
+          </div><!-- /.container -->
       </div><!-- /.col -->
-    </div><!-- /.row -->
+      <HomeRigthSidebar> </HomeRigthSidebar>
+      </div><!-- /.row -->
   </div><!-- col-xs-12 -->
-  <HomeRigthSidebar> </HomeRigthSidebar>
-</div>
-</div>
 </div>
 </template>
 
@@ -101,31 +110,60 @@
 // @ is an alias to /src
 import HomeRigthSidebar from '@/components/HomeRigthSidebar.vue'
 import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vue'
+import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
+import SimpleConfirmation from '@/components/SimpleConfirmation.vue'
+import { mapState } from 'vuex'
+import { required, url } from '@vuelidate/validators'
 export default {
   name: 'Home',
   components: {
     HomeRigthSidebar,
-    TargetsHighestInteraction
+    TargetsHighestInteraction,
+    DaysHighestInteraction,
+    SimpleConfirmation
   },
-  data: function () {
+  computed: {
+    ...mapState(['resources'])
+  },
+  methods: {
+    setSelectedReference (e) {
+      const selectedId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setSelectedResource', selectedId)
+    },
+    addReference () {
+      this.$store.commit('addResource', {
+        url: this.resource.url,
+        categories: this.resource.categories,
+        id: this.resources.length + 1
+      })
+      this.resetResource()
+    },
+    resetResource: function () {
+      this.resource = {
+        url: '',
+        categories: [],
+        id: -1
+      }
+      this.$v.$reset()
+    }
+  },
+  data () {
     return {
-      options: {
-        chart: {
-          id: 'chart-interactions',
-          foreColor: '#FFFFFF',
-          toolbar: {
-            show: false
-          }
-        },
-        xaxis: {
-          categories: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-        }
+      categories: [
+        { name: 'searcher', id: '1' },
+        { name: 'docs', id: '2' }
+      ],
+      resource: {
+        url: '',
+        categories: [],
+        id: -1
       },
-      series: [{
-        name: 'series-1',
-        data: [20, 40, 60, 80]
-      }],
-      colors: ['#FFFFFF']
+      selectedResource: -1
+    }
+  },
+  validations: {
+    resource: {
+      url: { required, url }
     }
   }
 }
@@ -134,11 +172,9 @@ export default {
 .content-header h1 {
     font-size: 40px;
     color: #000000!important;
+    font-weight: bold;
 }
-.blueline {
-    width: 76px;
-    border: 3px solid #00B1FF;
-}
+
 blockquote {
     background: none;
     border-left: none;
@@ -157,28 +193,51 @@ blockquote {
     color: rgb(0, 177, 255);
     border-color: rgba(56, 70, 84, 0.24);
 }
-.has-search .form-control{
-  padding-left: 2.375rem;
+.rounded{
+  border-radius: 12px !important;
+  opacity: 1;
+  border: 1px solid #f1f3f5;
+  background: #fffffF 0% 0% no-repeat padding-box;
+  font-size: 14px;
+  color: #000000;
 }
-.has-search .form-control-feddback{
-  position: absolute;
-  z-index: 2;
-  display: block;
-  width: 2.375rem;
-  height: 2.375rem;
-  line-height: 2.375rem;
-  text-align: center;
-  pointer-events: none;
-  color:#000;
+
+.without-bordered-lines{
+  border-top: 0px;
+  border-right: 0px;
+  border-left: 0px;
+  border-bottom: 0px;
 }
-.url-input {
-    margin-top: 0px;
+
+.p-multiselect .p-multiselect-label.p-placeholder {
+    color: #000000 !important;
 }
-.home-chart{
+
+.button-clolour{
+  color: #00b1ff;
+}
+
+.p-multiselect{
   width: 100%;
-  height: 100%;
-  background: transparent linear-gradient(160deg, #F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box;
-  box-shadow: 13px 19px 41px #0C1F6A3B;
-  border-radius: 18px;
+  border-radius: 12px !important;
+  opacity: 1;
+  border: 1px solid #f1f3f5;
+  background: #fffffF 0% 0% no-repeat padding-box;
+  font-size: 14px;
+  color: #000000;
+  height: calc(1.8125rem + 2px);
 }
+
+@media (min-width: 2560px) {
+.col-xll-10 {
+    -ms-flex: 0 0 83.333333%;
+    flex: 0 0 83.333333%;
+    max-width: 83.333333%;
+}
+}
+
+@media (min-width: 2560px) {
+.container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 2000px;
+}}
 </style>

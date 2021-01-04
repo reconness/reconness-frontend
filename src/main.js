@@ -4,7 +4,12 @@ import router from './router'
 import store from './store'
 import { VuelidatePlugin } from '@vuelidate/core'
 import PrimeVue from 'primevue/config'
+import MultiSelect from 'primevue/multiselect'
 import VueApexCharts from 'vue3-apexcharts'
 import 'bootstrap'
+import 'primevue/resources/primevue.min.css'
+import 'primevue/resources/themes/saga-blue/theme.css'
+import 'primeicons/primeicons.css'
+import 'primeflex/primeflex.min.css'
 
-createApp(App).use(store).use(router).use(VuelidatePlugin).use(PrimeVue).use(VueApexCharts).mount('#app')
+createApp(App).use(store).use(router).use(VuelidatePlugin).use(PrimeVue).use(VueApexCharts).component('MultiSelect', MultiSelect).mount('#app')

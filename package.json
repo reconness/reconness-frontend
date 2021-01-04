@@ -17,6 +17,7 @@
     "jquery": "^3.5.1",
     "material-icons": "^0.3.1",
     "mdbvue": "^6.7.2",
+    "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primevue": "^3.1.1",
     "typography": "^0.16.19",
