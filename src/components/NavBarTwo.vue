@@ -58,7 +58,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" v-on:click="orderByCalendar()">
               <i class="material-icons float-left">event</i>
-              <p class="right">Calendar</p>
+              <p class="right">Created</p>
             </a>
           </div>
         </li>

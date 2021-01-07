@@ -193,7 +193,7 @@
                     </div>
                     </div><!-- /.col-12 -->
                     <div  v-if="!isVisibleBottomSection" id="bottom-section" class="col-12 collapse multi-collapse">
-                    <textarea :readonly="$store.state.fromDetailsLink" style="color: #0af31dce; background-color: #000000;" class="form-control" rows="11" v-model="agent.script"></textarea>
+                      <v-ace-editor v-model:value="agent.script" lang="csharp" style="height:300px" theme="monokai"/>
                     </div><!-- #bottom-section -->
                 </div><!-- /.row -->
                 <div class="row" v-show="isVisibleBottomSection">
@@ -358,6 +358,7 @@
 <script>
 import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
+import { VAceEditor } from 'vue3-ace-editor'
 export default {
   methods: {
     setBlueColor: function () {
@@ -399,7 +400,8 @@ export default {
     },
     resetAgentForm () {
       this.agent = {
-        background: '#8929e0'
+        background: '#8929e0',
+        script: ''
       }
     },
     enableBottomSection () {
@@ -517,6 +519,7 @@ export default {
     }
   },
   components: {
+    VAceEditor
     // AgentConfirmation
     // ColorPicker
   },
@@ -556,6 +559,8 @@ export default {
         this.agent.script = value.script
         this.editable = true
         this.agent.id = value.id
+      } else {
+        this.agent.script = ''
       }
     }
   }

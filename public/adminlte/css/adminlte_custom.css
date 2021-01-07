@@ -632,3 +632,12 @@ font-weight: 600;
 .p-multiselect.p-multiselect-chip .p-multiselect-token {
   padding: 0.09rem 0.5rem !important;
 }
+
+.ace_identifier, .ace_paren {
+  color: #d6d6d6;
+}
+
+.ace_editor {
+  font-size: 16px;
+}
+
