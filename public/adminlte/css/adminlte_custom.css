@@ -266,37 +266,6 @@ div.image img{
   list-style: none;
 }
 
-/* .right-sidebar-fixed{
-  position: absolute;
-  right: 0;
-  display: block;
-  min-height: 100%;
-  top: calc(3.5rem + 1px);
-} */
-
-
-
-
-
-
-/* .sidebar a.nav-link{
-  display: inline-flex;
-  vertical-align: middle;
-} */
-
-/* .main-sidebar{ */
-  /* transition: margin-left .3s ease-in-out,width .3s ease-in-out; */
-  /* width: 200px;
-} */
-
-/* .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  color: #fff;
-  background-color: #007bff;
-} */
-
-/*****agente*****/
-
-
 .link-color a {
 	  color: #FFF;
 	  
@@ -639,5 +608,12 @@ font-weight: 600;
 
 .ace_editor {
   font-size: 16px;
+}
+
+.form-input-without-lines{
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0rem;
 }
 

@@ -171,7 +171,7 @@
           <div class="d-flex justify-content-between">
             <i class="material-icons">local_mall</i>
             <h5>Marketplace</h5>
-            <a class="btn btn-sm btn-style btn-outline-primary" href="#" role="button">Debug</a>
+            <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
           </div>
         </div>
         <div class="sidebar-list">
@@ -277,6 +277,7 @@
     </div>
    <div class="row">
       <AgentForm></AgentForm>
+      <Debug></Debug>
   </div>
      </div>
 </template>
@@ -284,6 +285,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import AgentForm from '@/components/AgentForm.vue'
+import Debug from '@/components/Debug.vue'
 export default {
   name: 'NavBarTwo',
   data: function () {
@@ -300,7 +302,8 @@ export default {
     }
   },
   components: {
-    AgentForm
+    AgentForm,
+    Debug
   },
   methods: {
     mouseenter: function () {
