@@ -187,8 +187,8 @@
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1">Install</a>
-                  <a v-if="this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1">Uninstall</a>
+                  <a v-if="!this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Install</a>
+                  <a v-if="this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -208,8 +208,8 @@
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2">Install</a>
-                  <a v-if="this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2">Uninstall</a>
+                  <a v-if="!this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Install</a>
+                  <a v-if="this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -229,8 +229,8 @@
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3">Install</a>
-                  <a v-if="this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3">Uninstall</a>
+                  <a v-if="!this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Install</a>
+                  <a v-if="this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -250,8 +250,8 @@
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4">Install</a>
-                  <a v-if="this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4">Uninstall</a>
+                  <a v-if="!this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Install</a>
+                  <a v-if="this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -271,8 +271,8 @@
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5">Install</a>
-                  <a v-if="this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5">Uninstall</a>
+                  <a v-if="!this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Install</a>
+                  <a v-if="this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -284,6 +284,7 @@
       <AgentForm></AgentForm>
       <Debug></Debug>
       <InstallOnDebug :installerOption="this.optionNumber"/>
+      <UninstallOnDebug :installerOption="this.optionNumber" :installerOptionName="this.optionName"/>
   </div>
      </div>
 </template>
@@ -293,6 +294,7 @@ import { mapState, mapMutations } from 'vuex'
 import AgentForm from '@/components/AgentForm.vue'
 import Debug from '@/components/Debug.vue'
 import InstallOnDebug from '@/components/InstallOnDebug'
+import UninstallOnDebug from '@/components/UninstallOnDebug'
 export default {
   name: 'NavBarTwo',
   data: function () {
@@ -300,7 +302,8 @@ export default {
       active: false,
       active_arrow_down: true,
       active_arrow_up: false,
-      optionNumber: -1
+      optionNumber: -1,
+      optionName: ''
     }
   },
   computed: {
@@ -312,7 +315,8 @@ export default {
   components: {
     AgentForm,
     Debug,
-    InstallOnDebug
+    InstallOnDebug,
+    UninstallOnDebug
   },
   methods: {
     mouseenter: function () {
