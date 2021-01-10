@@ -20,7 +20,12 @@ export default createStore({
     idAgent: -1,
     systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74'],
     fromDetailsLink: false,
-    idResource: -1
+    idResource: -1,
+    isSubfinderInstalled: false,
+    isAmassInstalled: false,
+    isGoBusterMsInstalled: false,
+    isSubkisteDInstalled: false,
+    isForeingBotInstalled: false
   },
   mutations: {
     addAgent (state, agent) {
@@ -55,6 +60,19 @@ export default createStore({
       const index = state.resources.findIndex(resource => resource.id === idResource)
       if (index !== -1) {
         state.resources.splice(index, 1)
+      }
+    },
+    installUnninstallMarquetOption (state, option) {
+      if (option === 1) {
+        state.isSubfinderInstalled = !state.isSubfinderInstalled
+      } else if (option === 2) {
+        state.isAmassInstalled = !state.isAmassInstalled
+      } else if (option === 3) {
+        state.isGoBusterMsInstalled = !state.isGoBusterMsInstalled
+      } else if (option === 4) {
+        state.isSubkisteDInstalled = !state.isSubkisteDInstalled
+      } else {
+        state.isForeingBotInstalled = !state.isForeingBotInstalled
       }
     }
   },

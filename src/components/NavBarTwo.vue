@@ -181,13 +181,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
                     <a href="#" class="sidebar-right float-right">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1">Install</a>
+                  <a v-if="this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -201,13 +202,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
                     <a href="#" class="sidebar-right float-right">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2">Install</a>
+                  <a v-if="this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -221,13 +223,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
                     <a href="#" class="sidebar-right float-right">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3">Install</a>
+                  <a v-if="this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -241,13 +244,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
                     <a href="#" class="sidebar-right float-right">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4">Install</a>
+                  <a v-if="this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -261,13 +265,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
                     <a href="#" class="sidebar-right float-right">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5">Install</a>
+                  <a v-if="this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -278,6 +283,7 @@
    <div class="row">
       <AgentForm></AgentForm>
       <Debug></Debug>
+      <InstallOnDebug :installerOption="this.optionNumber"/>
   </div>
      </div>
 </template>
@@ -286,13 +292,15 @@
 import { mapState, mapMutations } from 'vuex'
 import AgentForm from '@/components/AgentForm.vue'
 import Debug from '@/components/Debug.vue'
+import InstallOnDebug from '@/components/InstallOnDebug'
 export default {
   name: 'NavBarTwo',
   data: function () {
     return {
       active: false,
       active_arrow_down: true,
-      active_arrow_up: false
+      active_arrow_up: false,
+      optionNumber: -1
     }
   },
   computed: {
@@ -303,7 +311,8 @@ export default {
   },
   components: {
     AgentForm,
-    Debug
+    Debug,
+    InstallOnDebug
   },
   methods: {
     mouseenter: function () {
@@ -319,6 +328,10 @@ export default {
       } else if (this.active_arrow_up === true) {
         return this.orderByNameAsc()
       }
+    },
+    installationResult: function (event) {
+      this.isSubfinderInstalled = event
+      console.log(event)
     },
     orderByNameAsc: function () {
       function compare (a, b) {
