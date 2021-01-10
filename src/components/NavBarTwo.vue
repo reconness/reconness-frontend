@@ -285,6 +285,7 @@
       <Debug></Debug>
       <InstallOnDebug :installerOption="this.optionNumber"/>
       <UninstallOnDebug :installerOption="this.optionNumber" :installerOptionName="this.optionName"/>
+      <Toast :baseZIndex="200"/>
   </div>
      </div>
 </template>
@@ -295,6 +296,7 @@ import AgentForm from '@/components/AgentForm.vue'
 import Debug from '@/components/Debug.vue'
 import InstallOnDebug from '@/components/InstallOnDebug'
 import UninstallOnDebug from '@/components/UninstallOnDebug'
+import Toast from 'primevue/toast'
 export default {
   name: 'NavBarTwo',
   data: function () {
@@ -316,7 +318,8 @@ export default {
     AgentForm,
     Debug,
     InstallOnDebug,
-    UninstallOnDebug
+    UninstallOnDebug,
+    Toast
   },
   methods: {
     mouseenter: function () {
