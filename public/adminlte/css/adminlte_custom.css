@@ -598,9 +598,26 @@ font-weight: 600;
   padding: 0.2rem 0.5rem !important;
 }
 
-.p-multiselect.p-multiselect-chip .p-multiselect-token {
+/* .p-multiselect.p-multiselect-chip .p-multiselect-token {
   padding: 0.09rem 0.5rem !important;
+} */
+
+.p-chips .p-chips-multiple-container .p-chips-input-token input {
+  font-size: .875rem !important;
 }
+
+.p-chips .p-chips-multiple-container .p-chips-input-token input::placeholder{
+  color: #999;
+  opacity: 1;
+}
+
+.p-chips .p-chips-multiple-container {
+  width: 100%;
+}
+
+/* div.p-chips.p-component.p-inputwrapper {
+  min-height: calc(1.8125rem + 2px);
+} */
 
 .ace_identifier, .ace_paren {
   color: #d6d6d6;
