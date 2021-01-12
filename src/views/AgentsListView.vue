@@ -26,6 +26,9 @@ export default {
     AgentConfirmation,
     AgentsList,
     NavBarTwo
+  },
+  mounted () {
+    this.$store.commit('updateLocView', 'Agents', true)
   }
 }
 </script>

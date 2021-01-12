@@ -634,3 +634,8 @@ font-weight: 600;
   border-radius: 0rem;
 }
 
+.custom-checkbox-redonded {
+  border-radius: 1rem;
+  width: 30px;
+  height: 30px;
+}

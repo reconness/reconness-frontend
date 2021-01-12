@@ -14,7 +14,8 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#">Edit List</a>
+          <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
+          <a class="nav-link pos " v-show= "check" href="#"  data-toggle="modal"  data-target="#confirmation-modald">Delete Agents</a>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -123,7 +124,8 @@
             <i class="material-icons">more_vert</i>
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
-            <a class="dropdown-item" href="#">Edit List</a>
+            <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
+            <a class="nav-link pos " v-show= "check" href="#"  data-toggle="modal"  data-target="#confirmation-modald">Delete Agents</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -169,7 +171,8 @@
         <!-- Control sidebar content goes here -->
         <div class="p-3 control-sidebar-content">
           <div class="d-flex justify-content-between">
-            <i class="material-icons">local_mall</i>
+            <i class="material-icons-outlined">local_mall</i>
+            <!-- <img src="/local_mall-black-18dp/1x/outline_local_mall_black_18dp.png"/> -->
             <h5>Marketplace</h5>
             <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
           </div>
@@ -291,6 +294,7 @@
       <UninstallOnDebug :installerOption="this.optionNumber" :installerOptionName="this.optionName"/>
       <Toast :baseZIndex="200"/>
   </div>
+  <ConfirmDeleteList></ConfirmDeleteList>
      </div>
 </template>
 
@@ -302,6 +306,7 @@ import InstallOnDebug from '@/components/InstallOnDebug'
 import UninstallOnDebug from '@/components/UninstallOnDebug'
 import Toast from 'primevue/toast'
 import OverlayPanel from 'primevue/overlaypanel'
+import ConfirmDeleteList from '@/components/ConfirmDeleteList.vue'
 export default {
   name: 'NavBarTwo',
   data: function () {
@@ -314,7 +319,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['agentListStore']),
+    ...mapState(['agentListStore', 'check']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
@@ -325,7 +330,8 @@ export default {
     InstallOnDebug,
     UninstallOnDebug,
     Toast,
-    OverlayPanel
+    OverlayPanel,
+    ConfirmDeleteList
   },
   methods: {
     mouseenter: function () {
@@ -334,7 +340,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations(['isFilter']),
+    ...mapMutations(['isFilter', 'editList']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
