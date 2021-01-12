@@ -434,6 +434,11 @@ color: #949191;
 color: #00b1ff;
 font-weight: 600;
 }
+
+.control-sidebar-dark svg {
+  fill: #00b1ff;
+}
+
 .control-sidebar-dark p{
 color: #000000;
 margin: 0rem;
