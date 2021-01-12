@@ -1,6 +1,6 @@
 <template>
     <div class="col-12">
-        <form @submit.prevent="onSubmit">
+        <form>
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content agent-containers">
@@ -8,7 +8,8 @@
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
                         <div style="float: left;" class="d-flex flex-row agent-name-container">
-                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <!-- <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"> -->
+                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
                     </div><!-- /.col-12 -->
@@ -17,13 +18,14 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"><!--:value="loadFormOnEdition"-->
+                            <!-- <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">:value="loadFormOnEdition" -->
+                            <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"><!--:value="loadFormOnEdition"-->
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="$v.agent.name.$errors.length">
+                        <!-- <div class="col-12" v-if="$v.agent.name.$errors.length">
                             <span :class="{invalid: $v.agent.name.$errors.length}">The field agent is required</span>
-                        </div>
+                        </div> -->
                         <div class="col-12">
                             <div class="d-flex flex-row justify-content-end">
                             <span style="text-align: right; opacity: 1; font-size: 14px;" class="mr-2">
@@ -40,23 +42,25 @@
                         </div><!-- /.d-flex -->
                         </div>
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @blur="$v.agent.repository.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
+                          <!-- <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @blur="$v.agent.repository.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository"> -->
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="$v.agent.repository.$errors.length">
+                        <!-- <div class="col-12" v-if="$v.agent.repository.$errors.length">
                             <span :class="{invalid: $v.agent.repository.$errors.length}">The field repository is required</span>
-                        </div>
+                        </div> -->
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @blur="$v.agent.target.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
+                          <!-- <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @blur="$v.agent.target.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target"> -->
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="$v.agent.target.$errors.length">
+                        <!-- <div class="col-12" v-if="$v.agent.target.$errors.length">
                           <span :class="{invalid: $v.agent.target.$errors.length}">The field target is required</span>
-                        </div>
-                        <div class="col-12">
+                        </div> -->
+                        <!-- <div class="col-12">
                           <input :readonly="$store.state.fromDetailsLink" v-model="agent.command" @blur="$v.agent.command.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
-                        </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="$v.agent.command.$errors.length">
+                        </div> -->
+                        <!-- <div class="col-12" v-if="$v.agent.command.$errors.length">
                           <span :class="{invalid: $v.agent.command.$errors.length}">The field command is required</span>
-                        </div>
+                        </div> -->
                         <div class="col-12">
                         <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" style="margin-bottom: 1rem;" class="blue-text float-right">Learn more</a>
                         </div><!-- /.col-12 -->
@@ -219,7 +223,8 @@
                 <div style="border-top: none;" class="modal-footer">
                   <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
                   <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state.fromDetailsLink" :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <!-- <button v-if="!this.$store.state.fromDetailsLink" :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button> -->
+                  <button v-if="!this.$store.state.fromDetailsLink" data-dismiss="modal" type="button" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -387,14 +392,14 @@ export default {
         this.$store.commit('addAgent', this.agent)
       }
       this.resetAgentForm()
-      this.$v.$reset()
+      // this.$v.$reset()
       jQuery('#exampleModalCenter').modal('hide')
       this.editable = false
-      this.$v.$reset()
+      // this.$v.$reset()
     },
     close () {
       this.resetAgentForm()
-      this.$v.$reset()
+      // this.$v.$reset()
       this.editable = false
       this.$store.commit('setIdAgent', -1)
     },
