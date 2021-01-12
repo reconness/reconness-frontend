@@ -52,8 +52,8 @@
                                 <span class="material-icons search-icon form-control-feddback">search</span>
                                 <input class="form-control" type="search" placeholder="URL" v-model="resource.url" @blur="$v.resource.url.$touch();">
                               </div>
-                              <p v-if="$v.resource.url.required.$invalid" :class="{invalid: $v.resource.url.$invalid}" style="margin-bottom: 0px;">The field URL is required</p>
-                              <p v-if="$v.resource.url.url.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p>
+                              <!-- <p v-if="$v.resource.url.required.$invalid" :class="{invalid: $v.resource.url.$invalid}" style="margin-bottom: 0px;">The field URL is required</p>
+                              <p v-if="$v.resource.url.url.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p> -->
                             </div>
                             <div class="col-lg-6">
                               <div class="row">
@@ -62,7 +62,8 @@
                                   <Chips v-model="resource.categories" placeholder="Categories"/>
                                 </div>
                                 <div class="col-lg-5">
-                                  <button style="height: 40px;" type="submit" :disabled="$v.resource.url.$invalid || resource.url===''" class="btn button-clolour rounded btn-block" @click="addReference">Add</button>                                </div>
+                                  <!-- <button style="height: 40px;" type="submit" :disabled="$v.resource.url.$invalid || resource.url===''" class="btn button-clolour rounded btn-block" @click="addReference">Add</button>                                </div> -->
+                                  <button style="height: 40px;" type="submit" class="btn button-clolour rounded btn-block" @click="addReference">Add</button></div>
                                 </div><!--./col-lg-5-->
                               </div><!--./row -->
                             </div><!--./col-lg-6 -->
