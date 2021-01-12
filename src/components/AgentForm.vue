@@ -167,19 +167,19 @@
                                       <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background-color: #00d2e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background-color: #ff1b4c;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background-color: #ff7f46;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background-color: #00eb74;" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                 </div>
                             </div>
@@ -367,19 +367,19 @@ import { VAceEditor } from 'vue3-ace-editor'
 export default {
   methods: {
     setBlueColor: function () {
-      this.agent.background = '#4bd6f2'
+      this.agent.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
     },
     setVioletColor: function () {
-      this.agent.background = '#9a25b6'
+      this.agent.background = 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box'
     },
     setRedColor: function () {
-      this.agent.background = '#e91013'
+      this.agent.background = 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box'
     },
     setOrangeColor: function () {
-      this.agent.background = '#f36e1c'
+      this.agent.background = '#ff8650 0% 0% no-repeat padding-box'
     },
     setGreenColor: function () {
-      this.agent.background = '#4cb45f'
+      this.agent.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
     },
     addAgent () {
       if (this.editable) {
@@ -481,7 +481,7 @@ export default {
     return {
       agent: {
         name: '',
-        background: '#9a25b6',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
         repository: '',
         target: '',
         command: '',
