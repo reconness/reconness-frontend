@@ -278,7 +278,6 @@
             </dd>
           </dl>
         </div>
-        <!-- el popover va aki -->
         <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
           <h5><b>{{optionName}}</b></h5>
           <p>Breve descripcion del agente</p>
