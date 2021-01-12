@@ -165,7 +165,7 @@
     </nav>
 
     <div v-show="active">
-      <aside class="control-sidebar-dark" @mouseleave="mouseleave">
+      <aside class="control-sidebar-dark" @mouseleave="mouseleave" id="marketplace-agent">
         <!-- Control sidebar content goes here -->
         <div class="p-3 control-sidebar-content">
           <div class="d-flex justify-content-between">
@@ -183,7 +183,7 @@
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Subfinder">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
@@ -204,7 +204,7 @@
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Amass">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
@@ -225,7 +225,7 @@
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="GoBusterMs">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
@@ -246,7 +246,7 @@
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="SubkisteD">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
@@ -267,7 +267,7 @@
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="ForeingBot">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
@@ -278,6 +278,11 @@
             </dd>
           </dl>
         </div>
+        <!-- el popover va aki -->
+        <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
+          <h5><b>{{optionName}}</b></h5>
+          <p>Breve descripcion del agente</p>
+        </OverlayPanel>
       </aside>
     </div>
    <div class="row">
@@ -297,6 +302,7 @@ import Debug from '@/components/Debug.vue'
 import InstallOnDebug from '@/components/InstallOnDebug'
 import UninstallOnDebug from '@/components/UninstallOnDebug'
 import Toast from 'primevue/toast'
+import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwo',
   data: function () {
@@ -319,7 +325,8 @@ export default {
     Debug,
     InstallOnDebug,
     UninstallOnDebug,
-    Toast
+    Toast,
+    OverlayPanel
   },
   methods: {
     mouseenter: function () {
@@ -338,7 +345,6 @@ export default {
     },
     installationResult: function (event) {
       this.isSubfinderInstalled = event
-      console.log(event)
     },
     orderByNameAsc: function () {
       function compare (a, b) {
@@ -379,6 +385,10 @@ export default {
         return 0
       }
       return this.agentListStore.sort(compare)
+    },
+    toggle (event) {
+      this.optionName = event.currentTarget.getAttribute('data-agent')
+      this.$refs.op.toggle(event)
     }
   }
 }
