@@ -48,29 +48,22 @@
                         <div class="col-lg-12">
                           <div class="row">
                             <div class="col-lg-6">
-                              <div class="form-group has-search input-group-sm">
-                                <span style="top: -0.2rem;" class="material-icons search-icon form-control-feddback">search</span>
+                              <div class="form-group has-search">
+                                <span class="material-icons search-icon form-control-feddback">search</span>
                                 <input class="form-control" type="search" placeholder="URL" v-model="resource.url" @blur="$v.resource.url.$touch();">
                               </div>
-                              <p v-if="$v.resource.url.required.$invalid" :class="{invalid: $v.resource.url.$invalid}" style="margin-bottom: 0px;">The field URL is required</p>
-                              <p v-if="$v.resource.url.url.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p>
+                              <!-- <p v-if="$v.resource.url.required.$invalid" :class="{invalid: $v.resource.url.$invalid}" style="margin-bottom: 0px;">The field URL is required</p>
+                              <p v-if="$v.resource.url.url.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p> -->
                             </div>
                             <div class="col-lg-6">
                               <div class="row">
                                 <div class="col-lg-7">
-                                  <!-- <select class="form-control form-control-sm select2 rounded" style="width: 100%;">
-                                    <option selected="selected">Categories</option>
-                                    <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
-                                  </select> -->
-                                  <MultiSelect v-model="resource.categories" :options="categories" optionValue="name" placeholder="Categories" optionLabel="name" display="chip"/>
+                                  <!-- <MultiSelect v-model="resource.categories" :options="categories" optionValue="name" placeholder="Categories" optionLabel="name" display="chip"/> -->
+                                  <Chips v-model="resource.categories" placeholder="Categories"/>
                                 </div>
                                 <div class="col-lg-5">
-                                  <button type="submit" :disabled="$v.resource.url.$invalid || resource.url===''" class="btn button-clolour rounded btn-sm btn-block" @click="addReference">Add</button>                                </div>
+                                  <!-- <button style="height: 40px;" type="submit" :disabled="$v.resource.url.$invalid || resource.url===''" class="btn button-clolour rounded btn-block" @click="addReference">Add</button>                                </div> -->
+                                  <button style="height: 40px;" type="submit" class="btn button-clolour rounded btn-block" @click="addReference">Add</button></div>
                                 </div><!--./col-lg-5-->
                               </div><!--./row -->
                             </div><!--./col-lg-6 -->
@@ -114,13 +107,15 @@ import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
 import SimpleConfirmation from '@/components/SimpleConfirmation.vue'
 import { mapState } from 'vuex'
 import { required, url } from '@vuelidate/validators'
+import Chips from 'primevue/chips'
 export default {
   name: 'Home',
   components: {
     HomeRigthSidebar,
     TargetsHighestInteraction,
     DaysHighestInteraction,
-    SimpleConfirmation
+    SimpleConfirmation,
+    Chips
   },
   computed: {
     ...mapState(['resources'])
@@ -217,7 +212,7 @@ blockquote {
   color: #00b1ff;
 }
 
-.p-multiselect{
+/* .p-multiselect{
   width: 100%;
   border-radius: 12px !important;
   opacity: 1;
@@ -226,6 +221,17 @@ blockquote {
   font-size: 14px;
   color: #000000;
   height: calc(1.8125rem + 2px);
+} */
+
+.p-chips{
+  width: 100%;
+  border-radius: 12px !important;
+  opacity: 1;
+  /* border: 1px solid #f1f3f5; */
+  background: #fffffF 0% 0% no-repeat padding-box;
+  font-size: 14px;
+  color: #000000;
+  /* min-height: calc(1.8125rem + 2px); */
 }
 
 @media (min-width: 2560px) {

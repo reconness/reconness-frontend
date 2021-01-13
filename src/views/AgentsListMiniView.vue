@@ -42,6 +42,9 @@ export default {
         return this.filterByColor(this.filterColour)
       }
     }
+  },
+  mounted () {
+    this.$store.commit('updateLocView', this.$route.name, true)
   }
 }
 </script>

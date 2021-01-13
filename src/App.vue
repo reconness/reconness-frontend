@@ -9,7 +9,7 @@
            <button type="button" class="btn btn-light margin-right"> <span v-show="button_module" class="material-icons">view_module</span>
             <span v-show="button_vert" class="material-icons">more_vert</span>
               </button>
-             <p style="margin-top: 0.3rem;" class="float-right loc"><strong>{{location}}</strong></p>
+             <p style="margin-top: 0.3rem;" class="float-right loc"><strong>{{viewloc}}</strong></p>
             </a>
         </li>
       </ul>
@@ -85,7 +85,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item" ><router-link to="/agents/list">
-                  <a href="#" class="nav-link" v-on:click="addLocation('Agents')" v-bind:class="{'nav2': goAgent}" >
+                  <a href="#" class="nav-link" id ='agentNav'  v-on:click="addLocation('Agents')" v-bind:class="{'nav2': styleAgentState}" >
                     <span class="material-icons">font_download</span>
                         <p>Agents</p>
                   </a></router-link>
@@ -125,6 +125,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'App',
   data: function () {
@@ -137,6 +138,12 @@ export default {
       location: 'Home',
       goAgent: false
     }
+  },
+  computed: {
+    ...mapState(['viewloc', 'styleAgentState'])
+  },
+  mounted () {
+    this.location = this.viewloc
   },
   methods: {
     hideArrow: function () {
@@ -161,12 +168,7 @@ export default {
       }
     },
     addLocation: function (loc) {
-      this.location = loc
-      if (loc === 'Agents') {
-        this.goAgent = true
-      } else {
-        this.goAgent = false
-      }
+      this.$store.commit('updateLocView', loc)
     }
   }
 }

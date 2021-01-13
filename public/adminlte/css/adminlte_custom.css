@@ -266,37 +266,6 @@ div.image img{
   list-style: none;
 }
 
-/* .right-sidebar-fixed{
-  position: absolute;
-  right: 0;
-  display: block;
-  min-height: 100%;
-  top: calc(3.5rem + 1px);
-} */
-
-
-
-
-
-
-/* .sidebar a.nav-link{
-  display: inline-flex;
-  vertical-align: middle;
-} */
-
-/* .main-sidebar{ */
-  /* transition: margin-left .3s ease-in-out,width .3s ease-in-out; */
-  /* width: 200px;
-} */
-
-/* .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  color: #fff;
-  background-color: #007bff;
-} */
-
-/*****agente*****/
-
-
 .link-color a {
 	  color: #FFF;
 	  
@@ -465,6 +434,11 @@ color: #949191;
 color: #00b1ff;
 font-weight: 600;
 }
+
+.control-sidebar-dark svg {
+  fill: #00b1ff;
+}
+
 .control-sidebar-dark p{
 color: #000000;
 margin: 0rem;
@@ -629,6 +603,44 @@ font-weight: 600;
   padding: 0.2rem 0.5rem !important;
 }
 
-.p-multiselect.p-multiselect-chip .p-multiselect-token {
+/* .p-multiselect.p-multiselect-chip .p-multiselect-token {
   padding: 0.09rem 0.5rem !important;
+} */
+
+.p-chips .p-chips-multiple-container .p-chips-input-token input {
+  font-size: .875rem !important;
+}
+
+.p-chips .p-chips-multiple-container .p-chips-input-token input::placeholder{
+  color: #999;
+  opacity: 1;
+}
+
+.p-chips .p-chips-multiple-container {
+  width: 100%;
+}
+
+/* div.p-chips.p-component.p-inputwrapper {
+  min-height: calc(1.8125rem + 2px);
+} */
+
+.ace_identifier, .ace_paren {
+  color: #d6d6d6;
+}
+
+.ace_editor {
+  font-size: 16px;
+}
+
+.form-input-without-lines{
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0rem;
+}
+
+.custom-checkbox-redonded {
+  border-radius: 1rem;
+  width: 30px;
+  height: 30px;
 }

@@ -14,7 +14,8 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#">Edit List</a>
+          <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
+          <a class="nav-link pos " v-show= "check" href="#"  data-toggle="modal"  data-target="#confirmation-modald">Delete Agents</a>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -58,7 +59,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" v-on:click="orderByCalendar()">
               <i class="material-icons float-left">event</i>
-              <p class="right">Calendar</p>
+              <p class="right">Created</p>
             </a>
           </div>
         </li>
@@ -123,7 +124,8 @@
             <i class="material-icons">more_vert</i>
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
-            <a class="dropdown-item" href="#">Edit List</a>
+            <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
+            <a class="nav-link pos " v-show= "check" href="#"  data-toggle="modal"  data-target="#confirmation-modald">Delete Agents</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -165,13 +167,14 @@
     </nav>
 
     <div v-show="active">
-      <aside class="control-sidebar-dark" @mouseleave="mouseleave">
+      <aside class="control-sidebar-dark" @mouseleave="mouseleave" id="marketplace-agent">
         <!-- Control sidebar content goes here -->
         <div class="p-3 control-sidebar-content">
           <div class="d-flex justify-content-between">
-            <i class="material-icons">local_mall</i>
+            <!-- <i class="material-icons">local_mall</i> -->
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg>
             <h5>Marketplace</h5>
-            <a class="btn btn-sm btn-style btn-outline-primary" href="#" role="button">Debug</a>
+            <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
           </div>
         </div>
         <div class="sidebar-list">
@@ -181,13 +184,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Subfinder">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Install</a>
+                  <a v-if="this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -201,13 +205,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Amass">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Install</a>
+                  <a v-if="this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -221,13 +226,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="GoBusterMs">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Install</a>
+                  <a v-if="this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -241,13 +247,14 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="SubkisteD">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Install</a>
+                  <a v-if="this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
@@ -261,46 +268,70 @@
             </dt>
             <dd class="col-9">
               <dl class="row">
-                <dt class="col-8 reset-col">
+                <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="ForeingBot">Details</a>
                   </em>
                 </dt>
-                <dd class="col-4 reset-col">
-                  <a href="#" class="float-right">Install</a>
+                <dd class="col-5 reset-col">
+                  <a v-if="!this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Install</a>
+                  <a v-if="this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Uninstall</a>
                 </dd>
               </dl>
             </dd>
           </dl>
         </div>
+        <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
+          <h5><b>{{optionName}}</b></h5>
+          <p>Breve descripcion del agente</p>
+        </OverlayPanel>
       </aside>
     </div>
    <div class="row">
       <AgentForm></AgentForm>
+      <Debug></Debug>
+      <InstallOnDebug :installerOption="this.optionNumber"/>
+      <UninstallOnDebug :installerOption="this.optionNumber" :installerOptionName="this.optionName"/>
+      <Toast :baseZIndex="200"/>
   </div>
+  <ConfirmDeleteList></ConfirmDeleteList>
      </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
 import AgentForm from '@/components/AgentForm.vue'
+import Debug from '@/components/Debug.vue'
+import InstallOnDebug from '@/components/InstallOnDebug'
+import UninstallOnDebug from '@/components/UninstallOnDebug'
+import Toast from 'primevue/toast'
+import OverlayPanel from 'primevue/overlaypanel'
+import ConfirmDeleteList from '@/components/ConfirmDeleteList.vue'
 export default {
   name: 'NavBarTwo',
   data: function () {
     return {
       active: false,
       active_arrow_down: true,
-      active_arrow_up: false
+      active_arrow_up: false,
+      optionNumber: -1,
+      optionName: ''
     }
   },
   computed: {
-    ...mapState(['agentListStore']),
+    ...mapState(['agentListStore', 'check']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
   },
   components: {
-    AgentForm
+    AgentForm,
+    Debug,
+    InstallOnDebug,
+    UninstallOnDebug,
+    Toast,
+    OverlayPanel,
+    ConfirmDeleteList
   },
   methods: {
     mouseenter: function () {
@@ -309,13 +340,16 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations(['isFilter']),
+    ...mapMutations(['isFilter', 'editList']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
       } else if (this.active_arrow_up === true) {
         return this.orderByNameAsc()
       }
+    },
+    installationResult: function (event) {
+      this.isSubfinderInstalled = event
     },
     orderByNameAsc: function () {
       function compare (a, b) {
@@ -356,6 +390,10 @@ export default {
         return 0
       }
       return this.agentListStore.sort(compare)
+    },
+    toggle (event) {
+      this.optionName = event.currentTarget.getAttribute('data-agent')
+      this.$refs.op.toggle(event)
     }
   }
 }
