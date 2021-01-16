@@ -8,7 +8,7 @@
           <div class="d-flex justify-content-between">
             <h3 class="card-title">{{item.name}}</h3>
             <a href="#">
-              <span class="material-icons agent-mini-color-gray">person</span>
+              <AccountCogIco/>
             </a>
           </div>
           <hr />
@@ -54,6 +54,7 @@
 import { mapState, mapGetters } from 'vuex'
 import AgentForm from '@/components/AgentForm.vue'
 import AgentConfirmation from '@/components/AgentConfirmation.vue'
+import AccountCogIco from '@/components/AccountCogIco.vue'
 
 export default {
   name: 'AgentsList',
@@ -105,7 +106,8 @@ export default {
   },
   components: {
     AgentForm,
-    AgentConfirmation
+    AgentConfirmation,
+    AccountCogIco
   }
 }
 </script>
@@ -209,5 +211,9 @@ input[type="checkbox"]:checked + label:after {
 
 input[type="checkbox"] {
   display: none;
+}
+
+div.card-body a svg{
+    fill: #B3B3B3;
 }
 </style>

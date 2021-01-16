@@ -17,7 +17,7 @@
         </div>
         <div class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
           <span style="background:transparent linear-gradient(135deg, #03dced 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box;" class="info-box-icon bg-info elevation-1">
-            <span class="material-icons homerigthsidebar-infobox-icon">track_changes</span>
+            <BullseyeArrowIco/>
           </span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">My target
@@ -34,7 +34,7 @@
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
         <div class="info-box homerigthsidebar-infobox rounded-corners homerigthsidebar-targets-spaces">
-          <span style="background-color: #9a25b6 !important;" class="info-box-icon bg-info elevation-1"><span class="material-icons homerigthsidebar-infobox-icon">track_changes</span></span>
+          <span style="background-color: #9a25b6 !important;" class="info-box-icon bg-info elevation-1"><BullseyeArrowIco/></span>
           <div class="info-box-content">
             <span class="info-box-text domain-names-target">My target
               <span class="material-icons float-right vert">more_vert</span></span>
@@ -44,7 +44,7 @@
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
         <div class="info-box homerigthsidebar-infobox rounded-corners homerigthsidebar-targets-spaces">
-          <span style="background: transparent linear-gradient(160deg, #F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box;" class="info-box-icon bg-info elevation-1"><span class="material-icons homerigthsidebar-infobox-icon">track_changes</span></span>
+          <span style="background: transparent linear-gradient(160deg, #F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box;" class="info-box-icon bg-info elevation-1"><BullseyeArrowIco/></span>
           <div class="info-box-content">
             <span class="info-box-text domain-names-target">My target<span class="material-icons float-right vert">more_vert</span></span>
             <span class="domain-names-list">
@@ -53,7 +53,7 @@
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
         <div class="info-box homerigthsidebar-infobox rounded-corners homerigthsidebar-targets-spaces">
-          <span style="background-color: #f36e1c !important;" class="info-box-icon bg-info elevation-1"><span class="material-icons homerigthsidebar-infobox-icon">track_changes</span></span>
+          <span style="background-color: #f36e1c !important;" class="info-box-icon bg-info elevation-1"><BullseyeArrowIco/></span>
           <div class="info-box-content">
             <span class="info-box-text domain-names-target">My target<span class="material-icons float-right vert">more_vert</span></span>
             <span class="domain-names-list">
@@ -63,7 +63,7 @@
         </div><!-- /.info-box -->
                 <div class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
           <span style="background:transparent linear-gradient(135deg, #03dced 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box;" class="info-box-icon bg-info elevation-1">
-            <span class="material-icons homerigthsidebar-infobox-icon">track_changes</span>
+            <BullseyeArrowIco/>
           </span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">My target
@@ -103,8 +103,12 @@
     </div>
 </template>
 <script>
+import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 export default {
-  name: 'HomeRigthSidebar'
+  name: 'HomeRigthSidebar',
+  components: {
+    BullseyeArrowIco
+  }
 }
 </script>
 <style scoped>
@@ -204,5 +208,4 @@ display: none;
     max-width: 16.666667%;
 }
 }
-
 </style>
