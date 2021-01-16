@@ -15,7 +15,7 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-          <a class="nav-link pos " v-show= "check" href="#"  data-toggle="modal"  data-target="#confirmation-modald">Delete Agents</a>
+          <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents">Delete Agents</a>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -125,7 +125,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-            <a class="nav-link pos " v-show= "check" href="#"  data-toggle="modal"  data-target="#confirmation-modald">Delete Agents</a>
+            <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents">Delete Agents</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -307,6 +307,7 @@ import UninstallOnDebug from '@/components/UninstallOnDebug'
 import Toast from 'primevue/toast'
 import OverlayPanel from 'primevue/overlaypanel'
 import ConfirmDeleteList from '@/components/ConfirmDeleteList.vue'
+import jQuery from 'jquery'
 export default {
   name: 'NavBarTwo',
   data: function () {
@@ -394,6 +395,13 @@ export default {
     toggle (event) {
       this.optionName = event.currentTarget.getAttribute('data-agent')
       this.$refs.op.toggle(event)
+    },
+    onBashRemoveAgents () {
+      if (this.$store.state.agentIdList.length > 0) {
+        jQuery('#confirmation-modald').modal()
+      } else {
+        return false
+      }
     }
   }
 }
