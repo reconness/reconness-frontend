@@ -4,7 +4,7 @@
           <input type="checkbox" :id="id+1" name="checkitem" ><label class="float-right" :for="id+1" v-show= check @click="addListAgentId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="info-padding">
         <div style="margin-top: 0.2rem;" class="info-box">
-          <span class="rounded-corners info-box-icon" :style ="{background:background}"><span class="material-icons agent-mini-color-gray">person</span></span>
+          <span class="rounded-corners info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
             <div class="info-box-content">
                 <span class="info-box-text agent-mini-agent-name">{{ name }}</span>
                 <nav class="nav">
@@ -144,14 +144,22 @@ input[type="checkbox"] {
     position: relative;
     width: 100%;
 }
+
+div.agent-mini-main-container svg {
+    fill: #B3B3B3;
+    width: 28px;
+    height: 28px;
+}
 </style>
 <script>
 import AgentConfirmation from '@/components/AgentConfirmation.vue'
 import { mapState } from 'vuex'
+import AccountCogIco from '@/components/AccountCogIco.vue'
 export default {
   name: 'AgentMiniView',
   components: {
-    AgentConfirmation
+    AgentConfirmation,
+    AccountCogIco
   },
   props: {
     name: String,
