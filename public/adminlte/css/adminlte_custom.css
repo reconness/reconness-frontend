@@ -644,3 +644,9 @@ font-weight: 600;
   width: 30px;
   height: 30px;
 }
+
+div.right-sidebar div.info-box span.info-box-icon svg{
+  fill: #FFFFFF;
+  width: 32px;
+  height: 32px;
+}

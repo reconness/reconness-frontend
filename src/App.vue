@@ -67,9 +67,8 @@
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <!-- <i class="nav-icon fas fa-th"></i> -->
-                <span class="material-icons">track_changes</span>
-                <p>
+                <BullseyeArrowIco/>
+                <p style="vertical-align: 0px;">
                   Targets
                 </p>
               </a>
@@ -126,6 +125,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 export default {
   name: 'App',
   data: function () {
@@ -138,6 +138,9 @@ export default {
       location: 'Home',
       goAgent: false
     }
+  },
+  components: {
+    BullseyeArrowIco
   },
   computed: {
     ...mapState(['viewloc', 'styleAgentState'])
@@ -271,4 +274,9 @@ form .input-group {
   pointer-events: none;
   color:#000;
 }
+
+div.sidebar nav a.nav-link svg {
+  margin-right: 15px;
+}
+
 </style>

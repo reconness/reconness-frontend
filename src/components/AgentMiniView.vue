@@ -3,8 +3,8 @@
         <div class="initial-info-box agent-mini-main-container rounded-corners">
           <input type="checkbox" :id="id+1" name="checkitem" ><label class="float-right" :for="id+1" v-show= check @click="addListAgentId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="info-padding">
-        <div class="info-box">
-          <span class="rounded-corners info-box-icon" :style ="{background:background}"><span class="material-icons agent-mini-color-gray">person</span></span>
+        <div style="margin-top: 0.2rem;" class="info-box">
+          <span class="rounded-corners info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
             <div class="info-box-content">
                 <span class="info-box-text agent-mini-agent-name">{{ name }}</span>
                 <nav class="nav">
@@ -92,6 +92,9 @@ input[type="checkbox"] + label:before {
   border: 2px solid #ccc;
   background: #fff;
   border-radius: .7rem;
+  position: absolute;
+  right: 0rem;
+  z-index: 2;
 }
 input[type="checkbox"]:checked + label:before {
   border-color: #00B1FF;
@@ -108,6 +111,9 @@ input[type="checkbox"]:checked + label:after {
     border-top: 0;
     margin-top: .6em;
     transform: rotate(-55deg);
+    position: absolute;
+    right: 1.6rem;
+    z-index: 2;
 }
 
 input[type="checkbox"] {
@@ -138,14 +144,22 @@ input[type="checkbox"] {
     position: relative;
     width: 100%;
 }
+
+div.agent-mini-main-container svg {
+    fill: #B3B3B3;
+    width: 28px;
+    height: 28px;
+}
 </style>
 <script>
 import AgentConfirmation from '@/components/AgentConfirmation.vue'
 import { mapState } from 'vuex'
+import AccountCogIco from '@/components/AccountCogIco.vue'
 export default {
   name: 'AgentMiniView',
   components: {
-    AgentConfirmation
+    AgentConfirmation,
+    AccountCogIco
   },
   props: {
     name: String,
