@@ -27,7 +27,7 @@
                             <span :class="{invalid: $v.agent.name.$errors.length}">The field agent is required</span>
                         </div> -->
                         <div class="col-12">
-                            <div class="d-flex flex-row justify-content-end">
+                            <div class="d-flex flex-row justify-content-end file-import-container">
                             <span style="text-align: right; opacity: 1; font-size: 14px;" class="mr-2">
                             Add
                             <br>
@@ -35,8 +35,9 @@
                             </span>
                             <input :disabled="$store.state.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
                             <label for="uploadimage">
-<span type="file"  style="opacity: 1; color: #B3B3B3; font-size: 50px;" class="material-icons">
-                            note</span>
+<!-- <span type="file"  style="opacity: 1; color: #B3B3B3; font-size: 50px;" class="material-icons">
+                            note</span> -->
+                            <FileCodeIco/>
 
                             </label>
                         </div><!-- /.d-flex -->
@@ -365,6 +366,7 @@ import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/AccountCogIco.vue'
+import FileCodeIco from '@/components//FileCodeIco.vue'
 export default {
   methods: {
     setBlueColor: function () {
@@ -526,7 +528,8 @@ export default {
   },
   components: {
     VAceEditor,
-    AccountCogIco
+    AccountCogIco,
+    FileCodeIco
     // AgentConfirmation
     // ColorPicker
   },
@@ -586,6 +589,13 @@ input[type="file"]{
 
 div.agent-containers div.agentform-default-color-box svg {
   fill: #B3B3B3;
+}
+
+div.file-import-container svg {
+  opacity: 1;
+  fill: #B3B3B3;
+  width: 50px;
+  height: 50px;
 }
 
 label[for='uploadimage']{
