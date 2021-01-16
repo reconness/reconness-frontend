@@ -70,7 +70,7 @@
                                 <div class="card-body link-color">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title postal-title">{{agent.name}}</h3>
-                                    <span v-if="!agent.image" class="material-icons agent-mini-color-gray">person</span>
+                                    <AccountCogIco v-if="!agent.image"/>
                                     <img v-if="agent.image" class="logo-image" :src="agent.image">
                                 </div>
                                 <hr />
@@ -364,6 +364,7 @@
 import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
+import AccountCogIco from '@/components/AccountCogIco.vue'
 export default {
   methods: {
     setBlueColor: function () {
@@ -524,7 +525,8 @@ export default {
     }
   },
   components: {
-    VAceEditor
+    VAceEditor,
+    AccountCogIco
     // AgentConfirmation
     // ColorPicker
   },
@@ -580,6 +582,10 @@ input[type="file"]{
   overflow:hidden;
   position:absolute;
   z-index: -1;
+}
+
+div.agent-containers div.agentform-default-color-box svg {
+  fill: #B3B3B3;
 }
 
 label[for='uploadimage']{
