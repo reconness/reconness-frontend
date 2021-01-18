@@ -50,10 +50,9 @@
                             <div class="col-lg-6">
                               <div class="form-group has-search">
                                 <span class="material-icons search-icon form-control-feddback">search</span>
-                                <input class="form-control" type="search" placeholder="URL" v-model="resource.url" @blur="$v.resource.url.$touch();">
+                                <input class="form-control" type="search" placeholder="URL" v-model="$v.resource.url.$model">
                               </div>
-                              <!-- <p v-if="$v.resource.url.required.$invalid" :class="{invalid: $v.resource.url.$invalid}" style="margin-bottom: 0px;">The field URL is required</p>
-                              <p v-if="$v.resource.url.url.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p> -->
+                              <p v-if="$v.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p>
                             </div>
                             <div class="col-lg-6">
                               <div class="row">
@@ -62,7 +61,6 @@
                                   <Chips v-model="resource.categories" placeholder="Categories"/>
                                 </div>
                                 <div class="col-lg-5">
-                                  <!-- <button style="height: 40px;" type="submit" :disabled="$v.resource.url.$invalid || resource.url===''" class="btn button-clolour rounded btn-block" @click="addReference">Add</button>                                </div> -->
                                   <button style="height: 40px;" type="submit" class="btn button-clolour rounded btn-block" @click="addReference">Add</button></div>
                                 </div><!--./col-lg-5-->
                               </div><!--./row -->
@@ -106,7 +104,7 @@ import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vu
 import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
 import SimpleConfirmation from '@/components/SimpleConfirmation.vue'
 import { mapState } from 'vuex'
-import { required, url } from '@vuelidate/validators'
+import { url } from '@vuelidate/validators'
 import Chips from 'primevue/chips'
 export default {
   name: 'Home',
@@ -126,12 +124,15 @@ export default {
       this.$store.commit('setSelectedResource', selectedId)
     },
     addReference () {
-      this.$store.commit('addResource', {
-        url: this.resource.url,
-        categories: this.resource.categories,
-        id: this.resources.length + 1
-      })
-      this.resetResource()
+      this.$v.$touch()
+      if (!this.$v.$error && this.$v.resource.url.$model !== '') {
+        this.$store.commit('addResource', {
+          url: this.$v.resource.url.$model,
+          categories: this.resource.categories,
+          id: this.resources.length + 1
+        })
+        this.resetResource()
+      }
     },
     resetResource: function () {
       this.resource = {
@@ -139,6 +140,7 @@ export default {
         categories: [],
         id: -1
       }
+      this.$v.resource.url.$model = ''
       this.$v.$reset()
     }
   },
@@ -158,7 +160,7 @@ export default {
   },
   validations: {
     resource: {
-      url: { required, url }
+      url: { url }
     }
   }
 }
