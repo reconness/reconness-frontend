@@ -223,7 +223,7 @@
                   <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
                   <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
                   <!-- <button v-if="!this.$store.state.fromDetailsLink" :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button> -->
-                  <button v-if="!this.$store.state.fromDetailsLink" type="button" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -401,7 +401,6 @@ export default {
     },
     close () {
       this.resetAgentForm()
-      // this.$v.$reset()
       this.editable = false
       this.$store.commit('setIdAgent', -1)
     },
@@ -610,6 +609,10 @@ export default {
     loadSelectedAgent () {
       const id = this.$store.getters.idAgent
       return this.$store.getters.getAgentById(parseInt(id))
+    },
+    isFormValid () {
+      console.log(!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command)
+      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
     }
   },
   watch: {
