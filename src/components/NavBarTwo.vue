@@ -14,6 +14,9 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
+          <a class="nav-link pos " v-show= "check" href="#" @click="close()">Cancel</a>
+        </li>
+        <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
           <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents">Delete Agents</a>
         </li>
@@ -402,6 +405,9 @@ export default {
       } else {
         return false
       }
+    },
+    close () {
+      this.$store.commit('cancelIdAgent')
     }
   }
 }
