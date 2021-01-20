@@ -19,13 +19,13 @@
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
                             <!-- <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">:value="loadFormOnEdition" -->
-                            <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"><!--:value="loadFormOnEdition"-->
+                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"><!--:value="loadFormOnEdition"-->
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
-                        <!-- <div class="col-12" v-if="$v.agent.name.$errors.length">
-                            <span :class="{invalid: $v.agent.name.$errors.length}">The field agent is required</span>
-                        </div> -->
+                        <div class="col-12" v-if="validators.blank.name">
+                            <span :class="{invalid: validators.blank.name}">The field agent is required</span>
+                        </div>
                         <div class="col-12">
                             <div class="d-flex flex-row justify-content-end file-import-container">
                             <span style="text-align: right; opacity: 1; font-size: 14px;" class="mr-2">
@@ -35,8 +35,6 @@
                             </span>
                             <input :disabled="$store.state.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
                             <label for="uploadimage">
-<!-- <span type="file"  style="opacity: 1; color: #B3B3B3; font-size: 50px;" class="material-icons">
-                            note</span> -->
                             <FileCodeIco/>
 
                             </label>
@@ -44,24 +42,24 @@
                         </div>
                         <div class="col-12">
                           <!-- <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @blur="$v.agent.repository.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository"> -->
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
                         </div><!-- /.col-12 -->
-                        <!-- <div class="col-12" v-if="$v.agent.repository.$errors.length">
-                            <span :class="{invalid: $v.agent.repository.$errors.length}">The field repository is required</span>
-                        </div> -->
+                        <div class="col-12" v-if="validators.blank.repository">
+                            <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
+                        </div>
                         <div class="col-12">
                           <!-- <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @blur="$v.agent.target.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target"> -->
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
                         </div><!-- /.col-12 -->
-                        <!-- <div class="col-12" v-if="$v.agent.target.$errors.length">
-                          <span :class="{invalid: $v.agent.target.$errors.length}">The field target is required</span>
-                        </div> -->
-                        <!-- <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.command" @blur="$v.agent.command.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
-                        </div> -->
-                        <!-- <div class="col-12" v-if="$v.agent.command.$errors.length">
-                          <span :class="{invalid: $v.agent.command.$errors.length}">The field command is required</span>
-                        </div> -->
+                        <div class="col-12" v-if="validators.blank.target">
+                          <span :class="{invalid: validators.blank.target}">The field target is required</span>
+                        </div>
+                        <div class="col-12">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
+                        </div>
+                        <div class="col-12" v-if="validators.blank.command">
+                          <span :class="{invalid: validators.blank.command}">The field command is required</span>
+                        </div>
                         <div class="col-12">
                         <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" style="margin-bottom: 1rem;" class="blue-text float-right">Learn more</a>
                         </div><!-- /.col-12 -->
@@ -225,7 +223,7 @@
                   <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
                   <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
                   <!-- <button v-if="!this.$store.state.fromDetailsLink" :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button> -->
-                  <button v-if="!this.$store.state.fromDetailsLink" data-dismiss="modal" type="button" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button v-if="!this.$store.state.fromDetailsLink" type="button" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -385,20 +383,21 @@ export default {
       this.agent.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
     },
     addAgent () {
-      if (this.editable) {
-        this.agent.id = parseInt(this.$store.getters.idAgent)
-        this.$store.commit('updateAgent', this.agent)
+      this.enableValidationMessages()
+      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command) {
+        if (this.editable) {
+          this.agent.id = parseInt(this.$store.getters.idAgent)
+          this.$store.commit('updateAgent', this.agent)
+          this.editable = false
+          this.$store.commit('setIdAgent', -1)
+        } else {
+          this.agent.id = this.$store.state.agentListStore.length + 1
+          this.$store.commit('addAgent', this.agent)
+        }
+        this.resetAgentForm()
+        jQuery('#exampleModalCenter').modal('hide')
         this.editable = false
-        this.$store.commit('setIdAgent', -1)
-      } else {
-        this.agent.id = this.$store.state.agentListStore.length + 1
-        this.$store.commit('addAgent', this.agent)
       }
-      this.resetAgentForm()
-      // this.$v.$reset()
-      jQuery('#exampleModalCenter').modal('hide')
-      this.editable = false
-      // this.$v.$reset()
     },
     close () {
       this.resetAgentForm()
@@ -408,9 +407,64 @@ export default {
     },
     resetAgentForm () {
       this.agent = {
-        background: '#8929e0',
-        script: ''
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        repository: '',
+        target: '',
+        command: '',
+        isTargetType: false,
+        isRootDomainType: false,
+        isSubDomainType: false,
+        isAliveTrigger: false,
+        isHttpOpenTrigger: false,
+        category: '',
+        script: '',
+        id: -1,
+        creationDate: new Date().toString(),
+        image: ''
       }
+      this.validators = {
+        blank: {
+          name: false,
+          repository: false,
+          target: false,
+          command: false
+        }
+      }
+    },
+    enableValidationMessageName () {
+      if (this.agent.name === '') {
+        this.validators.blank.name = true
+      } else {
+        this.validators.blank.name = false
+      }
+    },
+    enableValidationMessageRepository () {
+      if (this.agent.repository === '') {
+        this.validators.blank.repository = true
+      } else {
+        this.validators.blank.repository = false
+      }
+    },
+    enableValidationMessageTarget () {
+      if (this.agent.target === '') {
+        this.validators.blank.target = true
+      } else {
+        this.validators.blank.target = false
+      }
+    },
+    enableValidationMessageCommand () {
+      if (this.agent.command === '') {
+        this.validators.blank.command = true
+      } else {
+        this.validators.blank.command = false
+      }
+    },
+    enableValidationMessages () {
+      this.enableValidationMessageName()
+      this.enableValidationMessageTarget()
+      this.enableValidationMessageRepository()
+      this.enableValidationMessageCommand()
     },
     enableBottomSection () {
       this.isVisibleBottomSection = true
@@ -508,7 +562,15 @@ export default {
       arrow_down: true,
       arrow_up: false,
       isPencilVisible: false,
-      isPencilVisibleAndClick: false
+      isPencilVisibleAndClick: false,
+      validators: {
+        blank: {
+          name: false,
+          repository: false,
+          target: false,
+          command: false
+        }
+      }
     }
   },
   validations: {
