@@ -1,14 +1,14 @@
 <template>
     <div class="col-12 col-sm-4 col-xl-3 col-lgg-5" @mouseover="hoverCard( {id} )" @mouseout="hoverCard(-1)">
         <div class="initial-info-box agent-mini-main-container rounded-corners">
-          <input type="checkbox" :id="id+1" name="checkitem" ><label class="float-right" :for="id+1" v-show= check @click="addListAgentId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
+          <input type="checkbox" :id="id+1" name="checkitem"  :checked="isChecked(id)" ><label class="float-right" :for="id+1" v-show= check @click="addListAgentId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="info-padding">
         <div style="margin-top: 0.2rem;" class="info-box">
           <span class="rounded-corners info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
             <div class="info-box-content">
                 <span class="info-box-text agent-mini-agent-name">{{ name }}</span>
                 <nav class="nav">
-                    <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" data-toggle="modal" @click="setAgentId" :data-id="id" data-target="#confirmation-modal">Delete</a>
+                    <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setAgentId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Delete</a>
                     <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setDetailsLink" href="#" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Details</a>
                     <a class="nav-link agent-mini-agent-edit agent-mini-color-gray" href="#" @click="onEdit" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Edit</a>
                 </nav>
@@ -161,15 +161,38 @@ export default {
     AgentConfirmation,
     AccountCogIco
   },
+  data: function () {
+    return {
+      checkSelected: false,
+      checkDeleted: -1
+    }
+  },
   props: {
     name: String,
     background: String,
     id: Number
   },
   computed: {
-    ...mapState(['check'])
+    ...mapState(['check', 'agentIdList'])
   },
   methods: {
+    isChecked (itemID) {
+      if (this.checkSelected === false) {
+        if (this.agentIdList.find(agent => agent.id === itemID)) {
+          if (this.checkDeleted === itemID) {
+            return false
+          } else {
+            return true
+          }
+        } else {
+          if (this.checkDeleted === itemID) {
+            return true
+          } else {
+            return false
+          }
+        }
+      }
+    },
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },
@@ -193,9 +216,18 @@ export default {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       const selectedAgentName = e.currentTarget.getAttribute('data-name')
       if (document.getElementById(selectedId + 1).checked === false) {
+        if (this.agentIdList.length !== 0 && this.checkSelected === false) {
+          this.checkSelected = false
+          this.checkDeleted = selectedId
+        } else {
+          this.checkSelected = true
+        }
         this.$store.commit('addIdAgent', { id: selectedId, name: selectedAgentName })
       } else {
         this.$store.commit('removebyIdAgent', selectedId)
+        if (this.checkSelected === false) {
+          this.checkDeleted = selectedId
+        }
       }
     }
   }
