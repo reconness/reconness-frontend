@@ -30,9 +30,13 @@
                   <div class="col-lg-12">
                     <p class="float-right bold-text separator-content inline-material-icons">Last week resumee<span class="material-icons search-icon blue-text">keyboard_arrow_right</span></p>
                   </div>
+                  <div class="col-12 col-lg-4 pr-4">
                   <TargetsHighestInteraction :background="'#03dced'"></TargetsHighestInteraction>
+                  </div>
                   <DaysHighestInteraction></DaysHighestInteraction>
+                  <div class="col-12 col-lg-4 pl-4">
                   <TargetsHighestInteraction :background="'rgb(134, 98, 202)'"></TargetsHighestInteraction>
+                  </div>
                   </div></div>
                   <div class="col-lg-12">
                     <span class="refandres">References and resources</span><span> ></span>
@@ -245,7 +249,21 @@ blockquote {
 }
 
 @media (min-width: 2560px) {
-.container, .container-lg, .container-md, .container-sm, .container-xl {
-    max-width: 2000px;
-}}
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+      max-width: 2000px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pr-4 {padding-right: 1rem!important;}
+  .pl-4 {padding-left: 1rem!important;}
+}
+@media (min-width: 1440px) {
+  .pr-4 {padding-right: 2rem!important;}
+  .pl-4 {padding-left: 2rem!important;}
+}
+@media (min-width: 2560px) {
+  .pr-4 {padding-right: 3rem!important;}
+  .pl-4 {padding-left: 3rem!important;}
+}
 </style>

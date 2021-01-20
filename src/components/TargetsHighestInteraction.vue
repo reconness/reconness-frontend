@@ -1,5 +1,4 @@
 <template>
-    <div class="col-12 col-lg-4 col-xll-3">
         <div :style ="{backgroundColor:background}" style="border-radius: 25px; padding: 25px; box-shadow: 13px 31px 41px #0C1F6A3B; margin-bottom: 1rem;">
             <div class="row">
             <div class="col-9">
@@ -80,7 +79,6 @@
             </div><!-- /.row -->
             </div><!-- /.progress-group -->
         </div>
-    </div>
 </template>
 
 <script>
