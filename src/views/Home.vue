@@ -30,9 +30,13 @@
                   <div class="col-lg-12">
                     <p class="float-right bold-text separator-content inline-material-icons">Last week resumee<span class="material-icons search-icon blue-text">keyboard_arrow_right</span></p>
                   </div>
+                  <div class="col-12 col-lg-4 pr-4">
                   <TargetsHighestInteraction :background="'#03dced'"></TargetsHighestInteraction>
+                  </div>
                   <DaysHighestInteraction></DaysHighestInteraction>
+                  <div class="col-12 col-lg-4 pl-4">
                   <TargetsHighestInteraction :background="'rgb(134, 98, 202)'"></TargetsHighestInteraction>
+                  </div>
                   </div></div>
                   <div class="col-lg-12">
                     <span class="refandres">References and resources</span><span> ></span>
@@ -50,10 +54,9 @@
                             <div class="col-lg-6">
                               <div class="form-group has-search">
                                 <span class="material-icons search-icon form-control-feddback">search</span>
-                                <input class="form-control" type="search" placeholder="URL" v-model="resource.url" @blur="$v.resource.url.$touch();">
+                                <input class="form-control" type="search" placeholder="URL" v-model="$v.resource.url.$model">
                               </div>
-                              <!-- <p v-if="$v.resource.url.required.$invalid" :class="{invalid: $v.resource.url.$invalid}" style="margin-bottom: 0px;">The field URL is required</p>
-                              <p v-if="$v.resource.url.url.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p> -->
+                              <p v-if="$v.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p>
                             </div>
                             <div class="col-lg-6">
                               <div class="row">
@@ -62,7 +65,6 @@
                                   <Chips v-model="resource.categories" placeholder="Categories"/>
                                 </div>
                                 <div class="col-lg-5">
-                                  <!-- <button style="height: 40px;" type="submit" :disabled="$v.resource.url.$invalid || resource.url===''" class="btn button-clolour rounded btn-block" @click="addReference">Add</button>                                </div> -->
                                   <button style="height: 40px;" type="submit" class="btn button-clolour rounded btn-block" @click="addReference">Add</button></div>
                                 </div><!--./col-lg-5-->
                               </div><!--./row -->
@@ -106,7 +108,7 @@ import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vu
 import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
 import SimpleConfirmation from '@/components/SimpleConfirmation.vue'
 import { mapState } from 'vuex'
-import { required, url } from '@vuelidate/validators'
+import { url } from '@vuelidate/validators'
 import Chips from 'primevue/chips'
 export default {
   name: 'Home',
@@ -126,12 +128,15 @@ export default {
       this.$store.commit('setSelectedResource', selectedId)
     },
     addReference () {
-      this.$store.commit('addResource', {
-        url: this.resource.url,
-        categories: this.resource.categories,
-        id: this.resources.length + 1
-      })
-      this.resetResource()
+      this.$v.$touch()
+      if (!this.$v.$error && this.$v.resource.url.$model !== '') {
+        this.$store.commit('addResource', {
+          url: this.$v.resource.url.$model,
+          categories: this.resource.categories,
+          id: this.resources.length + 1
+        })
+        this.resetResource()
+      }
     },
     resetResource: function () {
       this.resource = {
@@ -139,6 +144,7 @@ export default {
         categories: [],
         id: -1
       }
+      this.$v.resource.url.$model = ''
       this.$v.$reset()
     }
   },
@@ -158,7 +164,7 @@ export default {
   },
   validations: {
     resource: {
-      url: { required, url }
+      url: { url }
     }
   }
 }
@@ -243,7 +249,21 @@ blockquote {
 }
 
 @media (min-width: 2560px) {
-.container, .container-lg, .container-md, .container-sm, .container-xl {
-    max-width: 2000px;
-}}
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+      max-width: 2000px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pr-4 {padding-right: 1rem!important;}
+  .pl-4 {padding-left: 1rem!important;}
+}
+@media (min-width: 1440px) {
+  .pr-4 {padding-right: 2rem!important;}
+  .pl-4 {padding-left: 2rem!important;}
+}
+@media (min-width: 2560px) {
+  .pr-4 {padding-right: 3rem!important;}
+  .pl-4 {padding-left: 3rem!important;}
+}
 </style>
