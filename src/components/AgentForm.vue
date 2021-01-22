@@ -1,5 +1,6 @@
 <template>
     <div class="col-12">
+        <Toast :baseZIndex="200"/>
         <form>
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -365,6 +366,7 @@ import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/AccountCogIco.vue'
 import FileCodeIco from '@/components//FileCodeIco.vue'
+import Toast from 'primevue/toast'
 export default {
   methods: {
     setBlueColor: function () {
@@ -390,9 +392,11 @@ export default {
           this.$store.commit('updateAgent', this.agent)
           this.editable = false
           this.$store.commit('setIdAgent', -1)
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
         } else {
           this.agent.id = this.$store.state.agentListStore.length + 1
           this.$store.commit('addAgent', this.agent)
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
         }
         this.resetAgentForm()
         jQuery('#exampleModalCenter').modal('hide')
@@ -590,7 +594,8 @@ export default {
   components: {
     VAceEditor,
     AccountCogIco,
-    FileCodeIco
+    FileCodeIco,
+    Toast
     // AgentConfirmation
     // ColorPicker
   },
