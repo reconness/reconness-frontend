@@ -29,7 +29,7 @@ export default {
     installer () {
       const success = Math.random() < 0.5
       if (success) {
-        this.$store.commit('installUnninstallMarquetOption', this.installerOption)
+        this.$store.commit('installUninstallAgent', this.installerOption)
         this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent was uninstalled', life: 3000 })
       } else {
         this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error ocurred during uninstallation', life: 3000 })

@@ -22,17 +22,19 @@ export default createStore({
     systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74'],
     fromDetailsLink: false,
     idResource: -1,
-    isSubfinderInstalled: false,
-    isAmassInstalled: false,
-    isGoBusterMsInstalled: false,
-    isSubkisteDInstalled: false,
-    isForeingBotInstalled: false,
     check: false,
     agentIdList: [],
     styleList: '1.25rem',
     viewloc: 'Home',
     styleAgentState: false,
-    colorDelete: '#000000'
+    colorDelete: '#000000',
+    agentsInstallers: [
+      { name: 'Subfinder', description: 'Breve descripcion del agente Subfinder', id: 1, installed: true },
+      { name: 'Amass', description: 'Breve descripcion del agente Amass', id: 2, installed: false },
+      { name: 'GoBusterMs', description: 'Breve descripcion del agente GoBusterMs', id: 3, installed: false },
+      { name: 'SubkisteD', description: 'Breve descripcion del agente SubkisteD', id: 4, installed: false },
+      { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: true }
+    ]
   },
   mutations: {
     addAgent (state, agent) {
@@ -91,19 +93,6 @@ export default createStore({
         state.resources.splice(index, 1)
       }
     },
-    installUnninstallMarquetOption (state, option) {
-      if (option === 1) {
-        state.isSubfinderInstalled = !state.isSubfinderInstalled
-      } else if (option === 2) {
-        state.isAmassInstalled = !state.isAmassInstalled
-      } else if (option === 3) {
-        state.isGoBusterMsInstalled = !state.isGoBusterMsInstalled
-      } else if (option === 4) {
-        state.isSubkisteDInstalled = !state.isSubkisteDInstalled
-      } else {
-        state.isForeingBotInstalled = !state.isForeingBotInstalled
-      }
-    },
     cancelIdAgent (state) {
       state.agentIdList = []
       state.check = !state.check
@@ -126,6 +115,12 @@ export default createStore({
         state.styleAgentState = false
       }
       state.viewloc = namePath
+    },
+    installUninstallAgent (state, idAgent) {
+      const index = state.agentListStore.findIndex(agent => agent.id === idAgent)
+      if (index !== -1) {
+        state.agentsInstallers[index].installed = !state.agentsInstallers[index].installed
+      }
     }
   },
   actions: {

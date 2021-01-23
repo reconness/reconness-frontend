@@ -180,7 +180,29 @@
             <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
           </div>
         </div>
-        <div class="sidebar-list">
+
+        <div class="sidebar-list" v-for="agentInstaller of agentsInstallers" :key="agentInstaller.id">
+          <dl class="row">
+            <dt class="col-3">
+              <p>{{  agentInstaller.name  }}</p>
+            </dt>
+            <dd class="col-9">
+              <dl class="row">
+                <dt class="col-7 reset-col">
+                  <em>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" :data-agent="agentInstaller.name" :data-description="agentInstaller.description">Details</a>
+                  </em>
+                </dt>
+                <dd class="col-5 reset-col">
+                  <a v-if="!agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = 'Subfinder'">Install</a>
+                  <a v-if="agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = 'Subfinder'">Uninstall</a>
+                </dd>
+              </dl>
+            </dd>
+          </dl>
+        </div>
+
+        <!-- <div class="sidebar-list">
           <dl class="row">
             <dt class="col-3">
               <p>Subfinder</p>
@@ -283,10 +305,11 @@
               </dl>
             </dd>
           </dl>
-        </div>
+        </div> -->
         <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
-          <h5><b>{{optionName}}</b></h5>
-          <p>Breve descripcion del agente</p>
+          <h5><b>{{ optionName }}</b></h5>
+          <!-- <p>Breve descripcion del agente</p> -->
+          <p>{{ selectedAgentDescription }}</p>
         </OverlayPanel>
       </aside>
     </div>
@@ -319,11 +342,12 @@ export default {
       active_arrow_down: true,
       active_arrow_up: false,
       optionNumber: -1,
-      optionName: ''
+      optionName: '',
+      selectedAgentDescription: ''
     }
   },
   computed: {
-    ...mapState(['agentListStore', 'check', 'colorDelete']),
+    ...mapState(['agentListStore', 'check', 'colorDelete', 'agentsInstallers']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
@@ -396,6 +420,8 @@ export default {
       return this.agentListStore.sort(compare)
     },
     toggle (event) {
+      // console.log(event)
+      this.selectedAgentDescription = event.currentTarget.getAttribute('data-description')
       this.optionName = event.currentTarget.getAttribute('data-agent')
       this.$refs.op.toggle(event)
     },
