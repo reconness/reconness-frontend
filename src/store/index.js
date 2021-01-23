@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+// import target from '../modules/target'
 
 export default createStore({
   state: {
@@ -30,7 +31,8 @@ export default createStore({
     agentIdList: [],
     styleList: '1.25rem',
     viewloc: 'Home',
-    styleAgentState: false
+    styleAgentState: false,
+    colorDelete: '#000000'
   },
   mutations: {
     addAgent (state, agent) {
@@ -41,6 +43,9 @@ export default createStore({
     },
     addIdAgent (state, agent) {
       state.agentIdList.push(agent)
+      if (state.agentIdList.length === 1) {
+        state.colorDelete = '#ff4545'
+      }
     },
     updateAgent (state, agent) {
       const item = state.agentListStore.find(item => item.id === agent.id)
@@ -69,6 +74,7 @@ export default createStore({
       state.agentIdList = []
       state.check = false
       state.styleList = '1.25rem'
+      state.colorDelete = '#000000'
     },
     setDetailsLinks (state, isSelected) {
       state.fromDetailsLink = isSelected
@@ -102,11 +108,15 @@ export default createStore({
       state.agentIdList = []
       state.check = !state.check
       state.styleList = '1.25rem'
+      state.colorDelete = '#000000'
     },
     removebyIdAgent (state, id) {
       const index = state.agentIdList.findIndex(agent => agent.id === id)
       if (index !== -1) {
         state.agentIdList.splice(index, 1)
+        if (state.agentIdList.length === 0) {
+          state.colorDelete = '#000000'
+        }
       }
     },
     updateLocView (state, namePath) {
@@ -121,6 +131,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    // target
   },
   getters: {
     idAgent: state => {

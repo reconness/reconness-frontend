@@ -10,7 +10,7 @@
               </div>
               <div class="modal-body">
                   <!-- PARAMETIZABLE -->
-                  <p>Please, confirm the name of the Agent before delete it</p>
+                  <p>Please, confirm the name of the Agent {{selectedAgentName}} before delete it</p>
                   <input autofocus required v-model="nameTyped" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Agent Name">
               </div>
               <div class="modal-footer dialog-without-lines-footer">

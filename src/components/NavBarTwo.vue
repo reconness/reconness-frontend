@@ -18,7 +18,7 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-          <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents">Delete Agents</a>
+          <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveAgents">Delete Agents</a>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -128,7 +128,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-            <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents">Delete Agents</a>
+            <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -323,7 +323,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['agentListStore', 'check']),
+    ...mapState(['agentListStore', 'check', 'colorDelete']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
@@ -407,6 +407,11 @@ export default {
       }
     },
     close () {
+      var checkboxes = document.getElementsByName('checkitem')
+      for (var i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = false
+      }
+      this.nameTyped = ''
       this.$store.commit('cancelIdAgent')
     }
   }
