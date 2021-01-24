@@ -142,6 +142,12 @@ export default createStore({
         installedFrom: idInstaller
       }
       state.agentListStore.push(transformedAgent)
+    },
+    removeAgentFromInstaller (state, idInstaller) {
+      const index = state.agentListStore.findIndex(agent => agent.installedFrom === idInstaller)
+      if (index !== -1) {
+        state.agentListStore.splice(index, 1)
+      }
     }
   },
   actions: {
