@@ -194,118 +194,13 @@
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = 'Subfinder'">Install</a>
-                  <a v-if="agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = 'Subfinder'">Uninstall</a>
+                  <a v-if="!agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Install</a>
+                  <a v-if="agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Uninstall</a>
                 </dd>
               </dl>
             </dd>
           </dl>
         </div>
-
-        <!-- <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>Subfinder</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Subfinder">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Install</a>
-                  <a v-if="this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>Amass</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Amass">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Install</a>
-                  <a v-if="this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>GoBusterMs</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="GoBusterMs">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Install</a>
-                  <a v-if="this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>SubkisteD</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="SubkisteD">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Install</a>
-                  <a v-if="this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>ForeingBot</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="ForeingBot">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Install</a>
-                  <a v-if="this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div> -->
         <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
           <h5><b>{{ optionName }}</b></h5>
           <!-- <p>Breve descripcion del agente</p> -->
