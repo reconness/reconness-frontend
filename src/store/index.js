@@ -121,6 +121,27 @@ export default createStore({
       if (index !== -1) {
         state.agentsInstallers[index].installed = !state.agentsInstallers[index].installed
       }
+    },
+    addAgentFromInstaller (state, idInstaller) {
+      const installer = state.agentsInstallers.find(item => item.id === parseInt(idInstaller))
+      const transformedAgent = {
+        name: installer.name,
+        background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+        id: state.agentListStore.length + 1,
+        repository: 'installer-repository.com',
+        target: 'target-installer',
+        command: 'command-installer',
+        isTargetType: false,
+        isRootDomainType: false,
+        isSubDomainType: false,
+        isAliveTrigger: false,
+        isHttpOpenTrigger: false,
+        script: '',
+        image: '',
+        date: new Date().toLocaleDateString('es-Es'),
+        installedFrom: idInstaller
+      }
+      state.agentListStore.push(transformedAgent)
     }
   },
   actions: {

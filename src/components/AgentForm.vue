@@ -616,7 +616,6 @@ export default {
       return this.$store.getters.getAgentById(parseInt(id))
     },
     isFormValid () {
-      console.log(!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command)
       return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
     }
   },
