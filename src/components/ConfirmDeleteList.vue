@@ -1,6 +1,7 @@
 <template>
 <div class="row">
   <div class="col-12">
+    <Toast :baseZIndex="200"/>
     <div class="modal fade" id="confirmation-modald">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -29,6 +30,7 @@
 <script>
 import { mapState } from 'vuex'
 import jQuery from 'jquery'
+import Toast from 'primevue/toast'
 export default {
   data () {
     return {
@@ -36,9 +38,13 @@ export default {
       selectedAgentName: ''
     }
   },
+  components: {
+    Toast
+  },
   methods: {
     removeAgent: function () {
       this.$store.commit('removeAgents')
+      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents has been deleted successfully', life: 3000 })
       jQuery('#confirmation-modald').modal('hide')
       jQuery('#exampleModalCenter').modal('hide')
       this.nameTyped = ''
