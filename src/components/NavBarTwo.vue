@@ -9,6 +9,7 @@
             <span class="material-icons">control_point</span>
             <p class="float-right">New Agent</p>
           </a>
+          <a class="btn btn-sm btn-style btn-outline-primary ml-2" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
         </li>
       </ul>
       <!-- Right navbar links -->
@@ -127,8 +128,10 @@
             <i class="material-icons">more_vert</i>
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
+            <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a>
+            <div class="dropdown-divider" v-show= "check" ></div>
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-            <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a>
+            <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -177,7 +180,7 @@
             <!-- <i class="material-icons">local_mall</i> -->
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg>
             <h5>Marketplace</h5>
-            <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
+            <!-- <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a> -->
           </div>
         </div>
 
