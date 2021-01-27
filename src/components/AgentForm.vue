@@ -406,6 +406,7 @@ export default {
       this.resetAgentForm()
       this.editable = false
       this.$store.commit('setIdAgent', -1)
+      this.$store.commit('setDetailsLinks', false)
     },
     resetAgentForm () {
       this.agent = {
