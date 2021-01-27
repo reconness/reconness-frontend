@@ -1,5 +1,6 @@
 <template>
     <div class="col-12">
+        <Toast :baseZIndex="200"/>
         <form>
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -222,7 +223,6 @@
                 <div style="border-top: none;" class="modal-footer">
                   <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
                   <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <!-- <button v-if="!this.$store.state.fromDetailsLink" :disabled="isValid || $v.$errors.length" data-dismiss="modal" type="submit" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button> -->
                   <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
@@ -365,6 +365,7 @@ import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/AccountCogIco.vue'
 import FileCodeIco from '@/components//FileCodeIco.vue'
+import Toast from 'primevue/toast'
 export default {
   methods: {
     setBlueColor: function () {
@@ -390,9 +391,11 @@ export default {
           this.$store.commit('updateAgent', this.agent)
           this.editable = false
           this.$store.commit('setIdAgent', -1)
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
         } else {
           this.agent.id = this.$store.state.agentListStore.length + 1
           this.$store.commit('addAgent', this.agent)
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
         }
         this.resetAgentForm()
         jQuery('#exampleModalCenter').modal('hide')
@@ -403,6 +406,7 @@ export default {
       this.resetAgentForm()
       this.editable = false
       this.$store.commit('setIdAgent', -1)
+      this.$store.commit('setDetailsLinks', false)
     },
     resetAgentForm () {
       this.agent = {
@@ -590,7 +594,8 @@ export default {
   components: {
     VAceEditor,
     AccountCogIco,
-    FileCodeIco
+    FileCodeIco,
+    Toast
     // AgentConfirmation
     // ColorPicker
   },
@@ -611,7 +616,6 @@ export default {
       return this.$store.getters.getAgentById(parseInt(id))
     },
     isFormValid () {
-      console.log(!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command)
       return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
     }
   },

@@ -1,6 +1,7 @@
 <template>
 <div class="row">
   <div class="col-12">
+    <Toast :baseZIndex="200"/>
     <div class="modal fade" id="confirmation-modal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -10,7 +11,7 @@
               </div>
               <div class="modal-body">
                   <!-- PARAMETIZABLE -->
-                  <p>Please, confirm the name of the Agent before delete it</p>
+                  <p>Please, confirm the name of the Agent {{selectedAgentName}} before delete it</p>
                   <input autofocus required v-model="nameTyped" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Agent Name">
               </div>
               <div class="modal-footer dialog-without-lines-footer">
@@ -25,7 +26,11 @@
 </template>
 <script>
 import jQuery from 'jquery'
+import Toast from 'primevue/toast'
 export default {
+  components: {
+    Toast
+  },
   data () {
     return {
       nameTyped: '',
@@ -36,6 +41,7 @@ export default {
     removeAgent: function () {
       if (this.nameTyped === this.selectedAgentName) {
         this.$store.commit('removeAgent', this.nameTyped)
+        this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been deleted successfully', life: 3000 })
         this.nameTyped = ''
         jQuery('#confirmation-modal').modal('hide')
         jQuery('#exampleModalCenter').modal('hide')

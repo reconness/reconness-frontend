@@ -9,6 +9,7 @@
             <span class="material-icons">control_point</span>
             <p class="float-right">New Agent</p>
           </a>
+          <a class="btn btn-sm btn-style btn-outline-primary ml-2" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
         </li>
       </ul>
       <!-- Right navbar links -->
@@ -18,7 +19,7 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-          <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents">Delete Agents</a>
+          <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveAgents">Delete Agents</a>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -127,8 +128,10 @@
             <i class="material-icons">more_vert</i>
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
+            <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a>
+            <div class="dropdown-divider" v-show= "check" ></div>
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-            <a class="nav-link pos " v-show= "check" href="#" @click="onBashRemoveAgents">Delete Agents</a>
+            <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -177,116 +180,34 @@
             <!-- <i class="material-icons">local_mall</i> -->
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg>
             <h5>Marketplace</h5>
-            <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
+            <!-- <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a> -->
           </div>
         </div>
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>Subfinder</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Subfinder">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Install</a>
-                  <a v-if="this.$store.state.isSubfinderInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 1; this.optionName = 'Subfinder'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
 
-        <div class="sidebar-list">
+        <div class="sidebar-list" v-for="agentInstaller of agentsInstallers" :key="agentInstaller.id">
           <dl class="row">
             <dt class="col-3">
-              <p>Amass</p>
+              <p>{{  agentInstaller.name  }}</p>
             </dt>
             <dd class="col-9">
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="Amass">Details</a>
+                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" :data-agent="agentInstaller.name" :data-description="agentInstaller.description">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Install</a>
-                  <a v-if="this.$store.state.isAmassInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 2; this.optionName = 'Amass'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>GoBusterMs</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="GoBusterMs">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Install</a>
-                  <a v-if="this.$store.state.isGoBusterMsInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 3; this.optionName = 'GoBusterMs'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>SubkisteD</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="SubkisteD">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Install</a>
-                  <a v-if="this.$store.state.isSubkisteDInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 4; this.optionName = 'SubkisteD'">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
-        <div class="sidebar-list">
-          <dl class="row">
-            <dt class="col-3">
-              <p>ForeingBot</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" data-agent="ForeingBot">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Install</a>
-                  <a v-if="this.$store.state.isForeingBotInstalled" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = 5; this.optionName = 'ForeingBot'">Uninstall</a>
+                  <a v-if="!agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Install</a>
+                  <a v-if="agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Uninstall</a>
                 </dd>
               </dl>
             </dd>
           </dl>
         </div>
         <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
-          <h5><b>{{optionName}}</b></h5>
-          <p>Breve descripcion del agente</p>
+          <h5><b>{{ optionName }}</b></h5>
+          <!-- <p>Breve descripcion del agente</p> -->
+          <p>{{ selectedAgentDescription }}</p>
         </OverlayPanel>
       </aside>
     </div>
@@ -319,11 +240,12 @@ export default {
       active_arrow_down: true,
       active_arrow_up: false,
       optionNumber: -1,
-      optionName: ''
+      optionName: '',
+      selectedAgentDescription: ''
     }
   },
   computed: {
-    ...mapState(['agentListStore', 'check']),
+    ...mapState(['agentListStore', 'check', 'colorDelete', 'agentsInstallers']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
@@ -396,6 +318,8 @@ export default {
       return this.agentListStore.sort(compare)
     },
     toggle (event) {
+      // console.log(event)
+      this.selectedAgentDescription = event.currentTarget.getAttribute('data-description')
       this.optionName = event.currentTarget.getAttribute('data-agent')
       this.$refs.op.toggle(event)
     },
@@ -407,6 +331,11 @@ export default {
       }
     },
     close () {
+      var checkboxes = document.getElementsByName('checkitem')
+      for (var i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = false
+      }
+      this.nameTyped = ''
       this.$store.commit('cancelIdAgent')
     }
   }
