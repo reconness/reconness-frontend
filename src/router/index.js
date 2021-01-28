@@ -21,7 +21,22 @@ const routes = [
   {
     path: '/agents/list',
     name: 'Agent',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AgentsListView.vue')
+    component: () => import('../views/AgentsListView.vue')
+  },
+  {
+    path: '/targets/list',
+    name: 'TargetDetail',
+    component: () => import('../views/TargetsListView.vue')
+  },
+  {
+    path: '/targets/details',
+    name: 'Targets',
+    component: () => import('../views/TargetsDetailsView.vue')
+  },
+  {
+    path: '/targets/rootDomainDetails',
+    name: 'RootDomainDetails',
+    component: () => import('../views/RootDomainDetailsView.vue')
   }
 ]
 const router = createRouter({

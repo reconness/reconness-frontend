@@ -66,12 +66,12 @@
               </a></router-link>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <router-link to="/targets/list">
+              <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation('Targets')" v-bind:class="{'nav2': styleTargetState}" >
                 <BullseyeArrowIco/>
-                <p style="vertical-align: 0px;">
-                  Targets
-                </p>
+                <p style="vertical-align: 0px;">Targets </p>
               </a>
+            </router-link>
             </li>
             <li class="nav-item has-treeview menu-open">
               <a href="#" class="nav-link" v-on:click="hideArrow">
@@ -143,7 +143,7 @@ export default {
     BullseyeArrowIco
   },
   computed: {
-    ...mapState(['viewloc', 'styleAgentState'])
+    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState'])
   },
   mounted () {
     this.location = this.viewloc
@@ -278,5 +278,9 @@ form .input-group {
 div.sidebar nav a.nav-link svg {
   margin-right: 15px;
 }
-
+@media (max-width: 480px) {
+.navbar-nav.ml-auto.right-navbar input{
+    width: 120px!important;
+}
+}
 </style>
