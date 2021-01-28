@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-// import target from '../modules/target'
+import target from '../modules/target'
 
 export default createStore({
   state: {
@@ -27,6 +27,7 @@ export default createStore({
     styleList: '1.25rem',
     viewloc: 'Home',
     styleAgentState: false,
+    styleTargetState: false,
     colorDelete: '#000000',
     agentsInstallers: [
       { name: 'Subfinder', description: 'Breve descripcion del agente Subfinder', id: 1, installed: false },
@@ -123,10 +124,13 @@ export default createStore({
       }
     },
     updateLocView (state, namePath) {
+      state.styleTargetState = false
+      state.styleAgentState = false
       if (namePath === 'Agents') {
         state.styleAgentState = true
-      } else {
-        state.styleAgentState = false
+      }
+      if (namePath === 'Targets') {
+        state.styleTargetState = true
       }
       state.viewloc = namePath
     },
@@ -167,7 +171,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    // target
+    target
   },
   getters: {
     idAgent: state => {

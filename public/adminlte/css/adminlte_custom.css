@@ -650,3 +650,6 @@ div.right-sidebar div.info-box span.info-box-icon svg{
   width: 32px;
   height: 32px;
 }
+.text-dark {
+  color: #000!important;
+}
