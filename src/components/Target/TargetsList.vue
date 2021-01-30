@@ -41,7 +41,7 @@ import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 export default {
   name: 'TargetsList',
   computed: {
-    ...mapState('target', ['targetListStore', 'filterColour']),
+    ...mapState('target', ['targetListStore', 'filterColour', 'styleList']),
     ...mapGetters('target', ['filterByColor']),
     arrayFilterList () {
       if (this.filterColour === '') {

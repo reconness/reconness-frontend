@@ -1,0 +1,648 @@
+<template>
+    <div class="col-12">
+        <Toast :baseZIndex="200"/>
+        <form>
+        <div class="modal fade" id="targetModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content agent-containers">
+                <div class="modal-body">
+                <div class="row" id="middle-section">
+                    <div class="col-12 col-sm-8">
+                        <div class="col-12">
+                        <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
+                            <input  v-model="target.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My Target" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
+                        </div><!-- /.d-flex -->
+                        </div><!-- /.col-12 -->
+                        <div class="col-12" v-if="validators.blank.name">
+                            <span :class="{invalid: validators.blank.name}">The field name is required</span>
+                        </div>
+                        <div class="col-12">
+                          <label style="margin-top: 40px;">Root Domain</label>
+                          <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRepository" class="form-control target-input-borders">
+                        </div><!-- /.col-12 -->
+                        <div class="col-12" v-if="validators.blank.repository">
+                            <span :class="{invalid: validators.blank.repository}">The field root domain is required</span>
+                        </div>
+
+                        <div class="col-12">
+                          <label class="target-inputs-separator">Bug Bounty Program URL</label>
+                          <input :readonly="$store.state.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageRepository" class="form-control target-input-borders">
+                        </div><!-- /.col-12 -->
+                        <div class="col-12" v-if="validators.blank.repository">
+                            <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
+                        </div>
+                        <div class="col-12">
+                          <div class="custom-control custom-checkbox form-check private-program-container">
+                            <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="target_customCheckbox" v-model="target.isPrivateProgram">
+                            <label class="form-check-label custom-control-label float-right" for="target_customCheckbox">Is Private Program?</label>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label class="target-inputs-separator">In Scope</label>
+                          <textarea class="form-control target-input-borders" rows="3" v-model="target.inScope"/>
+                        </div>
+                        <div class="col-12">
+                          <label class="target-inputs-separator">Out of Scope</label>
+                          <textarea class="form-control target-input-borders" rows="3" v-model="target.outScope"/>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                      <div class="row">
+                        <div class="col-12">
+                          <div v-bind:style="{background: target.background}" class="card text-white card-style  mb-3 agentform-default-color-box">
+                                <div class="card-body link-color">
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="card-title postal-title">{{agent.name}}</h3>
+                                    <AccountCogIco/>
+                                </div>
+                                <hr />
+                                <div class="direct-chat-infos clearfix">
+                                    <em>
+                                        <a href="#" class="float-left">Category</a>
+                                    </em>
+                                </div>
+                                <div class="card-body-inside">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="#">...</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" style="height: 54px">
+                                        <span class="float-right text-white agentform-action">Creating Target...</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16%;" class="col-12 text-center">
+                          <h3 style="font-weight: bold;" class="card-title disable-float">
+                                Pick a Color
+                                </h3>
+                            <div style="padding-left: 0px; margin-top: 14%; width: 100%;" class="card agent-containers target-combo-box-size">
+                            <div style="padding-left: 0;" class="combo-box-left-padding">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                </div>
+                            </div>
+                            </div><!-- /.card-body -->
+                        </div><!-- /.card-->
+                            <!-- asd -->
+                        </div>
+                      </div>
+                    </div>
+                </div><!-- /.row -->
+                </div><!-- /.modal-body -->
+                <div style="border-top: none;" class="modal-footer">
+                  <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</template>
+<style>
+    .agentform-action{
+        bottom: 0px;
+        position: absolute;
+        right: 0;
+        font-size: .875rem;
+    }
+
+    .target-form-color-components{
+        width: 30px;
+        height: 30px;
+        margin-top: 23px !important;
+    }
+
+    .custom-control-input:checked~.custom-control-label::before {
+      color: #fff;
+      border-color: #00B1FF;
+      background-color: #00B1FF;
+      box-shadow: none;
+    }
+
+    .target-form-color-spacing-bottom{
+        margin-top: 44% !important;
+    }
+
+    .agentform-color-components-align{
+        margin: auto;
+    }
+
+    .image-button{
+      background-image: url('~@/assets/Rect.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      width: 32px;
+      height: 32px;
+    }
+
+    .agent-border{
+        border: 1px solid #F1F3F5;
+        border-radius: 12px;
+        width: 90px;
+        height: 47px;
+    }
+
+    .agent-name-input{
+      font-size: 24px;
+      font-weight: bold;
+      color: #000000;
+      border-left: 4px solid #00B1FF;
+      border-top: none;
+      border-bottom: none;
+      border-right: none;
+    }
+
+    .input.invalid input {
+        border: 1px solid red;
+    }
+
+    .invalid {
+        color: red;
+    }
+
+    .target-combo-box-size{
+        height: 145px;
+    }
+
+    .combo-box-left-padding{
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding-left: 19px;
+    }
+
+    .combo-box-right-padding{
+        padding-right: 15px;
+    }
+
+    .more-option-padding{
+      padding-top: 12px;
+      margin-right: 15px;
+    }
+
+    .postal-title{
+      overflow: hidden;
+    }
+
+    .p-colorpicker-preview {
+        width: 30px;
+        height: 30px;
+        margin: auto;
+        background-image: url('~@/assets/Rect.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .p-colorpicker-overlay {
+      margin-left: 1.5rem;
+    }
+
+    .triggers-label-space {
+      margin-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .triggers-options-space {
+      margin-top: 0.5rem;
+    }
+
+    .triggers-container-label-space{
+      margin-bottom: 0.2rem;
+    }
+
+    .triggers-more-options-area-size{
+      height: 335px;
+    }
+
+    button.delete-left-align{
+      margin-right: auto;
+    }
+
+</style>
+<script>
+import { required } from '@vuelidate/validators'
+import jQuery from 'jquery'
+import AccountCogIco from '@/components/AccountCogIco.vue'
+import Toast from 'primevue/toast'
+export default {
+  methods: {
+    setBlueColor: function () {
+      this.target.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
+    },
+    setVioletColor: function () {
+      this.target.background = 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box'
+    },
+    setRedColor: function () {
+      this.target.background = 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box'
+    },
+    setOrangeColor: function () {
+      this.target.background = '#ff8650 0% 0% no-repeat padding-box'
+    },
+    setGreenColor: function () {
+      this.target.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
+    },
+    addAgent () {
+      this.enableValidationMessages()
+      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command) {
+        if (this.editable) {
+          this.agent.id = parseInt(this.$store.getters.idAgent)
+          this.$store.commit('updateAgent', this.agent)
+          this.editable = false
+          this.$store.commit('setIdAgent', -1)
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
+        } else {
+          this.agent.id = this.$store.state.agentListStore.length + 1
+          this.$store.commit('addAgent', this.agent)
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
+        }
+        this.resetAgentForm()
+        jQuery('#exampleModalCenter').modal('hide')
+        this.editable = false
+      }
+    },
+    close () {
+      this.resetAgentForm()
+      this.editable = false
+      this.$store.commit('setIdAgent', -1)
+      this.$store.commit('setDetailsLinks', false)
+    },
+    resetAgentForm () {
+      this.agent = {
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        repository: '',
+        target: '',
+        command: '',
+        isTargetType: false,
+        isRootDomainType: false,
+        isSubDomainType: false,
+        isAliveTrigger: false,
+        isHttpOpenTrigger: false,
+        category: '',
+        script: '',
+        id: -1,
+        creationDate: new Date().toString(),
+        image: ''
+      }
+      this.validators = {
+        blank: {
+          name: false,
+          repository: false,
+          target: false,
+          command: false
+        }
+      }
+    },
+    enableValidationMessageName () {
+      if (this.agent.name === '') {
+        this.validators.blank.name = true
+      } else {
+        this.validators.blank.name = false
+      }
+    },
+    enableValidationMessageRepository () {
+      if (this.agent.repository === '') {
+        this.validators.blank.repository = true
+      } else {
+        this.validators.blank.repository = false
+      }
+    },
+    enableValidationMessageTarget () {
+      if (this.agent.target === '') {
+        this.validators.blank.target = true
+      } else {
+        this.validators.blank.target = false
+      }
+    },
+    enableValidationMessageCommand () {
+      if (this.agent.command === '') {
+        this.validators.blank.command = true
+      } else {
+        this.validators.blank.command = false
+      }
+    },
+    enableValidationMessages () {
+      this.enableValidationMessageName()
+      this.enableValidationMessageTarget()
+      this.enableValidationMessageRepository()
+      this.enableValidationMessageCommand()
+    },
+    enableBottomSection () {
+      this.isVisibleBottomSection = true
+    },
+    enableMiddleSection () {
+      this.isVisibleMiddleSection = true
+    },
+    disableBottomSection () {
+      this.isVisibleBottomSection = false
+    },
+    disableMiddleSection () {
+      this.isVisibleMiddleSection = false
+    },
+    enableTopSection () {
+      this.isVisibleTopSection = true
+    },
+    disableTopSection () {
+      this.isVisibleTopSection = false
+    },
+    showBottomSection () {
+      this.disableMiddleSection()
+      this.enableBottomSection()
+      this.disableTopSection()
+    },
+    showMiddleSection () {
+      this.enableMiddleSection()
+      this.disableBottomSection()
+      this.enableTopSection()
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
+    },
+    showTopSection () {
+      this.enableTopSection()
+      this.enableMiddleSection()
+    },
+    setData (nameExt) {
+      this.agent.name = nameExt
+    },
+    hideArrow: function () {
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
+    },
+    onFileChange (e) {
+      const files = e.target.files || e.dataTransfer.files
+      if (!files.length) {
+        return
+      }
+      const reader = new FileReader()
+      const vm = this
+      reader.onload = (e) => {
+        vm.agent.image = e.target.result
+      }
+      reader.readAsDataURL(files[0])
+    },
+    setRandomColor () {
+      const predefinedColors = this.$store.state.systemColors
+      this.agent.background = '#' + predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+    },
+    verifyPencilStatus () {
+      if (this.isPencilVisibleAndClick) {
+        this.isPencilVisible = true
+      } else {
+        this.isPencilVisible = false
+      }
+    },
+    onEdit () {
+      this.$store.commit('setDetailsLinks', false)
+    }
+  },
+  data () {
+    return {
+      agent: {
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        repository: '',
+        target: '',
+        command: '',
+        isTargetType: false,
+        isRootDomainType: false,
+        isSubDomainType: false,
+        isAliveTrigger: false,
+        isHttpOpenTrigger: false,
+        category: '',
+        script: '',
+        id: -1,
+        creationDate: new Date().toString(),
+        image: ''
+      },
+      target: {
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        id: -1,
+        creationDate: new Date().toString(),
+        // rootDomains: [],
+        rootDomains: '',
+        bugBountyUrl: '',
+        isPrivateProgram: false,
+        inScope: '',
+        outScope: ''
+      },
+      colorpickerData: '',
+      isVisibleTopSection: true,
+      isVisibleMiddleSection: true,
+      isVisibleBottomSection: false,
+      middleSection: 'collapse',
+      editable: false,
+      arrow_down: true,
+      arrow_up: false,
+      isPencilVisible: false,
+      isPencilVisibleAndClick: false,
+      validators: {
+        blank: {
+          name: false,
+          repository: false,
+          target: false,
+          command: false
+        }
+      }
+    }
+  },
+  validations: {
+    agent: {
+      name: { required },
+      background: { required },
+      repository: { required },
+      target: { required },
+      command: { required },
+      isTargetType: { required },
+      isRootDomainType: { required },
+      isSubDomainType: { required },
+      isAliveTrigger: { required },
+      isHttpOpenTrigger: { required },
+      category: { required }
+    }
+  },
+  components: {
+    AccountCogIco,
+    Toast
+    // AgentConfirmation
+  },
+  computed: {
+    isValid () {
+      if (this.agent.name !== '' &&
+      this.agent.repository !== '' &&
+      this.agent.target !== '' &&
+      this.agent.command !== '' &&
+      (this.agent.isTargetType || this.agent.isRootDomainType || this.agent.isSubDomainType) &&
+      (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
+        return false
+      }
+      return true
+    },
+    loadSelectedAgent () {
+      const id = this.$store.getters.idAgent
+      return this.$store.getters.getAgentById(parseInt(id))
+    },
+    isFormValid () {
+      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
+    }
+  },
+  watch: {
+    colorpickerData: function (value) {
+      this.agent.background = '#' + value
+    },
+    loadSelectedAgent: function (value) {
+      if (value !== undefined) {
+        this.agent.name = value.name
+        this.agent.background = value.background
+        this.agent.repository = value.repository
+        this.agent.target = value.target
+        this.agent.command = value.command
+        this.agent.isTargetType = value.isTargetType
+        this.agent.isRootDomainType = value.isRootDomainType
+        this.agent.isSubDomainType = value.isSubDomainType
+        this.agent.isAliveTrigger = value.isAliveTrigger
+        this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
+        this.agent.script = value.script
+        this.editable = true
+        this.agent.id = value.id
+      } else {
+        this.agent.script = ''
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+input[type="file"]{
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow:hidden;
+  position:absolute;
+  z-index: -1;
+}
+
+div.agent-containers div.agentform-default-color-box svg {
+  fill: #B3B3B3;
+}
+
+div.file-import-container svg {
+  opacity: 1;
+  fill: #B3B3B3;
+  width: 50px;
+  height: 50px;
+}
+
+label[for='uploadimage']{
+  transition: all .5s;
+  cursor: pointer;
+}
+.agent-name-input {
+   width: 50%;
+}
+.logo-image{
+  max-width: 1.2rem;
+  max-height: 1.2rem;
+  width: 1.2rem;
+  max: 1.2rem;
+}
+.form-control {
+  border-radius: 0rem;
+}
+.pencil-align-main {
+  margin: auto;
+    margin-left: 1.5rem;
+}
+.pencil-align-secondary {
+  margin: auto;
+  margin-left: 10%;
+}
+.btn-colors-size {
+  border-radius: 7px;
+}
+
+input.agent-name-input:hover{
+  background-color: #afd9e647;
+}
+
+.bordered-input-name-withfocus{
+  border-top: 2px solid #00B1FF;
+  border-right: 2px solid #00B1FF;
+  border-bottom: 2px solid #00B1FF;
+}
+
+.bordered-input-name-withoutfocus{
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: transparent;
+    opacity: 1;
+}
+
+.target-input-borders {
+  border-radius: 0.8rem
+}
+
+.target-inputs-separator {
+  margin-top: 14px;
+}
+
+.private-program-container {
+  /* float: right; */
+}
+
+div.private-program-container label {
+  color: #00B1FF;
+}
+
+label {
+  color: #495057;
+  font-size: 18px;
+  font-weight: 100 !important;
+  font-size: 1.1rem;
+}
+
+textarea {
+  resize: none;;
+}
+
+.disable-float{
+  float: none !important;
+}
+
+@media (max-width: 480px) {
+   .agent-name-input {
+    font-size: 20px;
+   }
+}
+</style>

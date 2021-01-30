@@ -15,7 +15,8 @@ export default ({
       { id: 11, name: 'My target 11', background: 'transparent linear-gradient(135deg, #03dced 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', date: '20/01/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }] }
     ],
     idTarget: -1,
-    filterColour: ''
+    filterColour: '',
+    isDefaultViewOnTarget: true
   },
   mutations: {
     setIdTarget (state, id) {
@@ -26,6 +27,9 @@ export default ({
       if (index !== -1) {
         state.targetListStore.splice(index, 1)
       }
+    },
+    setIsDefaultViewOnTarget (state) {
+      state.isDefaultViewOnTarget = !state.isDefaultViewOnTarget
     }
   },
   actions: {
