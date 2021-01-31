@@ -19,7 +19,7 @@
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
-                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false"/>
+                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" @keyup="enableValidationMessageRootDomains"/>
                           <!-- <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRootDomains" class="form-control target-input-borders"> -->
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.rootDomains">
@@ -272,7 +272,7 @@ export default {
     },
     addTarget () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && /* !this.validators.blank.rootDomains && */ !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
+      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
         if (this.editable) {
           this.agent.id = parseInt(this.$store.getters.idAgent)
           this.$store.commit('updateAgent', this.agent)
@@ -284,35 +284,31 @@ export default {
           this.$store.commit('target/addTarget', this.target)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been inserted successfully', life: 3000 })
         }
-        this.resetAgentForm()
+        this.resetTargetForm()
         jQuery('#targetModalForm').modal('hide')
         this.editable = false
       }
     },
     close () {
-      this.resetAgentForm()
+      this.resetTargetForm()
       this.editable = false
-      this.$store.commit('setIdAgent', -1)
-      this.$store.commit('setDetailsLinks', false)
+      // this.$store.commit('setIdAgent', -1)
+      // this.$store.commit('setDetailsLinks', false)
     },
-    resetAgentForm () {
-      this.agent = {
+    resetTargetForm () {
+      this.target = {
         name: '',
         background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-        repository: '',
-        target: '',
-        command: '',
-        isTargetType: false,
-        isRootDomainType: false,
-        isSubDomainType: false,
-        isAliveTrigger: false,
-        isHttpOpenTrigger: false,
-        category: '',
-        script: '',
         id: -1,
-        creationDate: new Date().toString(),
-        image: ''
+        date: new Date().toString(),
+        rootDomains: [],
+        bugBountyUrl: '',
+        isPrivateProgram: false,
+        inScope: '',
+        outScope: ''
       }
+      this.target.rootDomains.splice(0)
+      this.rootDomainsTextItems.splice(0)
       this.validators = {
         blank: {
           name: false,
@@ -330,7 +326,7 @@ export default {
       }
     },
     enableValidationMessageRootDomains () {
-      if (this.target.rootDomains === '') {
+      if (this.target.rootDomains.length === 0) {
         this.validators.blank.rootDomains = true
       } else {
         this.validators.blank.rootDomains = false
@@ -434,7 +430,7 @@ export default {
     addItemToRootDomains (item) {
       this.target.rootDomains.push(
         {
-          root: item.value[item.value.length - 1],
+          root: item.value.slice(-1)[0],
           id: this.target.rootDomains.length
         }
       )
@@ -446,23 +442,6 @@ export default {
   },
   data () {
     return {
-      agent: {
-        name: '',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-        repository: '',
-        target: '',
-        command: '',
-        isTargetType: false,
-        isRootDomainType: false,
-        isSubDomainType: false,
-        isAliveTrigger: false,
-        isHttpOpenTrigger: false,
-        category: '',
-        script: '',
-        id: -1,
-        creationDate: new Date().toString(),
-        image: ''
-      },
       target: {
         name: '',
         background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
@@ -514,20 +493,8 @@ export default {
     AccountCogIco,
     Toast,
     Chips
-    // AgentConfirmation
   },
   computed: {
-    // isValid () {
-    //   if (this.agent.name !== '' &&
-    //   this.agent.repository !== '' &&
-    //   this.agent.target !== '' &&
-    //   this.agent.command !== '' &&
-    //   (this.agent.isTargetType || this.agent.isRootDomainType || this.agent.isSubDomainType) &&
-    //   (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
-    //     return false
-    //   }
-    //   return true
-    // },
     loadSelectedAgent () {
       const id = this.$store.getters.idAgent
       return this.$store.getters.getAgentById(parseInt(id))

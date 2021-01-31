@@ -12,7 +12,7 @@
           </div>
           <div class="card-body-inside">
             <ul class="list-unstyled min-height" >
-              <li v-for="item2 of item.rootDomains.slice(item.rootDomains.length - 4) " :key="item2.id">
+              <li v-for="item2 of item.rootDomains.slice(-4) " :key="item2.id">
                 >  {{item2.root}}
               </li>
             </ul>

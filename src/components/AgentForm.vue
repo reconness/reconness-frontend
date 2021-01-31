@@ -596,8 +596,6 @@ export default {
     AccountCogIco,
     FileCodeIco,
     Toast
-    // AgentConfirmation
-    // ColorPicker
   },
   computed: {
     isValid () {
