@@ -19,7 +19,8 @@
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
-                          <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRootDomains" class="form-control target-input-borders">
+                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" :allowDuplicate="false"/>
+                          <!-- <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRootDomains" class="form-control target-input-borders"> -->
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.rootDomains">
                             <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
@@ -251,6 +252,7 @@ import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
 import AccountCogIco from '@/components/AccountCogIco.vue'
 import Toast from 'primevue/toast'
+import Chips from 'primevue/chips'
 export default {
   methods: {
     setBlueColor: function () {
@@ -270,20 +272,20 @@ export default {
     },
     addTarget () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
+      if (!this.validators.blank.name && /* !this.validators.blank.rootDomains && */ !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
         if (this.editable) {
           this.agent.id = parseInt(this.$store.getters.idAgent)
           this.$store.commit('updateAgent', this.agent)
           this.editable = false
           this.$store.commit('setIdAgent', -1)
-          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been updated successfully', life: 3000 })
         } else {
-          this.target.id = this.$store.state.targetListStore.length + 1
-          this.$store.commit('addAgent', this.agent)
-          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
+          this.target.id = this.$store.state.target.targetListStore.length + 1
+          this.$store.commit('target/addTarget', this.target)
+          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been inserted successfully', life: 3000 })
         }
         this.resetAgentForm()
-        jQuery('#exampleModalCenter').modal('hide')
+        jQuery('#targetModalForm').modal('hide')
         this.editable = false
       }
     },
@@ -417,7 +419,7 @@ export default {
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.systemColors
-      this.agent.background = '#' + predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      this.target.background = '#' + predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
     },
     verifyPencilStatus () {
       if (this.isPencilVisibleAndClick) {
@@ -428,6 +430,14 @@ export default {
     },
     onEdit () {
       this.$store.commit('setDetailsLinks', false)
+    },
+    addItemToRootDomains (item) {
+      this.target.rootDomains.push(
+        {
+          root: item.value[item.value.length - 1],
+          id: this.target.rootDomains.length
+        }
+      )
     }
   },
   data () {
@@ -454,14 +464,14 @@ export default {
         background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
         id: -1,
         date: new Date().toString(),
-        // rootDomains: [],
-        rootDomains: '',
+        rootDomains: [],
+        // rootDomains: '',
         bugBountyUrl: '',
         isPrivateProgram: false,
         inScope: '',
         outScope: ''
       },
-      colorpickerData: '',
+      rootDomainsTextItems: [],
       isVisibleTopSection: true,
       isVisibleMiddleSection: true,
       isVisibleBottomSection: false,
@@ -499,21 +509,22 @@ export default {
   },
   components: {
     AccountCogIco,
-    Toast
+    Toast,
+    Chips
     // AgentConfirmation
   },
   computed: {
-    isValid () {
-      if (this.agent.name !== '' &&
-      this.agent.repository !== '' &&
-      this.agent.target !== '' &&
-      this.agent.command !== '' &&
-      (this.agent.isTargetType || this.agent.isRootDomainType || this.agent.isSubDomainType) &&
-      (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
-        return false
-      }
-      return true
-    },
+    // isValid () {
+    //   if (this.agent.name !== '' &&
+    //   this.agent.repository !== '' &&
+    //   this.agent.target !== '' &&
+    //   this.agent.command !== '' &&
+    //   (this.agent.isTargetType || this.agent.isRootDomainType || this.agent.isSubDomainType) &&
+    //   (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
+    //     return false
+    //   }
+    //   return true
+    // },
     loadSelectedAgent () {
       const id = this.$store.getters.idAgent
       return this.$store.getters.getAgentById(parseInt(id))
@@ -523,9 +534,6 @@ export default {
     }
   },
   watch: {
-    colorpickerData: function (value) {
-      this.agent.background = '#' + value
-    },
     loadSelectedAgent: function (value) {
       if (value !== undefined) {
         this.agent.name = value.name
@@ -648,6 +656,17 @@ textarea {
 
 .disable-float{
   float: none !important;
+}
+
+.p-chips{
+  width: 100%;
+  /* border-radius: 12px !important; */
+  opacity: 1;
+  /* border: 1px solid #f1f3f5; */
+  background: #fffffF 0% 0% no-repeat padding-box;
+  font-size: 14px;
+  color: #000000;
+  /* min-height: calc(1.8125rem + 2px); */
 }
 
 @media (max-width: 480px) {
