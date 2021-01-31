@@ -19,7 +19,7 @@
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
-                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" :allowDuplicate="false"/>
+                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false"/>
                           <!-- <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRootDomains" class="form-control target-input-borders"> -->
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.rootDomains">
@@ -438,6 +438,10 @@ export default {
           id: this.target.rootDomains.length
         }
       )
+    },
+    removeItemToRootDomains (rootDomainParam) {
+      const index = this.target.rootDomains.findIndex(item => item.root === rootDomainParam.value[0])
+      this.target.rootDomains.splice(index, 1)
     }
   },
   data () {
@@ -465,7 +469,6 @@ export default {
         id: -1,
         date: new Date().toString(),
         rootDomains: [],
-        // rootDomains: '',
         bugBountyUrl: '',
         isPrivateProgram: false,
         inScope: '',
