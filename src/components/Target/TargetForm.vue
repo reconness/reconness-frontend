@@ -19,18 +19,18 @@
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
-                          <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRepository" class="form-control target-input-borders">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRootDomains" class="form-control target-input-borders">
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="validators.blank.repository">
-                            <span :class="{invalid: validators.blank.repository}">The field root domain is required</span>
+                        <div class="col-12" v-if="validators.blank.rootDomains">
+                            <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
                         </div>
 
                         <div class="col-12">
                           <label class="target-inputs-separator">Bug Bounty Program URL</label>
-                          <input :readonly="$store.state.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageRepository" class="form-control target-input-borders">
+                          <input :readonly="$store.state.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageBugBountyUrl" class="form-control target-input-borders">
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="validators.blank.repository">
-                            <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
+                        <div class="col-12" v-if="validators.blank.bugBountyUrl">
+                            <span :class="{invalid: validators.blank.bugBountyUrl}">The field bug bounty is required</span>
                         </div>
                         <div class="col-12">
                           <div class="custom-control custom-checkbox form-check private-program-container">
@@ -40,38 +40,39 @@
                         </div>
                         <div class="col-12">
                           <label class="target-inputs-separator">In Scope</label>
-                          <textarea class="form-control target-input-borders" rows="3" v-model="target.inScope"/>
+                          <textarea class="form-control target-input-borders" rows="3" v-model="target.inScope" @keyup="enableValidationMessageInScope"/>
+                        </div>
+                        <div class="col-12" v-if="validators.blank.inScope">
+                            <span :class="{invalid: validators.blank.inScope}">The field in scope is required</span>
                         </div>
                         <div class="col-12">
                           <label class="target-inputs-separator">Out of Scope</label>
-                          <textarea class="form-control target-input-borders" rows="3" v-model="target.outScope"/>
+                          <textarea class="form-control target-input-borders" rows="3" v-model="target.outScope" @keyup="enableValidationMessageOutScope"/>
+                        </div>
+                        <div class="col-12" v-if="validators.blank.outScope">
+                            <span :class="{invalid: validators.blank.outScope}">The field out scope is required</span>
                         </div>
                     </div>
                     <div class="col-12 col-sm-4">
                       <div class="row">
                         <div class="col-12">
-                          <div v-bind:style="{background: target.background}" class="card text-white card-style  mb-3 agentform-default-color-box">
+                          <div v-bind:style="{background: target.background}" class="card text-white card-style  mb-3 agentform-default-color-box" style="height: 200px;">
                                 <div class="card-body link-color">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="card-title postal-title">{{agent.name}}</h3>
+                                    <h3 class="card-title postal-title">{{target.name}}</h3>
                                     <AccountCogIco/>
                                 </div>
                                 <hr />
-                                <div class="direct-chat-infos clearfix">
-                                    <em>
-                                        <a href="#" class="float-left">Category</a>
-                                    </em>
-                                </div>
                                 <div class="card-body-inside">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a href="#">...</a>
+                                            <a href="#">>...</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="row">
                                     <div class="col-12" style="height: 54px">
-                                        <span class="float-right text-white agentform-action">Creating Target...</span>
+                                        <span class="float-right text-white targetform-action">Creating Target...</span>
                                     </div>
                                 </div>
                                 </div>
@@ -81,7 +82,7 @@
                           <h3 style="font-weight: bold;" class="card-title disable-float">
                                 Pick a Color
                                 </h3>
-                            <div style="padding-left: 0px; margin-top: 14%; width: 100%;" class="card agent-containers target-combo-box-size">
+                            <div style="padding-left: 0px; margin-top: 7%; width: 100%;" class="card agent-containers target-combo-box-size">
                             <div style="padding-left: 0;" class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="row">
@@ -116,7 +117,7 @@
                 <div style="border-top: none;" class="modal-footer">
                   <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
                   <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -126,10 +127,10 @@
     </div>
 </template>
 <style>
-    .agentform-action{
-        bottom: 0px;
+    .targetform-action{
+        bottom: -28%;
         position: absolute;
-        right: 0;
+        right: 8%;
         font-size: .875rem;
     }
 
@@ -188,7 +189,7 @@
     }
 
     .target-combo-box-size{
-        height: 145px;
+        height: 144px;
     }
 
     .combo-box-left-padding{
@@ -267,9 +268,9 @@ export default {
     setGreenColor: function () {
       this.target.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
     },
-    addAgent () {
+    addTarget () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command) {
+      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
         if (this.editable) {
           this.agent.id = parseInt(this.$store.getters.idAgent)
           this.$store.commit('updateAgent', this.agent)
@@ -277,7 +278,7 @@ export default {
           this.$store.commit('setIdAgent', -1)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
         } else {
-          this.agent.id = this.$store.state.agentListStore.length + 1
+          this.target.id = this.$store.state.targetListStore.length + 1
           this.$store.commit('addAgent', this.agent)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
         }
@@ -320,38 +321,46 @@ export default {
       }
     },
     enableValidationMessageName () {
-      if (this.agent.name === '') {
+      if (this.target.name === '') {
         this.validators.blank.name = true
       } else {
         this.validators.blank.name = false
       }
     },
-    enableValidationMessageRepository () {
-      if (this.agent.repository === '') {
-        this.validators.blank.repository = true
+    enableValidationMessageRootDomains () {
+      if (this.target.rootDomains === '') {
+        this.validators.blank.rootDomains = true
       } else {
-        this.validators.blank.repository = false
+        this.validators.blank.rootDomains = false
       }
     },
-    enableValidationMessageTarget () {
-      if (this.agent.target === '') {
-        this.validators.blank.target = true
+    enableValidationMessageBugBountyUrl () {
+      if (this.target.bugBountyUrl === '') {
+        this.validators.blank.bugBountyUrl = true
       } else {
-        this.validators.blank.target = false
+        this.validators.blank.bugBountyUrl = false
       }
     },
-    enableValidationMessageCommand () {
-      if (this.agent.command === '') {
-        this.validators.blank.command = true
+    enableValidationMessageInScope () {
+      if (this.target.inScope === '') {
+        this.validators.blank.inScope = true
       } else {
-        this.validators.blank.command = false
+        this.validators.blank.inScope = false
+      }
+    },
+    enableValidationMessageOutScope () {
+      if (this.target.outScope === '') {
+        this.validators.blank.outScope = true
+      } else {
+        this.validators.blank.outScope = false
       }
     },
     enableValidationMessages () {
       this.enableValidationMessageName()
-      this.enableValidationMessageTarget()
-      this.enableValidationMessageRepository()
-      this.enableValidationMessageCommand()
+      this.enableValidationMessageBugBountyUrl()
+      this.enableValidationMessageRootDomains()
+      this.enableValidationMessageInScope()
+      this.enableValidationMessageOutScope()
     },
     enableBottomSection () {
       this.isVisibleBottomSection = true
@@ -444,7 +453,7 @@ export default {
         name: '',
         background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
         id: -1,
-        creationDate: new Date().toString(),
+        date: new Date().toString(),
         // rootDomains: [],
         rootDomains: '',
         bugBountyUrl: '',
@@ -465,9 +474,10 @@ export default {
       validators: {
         blank: {
           name: false,
-          repository: false,
-          target: false,
-          command: false
+          rootDomains: false,
+          bugBountyUrl: false,
+          inScope: false,
+          outScope: false
         }
       }
     }
@@ -509,7 +519,7 @@ export default {
       return this.$store.getters.getAgentById(parseInt(id))
     },
     isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
+      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope)
     }
   },
   watch: {
