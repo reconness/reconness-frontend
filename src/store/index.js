@@ -19,7 +19,12 @@ export default createStore({
     ],
     filterColour: '',
     idAgent: -1,
-    systemColors: ['8929e0', '8929e0', 'ff1b4c', 'ff7f46', '00eb74'],
+    systemColors: ['transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+      'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+      'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
+      '#ff8650 0% 0% no-repeat padding-box',
+      'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
+    ],
     fromDetailsLink: false,
     idResource: -1,
     check: false,

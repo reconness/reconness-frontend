@@ -525,7 +525,7 @@ export default {
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.systemColors
-      this.agent.background = '#' + predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      this.agent.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
     },
     verifyPencilStatus () {
       if (this.isPencilVisibleAndClick) {
