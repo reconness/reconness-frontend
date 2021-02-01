@@ -657,3 +657,7 @@ div.right-sidebar div.info-box span.info-box-icon svg{
 div.target-input-borders ul.p-inputtext.p-chips-multiple-container{
   border-radius: 0.8rem !important;
 }
+
+.pi-times-circle:before{
+  content: url('../../adminlte/img/reconnes/minus-circle-red.svg') !important;
+}
