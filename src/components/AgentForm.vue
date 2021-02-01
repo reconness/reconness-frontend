@@ -393,7 +393,8 @@ export default {
           this.$store.commit('setIdAgent', -1)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
         } else {
-          this.agent.id = this.$store.state.agentListStore.length + 1
+          // this.agent.id = this.$store.state.agentListStore.length + 1
+          this.agent.id = this.nextAgentSequence++
           this.$store.commit('addAgent', this.agent)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
         }
@@ -573,7 +574,8 @@ export default {
           target: false,
           command: false
         }
-      }
+      },
+      nextAgentSequence: 30
     }
   },
   validations: {

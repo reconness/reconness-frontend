@@ -280,7 +280,8 @@ export default {
           this.$store.commit('setIdAgent', -1)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been updated successfully', life: 3000 })
         } else {
-          this.target.id = this.$store.state.target.targetListStore.length + 1
+          // this.target.id = this.$store.state.target.targetListStore.length + 1
+          this.target.id = this.nextTargetSequence++
           this.$store.commit('target/addTarget', this.target)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been inserted successfully', life: 3000 })
         }
@@ -471,7 +472,8 @@ export default {
           inScope: false,
           outScope: false
         }
-      }
+      },
+      nextTargetSequence: 30
     }
   },
   validations: {
