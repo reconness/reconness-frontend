@@ -1,7 +1,8 @@
 <template>
 <div class="row">
   <div class="col-12">
-    <div class="modal fade" id="confirmation-modal">
+    <Toast :baseZIndex="200"/>
+    <div class="modal fade" id="confirmation-modal" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header dialog-without-lines-header">
@@ -26,6 +27,7 @@
 <script>
 import jQuery from 'jquery'
 import { mapGetters } from 'vuex'
+import Toast from 'primevue/toast'
 export default {
   data () {
     return {
@@ -36,10 +38,14 @@ export default {
   props: {
     type: String
   },
+  components: {
+    Toast
+  },
   methods: {
     removeTarget: function () {
       if (this.nameTyped === this.selectedTargetName) {
         this.$store.commit('target/removeTarget', this.nameTyped)
+        this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents has been deleted successfully', life: 3000 })
         this.nameTyped = ''
         jQuery('#confirmation-modal').modal('hide')
         jQuery('#exampleModalCenter').modal('hide')
