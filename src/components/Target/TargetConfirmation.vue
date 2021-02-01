@@ -11,7 +11,7 @@
               <div class="modal-body">
                   <!-- PARAMETIZABLE -->
                   <p>Please, confirm the name of the Target {{selectedTargetName}} before delete it</p>
-                  <input autofocus required v-model="nameTyped" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target Name">
+                  <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="Target Name">
               </div>
               <div class="modal-footer dialog-without-lines-footer">
                   <button :disabled="nameTyped !== selectedTargetName" type="button" class="btn btn-primary btn-danger delete_btn" @click="removeTarget(this.nameTyped)">Delete</button>

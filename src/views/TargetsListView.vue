@@ -9,7 +9,8 @@
         <div class="content">
           <TargetsList v-if="this.$store.state.target.isDefaultViewOnTarget"/>
           <div class="row" v-else>
-            <!-- <TargetMiniView v-for="agent of arrayFilterList" :key="agent.id" :id="agent.id" :name="agent.name" :background="agent.background" /> -->
+          <TargetMiniList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :background="target.background" :rootDom="target.rootDomains">
+          </TargetMiniList>
           </div>
         </div>
       </div>
@@ -19,19 +20,26 @@
 <script>
 import TargetsList from '@/components/Target/TargetsList.vue'
 import NavBarTwoTarget from '@/components/Target/NavBarTwoTarget.vue'
-// import TargetMiniView from '@/components/Target/TargetMiniView.vue'
+import { mapState, mapGetters } from 'vuex'
+import TargetMiniList from '@/components/Target/TargetMiniList.vue'
 export default {
   name: 'TargetsListView',
   components: {
     TargetsList,
-    NavBarTwoTarget
-    // TargetMiniView
+    NavBarTwoTarget,
+    TargetMiniList
   },
-  // data: function () {
-  //   return {
-  //     isDefaultView: false
-  //   }
-  // },
+  computed: {
+    ...mapState('target', ['targetListStore', 'filterColour']),
+    ...mapGetters('target', ['filterByColor']),
+    arrayFilterList () {
+      if (this.filterColour === '') {
+        return this.targetListStore
+      } else {
+        return this.filterByColor(this.filterColour)
+      }
+    }
+  },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
   }

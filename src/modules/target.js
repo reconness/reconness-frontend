@@ -28,8 +28,11 @@ export default ({
         state.targetListStore.splice(index, 1)
       }
     },
-    setIsDefaultViewOnTarget (state) {
-      state.isDefaultViewOnTarget = !state.isDefaultViewOnTarget
+    setIsDefaultViewOnTarget (state, value) {
+      state.isDefaultViewOnTarget = value
+    },
+    isFilter (state, backg) {
+      state.filterColour = backg
     },
     addTarget (state, target) {
       state.targetListStore.push(target)

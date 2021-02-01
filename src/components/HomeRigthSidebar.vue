@@ -16,7 +16,7 @@
         </div>
         </div>
         <div v-for="item of getLasTenTargets" :key="item.id" class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
-          <span v-bind:style ="{background:item.background}"  class="info-box-icon elevation-1">
+          <span v-bind:style ="{background:item.background}"  class="info-box-icon">
             <BullseyeArrowIco/>
           </span>
           <div class="info-box-content">
@@ -29,7 +29,8 @@
             </a>
           </div>
           </span>
-            <span class="domain-names-list text-truncate"> >
+            <span class="domain-names-list text-truncate">
+              <span  class="material-icons float-left mt-1"> chevron_right </span>
              <small v-for="item2 of item.rootDomains" :key="item2.id">
               {{item2.root}}, </small>
             </span>
@@ -120,7 +121,7 @@ export default {
    margin-left: 10px;
 }
 
-.elevation-1 {
+/* .elevation-1 {
     box-shadow: 3px 12px 23px;
     border-radius: 13px !important;
     width: 56px !important;
@@ -132,7 +133,7 @@ export default {
     font-size: 20px;
     color: #a99c9c;
     cursor: pointer;
-}
+} */
 
 .justify-content-between h5{
   font-size: 24px;
@@ -182,7 +183,7 @@ display: none;
     max-width: 16.666667%;
 }
 .text-truncate {
-    max-width: 200px;;
+    max-width: 200px;
   }
 }
 
@@ -220,5 +221,15 @@ display: none;
     max-width: 160px;
   }
 }
-
+.domain-names-list .material-icons{
+font-size: 17px;
+}
+.info-box >span{
+  width: 56px;
+  height: 56px;
+  border-radius: 13px;
+  box-shadow: 3px 12px 23px #eae9e9;
+  min-width: 40px !important;
+  opacity: 1;
+}
 </style>

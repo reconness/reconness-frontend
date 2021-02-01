@@ -14,11 +14,15 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos " v-show= "check" href="#" @click="close()">Cancel</a>
+          <label for="import-target" class="nav-link pos mb-0"> Import Target </label>
+          <input type="file" id="import-target" accept=".json"/>
         </li>
+        <!-- <li class="nav-item nav-margin border-right d-none d-sm-block">
+          <a class="nav-link pos " v-show= "check" href="#" @click="close()">Cancel</a>
+        </li> -->
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-          <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveAgents">Delete Agents</a>
+          <a class="nav-link pos" href="#" >Edit List</a>
+          <!-- <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveAgents">Delete Agents</a> -->
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -69,29 +73,16 @@
         <li class="nav-item nav-margin border-right d-none d-sm-block  ">
             <a class="nav-link">
             <p class="float-left">View Mode</p>
-            <!-- <router-link to="/agent/list"> -->
-            <button type="button" class="btn btn-light margin-right" @click="this.$store.commit('target/setIsDefaultViewOnTarget')">
+            <a v-bind:class="{ 'router-link-exact-active': isMiniView} " v-on:click="activeNavButton('isMiniView')">
+            <button type="button"  class="btn btn-light margin-right" @click="this.$store.commit('target/setIsDefaultViewOnTarget', false)">
                 <i class="material-icons">format_list_bulleted</i>
-            </button>
-            <!-- </router-link> -->
-             <!-- <router-link to="/agents/list"> -->
-            <button type="button" class="btn btn-light" @click="this.$store.commit('target/setIsDefaultViewOnTarget')">
+            </button></a>
+            <a v-bind:class="{ 'router-link-exact-active': isListView} " v-on:click="activeNavButton('isListView')">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('target/setIsDefaultViewOnTarget', true)">
               <i class="material-icons">grid_view</i>
-            </button>
+            </button></a>
             <!-- </router-link> -->
             </a>
-        </li>
-        <li class="nav-item border-right d-none d-sm-block">
-          <a
-            class="nav-link float-left control-sidebar-right"
-            href="#"
-            data-slide="true"
-            @mouseenter="mouseenter"
-          >
-            <button type="button" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
-              <i class="material-icons">local_mall</i>
-            </button>
-          </a>
         </li>
       </ul>
     </nav>
@@ -134,11 +125,14 @@
             <i class="material-icons">more_vert</i>
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
-            <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a>
-            <div class="dropdown-divider" v-show= "check" ></div>
-            <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-            <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a>
+            <label for="import-target" class="dropdown-item import-font"> Import Target </label>
+            <input type="file" id="import-target" accept=".json"/>
             <div class="dropdown-divider"></div>
+            <!-- <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a> -->
+            <!-- <div class="dropdown-divider" v-show= "check" ></div> -->
+            <a class="dropdown-item" href="#">Edit List</a>
+            <!-- <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a> -->
+            <!-- <div class="dropdown-divider"></div> -->
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
             <a class="dropdown-item item-sort" href="#" v-on:click="orderByName()">
@@ -163,65 +157,11 @@
             </button> </div>
           </div>
         </li>
-        <li class="nav-item border-right">
-          <a class="nav-link float-left" href="#" data-widget="control-sidebar" data-slide="true">
-            <button
-              type="button"
-              class="btn btn-sm control-sidebar-right"
-              id="dropdownMenuButton"
-              @mouseenter="mouseenter"
-            >
-              <i class="material-icons">local_mall</i>
-            </button>
-          </a>
-        </li>
       </ul>
     </nav>
 
-    <div v-show="active">
-      <aside class="control-sidebar-dark" @mouseleave="mouseleave" id="marketplace-agent">
-        <!-- Control sidebar content goes here -->
-        <div class="p-3 control-sidebar-content">
-          <div class="d-flex justify-content-between">
-            <!-- <i class="material-icons">local_mall</i> -->
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg>
-            <h5>Marketplace</h5>
-            <!-- <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a> -->
-          </div>
-        </div>
-
-        <div class="sidebar-list" v-for="agentInstaller of agentsInstallers" :key="agentInstaller.id">
-          <dl class="row">
-            <dt class="col-3">
-              <p>{{  agentInstaller.name  }}</p>
-            </dt>
-            <dd class="col-9">
-              <dl class="row">
-                <dt class="col-7 reset-col">
-                  <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel_target" :data-agent="agentInstaller.name" :data-description="agentInstaller.description">Details</a>
-                  </em>
-                </dt>
-                <dd class="col-5 reset-col">
-                  <a v-if="!agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Install</a>
-                  <a v-if="agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Uninstall</a>
-                </dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-        <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel_target">
-          <h5><b>{{ optionName }}</b></h5>
-          <!-- <p>Breve descripcion del agente</p> -->
-          <p>{{ selectedAgentDescription }}</p>
-        </OverlayPanel>
-      </aside>
-    </div>
    <div class="row">
       <TargetForm/>
-      <!-- <Debug></Debug> -->
-      <!-- <InstallOnDebug :installerOption="this.optionNumber"/> -->
-      <!-- <UninstallOnDebug :installerOption="this.optionNumber" :installerOptionName="this.optionName"/> -->
       <Toast :baseZIndex="200"/>
   </div>
   <ConfirmDeleteList></ConfirmDeleteList>
@@ -231,11 +171,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import TargetForm from '@/components/Target/TargetForm.vue'
-// import Debug from '@/components/Debug.vue'
-// import InstallOnDebug from '@/components/InstallOnDebug'
-// import UninstallOnDebug from '@/components/UninstallOnDebug'
 import Toast from 'primevue/toast'
-import OverlayPanel from 'primevue/overlaypanel'
 import ConfirmDeleteList from '@/components/ConfirmDeleteList.vue'
 import jQuery from 'jquery'
 export default {
@@ -247,22 +183,20 @@ export default {
       active_arrow_up: false,
       optionNumber: -1,
       optionName: '',
-      selectedAgentDescription: ''
+      selectedAgentDescription: '',
+      isMiniView: false,
+      isListView: true
     }
   },
   computed: {
-    ...mapState(['agentListStore', 'check', 'colorDelete', 'agentsInstallers']),
+    ...mapState('target', ['targetListStore']),
     arrayUniqueColours () {
-      return [...new Set(this.agentListStore.map(item => item.background))]
+      return [...new Set(this.targetListStore.map(item => item.background))]
     }
   },
   components: {
     TargetForm,
-    // Debug,
-    // InstallOnDebug,
-    // UninstallOnDebug,
     Toast,
-    OverlayPanel,
     ConfirmDeleteList
   },
   methods: {
@@ -278,7 +212,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations(['isFilter', 'editList']),
+    ...mapMutations('target', ['isFilter']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -301,7 +235,7 @@ export default {
       }
       this.active_arrow_down = true
       this.active_arrow_up = false
-      return this.agentListStore.sort(compare)
+      return this.targetListStore.sort(compare)
     },
     orderByNameDesc: function () {
       function compare (a, b) {
@@ -315,19 +249,27 @@ export default {
       }
       this.active_arrow_down = false
       this.active_arrow_up = true
-      return this.agentListStore.sort(compare)
+      return this.targetListStore.sort(compare)
     },
     orderByCalendar: function () {
-      function compare (a, b) {
-        if (a.date < b.date) {
-          return -1
+      return this.targetListStore.sort((a, b) => {
+        const as = a.date.split('/')
+        const ad = new Date(as[2], as[1] - 1, as[0])
+        const bs = b.date.split('/')
+        const bd = new Date(bs[2], bs[1] - 1, bs[0])
+        return ad - bd
+      })
+    },
+    activeNavButton: function (valueIn) {
+      if (valueIn === 'isMiniView') {
+        this.isMiniView = true
+        this.isListView = false
+      } else {
+        if (valueIn === 'isListView') {
+          this.isListView = true
+          this.isMiniView = false
         }
-        if (a.date > b.date) {
-          return 1
-        }
-        return 0
       }
-      return this.agentListStore.sort(compare)
     },
     toggle (event) {
       // console.log(event)
@@ -395,5 +337,16 @@ margin-right: 20px;
 }
 .margin-right{
   margin-right: 1px;
+}
+label {
+  cursor: pointer;
+}
+#import-target {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+.import-font{
+  font-weight: 600 !important;
 }
 </style>

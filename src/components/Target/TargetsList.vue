@@ -12,8 +12,9 @@
           </div>
           <div class="card-body-inside">
             <ul class="list-unstyled min-height" >
-              <li v-for="item2 of item.rootDomains.slice(-4) " :key="item2.id">
-                >  {{item2.root}}
+              <li v-for="item2 of item.rootDomains.slice(item.rootDomains.length - 4) " :key="item2.id">
+              <span  class="material-icons float-left mt-1"> chevron_right </span>
+               {{item2.root}}
               </li>
             </ul>
           </div>
@@ -70,12 +71,6 @@ export default {
 }
 </script>
 <style scoped>
-div.card-body a svg{
-  fill: #ffffff;
-  fill-opacity: 0.2;
-  width: 35px;
-  height: 36px;
-}
 .font-color{
     color: #ffffff;
     opacity: 0.4;
@@ -131,6 +126,11 @@ transition: all .25s ease;
 .list-unstyled a{
     font-size: 14px;
     opacity: 1;
+}
+
+ul li span{
+  font-size: 17px;
+  color: #FFFFFF;
 }
 .min-height{
   min-height: 100px;
