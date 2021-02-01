@@ -42,9 +42,18 @@ export default {
     Toast
   },
   methods: {
+    getRandomBooleanResult: function () {
+      var success = Math.random() < 0.5
+      return success
+    },
     removeAgent: function () {
-      this.$store.commit('removeAgents')
-      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents has been deleted successfully', life: 3000 })
+      if (this.getRandomBooleanResult()) {
+        this.$store.commit('removeAgents')
+        this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents has been deleted successfully', life: 3000 })
+      } else {
+        this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
+        this.close()
+      }
       jQuery('#confirmation-modald').modal('hide')
       jQuery('#exampleModalCenter').modal('hide')
       this.nameTyped = ''

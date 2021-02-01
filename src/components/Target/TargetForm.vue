@@ -255,6 +255,10 @@ import Toast from 'primevue/toast'
 import Chips from 'primevue/chips'
 export default {
   methods: {
+    getRandomBooleanResult: function () {
+      var success = Math.random() < 0.5
+      return success
+    },
     setBlueColor: function () {
       this.target.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
     },
@@ -274,16 +278,22 @@ export default {
       this.enableValidationMessages()
       if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
         if (this.editable) {
-          this.agent.id = parseInt(this.$store.getters.idAgent)
-          this.$store.commit('updateAgent', this.agent)
-          this.editable = false
-          this.$store.commit('setIdAgent', -1)
-          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been updated successfully', life: 3000 })
+          if (this.getRandomBooleanResult()) {
+            this.agent.id = parseInt(this.$store.getters.idAgent)
+            this.$store.commit('updateAgent', this.agent)
+            this.$store.commit('setIdAgent', -1)
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been updated successfully', life: 3000 })
+          } else {
+            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
+          }
         } else {
-          // this.target.id = this.$store.state.target.targetListStore.length + 1
-          this.target.id = this.nextTargetSequence++
-          this.$store.commit('target/addTarget', this.target)
-          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been inserted successfully', life: 3000 })
+          if (this.getRandomBooleanResult()) {
+            this.target.id = this.nextTargetSequence++
+            this.$store.commit('target/addTarget', this.target)
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been inserted successfully', life: 3000 })
+          } else {
+            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the insertion process', life: 3000 })
+          }
         }
         this.resetTargetForm()
         jQuery('#targetModalForm').modal('hide')
