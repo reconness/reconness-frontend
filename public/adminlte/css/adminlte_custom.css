@@ -653,3 +653,7 @@ div.right-sidebar div.info-box span.info-box-icon svg{
 .text-dark {
   color: #000!important;
 }
+
+div.target-input-borders ul.p-inputtext.p-chips-multiple-container{
+  border-radius: 0.8rem !important;
+}
