@@ -649,6 +649,7 @@ export default {
         this.editable = true
         this.agent.id = value.id
       } else {
+        this.resetAgentForm()
         this.agent.script = ''
       }
     }

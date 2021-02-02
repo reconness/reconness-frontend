@@ -54,6 +54,7 @@ export default {
         jQuery('#confirmation-modal').modal('hide')
         jQuery('#exampleModalCenter').modal('hide')
       }
+      this.$store.commit('setIdAgent', -1)
     },
     close () {
       this.nameTyped = ''
