@@ -176,10 +176,8 @@
       <aside class="control-sidebar-dark" @mouseleave="mouseleave" id="marketplace-agent">
         <!-- Control sidebar content goes here -->
         <div class="p-3 control-sidebar-content">
-            <!-- <i class="material-icons">local_mall</i> -->
             <svg xmlns="http://www.w3.org/2000/svg" class="float-left mr-1" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg>
             <h5>Marketplace</h5>
-            <!-- <a class="btn btn-sm btn-style btn-outline-primary" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a> -->
         </div>
 
         <div class="sidebar-list" v-for="agentInstaller of agentsInstallers" :key="agentInstaller.id">
@@ -204,7 +202,6 @@
         </div>
         <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
           <h5><b>{{ optionName }}</b></h5>
-          <!-- <p>Breve descripcion del agente</p> -->
           <p>{{ selectedAgentDescription }}</p>
         </OverlayPanel>
       </aside>

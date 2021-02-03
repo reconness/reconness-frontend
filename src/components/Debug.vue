@@ -4,11 +4,11 @@
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                 <div class="modal-header dialog-without-lines-header">
-                    <!-- PARAMETIZABLE -->
+                  <!-- PARAMETERIZABLE -->
                     <h4 class="modal-title"><b>Debug Agent</b></h4>
                 </div>
                 <div class="modal-body">
-                    <!-- PARAMETIZABLE -->
+                  <!-- PARAMETERIZABLE -->
                     <input style="margin-bottom: 20px;" v-model="terminalOutput" class="form-control agent-placeholder form-input-without-lines" placeholder="Terminal one line output">
                     <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/debug-agent" class="blue-text">Learn more</a></span>
                     <v-ace-editor v-model:value="terminalInput" lang="csharp" style="height:300px; margin-top: 6px;" theme="monokai"/>

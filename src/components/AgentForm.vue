@@ -9,7 +9,6 @@
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
                         <div style="float: left;" class="d-flex flex-row agent-name-container">
-                            <!-- <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"> -->
                             <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
@@ -19,8 +18,7 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <!-- <input  v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="$v.agent.name.$touch();isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">:value="loadFormOnEdition" -->
-                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink"><!--:value="loadFormOnEdition"-->
+                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
@@ -42,14 +40,12 @@
                         </div><!-- /.d-flex -->
                         </div>
                         <div class="col-12">
-                          <!-- <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @blur="$v.agent.repository.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository"> -->
                           <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.repository">
                             <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
                         </div>
                         <div class="col-12">
-                          <!-- <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @blur="$v.agent.target.$touch()" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target"> -->
                           <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.target">
@@ -162,8 +158,6 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-4">
-                                      <!-- <ColorPicker v-model="colorpickerData"/> -->
-                                      <!-- <button type="button" style="background-color: #8929e0;" class="btn btn-block btn-default agentform-color-components agentform-color-components-align"></button> -->
                                       <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">

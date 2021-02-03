@@ -47,8 +47,6 @@
                         <div class="col-lg-12">
                           <span class="home-quote"><em>"A smart person is not one that knows the answers, but one who knows where to find them..." </em></span>
                         </div>
-                        <!-- <div class="home-form"> -->
-                        <!-- <form class="form-inline ml-3"> -->
                         <div class="col-lg-12">
                           <div class="row">
                             <div class="col-lg-6">
@@ -61,7 +59,6 @@
                             <div class="col-lg-6">
                               <div class="row">
                                 <div class="col-lg-7">
-                                  <!-- <MultiSelect v-model="resource.categories" :options="categories" optionValue="name" placeholder="Categories" optionLabel="name" display="chip"/> -->
                                   <Chips v-model="resource.categories" placeholder="Categories"/>
                                 </div>
                                 <div class="col-lg-5">

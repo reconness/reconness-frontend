@@ -6,14 +6,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header dialog-without-lines-header">
-                  <!-- PARAMETIZABLE -->
+                <!-- PARAMETERIZABLE -->
                   <h5 class="modal-title"><b>Are you sure you want to delete following agent?</b></h5>
               </div>
               <div class="modal-body">
                 <select multiple class="form-control pt-0" id="exampleFormControlSelect2">
                   <option v-for="item of agentIdList" :key="item.id">{{item.name}}</option>
                 </select>
-                  <!-- PARAMETIZABLE -->
+                <!-- PARAMETERIZABLE -->
                   <p class="mt-3 mb-0">Please, type "yes" to confirm the delete action</p>
                   <input autofocus required v-model="nameTyped" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="">
               </div>

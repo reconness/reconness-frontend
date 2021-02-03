@@ -93,7 +93,6 @@
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <!-- <i class="nav-icon fas fa-th"></i> -->
                 <span class="material-icons">settings</span>
                 <p>
                   Settings
@@ -102,7 +101,6 @@
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <!-- <i class="nav-icon fas fa-th"></i> -->
                 <span class="material-icons">exit_to_app</span>
                 <p>
                   Logout

@@ -6,11 +6,11 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header dialog-without-lines-header">
-                  <!-- PARAMETIZABLE -->
+                <!-- PARAMETERIZABLE -->
                   <h5 class="modal-title"><b>Are you sure you want to delete selected target?</b></h5>
               </div>
               <div class="modal-body">
-                  <!-- PARAMETIZABLE -->
+                <!-- PARAMETERIZABLE -->
                   <p>Please, confirm the name of the Target {{selectedTargetName}} before delete it</p>
                   <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="Target Name">
               </div>
