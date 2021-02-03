@@ -368,10 +368,6 @@ import FileCodeIco from '@/components//FileCodeIco.vue'
 import Toast from 'primevue/toast'
 export default {
   methods: {
-    getRandomBooleanResult: function () {
-      var success = Math.random() < 0.5
-      return success
-    },
     setBlueColor: function () {
       this.agent.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
     },
@@ -390,8 +386,9 @@ export default {
     addAgent () {
       this.enableValidationMessages()
       if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command) {
+        const randomResult = this.$randomBooleanResult()
         if (this.editable) {
-          if (this.getRandomBooleanResult()) {
+          if (randomResult) {
             this.agent.id = parseInt(this.$store.getters.idAgent)
             this.$store.commit('updateAgent', this.agent)
             this.$store.commit('setIdAgent', -1)
@@ -400,7 +397,7 @@ export default {
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
           }
         } else {
-          if (this.getRandomBooleanResult()) {
+          if (randomResult) {
             this.agent.id = this.nextAgentSequence++
             this.$store.commit('addAgent', this.agent)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })

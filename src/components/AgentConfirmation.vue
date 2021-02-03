@@ -38,13 +38,9 @@ export default {
     }
   },
   methods: {
-    getRandomBooleanResult: function () {
-      var success = Math.random() < 0.5
-      return success
-    },
     removeAgent: function () {
       if (this.nameTyped === this.selectedAgentName) {
-        if (this.getRandomBooleanResult()) {
+        if (this.$randomBooleanResult()) {
           this.$store.commit('removeAgent', this.nameTyped)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been deleted successfully', life: 3000 })
         } else {

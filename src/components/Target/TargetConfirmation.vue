@@ -42,13 +42,9 @@ export default {
     Toast
   },
   methods: {
-    getRandomBooleanResult: function () {
-      var success = Math.random() < 0.5
-      return success
-    },
     removeTarget: function () {
       if (this.nameTyped === this.selectedTargetName) {
-        if (this.getRandomBooleanResult()) {
+        if (this.$randomBooleanResult()) {
           this.$store.commit('target/removeTarget', this.nameTyped)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
         } else {

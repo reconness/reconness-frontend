@@ -44,7 +44,7 @@ export default {
     },
     executeCode: function () {
       if (this.terminalInput !== '') {
-        const success = Math.random() < 0.5
+        const success = this.$randomBooleanResult()
         if (success) {
           this.executionResult = 'Compiled successfully'
         } else {

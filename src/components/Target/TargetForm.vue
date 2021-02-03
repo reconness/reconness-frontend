@@ -255,10 +255,6 @@ import Toast from 'primevue/toast'
 import Chips from 'primevue/chips'
 export default {
   methods: {
-    getRandomBooleanResult: function () {
-      var success = Math.random() < 0.5
-      return success
-    },
     setBlueColor: function () {
       this.target.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
     },
@@ -277,8 +273,9 @@ export default {
     addTarget () {
       this.enableValidationMessages()
       if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
+        const randomResult = this.$randomBooleanResult()
         if (this.editable) {
-          if (this.getRandomBooleanResult()) {
+          if (randomResult) {
             this.agent.id = parseInt(this.$store.getters.idAgent)
             this.$store.commit('updateAgent', this.agent)
             this.$store.commit('setIdAgent', -1)
@@ -287,7 +284,7 @@ export default {
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
           }
         } else {
-          if (this.getRandomBooleanResult()) {
+          if (randomResult) {
             this.target.id = this.nextTargetSequence++
             this.$store.commit('target/addTarget', this.target)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been inserted successfully', life: 3000 })

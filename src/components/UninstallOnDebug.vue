@@ -27,7 +27,7 @@ export default {
   props: ['installerOptionName', 'installerOption'],
   methods: {
     installer () {
-      const success = Math.random() < 0.5
+      const success = this.$randomBooleanResult()
       if (success) {
         this.$store.commit('installUninstallAgent', this.installerOption)
         this.$store.commit('removeAgentFromInstaller', this.installerOption)

@@ -42,12 +42,8 @@ export default {
     Toast
   },
   methods: {
-    getRandomBooleanResult: function () {
-      var success = Math.random() < 0.5
-      return success
-    },
     removeAgent: function () {
-      if (this.getRandomBooleanResult()) {
+      if (this.$randomBooleanResult()) {
         this.$store.commit('removeAgents')
         this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents has been deleted successfully', life: 3000 })
       } else {
