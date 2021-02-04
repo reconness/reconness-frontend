@@ -25,19 +25,21 @@
               <a href="#" class="font-italic font-color"><small>| RootDomains: {{item.rootDomains.length}}</small></a>
               </router-link> </div>
               <div class="float-right">
-               <a href="#" class="btn btn-sm btn-info  btn-style " @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">Edit Target</a>
+               <a href="#" class="btn btn-sm btn-info  btn-style " @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#targetModalForm">Edit Target</a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <TargetForm/>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import TargetForm from '@/components/Target/TargetForm.vue'
 
 export default {
   name: 'TargetsList',
@@ -63,10 +65,19 @@ export default {
     },
     isSelected (cardIndex) {
       return this.selectedCard === cardIndex
+    },
+    onEdit (e) {
+      this.setTargetId(e)
+      this.$store.commit('setDetailsLinks', false)
+    },
+    setTargetId (e) {
+      const selectedTargetId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('target/setIdTarget', selectedTargetId)
     }
   },
   components: {
-    BullseyeArrowIco
+    BullseyeArrowIco,
+    TargetForm
   }
 }
 </script>

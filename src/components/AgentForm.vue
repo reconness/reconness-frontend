@@ -388,6 +388,7 @@ export default {
             this.$store.commit('setIdAgent', -1)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
           } else {
+            this.$store.commit('setIdAgent', -1)
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
           }
         } else {
@@ -621,9 +622,6 @@ export default {
     }
   },
   watch: {
-    colorpickerData: function (value) {
-      this.agent.background = '#' + value
-    },
     loadSelectedAgent: function (value) {
       if (value !== undefined) {
         this.agent.name = value.name

@@ -20,7 +20,6 @@
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
                           <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" @keyup="enableValidationMessageRootDomains"/>
-                          <!-- <input :readonly="$store.state.fromDetailsLink" v-model="target.rootDomains" @keyup="enableValidationMessageRootDomains" class="form-control target-input-borders"> -->
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.rootDomains">
                             <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
@@ -276,11 +275,12 @@ export default {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {
-            this.agent.id = parseInt(this.$store.getters.idAgent)
-            this.$store.commit('updateAgent', this.agent)
-            this.$store.commit('setIdAgent', -1)
+            this.target.id = parseInt(this.$store.getters['target/idTarget'])
+            this.$store.commit('target/updateTarget', this.target)
+            this.$store.commit('target/setIdTarget', -1)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been updated successfully', life: 3000 })
           } else {
+            this.$store.commit('target/setIdTarget', -1)
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
           }
         } else {
@@ -300,8 +300,8 @@ export default {
     close () {
       this.resetTargetForm()
       this.editable = false
-      // this.$store.commit('setIdAgent', -1)
-      // this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('target/setIdTarget', -1)
+      this.$store.commit('setDetailsLinks', false)
     },
     resetTargetForm () {
       this.target = {
@@ -367,59 +367,6 @@ export default {
       this.enableValidationMessageRootDomains()
       this.enableValidationMessageInScope()
       this.enableValidationMessageOutScope()
-    },
-    enableBottomSection () {
-      this.isVisibleBottomSection = true
-    },
-    enableMiddleSection () {
-      this.isVisibleMiddleSection = true
-    },
-    disableBottomSection () {
-      this.isVisibleBottomSection = false
-    },
-    disableMiddleSection () {
-      this.isVisibleMiddleSection = false
-    },
-    enableTopSection () {
-      this.isVisibleTopSection = true
-    },
-    disableTopSection () {
-      this.isVisibleTopSection = false
-    },
-    showBottomSection () {
-      this.disableMiddleSection()
-      this.enableBottomSection()
-      this.disableTopSection()
-    },
-    showMiddleSection () {
-      this.enableMiddleSection()
-      this.disableBottomSection()
-      this.enableTopSection()
-      this.arrow_down = !this.arrow_down
-      this.arrow_up = !this.arrow_up
-    },
-    showTopSection () {
-      this.enableTopSection()
-      this.enableMiddleSection()
-    },
-    setData (nameExt) {
-      this.agent.name = nameExt
-    },
-    hideArrow: function () {
-      this.arrow_down = !this.arrow_down
-      this.arrow_up = !this.arrow_up
-    },
-    onFileChange (e) {
-      const files = e.target.files || e.dataTransfer.files
-      if (!files.length) {
-        return
-      }
-      const reader = new FileReader()
-      const vm = this
-      reader.onload = (e) => {
-        vm.agent.image = e.target.result
-      }
-      reader.readAsDataURL(files[0])
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.systemColors
@@ -517,32 +464,30 @@ export default {
     Chips
   },
   computed: {
-    loadSelectedAgent () {
-      const id = this.$store.getters.idAgent
-      return this.$store.getters.getAgentById(parseInt(id))
+    loadSelectedTarget () {
+      const id = this.$store.getters['target/idTarget']
+      return this.$store.getters['target/getTargetById'](parseInt(id))
     },
     isFormValid () {
       return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope)
     }
   },
   watch: {
-    loadSelectedAgent: function (value) {
+    loadSelectedTarget: function (value) {
       if (value !== undefined) {
-        this.agent.name = value.name
-        this.agent.background = value.background
-        this.agent.repository = value.repository
-        this.agent.target = value.target
-        this.agent.command = value.command
-        this.agent.isTargetType = value.isTargetType
-        this.agent.isRootDomainType = value.isRootDomainType
-        this.agent.isSubDomainType = value.isSubDomainType
-        this.agent.isAliveTrigger = value.isAliveTrigger
-        this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
-        this.agent.script = value.script
+        this.target.name = value.name
+        this.target.background = value.background
+        this.target.id = value.id
+        this.target.bugBountyUrl = value.bugBountyUrl
+        this.target.isPrivateProgram = value.isPrivateProgram
+        this.target.inScope = value.inScope
+        this.target.outScope = value.outScope
         this.editable = true
-        this.agent.id = value.id
-      } else {
-        this.agent.script = ''
+
+        this.target.rootDomains = value.rootDomains.slice(0)
+        this.target.rootDomains.forEach(element => {
+          this.rootDomainsTextItems.push(element.root)
+        })
       }
     }
   }
