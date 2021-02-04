@@ -39,7 +39,6 @@ export default ({
     },
     updateTarget (state, target) {
       const item = state.targetListStore.find(item => item.id === target.id)
-      console.log(target)
       Object.assign(item, target)
     }
   },

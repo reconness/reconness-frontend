@@ -19,7 +19,7 @@
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
-                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" @keyup="enableValidationMessageRootDomains"/>
+                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="enableValidationMessageRootDomains"/>
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.rootDomains">
                             <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
@@ -31,6 +31,9 @@
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.bugBountyUrl">
                             <span :class="{invalid: validators.blank.bugBountyUrl}">The field bug bounty is required</span>
+                        </div>
+                        <div class="col-12" v-if="validators.url.bugBountyUrl">
+                            <span :class="{invalid: validators.url.bugBountyUrl}">The field bug bounty is not a valid URL</span>
                         </div>
                         <div class="col-12">
                           <div class="custom-control custom-checkbox form-check private-program-container">
@@ -247,7 +250,6 @@
 
 </style>
 <script>
-import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
 import AccountCogIco from '@/components/AccountCogIco.vue'
 import Toast from 'primevue/toast'
@@ -271,7 +273,7 @@ export default {
     },
     addTarget () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
+      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.url.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {
@@ -323,6 +325,9 @@ export default {
           repository: false,
           target: false,
           command: false
+        },
+        url: {
+          bugBountyUrl: false
         }
       }
     },
@@ -345,6 +350,11 @@ export default {
         this.validators.blank.bugBountyUrl = true
       } else {
         this.validators.blank.bugBountyUrl = false
+      }
+      if (!this.validateUrl(this.target.bugBountyUrl) && !this.validators.blank.bugBountyUrl) {
+        this.validators.url.bugBountyUrl = true
+      } else {
+        this.validators.url.bugBountyUrl = false
       }
     },
     enableValidationMessageInScope () {
@@ -438,24 +448,12 @@ export default {
           bugBountyUrl: false,
           inScope: false,
           outScope: false
+        },
+        url: {
+          bugBountyUrl: false
         }
       },
       nextTargetSequence: 30
-    }
-  },
-  validations: {
-    agent: {
-      name: { required },
-      background: { required },
-      repository: { required },
-      target: { required },
-      command: { required },
-      isTargetType: { required },
-      isRootDomainType: { required },
-      isSubDomainType: { required },
-      isAliveTrigger: { required },
-      isHttpOpenTrigger: { required },
-      category: { required }
     }
   },
   components: {
@@ -469,7 +467,7 @@ export default {
       return this.$store.getters['target/getTargetById'](parseInt(id))
     },
     isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope)
+      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.url.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope)
     }
   },
   watch: {
