@@ -59,7 +59,7 @@
                             <div class="col-lg-6">
                               <div class="row">
                                 <div class="col-lg-7">
-                                  <Chips v-model="resource.categories" placeholder="Categories"/>
+                                  <Chips v-model="resource.categories" placeholder="Categories" :addOnBlur="true"/>
                                 </div>
                                 <div class="col-lg-5">
                                   <button style="height: 40px;" type="submit" class="btn button-clolour rounded btn-block" @click="addReference">Add</button></div>
