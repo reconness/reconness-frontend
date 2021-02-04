@@ -106,7 +106,6 @@ import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import { mapState } from 'vuex'
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 export default {
-  name: 'AgentMiniView',
   components: {
     TargetConfirmation,
     BullseyeArrowIco

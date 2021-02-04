@@ -52,7 +52,7 @@ export default {
         }
         this.nameTyped = ''
         jQuery('#confirmation-modal').modal('hide')
-        jQuery('#exampleModalCenter').modal('hide')
+        jQuery('#targetModalForm').modal('hide')
       }
     },
     close () {

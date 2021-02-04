@@ -32,6 +32,9 @@
         </div>
       </div>
     </div>
+    <div class="col-12">
+      <TargetConfirmation/>
+    </div>
     <TargetForm/>
   </div>
 </template>
@@ -40,6 +43,7 @@
 import { mapState, mapGetters } from 'vuex'
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
+import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 
 export default {
   name: 'TargetsList',
@@ -77,7 +81,8 @@ export default {
   },
   components: {
     BullseyeArrowIco,
-    TargetForm
+    TargetForm,
+    TargetConfirmation
   }
 }
 </script>
