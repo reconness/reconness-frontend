@@ -55,13 +55,11 @@ export default {
         jQuery('#confirmation-modal').modal('hide')
         jQuery('#targetModalForm').modal('hide')
       }
-      // this.$store.commit('target/setIdTarget', -1)
       this.setIdTarget(-1)
     },
     close () {
       this.nameTyped = ''
       this.setIdTarget(-1)
-      // this.$store.commit('target/setIdTarget', -1)
     }
   },
   computed: {
