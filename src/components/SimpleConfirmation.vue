@@ -26,7 +26,6 @@ export default {
     },
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
-      console.log(selectedId)
       this.$store.commit('setSelectedResource', selectedId)
     }
   }

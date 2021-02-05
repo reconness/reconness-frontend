@@ -313,7 +313,6 @@ export default {
       return this.agentListStore.sort(compare)
     },
     toggle (event) {
-      // console.log(event)
       this.selectedAgentDescription = event.currentTarget.getAttribute('data-description')
       this.optionName = event.currentTarget.getAttribute('data-agent')
       this.$refs.op.toggle(event)
