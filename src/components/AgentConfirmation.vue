@@ -54,6 +54,7 @@ export default {
     },
     close () {
       this.nameTyped = ''
+      this.$store.commit('setIdAgent', -1)
     }
   },
   computed: {

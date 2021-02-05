@@ -486,6 +486,8 @@ export default {
         this.target.rootDomains.forEach(element => {
           this.rootDomainsTextItems.push(element.root)
         })
+      } else {
+        this.resetTargetForm()
       }
     }
   }

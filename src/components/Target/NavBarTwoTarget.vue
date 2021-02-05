@@ -200,7 +200,7 @@ export default {
     ConfirmDeleteList
   },
   methods: {
-    /* Nuevos metodos */
+    /* New methods */
     // changeMode: function () {
     //   this.$store.state.target.setIsDefaultViewOnTarget()
     // },

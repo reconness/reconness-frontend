@@ -26,7 +26,7 @@
 </template>
 <script>
 import jQuery from 'jquery'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import Toast from 'primevue/toast'
 export default {
   data () {
@@ -42,6 +42,7 @@ export default {
     Toast
   },
   methods: {
+    ...mapMutations('target', ['setIdTarget']),
     removeTarget: function () {
       if (this.nameTyped === this.selectedTargetName) {
         if (this.$randomBooleanResult()) {
@@ -54,9 +55,13 @@ export default {
         jQuery('#confirmation-modal').modal('hide')
         jQuery('#targetModalForm').modal('hide')
       }
+      // this.$store.commit('target/setIdTarget', -1)
+      this.setIdTarget(-1)
     },
     close () {
       this.nameTyped = ''
+      this.setIdTarget(-1)
+      // this.$store.commit('target/setIdTarget', -1)
     }
   },
   computed: {
