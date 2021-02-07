@@ -14,4 +14,4 @@ import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.min.css'
 import Reconness from './plugins/reconness'
 
-createApp(App).use(store).use(router).use(VuelidatePlugin).use(PrimeVue).use(VueApexCharts).use(ToastService).use(Reconness)/* .component('MultiSelect', MultiSelect) */.mount('#app')
+createApp(App).use(store).use(router).use(VuelidatePlugin).use(PrimeVue).use(VueApexCharts).use(ToastService).use(Reconness).mount('#app')

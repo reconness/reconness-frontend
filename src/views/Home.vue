@@ -59,7 +59,12 @@
                             <div class="col-lg-6">
                               <div class="row">
                                 <div class="col-lg-7">
-                                  <Chips v-model="resource.categories" placeholder="Categories" :addOnBlur="true"/>
+                                  <div style="position: relative;">
+                                  <Chips ref="chips" id="category_item" v-model="resource.categories" placeholder="Categories" @keyup="getData(); isCategoriesMenuClosed=false" :addOnBlur="true"/>
+                                  <div v-click-outside="closeMenu" class="dropdown-menu" v-if="search_data.length && !isCategoriesMenuClosed">
+                                    <button class="dropdown-item" href="#" v-for="item in search_data" :key="item" @click="getName(item)">{{ item }}</button>
+                                  </div>
+                                  </div>
                                 </div>
                                 <div class="col-lg-5">
                                   <button style="height: 40px;" type="submit" class="btn button-clolour rounded btn-block" @click="addReference">Add</button></div>
@@ -116,6 +121,21 @@ export default {
     SimpleConfirmation,
     Chips
   },
+  directives: {
+    clickOutside: {
+      beforeMount (el, binding, vnode) {
+        el.clickOutsideEvent = function (event) {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value(event, el)
+          }
+        }
+        document.body.addEventListener('click', el.clickOutsideEvent)
+      },
+      unmounted (el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent)
+      }
+    }
+  },
   computed: {
     ...mapState(['resources'])
   },
@@ -143,6 +163,30 @@ export default {
       }
       this.$v.resource.url.$model = ''
       this.$v.$reset()
+    },
+    getData: function () {
+      const filterItem = document.getElementById('category_item').value
+      this.search_data = this.getUniqueCategories().filter(item => filterItem && item.includes(filterItem))
+    },
+    getName: function (name) {
+      this.resource.categories.pop()
+      this.resource.categories.push(name)
+      this.search_data = []
+    },
+    getUniqueCategories () {
+      var mergedReferences = []
+      this.resources.forEach(resource => {
+        resource.categories.forEach(categorie => {
+          mergedReferences.push(categorie)
+        })
+      })
+      this.resource.categories.forEach(element => {
+        mergedReferences.push(element)
+      })
+      return [...new Set(mergedReferences)]
+    },
+    closeMenu () {
+      this.isCategoriesMenuClosed = true
     }
   },
   data () {
@@ -151,12 +195,14 @@ export default {
         { name: 'searcher', id: '1' },
         { name: 'docs', id: '2' }
       ],
+      search_data: [],
       resource: {
         url: '',
         categories: [],
         id: -1
       },
-      selectedResource: -1
+      selectedResource: -1,
+      isCategoriesMenuClosed: false
     }
   },
   validations: {
@@ -215,17 +261,6 @@ blockquote {
   color: #00b1ff;
 }
 
-/* .p-multiselect{
-  width: 100%;
-  border-radius: 12px !important;
-  opacity: 1;
-  border: 1px solid #f1f3f5;
-  background: #fffffF 0% 0% no-repeat padding-box;
-  font-size: 14px;
-  color: #000000;
-  height: calc(1.8125rem + 2px);
-} */
-
 .p-chips{
   width: 100%;
   border-radius: 12px !important;
@@ -235,6 +270,17 @@ blockquote {
   font-size: 14px;
   color: #000000;
   /* min-height: calc(1.8125rem + 2px); */
+}
+
+.panel-footer{
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+}
+
+.dropdown-menu{
+  display: inherit !important;
+  width: 100%;
 }
 
 @media (min-width: 2560px) {
