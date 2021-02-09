@@ -10,104 +10,76 @@
    <i class="material-icons" >sort</i>
   </button>
   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-    <button class="dropdown-item" type="button">Name</button>
-    <button class="dropdown-item" type="button">Last Added</button>
+    <button class="dropdown-item" type="button" v-on:click="orderByNameDesc()">Name</button>
+    <button class="dropdown-item" type="button" v-on:click="orderByCalendar()">Last Added</button>
   </div>
         </div>
         </div>
-        <div class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
-          <span style="background:transparent linear-gradient(135deg, #03dced 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box;" class="info-box-icon bg-info elevation-1">
+        <div v-for="item of getLasTenTargets" :key="item.id" class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
+          <span v-bind:style ="{background:item.background}"  class="info-box-icon">
             <BullseyeArrowIco/>
           </span>
           <div class="info-box-content">
-          <span class="info-box-text domain-names-target">My target
-          <span class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
-    <!--       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-            <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmModal">
-            <button class="dropdown-item" type="button">Delete</button>
+          <span class="info-box-text domain-names-target">
+            <router-link to="/targets/details" class="text-dark">{{item.name}}</router-link>
+          <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+            <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmation-modal">
+            <button class="dropdown-item" @click="setTargetId" :data-id="item.id" type="button">Delete</button>
             </a>
-          </div>-->
+          </div>
           </span>
-            <span class="domain-names-list">
-             <small > >reconnes.com, anoth..</small>
-            </span>
-          </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-        <div class="info-box homerigthsidebar-infobox rounded-corners homerigthsidebar-targets-spaces">
-          <span style="background-color: #9a25b6 !important;" class="info-box-icon bg-info elevation-1"><BullseyeArrowIco/></span>
-          <div class="info-box-content">
-            <span class="info-box-text domain-names-target">My target
-              <span class="material-icons float-right vert">more_vert</span></span>
-            <span class="domain-names-list">
-              <small >>reconnes.com, anoth..</small>
-            </span>
-          </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-        <div class="info-box homerigthsidebar-infobox rounded-corners homerigthsidebar-targets-spaces">
-          <span style="background: transparent linear-gradient(160deg, #F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box;" class="info-box-icon bg-info elevation-1"><BullseyeArrowIco/></span>
-          <div class="info-box-content">
-            <span class="info-box-text domain-names-target">My target<span class="material-icons float-right vert">more_vert</span></span>
-            <span class="domain-names-list">
-              <small >>reconnes.com, anoth..</small>
-            </span>
-          </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-        <div class="info-box homerigthsidebar-infobox rounded-corners homerigthsidebar-targets-spaces">
-          <span style="background-color: #f36e1c !important;" class="info-box-icon bg-info elevation-1"><BullseyeArrowIco/></span>
-          <div class="info-box-content">
-            <span class="info-box-text domain-names-target">My target<span class="material-icons float-right vert">more_vert</span></span>
-            <span class="domain-names-list">
-              <small >>reconnes.com, anoth..</small>
-            </span>
-          </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-                <div class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
-          <span style="background:transparent linear-gradient(135deg, #03dced 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box;" class="info-box-icon bg-info elevation-1">
-            <BullseyeArrowIco/>
-          </span>
-          <div class="info-box-content">
-          <span class="info-box-text domain-names-target">My target
-          <span class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
-   <!--        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-            <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmModal">
-            <button class="dropdown-item" type="button">Delete</button>
-            </a>
-          </div>-->
-          </span>
-            <span class="domain-names-list">
-             <small > >reconnes.com, anoth..</small>
+            <span class="domain-names-list text-truncate">
+              <span  class="material-icons float-left mt-1"> chevron_right </span>
+             <small v-for="item2 of item.rootDomains" :key="item2.id">
+              {{item2.root}}, </small>
             </span>
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
       </div><!-- /.targets-list-home -->
-    <div class="modal fade" id="confirmModal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header dialog-without-lines-header">
-                  <!-- PARAMETIZABLE -->
-                  <h5 class="modal-title"><b>
-                       Are you sure you want to delete selected target?</b></h5>
-              </div>
-              <div class="modal-body">
-                  <!-- PARAMETIZABLE -->
-                  <p>Please, confirm the name of the target before delete it</p>
-                  <input autofocus required  style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target Name">
-              </div>
-              <div class="modal-footer dialog-without-lines-footer">
-                  <button type="button" class="btn btn-primary btn-danger delete_btn" >Delete</button>
-                  <button @click="close()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-              </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /#confirmation-modal -->
+    <TargetConfirmation></TargetConfirmation>
     </div>
 </template>
 <script>
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'HomeRigthSidebar',
   components: {
-    BullseyeArrowIco
+    BullseyeArrowIco,
+    TargetConfirmation
+  },
+  computed: {
+    ...mapState('target', ['targetListStore']),
+    ...mapGetters('target', ['getLasTenTargets'])
+  },
+  methods: {
+    orderByNameDesc: function () {
+      function compare (a, b) {
+        if (b.name < a.name) {
+          return -1
+        }
+        if (b.name > a.name) {
+          return 1
+        }
+        return 0
+      }
+      return this.targetListStore.sort(compare)
+    },
+    orderByCalendar: function () {
+      return this.targetListStore.sort((a, b) => {
+        const as = a.date.split('/')
+        const ad = new Date(as[2], as[1] - 1, as[0])
+        const bs = b.date.split('/')
+        const bd = new Date(bs[2], bs[1] - 1, bs[0])
+        return ad - bd
+      })
+    },
+    setTargetId (e) {
+      const selectedTargetId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('target/setIdTarget', selectedTargetId)
+    }
   }
 }
 </script>
@@ -129,6 +101,7 @@ export default {
   }
   .target-item-home .info-box.homerigthsidebar-infobox.rounded-corners{
     box-shadow: none;
+    overflow-x: hidden;
   }
 
   .homerigthsidebar-targets-spaces{
@@ -148,17 +121,19 @@ export default {
    margin-left: 10px;
 }
 
-.elevation-1 {
+/* .elevation-1 {
     box-shadow: 3px 12px 23px;
     border-radius: 13px !important;
     width: 56px !important;
     height: 56px!important;
+    min-width: 40px !important;
 }
 
 .vert {
     font-size: 20px;
     color: #a99c9c;
-}
+    cursor: pointer;
+} */
 
 .justify-content-between h5{
   font-size: 24px;
@@ -183,12 +158,12 @@ display: none;
 }
 
 @media (max-width: 1400px) {
-.justify-content-between h5{
-  font-size: 15px;
-}  .domain-names-target {
+  .justify-content-between h5{
+    font-size: 15px;
+  }
+  .domain-names-target {
     font-size: 13px;
-}
-
+  }
 }
 
 .btn-red{
@@ -207,5 +182,54 @@ display: none;
     flex: 0 0 16.666667%;
     max-width: 16.666667%;
 }
+.text-truncate {
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 1441px) and (max-width: 2559px) {
+  .text-truncate {
+    max-width: 150px;;
+  }
+}
+
+@media (min-width: 1160px) and (max-width: 1440px) {
+    .text-truncate {
+    max-width: 130px;
+  }
+}
+
+@media (max-width: 1160px) {
+.text-truncate {
+    max-width: 103px;
+}
+}
+
+@media (max-width: 768px) {
+.text-truncate {
+    max-width: 250px;
+}
+}
+@media (min-width: 320px) and (max-width: 425px) {
+  .text-truncate {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 320px) {
+  .text-truncate {
+    max-width: 160px;
+  }
+}
+.domain-names-list .material-icons{
+font-size: 17px;
+}
+.info-box >span{
+  width: 56px;
+  height: 56px;
+  border-radius: 13px;
+  box-shadow: 3px 12px 23px #eae9e9;
+  min-width: 40px !important;
+  opacity: 1;
 }
 </style>

@@ -1,0 +1,614 @@
+<template>
+    <div class="col-12">
+        <Toast :baseZIndex="200"/>
+        <form>
+        <div class="modal fade" id="targetModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content agent-containers">
+                <div class="modal-body">
+                <div class="row" id="middle-section">
+                    <div class="col-12 col-sm-8">
+                        <div class="col-12">
+                        <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
+                            <input  v-model="target.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My Target" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
+                        </div><!-- /.d-flex -->
+                        </div><!-- /.col-12 -->
+                        <div class="col-12" v-if="validators.blank.name">
+                            <span :class="{invalid: validators.blank.name}">The field name is required</span>
+                        </div>
+                        <div class="col-12">
+                          <label style="margin-top: 40px;">Root Domain</label>
+                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="enableValidationMessageRootDomains"/>
+                        </div><!-- /.col-12 -->
+                        <div class="col-12" v-if="validators.blank.rootDomains">
+                            <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
+                        </div>
+
+                        <div class="col-12">
+                          <label class="target-inputs-separator">Bug Bounty Program URL</label>
+                          <input :readonly="$store.state.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageBugBountyUrl" class="form-control target-input-borders">
+                        </div><!-- /.col-12 -->
+                        <div class="col-12" v-if="validators.blank.bugBountyUrl">
+                            <span :class="{invalid: validators.blank.bugBountyUrl}">The field bug bounty is required</span>
+                        </div>
+                        <div class="col-12" v-if="validators.url.bugBountyUrl">
+                            <span :class="{invalid: validators.url.bugBountyUrl}">The field bug bounty is not a valid URL</span>
+                        </div>
+                        <div class="col-12">
+                          <div class="custom-control custom-checkbox form-check private-program-container">
+                            <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="target_customCheckbox" v-model="target.isPrivateProgram">
+                            <label class="form-check-label custom-control-label float-right" for="target_customCheckbox">Is Private Program?</label>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label class="target-inputs-separator">In Scope</label>
+                          <textarea class="form-control target-input-borders" rows="3" v-model="target.inScope" @keyup="enableValidationMessageInScope"/>
+                        </div>
+                        <div class="col-12" v-if="validators.blank.inScope">
+                            <span :class="{invalid: validators.blank.inScope}">The field in scope is required</span>
+                        </div>
+                        <div class="col-12">
+                          <label class="target-inputs-separator">Out of Scope</label>
+                          <textarea class="form-control target-input-borders" rows="3" v-model="target.outScope" @keyup="enableValidationMessageOutScope"/>
+                        </div>
+                        <div class="col-12" v-if="validators.blank.outScope">
+                            <span :class="{invalid: validators.blank.outScope}">The field out scope is required</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                      <div class="row">
+                        <div class="col-12">
+                          <div v-bind:style="{background: target.background}" class="card text-white card-style  mb-3 agentform-default-color-box" style="height: 200px;">
+                                <div class="card-body link-color">
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="card-title postal-title">{{target.name}}</h3>
+                                    <AccountCogIco/>
+                                </div>
+                                <hr />
+                                <div class="card-body-inside">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="#">>...</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12" style="height: 54px">
+                                        <span class="float-right text-white targetform-action">Creating Target...</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16%;" class="col-12 text-center">
+                          <h3 style="font-weight: bold;" class="card-title disable-float">
+                                Pick a Color
+                                </h3>
+                            <div style="padding-left: 0px; margin-top: 7%; width: 100%;" class="card agent-containers target-combo-box-size">
+                            <div style="padding-left: 0;" class="combo-box-left-padding">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                  <div class="col-4">
+                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                  </div>
+                                </div>
+                            </div>
+                            </div><!-- /.card-body -->
+                        </div><!-- /.card-->
+                            <!-- asd -->
+                        </div>
+                      </div>
+                    </div>
+                </div><!-- /.row -->
+                </div><!-- /.modal-body -->
+                <div style="border-top: none;" class="modal-footer">
+                  <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</template>
+<style>
+    .targetform-action{
+        bottom: -28%;
+        position: absolute;
+        right: 8%;
+        font-size: .875rem;
+    }
+
+    .target-form-color-components{
+        width: 30px;
+        height: 30px;
+        margin-top: 23px !important;
+    }
+
+    .custom-control-input:checked~.custom-control-label::before {
+      color: #fff;
+      border-color: #00B1FF;
+      background-color: #00B1FF;
+      box-shadow: none;
+    }
+
+    .target-form-color-spacing-bottom{
+        margin-top: 44% !important;
+    }
+
+    .agentform-color-components-align{
+        margin: auto;
+    }
+
+    .image-button{
+      background-image: url('~@/assets/Rect.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      width: 32px;
+      height: 32px;
+    }
+
+    .agent-border{
+        border: 1px solid #F1F3F5;
+        border-radius: 12px;
+        width: 90px;
+        height: 47px;
+    }
+
+    .agent-name-input{
+      font-size: 24px;
+      font-weight: bold;
+      color: #000000;
+      border-left: 4px solid #00B1FF;
+      border-top: none;
+      border-bottom: none;
+      border-right: none;
+    }
+
+    .input.invalid input {
+        border: 1px solid red;
+    }
+
+    .invalid {
+        color: red;
+    }
+
+    .target-combo-box-size{
+        height: 144px;
+    }
+
+    .combo-box-left-padding{
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding-left: 19px;
+    }
+
+    .combo-box-right-padding{
+        padding-right: 15px;
+    }
+
+    .more-option-padding{
+      padding-top: 12px;
+      margin-right: 15px;
+    }
+
+    .postal-title{
+      overflow: hidden;
+    }
+
+    .p-colorpicker-preview {
+        width: 30px;
+        height: 30px;
+        margin: auto;
+        background-image: url('~@/assets/Rect.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .p-colorpicker-overlay {
+      margin-left: 1.5rem;
+    }
+
+    .triggers-label-space {
+      margin-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .triggers-options-space {
+      margin-top: 0.5rem;
+    }
+
+    .triggers-container-label-space{
+      margin-bottom: 0.2rem;
+    }
+
+    .triggers-more-options-area-size{
+      height: 335px;
+    }
+
+    button.delete-left-align{
+      margin-right: auto;
+    }
+
+</style>
+<script>
+import jQuery from 'jquery'
+import AccountCogIco from '@/components/AccountCogIco.vue'
+import Toast from 'primevue/toast'
+import Chips from 'primevue/chips'
+export default {
+  methods: {
+    setBlueColor: function () {
+      this.target.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
+    },
+    setVioletColor: function () {
+      this.target.background = 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box'
+    },
+    setRedColor: function () {
+      this.target.background = 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box'
+    },
+    setOrangeColor: function () {
+      this.target.background = '#ff8650 0% 0% no-repeat padding-box'
+    },
+    setGreenColor: function () {
+      this.target.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
+    },
+    addTarget () {
+      this.enableValidationMessages()
+      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.url.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
+        const randomResult = this.$randomBooleanResult()
+        if (this.editable) {
+          if (randomResult) {
+            this.target.id = parseInt(this.$store.getters['target/idTarget'])
+            this.$store.commit('target/updateTarget', this.target)
+            this.$store.commit('target/setIdTarget', -1)
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been updated successfully', life: 3000 })
+          } else {
+            this.$store.commit('target/setIdTarget', -1)
+            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
+          }
+        } else {
+          if (randomResult) {
+            this.target.id = this.nextTargetSequence++
+            this.$store.commit('target/addTarget', this.target)
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been inserted successfully', life: 3000 })
+          } else {
+            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the insertion process', life: 3000 })
+          }
+        }
+        this.resetTargetForm()
+        jQuery('#targetModalForm').modal('hide')
+        this.editable = false
+      }
+    },
+    close () {
+      this.resetTargetForm()
+      this.editable = false
+      this.$store.commit('target/setIdTarget', -1)
+      this.$store.commit('setDetailsLinks', false)
+    },
+    resetTargetForm () {
+      this.target = {
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        id: -1,
+        date: new Date().toString(),
+        rootDomains: [],
+        bugBountyUrl: '',
+        isPrivateProgram: false,
+        inScope: '',
+        outScope: ''
+      }
+      this.target.rootDomains.splice(0)
+      this.rootDomainsTextItems.splice(0)
+      this.validators = {
+        blank: {
+          name: false,
+          repository: false,
+          target: false,
+          command: false
+        },
+        url: {
+          bugBountyUrl: false
+        }
+      }
+    },
+    enableValidationMessageName () {
+      if (this.target.name === '') {
+        this.validators.blank.name = true
+      } else {
+        this.validators.blank.name = false
+      }
+    },
+    enableValidationMessageRootDomains () {
+      if (this.target.rootDomains.length === 0) {
+        this.validators.blank.rootDomains = true
+      } else {
+        this.validators.blank.rootDomains = false
+      }
+    },
+    enableValidationMessageBugBountyUrl () {
+      if (this.target.bugBountyUrl === '') {
+        this.validators.blank.bugBountyUrl = true
+      } else {
+        this.validators.blank.bugBountyUrl = false
+      }
+      if (!this.validateUrl(this.target.bugBountyUrl) && !this.validators.blank.bugBountyUrl) {
+        this.validators.url.bugBountyUrl = true
+      } else {
+        this.validators.url.bugBountyUrl = false
+      }
+    },
+    enableValidationMessageInScope () {
+      if (this.target.inScope === '') {
+        this.validators.blank.inScope = true
+      } else {
+        this.validators.blank.inScope = false
+      }
+    },
+    enableValidationMessageOutScope () {
+      if (this.target.outScope === '') {
+        this.validators.blank.outScope = true
+      } else {
+        this.validators.blank.outScope = false
+      }
+    },
+    enableValidationMessages () {
+      this.enableValidationMessageName()
+      this.enableValidationMessageBugBountyUrl()
+      this.enableValidationMessageRootDomains()
+      this.enableValidationMessageInScope()
+      this.enableValidationMessageOutScope()
+    },
+    setRandomColor () {
+      const predefinedColors = this.$store.state.systemColors
+      this.target.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+    },
+    verifyPencilStatus () {
+      if (this.isPencilVisibleAndClick) {
+        this.isPencilVisible = true
+      } else {
+        this.isPencilVisible = false
+      }
+    },
+    onEdit () {
+      this.$store.commit('setDetailsLinks', false)
+    },
+    addItemToRootDomains (item) {
+      if (!this.validateUrl(item.value[item.value.length - 1])) {
+        this.rootDomainsTextItems.pop()
+      } else {
+        this.target.rootDomains.push(
+          {
+            root: item.value.slice(-1)[0],
+            id: this.target.rootDomains.length
+          }
+        )
+      }
+    },
+    removeItemToRootDomains (rootDomainParam) {
+      const index = this.target.rootDomains.findIndex(item => item.root === rootDomainParam.value[0])
+      this.target.rootDomains.splice(index, 1)
+    },
+    validateUrl (value) {
+      var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
+      return !!pattern.test(value)
+    }
+  },
+  data () {
+    return {
+      target: {
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        id: -1,
+        date: new Date().toString(),
+        rootDomains: [],
+        bugBountyUrl: '',
+        isPrivateProgram: false,
+        inScope: '',
+        outScope: ''
+      },
+      rootDomainsTextItems: [],
+      isVisibleTopSection: true,
+      isVisibleMiddleSection: true,
+      isVisibleBottomSection: false,
+      middleSection: 'collapse',
+      editable: false,
+      arrow_down: true,
+      arrow_up: false,
+      isPencilVisible: false,
+      isPencilVisibleAndClick: false,
+      validators: {
+        blank: {
+          name: false,
+          rootDomains: false,
+          bugBountyUrl: false,
+          inScope: false,
+          outScope: false
+        },
+        url: {
+          bugBountyUrl: false
+        }
+      },
+      nextTargetSequence: 30
+    }
+  },
+  components: {
+    AccountCogIco,
+    Toast,
+    Chips
+  },
+  computed: {
+    loadSelectedTarget () {
+      const id = this.$store.getters['target/idTarget']
+      return this.$store.getters['target/getTargetById'](parseInt(id))
+    },
+    isFormValid () {
+      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.url.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope)
+    }
+  },
+  watch: {
+    loadSelectedTarget: function (value) {
+      if (value !== undefined) {
+        this.target.name = value.name
+        this.target.background = value.background
+        this.target.id = value.id
+        this.target.bugBountyUrl = value.bugBountyUrl
+        this.target.isPrivateProgram = value.isPrivateProgram
+        this.target.inScope = value.inScope
+        this.target.outScope = value.outScope
+        this.editable = true
+
+        this.target.rootDomains = value.rootDomains.slice(0)
+        this.target.rootDomains.forEach(element => {
+          this.rootDomainsTextItems.push(element.root)
+        })
+      } else {
+        this.resetTargetForm()
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+input[type="file"]{
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow:hidden;
+  position:absolute;
+  z-index: -1;
+}
+
+div.agent-containers div.agentform-default-color-box svg {
+  fill: #B3B3B3;
+}
+
+div.file-import-container svg {
+  opacity: 1;
+  fill: #B3B3B3;
+  width: 50px;
+  height: 50px;
+}
+
+label[for='uploadimage']{
+  transition: all .5s;
+  cursor: pointer;
+}
+.agent-name-input {
+   width: 50%;
+}
+.logo-image{
+  max-width: 1.2rem;
+  max-height: 1.2rem;
+  width: 1.2rem;
+  max: 1.2rem;
+}
+.form-control {
+  border-radius: 0rem;
+}
+.pencil-align-main {
+  margin: auto;
+    margin-left: 1.5rem;
+}
+.pencil-align-secondary {
+  margin: auto;
+  margin-left: 10%;
+}
+.btn-colors-size {
+  border-radius: 7px;
+}
+
+input.agent-name-input:hover{
+  background-color: #afd9e647;
+}
+
+.bordered-input-name-withfocus{
+  border-top: 2px solid #00B1FF;
+  border-right: 2px solid #00B1FF;
+  border-bottom: 2px solid #00B1FF;
+}
+
+.bordered-input-name-withoutfocus{
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: transparent;
+    opacity: 1;
+}
+
+.target-input-borders {
+  border-radius: 0.8rem
+}
+
+.target-inputs-separator {
+  margin-top: 14px;
+}
+
+.private-program-container {
+  /* float: right; */
+}
+
+div.private-program-container label {
+  color: #00B1FF;
+}
+
+label {
+  color: #495057;
+  font-size: 18px;
+  font-weight: 100 !important;
+  font-size: 1.1rem;
+}
+
+textarea {
+  resize: none;;
+}
+
+.disable-float{
+  float: none !important;
+}
+
+.p-chips{
+  width: 100%;
+  /* border-radius: 12px !important; */
+  opacity: 1;
+  /* border: 1px solid #f1f3f5; */
+  background: #fffffF 0% 0% no-repeat padding-box;
+  font-size: 14px;
+  color: #000000;
+  /* min-height: calc(1.8125rem + 2px); */
+}
+
+@media (max-width: 480px) {
+   .agent-name-input {
+    font-size: 20px;
+   }
+}
+</style>

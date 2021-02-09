@@ -2,9 +2,9 @@
     <div class="col-12 col-sm-4 col-xl-3 col-lgg-5" @mouseover="hoverCard( {id} )" @mouseout="hoverCard(-1)">
         <div class="initial-info-box agent-mini-main-container rounded-corners">
           <input type="checkbox" :id="id+1" name="checkitem"  :checked="isChecked(id)" ><label class="float-right" :for="id+1" v-show= check @click="addListAgentId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
-        <div class="info-padding">
-        <div style="margin-top: 0.2rem;" class="info-box">
-          <span class="rounded-corners info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
+        <div class="p-2">
+        <div class="info-box ">
+          <span class="info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
             <div class="info-box-content">
                 <span class="info-box-text agent-mini-agent-name">{{ name }}</span>
                 <nav class="nav">
@@ -42,10 +42,8 @@
     font-size: 12px;
     padding-top: 5px;
     padding-bottom: 3px;
-    /* border-left: 1px solid #F1F3F5; */
     padding-left: 0px;
     padding-right: 0px;
-    /*border-left: 1px solid #F1F3F5;*/
 }
 
 .agent-mini-color-gray{
@@ -88,7 +86,6 @@ input[type="checkbox"] + label:before {
   width: 26px;
   height: 26px;
   float: right;
- /* margin: 0.5em 0.5em 0 0;*/
   border: 2px solid #ccc;
   background: #fff;
   border-radius: .7rem;
@@ -121,30 +118,31 @@ input[type="checkbox"] {
 }
 
 .initial-info-box {
-    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
-    border-radius: .25rem;
     background: #fff;
-    margin-bottom: 1rem;
-    min-height: 80px;
+    min-height: 70px;
     position: relative;
     width: 100%;
+    box-shadow: -2px 17px 29px #eaeaea;
+    opacity: 1;
 }
-.info-padding{
-  padding: .5rem;
-}
+
 .info-box {
     box-shadow: none;
-    /* border-radius: .25rem; */
-    /* background: #fff; */
     display: -ms-flexbox;
     display: flex;
     margin-bottom: 0rem;
-     min-height: 60px;
-     padding: .0rem;
+    min-height: 60px;
+    padding: .0rem;
     position: relative;
     width: 100%;
 }
-
+.info-box >span{
+  width: 56px;
+  height: 56px;
+  border-radius: 13px;
+  box-shadow: 3px 12px 23px #eae9e9;
+  opacity: 1;
+}
 div.agent-mini-main-container svg {
     fill: #B3B3B3;
     width: 28px;

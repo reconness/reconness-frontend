@@ -358,9 +358,8 @@ body{
 }
 .card-style{
 	border-radius: 25px;
-	box-shadow: 13px 31px 41px #0C1F6A3B;
-	opacity:1;
-  /*background: transparent linear-gradient(130deg,#03DCED 0%,#0CB8E0 100%) 0% 0% no-repeat padding-box;*/
+	box-shadow: 13px 31px 41px #d6d6d6;
+  opacity:1;
 	}
 
 .d-flex	.card-title{
@@ -650,3 +649,78 @@ div.right-sidebar div.info-box span.info-box-icon svg{
   width: 32px;
   height: 32px;
 }
+.text-dark {
+  color: #000!important;
+}
+div.target-input-borders ul.p-inputtext.p-chips-multiple-container{
+  border-radius: 0.8rem !important;
+}
+.pi-times-circle:before{
+  content: url('../../adminlte/img/reconnes/minus-circle-red.svg') !important;
+}
+
+.vert {
+  font-size: 20px;
+  color: #a99c9c;
+  cursor: pointer;
+}
+div.card-body a svg{
+  fill: #ffffff;
+  fill-opacity: 0.2;
+  width: 35px;
+  height: 36px;
+}
+.icon-style{
+  fill: #ffffff;
+  fill-opacity: 0.4;
+}
+.input-line{
+  border-top: none; border-left: none; border-right: none;border-radius: 0;
+}
+/*********MARQUEE**************/
+/*
+.marquee{
+  margin: 0 auto;
+  width: 300px;
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}*/
+.marquee:before,.marquee:after{
+  position: absolute;
+  top: 0;
+  width: 50px;
+  height: 30px;
+  content: '';
+  z-index: 1;
+}
+.marquee_content{
+  width: 300%;
+  display:flex;
+  line-height: 30px;
+  animation-play-state: paused;
+}
+.marquee_content:hover{
+  /*display: flex;*/
+  animation-play-state: running;
+  animation: marquee 7s linear infinite forwards;
+}
+.list-inline{
+  /*display: flex;*/
+  justify-content: space-around;
+  /*width: 33.33%;*/
+  list-style: none;
+  /*padding: 0;
+  margin: 0;*/
+}
+@keyframes marquee{
+  0%{
+    transform: translateX(0);
+  }
+  100%{
+    transform: translateX(-66.6%);
+  }
+}
+/*********END MARQUEE**************/

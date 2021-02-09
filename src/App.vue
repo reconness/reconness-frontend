@@ -66,12 +66,12 @@
               </a></router-link>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <router-link to="/targets/list" >
+              <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation('Targets'), this.$store.commit('target/setIsDefaultViewOnTarget', true)" >
                 <BullseyeArrowIco/>
-                <p style="vertical-align: 0px;">
-                  Targets
-                </p>
+                <p style="vertical-align: 0px;">Targets </p>
               </a>
+            </router-link>
             </li>
             <li class="nav-item has-treeview menu-open">
               <a href="#" class="nav-link" v-on:click="hideArrow">
@@ -93,7 +93,6 @@
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <!-- <i class="nav-icon fas fa-th"></i> -->
                 <span class="material-icons">settings</span>
                 <p>
                   Settings
@@ -102,7 +101,6 @@
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <!-- <i class="nav-icon fas fa-th"></i> -->
                 <span class="material-icons">exit_to_app</span>
                 <p>
                   Logout
@@ -278,5 +276,9 @@ form .input-group {
 div.sidebar nav a.nav-link svg {
   margin-right: 15px;
 }
-
+@media (max-width: 480px) {
+.navbar-nav.ml-auto.right-navbar input{
+    width: 120px!important;
+}
+}
 </style>
