@@ -1,16 +1,22 @@
 <template>
     <div class="col-12 col-sm-4 col-xl-3 col-lgg-5" @mouseover="hoverCard( {id} )" @mouseout="hoverCard(-1)">
         <div class="initial-info-box agent-mini-main-container rounded-corners">
+        <input type="checkbox" :id="id+1" name="checkitem"  :checked="isChecked(id)" >
+        <label class="float-right" :for="id+1" v-show= check @click="addListTargetId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="p-2">
         <div class="info-box">
           <span class="info-box-icon icon-style" :style ="{background:background}"><BullseyeArrowIco/></span>
           <div class="info-box-content pr-1">
           <span class="info-box-text domain-names-target">
-            <router-link to="/targets/details" class="text-dark">{{name}}</router-link>
+           <router-link :to="{ name: 'TargetDetail', params: {id:id} }" class="text-body" >
+            {{name}}</router-link>
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
               <button class="dropdown-item" :data-id="id" type="button">Edit</button>
-              <button class="dropdown-item" :data-id="id" type="button">Details</button>
+              <router-link :to="{ name: 'TargetDetail', params: {id:id} }" >
+              <button class="dropdown-item" :data-id="id" type="button">
+               Details
+              </button></router-link>
               <button class="dropdown-item" data-toggle="modal" data-target="#confirmation-modal" @click="setTargetId" :data-id="id" type="button">Delete</button>
           </div>
           </span>
@@ -100,10 +106,45 @@ font-size: 17px;
   box-shadow: 3px 12px 23px #eae9e9;
   opacity: 1;
 }
+input[type="checkbox"] + label:before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  float: right;
+  border: 2px solid #ccc;
+  background: #fff;
+  border-radius: .7rem;
+  position: absolute;
+  right: 0rem;
+  z-index: 2;
+}
+input[type="checkbox"]:checked + label:before {
+  border-color: #00B1FF;
+}
+
+input[type="checkbox"]:checked + label:after {
+    content: "";
+    width: 12px;
+    height: 6px;
+    border: 4px solid #00B1FF;
+    float: right;
+    margin-right: -1.2em;
+    border-right: 0;
+    border-top: 0;
+    margin-top: .6em;
+    transform: rotate(-55deg);
+    position: absolute;
+    right: 1.6rem;
+    z-index: 2;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
 </style>
 <script>
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 export default {
   components: {
@@ -123,9 +164,45 @@ export default {
     rootDom: Array
   },
   computed: {
-    ...mapState(['agentIdList'])
+    ...mapState('target', ['check', 'targetIdList'])
   },
   methods: {
+    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
+    addListTargetId (e) {
+      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
+      const selectedTargetName = e.currentTarget.getAttribute('data-name')
+      if (document.getElementById(selectedId + 1).checked === false) {
+        if (this.targetIdList.length !== 0 && this.checkSelected === false) {
+          this.checkSelected = false
+          this.checkDeleted = selectedId
+        } else {
+          this.checkSelected = true
+        }
+        this.addIdTarget({ id: selectedId, name: selectedTargetName })
+      } else {
+        this.removebyIdTarget(selectedId)
+        if (this.checkSelected === false) {
+          this.checkDeleted = selectedId
+        }
+      }
+    },
+    isChecked (itemID) {
+      if (this.checkSelected === false) {
+        if (this.targetIdList.find(target => target.id === itemID)) {
+          if (this.checkDeleted === itemID) {
+            return false
+          } else {
+            return true
+          }
+        } else {
+          if (this.checkDeleted === itemID) {
+            return true
+          } else {
+            return false
+          }
+        }
+      }
+    },
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },

@@ -3,9 +3,11 @@
     <div v-for="item of arrayFilterList" :key="item.id" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)"
     class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
       <div class="card text-white card-style  mb-3" v-bind:style ="{background:item.background}">
+        <input type="checkbox" :id="item.id+1"  name="checkitem" :checked="isChecked(item.id)">
+        <label :for="item.id+1" v-show= check  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
           <div class="d-flex justify-content-between mb-4">
-             <router-link to="/targets/details">
+             <router-link :to="{ name: 'TargetDetail', params: {id: item.id} }">
             <h1 class="card-title mt-2">{{item.name}}</h1>
              </router-link>
             <a href="#" class="mt-n2">  <BullseyeArrowIco/> </a>
@@ -21,8 +23,8 @@
           <div class="row">
             <div class="col-12">
               <div class="float-left mt-2">
-              <router-link to="/targets/rootDomainDetails">
-              <a href="#" class="font-italic font-color"><small>| RootDomains: {{item.rootDomains.length}}</small></a>
+              <router-link :to="{ name: 'RootDomainDetails', params: {id: item.id} }" class="font-italic font-color">
+                <small>| RootDomains: {{item.rootDomains.length}}</small>
               </router-link> </div>
               <div class="float-right">
                <a href="#" class="btn btn-sm btn-info  btn-style " @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#targetModalForm">Edit Target</a>
@@ -40,7 +42,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
@@ -48,7 +50,7 @@ import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 export default {
   name: 'TargetsList',
   computed: {
-    ...mapState('target', ['targetListStore', 'filterColour', 'styleList']),
+    ...mapState('target', ['targetListStore', 'check', 'filterColour', 'styleList', 'targetIdList']),
     ...mapGetters('target', ['filterByColor']),
     arrayFilterList () {
       if (this.filterColour === '') {
@@ -60,10 +62,48 @@ export default {
   },
   data: function () {
     return {
-      selectedCard: -1
+      selectedCard: -1,
+      checkSelected: false,
+      checkDeleted: -1
     }
   },
   methods: {
+    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
+    isChecked (itemID) {
+      if (this.checkSelected === false) {
+        if (this.targetIdList.find(target => target.id === itemID)) {
+          if (this.checkDeleted === itemID) {
+            return false
+          } else {
+            return true
+          }
+        } else {
+          if (this.checkDeleted === itemID) {
+            return true
+          } else {
+            return false
+          }
+        }
+      }
+    },
+    addListTargetId (e) {
+      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
+      const selectedTargetName = e.currentTarget.getAttribute('data-name')
+      if (document.getElementById(selectedId + 1).checked === false) {
+        if (this.targetIdList.length !== 0 && this.checkSelected === false) {
+          this.checkSelected = false
+          this.checkDeleted = selectedId
+        } else {
+          this.checkSelected = true
+        }
+        this.addIdTarget({ id: selectedId, name: selectedTargetName })
+      } else {
+        this.removebyIdTarget(selectedId)
+        if (this.checkSelected === false) {
+          this.checkDeleted = selectedId
+        }
+      }
+    },
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },
@@ -183,5 +223,35 @@ ul li span{
     max-width: 33.333333%;
     padding: 20px;
 }
+}
+input[type="checkbox"] + label:before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  float: right;
+ /* margin: 0.5em 0.5em 0 0;*/
+  border: 2px solid #ccc;
+  background: #fff;
+  border-radius: .7rem;
+}
+input[type="checkbox"]:checked + label:before {
+  border-color: #00B1FF;
+}
+
+input[type="checkbox"]:checked + label:after {
+    content: "";
+    width: 12px;
+    height: 6px;
+    border: 4px solid #00B1FF;
+    float: right;
+    margin-right: -1.2em;
+    border-right: 0;
+    border-top: 0;
+    margin-top: .6em;
+    transform: rotate(-55deg);
+}
+
+input[type="checkbox"] {
+  display: none;
 }
 </style>

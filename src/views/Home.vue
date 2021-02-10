@@ -33,7 +33,9 @@
                   <div class="col-12 col-lg-4 pr-4">
                   <TargetsHighestInteraction :background="'#03dced'"></TargetsHighestInteraction>
                   </div>
+                  <div class="col-12 col-lg-4">
                   <DaysHighestInteraction></DaysHighestInteraction>
+                  </div>
                   <div class="col-12 col-lg-4 pl-4">
                   <TargetsHighestInteraction :background="'rgb(134, 98, 202)'"></TargetsHighestInteraction>
                   </div>

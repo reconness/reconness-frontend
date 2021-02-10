@@ -17,12 +17,12 @@
           <label for="import-target" class="nav-link pos mb-0"> Import Target </label>
           <input type="file" id="import-target" accept=".json"/>
         </li>
-        <!-- <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos " v-show= "check" href="#" @click="close()">Cancel</a>
-        </li> -->
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#" >Edit List</a>
-          <!-- <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveAgents">Delete Agents</a> -->
+          <a class="nav-link pos" v-show= "check" href="#" @click="close()">Cancel</a>
+        </li>
+        <li class="nav-item nav-margin border-right d-none d-sm-block">
+          <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
+          <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Agents</a>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -128,11 +128,11 @@
             <label for="import-target" class="dropdown-item import-font"> Import Target </label>
             <input type="file" id="import-target" accept=".json"/>
             <div class="dropdown-divider"></div>
-            <!-- <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a> -->
-            <!-- <div class="dropdown-divider" v-show= "check" ></div> -->
+            <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a>
+            <div class="dropdown-divider" v-show= "check" ></div>
             <a class="dropdown-item" href="#">Edit List</a>
-            <!-- <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a> -->
-            <!-- <div class="dropdown-divider"></div> -->
+            <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveTargets" v-bind:style ="{color:colorDelete}">Delete Agents</a> -->
+            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
             <a class="dropdown-item item-sort" href="#" v-on:click="orderByName()">
@@ -164,7 +164,7 @@
       <TargetForm/>
       <Toast :baseZIndex="200"/>
   </div>
-  <ConfirmDeleteList></ConfirmDeleteList>
+  <TargetConfirmList></TargetConfirmList>
      </div>
 </template>
 
@@ -172,7 +172,7 @@
 import { mapState, mapMutations } from 'vuex'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import Toast from 'primevue/toast'
-import ConfirmDeleteList from '@/components/ConfirmDeleteList.vue'
+import TargetConfirmList from '@/components/Target/TargetConfirmList.vue'
 import jQuery from 'jquery'
 export default {
   name: 'NavBarTwoTarget',
@@ -189,7 +189,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('target', ['targetListStore']),
+    ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList']),
     arrayUniqueColours () {
       return [...new Set(this.targetListStore.map(item => item.background))]
     }
@@ -197,7 +197,7 @@ export default {
   components: {
     TargetForm,
     Toast,
-    ConfirmDeleteList
+    TargetConfirmList
   },
   methods: {
     /* New methods */
@@ -212,7 +212,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations('target', ['isFilter']),
+    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -276,8 +276,8 @@ export default {
       this.optionName = event.currentTarget.getAttribute('data-agent')
       this.$refs.op.toggle(event)
     },
-    onBashRemoveAgents () {
-      if (this.$store.state.agentIdList.length > 0) {
+    onBashRemoveTargets () {
+      if (this.targetIdList.length > 0) {
         jQuery('#confirmation-modald').modal()
       } else {
         return false
@@ -289,7 +289,7 @@ export default {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''
-      this.$store.commit('cancelIdAgent')
+      this.cancelIdTarget()
     }
   }
 }

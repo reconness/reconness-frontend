@@ -527,6 +527,15 @@ font-weight: 600;
   font-size: 17px;
   opacity: 1;
 }
+.number div{
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 1px 4px;
+  border-radius: 4px;
+  color:#ffffff;
+  font-size: 17px;
+  opacity: 1;
+  margin: 3px;
+}
 
 .delete_btn{
   background-color: #ff4545 !important;
@@ -724,3 +733,8 @@ div.card-body a svg{
   }
 }
 /*********END MARQUEE**************/
+#import {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
