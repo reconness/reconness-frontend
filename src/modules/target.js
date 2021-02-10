@@ -2,10 +2,10 @@ export default ({
   namespaced: true,
   state: {
     targetListStore: [
-      { id: 1, name: 'My target 1', background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)', date: '02/01/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }], bugBountyUrl: 'http://hackerone.com/a', isPrivateProgram: true, inScope: 'In scope 1', outScope: 'In scope 1' },
+      { id: 1, name: 'My target 1', background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)', date: '02/01/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }], bugBountyUrl: 'http://hackerone.com/a', isPrivateProgram: true, inScope: 'In scope 1', outScope: 'In scope 1', messages: [{ id: 1, sender: 'Michael', sendDate: '2020-02-01', message: 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.' }, { id: 2, sender: 'Belinda', sendDate: '2020-03-01', message: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.' }] },
       { id: 2, name: 'My target 2', background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)', date: '21/01/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }, { id: 2, root: 'anothertest1.com' }, { id: 2, root: 'anothertest2.com' }], bugBountyUrl: 'http://hackerone.com/f', isPrivateProgram: false, inScope: 'In scope 5', outScope: 'In scope 5' },
       { id: 3, name: 'My target 3', background: ' linear-gradient(160deg, #F96767 0%, #FF4343 100%)', date: '21/02/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }], bugBountyUrl: 'http://hackerone.com/b', isPrivateProgram: true, inScope: 'In scope 2', outScope: 'In scope 2' },
-      { id: 4, name: 'My target 4', background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)', date: '21/04/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }], bugBountyUrl: 'http://hackerone.com/c', isPrivateProgram: true, inScope: 'In scope 3', outScope: 'In scope 3' },
+      { id: 4, name: 'My target 4', background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)', date: '21/04/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }], bugBountyUrl: 'http://hackerone.com/c', isPrivateProgram: true, inScope: 'In scope 3', outScope: 'In scope 3', messages: [{ id: 1, sender: 'Michael', sendDate: '2020-02-01', message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.' }] },
       { id: 5, name: 'My target 5', background: ' linear-gradient(135deg, #3adb99 0%, #16c465 100%)', date: '21/02/2018', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }], bugBountyUrl: 'http://hackerone.com/d', isPrivateProgram: false, inScope: 'In scope 4', outScope: 'In scope 4' },
       { id: 6, name: 'My target 6', background: 'linear-gradient(130deg, #FF9966 0%, #f36a33 100%)', date: '21/01/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }] },
       { id: 7, name: 'My target 7', background: ' linear-gradient(160deg, #737be5 0%, #7159d3 100%)', date: '21/06/2020', rootDomains: [{ id: 1, root: 'reconnes.com' }, { id: 2, root: 'anotherness.com' }], bugBountyUrl: 'http://hackerone.com/a', isPrivateProgram: true, inScope: 'In scope 1', outScope: 'In scope 1' },
@@ -19,7 +19,8 @@ export default ({
     isDefaultViewOnTarget: true,
     check: false,
     targetIdList: [],
-    colorDelete: '#000000'
+    colorDelete: '#000000',
+    idMessage: -1
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -113,6 +114,23 @@ export default ({
         return 0
       }
       return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
+    },
+    setIdMessage (state, id) {
+      state.idMessage = parseInt(id)
+    },
+    removeMessage (state, idTarget) {
+      const target = state.targetListStore.find(item => item.id === parseInt(idTarget))
+      const messageIndex = target.messages.findIndex(message => message.id === parseInt(state.idMessage))
+      target.messages.splice(messageIndex, 1)
+    },
+    sendTargetMessage (state, messageInfo) {
+      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
+      const message = {
+        id: state.idMessage++,
+        message: messageInfo.message,
+        sendDate: new Date().toISOString().substring(0, 10)
+      }
+      target.messages.push(message)
     }
   },
   actions: {
@@ -137,6 +155,9 @@ export default ({
     },
     getTargetById: (state) => (id) => {
       return state.targetListStore.find(target => target.id === id)
+    },
+    getTargetMessages: (state) => (id) => {
+      return state.targetListStore.find(target => target.id === id).messages
     }
   }
 })

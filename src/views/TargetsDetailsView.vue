@@ -2,6 +2,7 @@
   <div>
   <!-- Contains navs-bar -->
   <NavBarTwoDetailTarget :TargetName = "Target.name" />
+  <MessageConfirmation></MessageConfirmation>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
@@ -153,6 +154,7 @@ import { mapGetters } from 'vuex'
 import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
 import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vue'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
+import MessageConfirmation from '@/components/Target/MessageConfirmation.vue'
 export default {
   name: 'TargetsDetailsView',
   data: function () {
@@ -260,7 +262,8 @@ export default {
   components: {
     DaysHighestInteraction,
     TargetsHighestInteraction,
-    NavBarTwoDetailTarget
+    NavBarTwoDetailTarget,
+    MessageConfirmation
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])

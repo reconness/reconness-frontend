@@ -40,6 +40,17 @@
             </a>
           </div>
         </li>
+        <li class="nav-item border-right d-none d-sm-block">
+          <a
+            class="nav-link float-left control-sidebar-right"
+            href="#"
+            data-slide="true"
+            @mouseenter="mouseEnter">
+            <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
+              <i class="material-icons agent-mini-color-gray">chat_bubble</i>
+            </button>
+          </a>
+        </li>
       </ul>
     </nav>
 
@@ -89,6 +100,50 @@
         </li>
       </ul>
     </nav>
+    <div v-show="isCommentsSectionOpen">
+      <aside class="control-sidebar-dark main-messages-container" @mouseleave="mouseleave">
+        <div class="p-3 control-sidebar-content-target-details overflow-auto message-container">
+            <input class="form-control target-input-borders" placeholder="Write your comments here..." v-model="message">
+            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendMessage">Send</button>
+            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0">Cancel</button>
+        </div>
+
+        <div class="sidebar-list comments-list">
+          <dl class="row">
+            <div class="col-7">
+              <h5>Comments List</h5>
+            </div>
+            <div class="col-5">
+              <a class="float-right sortby-lnk" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"  aria-expanded="false" >
+                <p class="float-left">Sort by</p>
+                <button type="button" class="btn btn-light sortby-comments">
+                  <i class="material-icons">sort</i>
+                </button>
+              </a>
+            </div>
+            <div v-for="message of this.getTargetMessages(parseInt(this.$route.params.id))" :key="message.id" class="col-12">
+              <div class="row">
+                <div class="col-12">
+                  <p>
+                    {{message.message}}
+                  </p>
+                </div>
+                <div class="col-9">
+                  <i style="color: #c2c7d0;">{{this.loggedUser.name}} / {{message.sendDate}}</i>
+                </div>
+                <div class="col-3">
+                  <a class="float-right" @click="setSelectedMessage" href="#" data-target="#message-confirmation-modal" :data-id="message.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
+                </div>
+                <div class="col-12">
+                  <hr style="width: 84%;">
+                </div>
+              </div>
+            </div>
+          </dl>
+        </div>
+      </aside>
+    </div>
+
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
@@ -97,7 +152,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
@@ -108,15 +163,25 @@ export default {
   data: function () {
     return {
       active_arrow_down: true,
-      active_arrow_up: false
+      active_arrow_up: false,
+      isCommentsSectionOpen: false,
+      loggedUser: Object,
+      message: ''
     }
+  },
+  mounted () {
+    this.loggedUser = this.getLoggedUser
+  },
+  computed: {
+    ...mapGetters('target', ['getTargetMessages']),
+    ...mapGetters(['getLoggedUser'])
   },
   components: {
     OverlayPanel,
     TargetConfirmation
   },
   methods: {
-    ...mapMutations('target', ['orderRomainsByCalendar', 'orderRomainByNameDesc', 'orderRomainsByNameAsc']),
+    ...mapMutations('target', ['orderRomainsByCalendar', 'orderRomainByNameDesc', 'orderRomainsByNameAsc', 'sendTargetMessage', 'setIdMessage']),
     orderByCalendar: function () {
       this.orderRomainsByCalendar(parseInt(this.$route.params.id))
     },
@@ -136,6 +201,22 @@ export default {
     },
     setTargetId (e) {
       this.$store.commit('target/setIdTarget', parseInt(this.$route.params.id))
+    },
+    mouseEnter: function () {
+      this.isCommentsSectionOpen = !this.isCommentsSectionOpen
+    },
+    mouseleave: function () {
+      this.isCommentsSectionOpen = !this.isCommentsSectionOpen
+    },
+    sendMessage: function () {
+      this.sendTargetMessage({
+        idTarget: parseInt(this.$route.params.id),
+        message: this.message
+      })
+    },
+    setSelectedMessage: function (e) {
+      const selectedId = e.currentTarget.getAttribute('data-id')
+      this.setIdMessage(selectedId)
     }
   }
 }
@@ -160,5 +241,77 @@ export default {
 }
 .dropdown-item {
     font-weight: 600;
+}
+.control-sidebar-content-target-details {
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+div.message-container input {
+  border-radius: 10px;
+}
+
+div.message-container button {
+  color: #949191;
+}
+
+div.sidebar-list.comments-list {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  margin: auto;
+  margin-top: 10px;
+}
+
+div.control-sidebar-dark.main-messages-container{
+ border-radius: 12px;
+}
+
+div.comments-list h5 {
+  color: #000000;
+  padding: 8px;
+  font-weight: 600;;
+}
+
+div.comments-list p {
+  font-weight: normal;
+}
+
+button.sortby-comments {
+  background-color: rgba(230, 233, 237, 0.4);
+    border-color: rgba(221, 221, 221, 0.03);
+    color: #000000;
+    padding: 0.1rem;
+    border-radius: 0.4rem;
+    /* width: 26px; */
+    height: 30px;
+}
+
+div.sidebar-list.comments-list p{
+  color: #000000;
+    font-size: 14px;
+    font-weight: normal ;
+    padding: 5px;
+}
+
+div.sidebar-list.comments-list a.sortby-lnk{
+  position: relative;
+  margin-top: 5px;
+  color: #000000;
+}
+
+div.sidebar-list.comments-list a{
+  color: #000000;
+  font-weight: normal;
+  color: #ff4545
+}
+
+div.sidebar-list.comments-list i{
+  color: #000000;
+  font-weight: normal;
+}
+
+aside.control-sidebar-dark.main-messages-container {
+  /* width: 48%; */
+  width: 23%; /*usar media queries*/
 }
 </style>
