@@ -45,7 +45,7 @@
             class="nav-link float-left control-sidebar-right"
             href="#"
             data-slide="true"
-            @mouseenter="mouseEnter">
+            @click="mouseEnter">
             <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
               <i class="material-icons agent-mini-color-gray">chat_bubble</i>
             </button>
@@ -100,12 +100,13 @@
         </li>
       </ul>
     </nav>
+    <transition name="slide-fade">
     <div v-show="isCommentsSectionOpen">
       <aside class="control-sidebar-dark main-messages-container" @mouseleave="mouseleave">
         <div class="p-3 control-sidebar-content-target-details overflow-auto message-container">
             <input class="form-control target-input-borders" placeholder="Write your comments here..." v-model="message">
-            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendMessage">Send</button>
-            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0">Cancel</button>
+            <button :disabled="message === ''" style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendMessage">Send</button>
+            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0" @click="message = ''">Cancel</button>
         </div>
 
         <div class="sidebar-list comments-list">
@@ -155,6 +156,7 @@
         </div>
       </aside>
     </div>
+    </transition>
 
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
@@ -349,4 +351,18 @@ aside.control-sidebar-dark.main-messages-container {
   /*width: 23%;usar media queries*/
   width: 350px;
 }
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from, .slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
 </style>
