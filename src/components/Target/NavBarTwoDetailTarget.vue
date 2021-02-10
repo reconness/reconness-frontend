@@ -45,7 +45,7 @@
             class="nav-link float-left control-sidebar-right"
             href="#"
             data-slide="true"
-            @click="mouseEnter">
+            @mouseenter="mouseEnter">
             <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
               <i class="material-icons agent-mini-color-gray">chat_bubble</i>
             </button>
@@ -100,7 +100,6 @@
         </li>
       </ul>
     </nav>
-    <transition name="slide-fade">
     <div v-show="isCommentsSectionOpen">
       <aside class="control-sidebar-dark main-messages-container" @mouseleave="mouseleave">
         <div class="p-3 control-sidebar-content-target-details overflow-auto message-container">
@@ -156,7 +155,6 @@
         </div>
       </aside>
     </div>
-    </transition>
 
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
@@ -350,19 +348,6 @@ aside.control-sidebar-dark.main-messages-container {
   /* width: 48%; */
   /*width: 23%;usar media queries*/
   width: 350px;
-}
-
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from, .slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
 }
 
 </style>
