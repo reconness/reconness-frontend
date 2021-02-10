@@ -8,7 +8,7 @@
             <router-link to="/targets/list" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <p class="float-right ml-2 font-weight-bold">{{targetName}}</p>
+            <p class="float-right ml-2 font-weight-bold">{{TargetName}}</p>
         </li>
       </ul>
       <!-- Right navbar links -->
@@ -28,6 +28,12 @@
             </button>
           </a>
           <div class="dropdown-menu dropdown-menu-right">
+           <a class="dropdown-item" href="#" v-on:click="orderByName()">
+              <i class="material-icons float-left">title</i>
+              <p class="float-left">Name</p>
+              <i class="material-icons right" v-show="active_arrow_down">keyboard_arrow_down</i>
+              <i class="material-icons right" v-show="active_arrow_up">keyboard_arrow_up</i>
+            </a>
             <a class="dropdown-item" href="#" v-on:click="orderByCalendar()">
               <i class="material-icons float-left">event</i>
               <p class="right">Created</p>
@@ -43,7 +49,7 @@
         <li class="nav-item d-none d-sm-inline-block d-flex">
             <span class="material-icons">arrow_back</span>
             <router-link to="/targets/list" class="color-blue">
-            <p class="float-right ml-2">{{targetName}}</p>
+            <p class="float-right ml-2">{{TargetName}}</p>
             </router-link>
         </li>
       </ul>
@@ -62,7 +68,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
             <a class="dropdown-item">Delete Target</a>
-            <div class="dropdown-divider" v-show= "check" ></div>
+            <div class="dropdown-divider"  ></div>
             <a class="dropdown-item" href="#">Export Target</a>
            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
@@ -76,40 +82,44 @@
         </li>
       </ul>
     </nav>
-  <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel" >
+  <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
      </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwoTarget',
   props: {
-    targetName: String
+    TargetName: String
   },
   data: function () {
     return {
+      active_arrow_down: true,
+      active_arrow_up: false
     }
-  },
-  computed: {
-    ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList'])
   },
   components: {
     OverlayPanel
   },
   methods: {
-    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget']),
+    ...mapMutations('target', ['orderRomainsByCalendar', 'orderRomainByNameDesc', 'orderRomainsByNameAsc']),
     orderByCalendar: function () {
-      return this.targetListStore.sort((a, b) => {
-        const as = a.date.split('/')
-        const ad = new Date(as[2], as[1] - 1, as[0])
-        const bs = b.date.split('/')
-        const bd = new Date(bs[2], bs[1] - 1, bs[0])
-        return ad - bd
-      })
+      this.orderRomainsByCalendar(parseInt(this.$route.params.id))
+    },
+    orderByName: function () {
+      if (this.active_arrow_down === true) {
+        this.active_arrow_down = false
+        this.active_arrow_up = true
+        return this.orderRomainByNameDesc(parseInt(this.$route.params.id))
+      } else if (this.active_arrow_up === true) {
+        this.active_arrow_down = true
+        this.active_arrow_up = false
+        return this.orderRomainsByNameAsc(parseInt(this.$route.params.id))
+      }
     },
     toggle (event) {
       this.$refs.op.toggle(event)

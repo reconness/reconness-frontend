@@ -1,7 +1,7 @@
 <template>
   <div>
   <!-- Contains navs-bar -->
-  <NavBarTwoDetailTarget :targetName = Target.name />
+  <NavBarTwoDetailTarget :TargetName = "Target.name" />
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
@@ -53,7 +53,7 @@
                 </dl>
               </div>
               </div>
-            <TargetsHighestInteraction v-bind:style ="{background:Target.background}"></TargetsHighestInteraction>
+            <TargetsHighestInteraction v-bind:style ="{background:Target.background}" :title= "'Subdomains with more numbers of directories'"></TargetsHighestInteraction>
             </div>
             <div class="col-12 col-lg-4">
             <DaysHighestInteraction v-bind:style ="{background:Target.background}"></DaysHighestInteraction>
@@ -118,13 +118,13 @@
                    <blockquote class="blockquote-style"  v-bind:style ="{borderImage:Target.background}">
                     <p>Number os subdomains by each open ports</p>
                     </blockquote>
-            </div>
-            <div class="col-3">
+                </div>
+                <div class="col-3">
                 <span class = "number float-right" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + Target.background}" style= "background-clip: content-box, border-box;">
                 <div v-bind:style ="{background:Target.background}">43</div>
                 </span>
-            </div>
-       </div>
+               </div>
+               </div>
                 <apexchart width="100%" height="270px"  type="bar" :options="optionsBar" :series="seriesBar"></apexchart>
               </div>
               </div>
@@ -160,68 +160,73 @@ export default {
       Target: Object,
       optionsBar: {
         chart: {
-          id: 'chart-bar',
-          type: 'bar',
-          foreColor: '#000',
           toolbar: { show: false },
-          plotOptions: {
-            bar: {
-              labels: {
-                position: 'top'
-                // hideOverflowingLabels: false
-              },
-              horizontal: false,
-              // startingShape: 'flat',
-              endingShape: 'flat',
-              columnWidth: '1%',
-              borderRadius: 100
-              // distributed: true,
-            }
-          },
-          dataLabels: {
-            enabled: true,
-            style: {
-              fontSize: '12px',
-              colors: ['#fff']
-            }
-          },
-          dropShadow: {
-            enabled: false,
-            color: '#000'
+          height: 350,
+          type: 'bar'
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              position: 'top' // top, center, bottom
+            },
+            columnWidth: '20%',
+            borderRadius: 200
           }
         },
         grid: {
           borderColor: 'transparent',
           row: { colors: ['transparent'] }
         },
-        xaxis: {
-          categories: [21, 22, 53, 80, 443, 62]
-        },
-        fill: {
-          colors: '#7159d3'
-        },
-        // crosshairs: {
-        //   fill: {
-        //     type: 'gradient',
-        //     gradient: {
-        //       colorFrom: '#FF8650',
-        //       colorTo: '#FF8650',
-        //       stops: [0, 100],
-        //       opacityFrom: 0.4,
-        //       opacityTo: 0.5
-        //     }
-        //   }
-        // },
-        yaxis: { },
-        colors: 'black',
         dataLabels: {
           enabled: true,
-          position: 'top'
+          offsetY: -20,
+          style: {
+            fontSize: '12px',
+            colors: ['#304758']
+          }
+        },
+        fill: {
+          // colors: '',
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: '',
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 50, 100],
+            colorStops: []
+          }
+        },
+        xaxis: {
+          categories: [21, 22, 53, 80, 443, 62],
+          axisBorder: {
+            show: true
+          },
+          axisTicks: {
+            show: false
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: true
+          },
+          axisTicks: {
+            show: false
+          },
+          labels: {
+            show: true
+          }
         }
       },
       seriesBar: [{
         name: 'series-1',
-        data: [22, 30, 70, 77, 42, 20, 50]
+        data: [62, 44, 38, 50, 78, 57]
       }],
       optionsDonut: {
         legend: {

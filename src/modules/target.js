@@ -80,6 +80,39 @@ export default ({
       state.check = !state.check
       state.styleList = '1.25rem'
       state.colorDelete = '#000000'
+    },
+    orderRomainsByCalendar (state, id) {
+      return state.targetListStore.find(item => item.id === id).rootDomains.sort((a, b) => {
+        const as = a.date.split('/')
+        const ad = new Date(as[2], as[1] - 1, as[0])
+        const bs = b.date.split('/')
+        const bd = new Date(bs[2], bs[1] - 1, bs[0])
+        return ad - bd
+      })
+    },
+    orderRomainsByNameAsc (state, id) {
+      function compare (a, b) {
+        if (a.root < b.root) {
+          return -1
+        }
+        if (a.root > b.root) {
+          return 1
+        }
+        return 0
+      }
+      return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
+    },
+    orderRomainByNameDesc (state, id) {
+      function compare (a, b) {
+        if (b.root < a.root) {
+          return -1
+        }
+        if (b.root > a.root) {
+          return 1
+        }
+        return 0
+      }
+      return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
     }
   },
   actions: {

@@ -490,6 +490,9 @@ font-weight: 600;
 .router-link-exact-active  .nav-link p,.router-link-exact-active  .nav-link span{
   color: #fff;
 }
+.router-link-exact-active  .nav-link p,.router-link-exact-active  .nav-link svg{
+  fill: #fff;
+}
 .router-link-exact-active  button, .router-link-exact-active  .nav-link{
   background-color:#00B1FF;
   color: #fff;
