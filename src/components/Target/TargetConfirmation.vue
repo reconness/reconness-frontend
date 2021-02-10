@@ -48,6 +48,9 @@ export default {
         if (this.$randomBooleanResult()) {
           this.$store.commit('target/removeTarget', this.nameTyped)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
+          if (this.$route.name === 'TargetDetail') {
+            this.$router.push({ name: 'Targets' })
+          }
         } else {
           this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
         }

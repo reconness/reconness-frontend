@@ -102,15 +102,12 @@
         <li class="nav-item float-left border-right">
           <a class="nav-link" href="#">
               <!-- <router-link to="/agent/list"> -->
-            <button type="button" class="btn btn-sm" id="dropdownMenuButton">
+            <button type="button"  class="btn btn-light margin-right" @click="this.$store.commit('target/setIsDefaultViewOnTarget', false)">
               <i class="material-icons">format_list_bulleted</i>
             </button>
-            <!-- </router-link> -->
-            <!-- <router-link to="/agents/list"> -->
-            <button type="button" class="btn btn-light">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('target/setIsDefaultViewOnTarget', true)">
               <i class="material-icons">grid_view</i>
             </button>
-            <!-- </router-link> -->
           </a>
         </li>
         <li class="nav-item dropdown border-right">
@@ -130,8 +127,8 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a>
             <div class="dropdown-divider" v-show= "check" ></div>
-            <a class="dropdown-item" href="#">Edit List</a>
-            <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveTargets" v-bind:style ="{color:colorDelete}">Delete Agents</a> -->
+            <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
+            <a class="dropdown-item " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Agents</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -140,7 +137,7 @@
               <p class="float-left">Name</p>
               <i class="material-icons right" v-show="active_arrow_down">keyboard_arrow_down</i>
               <i class="material-icons right" v-show="active_arrow_up">keyboard_arrow_up</i>
-            </a>
+            </a></div><div class="dropdown-item">
             <a class="dropdown-item item-sort" href="#" v-on:click="orderByCalendar()">
               <i class="material-icons float-left">event</i>
               <p class="right">Calendar</p>

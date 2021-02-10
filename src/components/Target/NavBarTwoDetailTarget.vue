@@ -14,7 +14,7 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#">Delete Target</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" @click="setTargetId">Delete Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#">Export Target</a>
@@ -73,6 +73,13 @@
            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
+               <a class="dropdown-item item-sort" href="#" v-on:click="orderByName()">
+              <i class="material-icons float-left">title</i>
+              <p class="float-left">Name</p>
+              <i class="material-icons right" v-show="active_arrow_down">keyboard_arrow_down</i>
+              <i class="material-icons right" v-show="active_arrow_up">keyboard_arrow_up</i>
+            </a></div>
+            <div class="dropdown-item">
             <a class="dropdown-item item-sort" href="#" v-on:click="orderByCalendar()">
               <i class="material-icons float-left">event</i>
               <p class="right">Calendar</p>
@@ -85,11 +92,13 @@
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
+  <TargetConfirmation></TargetConfirmation>
      </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
+import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwoTarget',
@@ -103,7 +112,8 @@ export default {
     }
   },
   components: {
-    OverlayPanel
+    OverlayPanel,
+    TargetConfirmation
   },
   methods: {
     ...mapMutations('target', ['orderRomainsByCalendar', 'orderRomainByNameDesc', 'orderRomainsByNameAsc']),
@@ -123,6 +133,9 @@ export default {
     },
     toggle (event) {
       this.$refs.op.toggle(event)
+    },
+    setTargetId (e) {
+      this.$store.commit('target/setIdTarget', parseInt(this.$route.params.id))
     }
   }
 }

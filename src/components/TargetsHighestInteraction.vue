@@ -3,7 +3,7 @@
             <div class="row">
             <div class="col-9">
                 <p  class="targets-title">
-                Targets with the most interactions in the last week
+                {{title}}
                 </p>
             </div>
             <div class="col-3">
@@ -85,7 +85,8 @@
 export default {
   name: 'TargetsHighestInteraction',
   props: {
-    background: String
+    background: String,
+    title: String
   }
 }
 </script>
