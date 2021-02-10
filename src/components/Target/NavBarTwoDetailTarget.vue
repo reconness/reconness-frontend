@@ -120,6 +120,18 @@
                   <i class="material-icons">sort</i>
                 </button>
               </a>
+              <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href="#" v-on:click="orderByUserName()">
+                  <i class="material-icons float-left">title</i>
+                  <p class="float-left">User Name</p>
+                  <i class="material-icons arrow-right" v-show="active_arrow_down_message">keyboard_arrow_down</i>
+                  <i class="material-icons arrow-right" v-show="active_arrow_up_message">keyboard_arrow_up</i>
+                </a>
+                <a class="dropdown-item" href="#" v-on:click="orderByMessageDate()">
+                  <i class="material-icons float-left">event</i>
+                  <p class="icon-right">Created</p>
+                </a>
+              </div>
             </div>
             <div v-for="message of this.getTargetMessages(parseInt(this.$route.params.id))" :key="message.id" class="col-12">
               <div class="row">
@@ -129,7 +141,7 @@
                   </p>
                 </div>
                 <div class="col-9">
-                  <i style="color: #c2c7d0;">{{this.loggedUser.name}} / {{message.sendDate}}</i>
+                  <i style="color: #c2c7d0;">{{message.sender}} / {{message.sendDate}}</i>
                 </div>
                 <div class="col-3">
                   <a class="float-right" @click="setSelectedMessage" href="#" data-target="#message-confirmation-modal" :data-id="message.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
@@ -164,24 +176,24 @@ export default {
     return {
       active_arrow_down: true,
       active_arrow_up: false,
+      active_arrow_down_message: true,
+      active_arrow_up_message: false,
       isCommentsSectionOpen: false,
-      loggedUser: Object,
       message: ''
     }
   },
-  mounted () {
-    this.loggedUser = this.getLoggedUser
-  },
   computed: {
-    ...mapGetters('target', ['getTargetMessages']),
-    ...mapGetters(['getLoggedUser'])
+    ...mapGetters('target', ['getTargetMessages'])
   },
   components: {
     OverlayPanel,
     TargetConfirmation
   },
   methods: {
-    ...mapMutations('target', ['orderRomainsByCalendar', 'orderRomainByNameDesc', 'orderRomainsByNameAsc', 'sendTargetMessage', 'setIdMessage']),
+    ...mapMutations('target', ['orderRomainsByCalendar', 'orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'orderRomainByNameDesc', 'orderRomainsByNameAsc', 'sendTargetMessage', 'setIdMessage']),
+    orderByMessageDate: function () {
+      this.orderMessagesByCalendar(parseInt(this.$route.params.id))
+    },
     orderByCalendar: function () {
       this.orderRomainsByCalendar(parseInt(this.$route.params.id))
     },
@@ -194,6 +206,17 @@ export default {
         this.active_arrow_down = true
         this.active_arrow_up = false
         return this.orderRomainsByNameAsc(parseInt(this.$route.params.id))
+      }
+    },
+    orderByUserName: function () {
+      if (this.active_arrow_down_message === true) {
+        this.active_arrow_down_message = false
+        this.active_arrow_up_message = true
+        return this.orderMessagesByUserNameDesc(parseInt(this.$route.params.id))
+      } else if (this.active_arrow_up_message === true) {
+        this.active_arrow_down_message = true
+        this.active_arrow_up_message = false
+        return this.orderMessagesByUserNameAsc(parseInt(this.$route.params.id))
       }
     },
     toggle (event) {
@@ -213,6 +236,7 @@ export default {
         idTarget: parseInt(this.$route.params.id),
         message: this.message
       })
+      this.message = ''
     },
     setSelectedMessage: function (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
@@ -227,6 +251,16 @@ export default {
 }
 .dropdown-menu {
     min-width: 10rem;
+}
+
+.arrow-right{
+  margin-left: 3%;
+  margin-bottom: auto;
+}
+
+.icon-right{
+  padding-left: 24% !important;
+  margin-bottom: auto;
 }
 
 .right{
@@ -312,6 +346,7 @@ div.sidebar-list.comments-list i{
 
 aside.control-sidebar-dark.main-messages-container {
   /* width: 48%; */
-  width: 23%; /*usar media queries*/
+  /*width: 23%;usar media queries*/
+  width: 350px;
 }
 </style>

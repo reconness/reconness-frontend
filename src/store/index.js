@@ -192,9 +192,6 @@ export default createStore({
     },
     getRandomColor: state => {
       return state.systemColors[Math.floor(Math.random() * state.systemColors.length)]
-    },
-    getLoggedUser (state) {
-      return { name: 'John Doe' }
     }
   }
 })
