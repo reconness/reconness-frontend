@@ -17,7 +17,8 @@
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" @click="setTargetId">Delete Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#">Export Target</a>
+          <label for="export-target" class="nav-link pos mb-0"> Export Target </label>
+          <input type="file" id="export-target" accept=".json"/>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link" data-toggle="dropdown" href="#" role="button"
@@ -47,7 +48,8 @@
             data-slide="true"
             @mouseenter="mouseEnter">
             <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
-              <i class="material-icons agent-mini-color-gray">chat_bubble</i>
+              <!-- <i class="material-icons agent-mini-color-gray">chat_bubble</i> -->
+              <CommentIco/>
             </button>
           </a>
         </li>
@@ -167,6 +169,7 @@
 import { mapMutations, mapGetters } from 'vuex'
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import OverlayPanel from 'primevue/overlaypanel'
+import CommentIco from '@/components/CommentIco.vue'
 export default {
   name: 'NavBarTwoTarget',
   props: {
@@ -187,7 +190,8 @@ export default {
   },
   components: {
     OverlayPanel,
-    TargetConfirmation
+    TargetConfirmation,
+    CommentIco
   },
   methods: {
     ...mapMutations('target', ['orderRomainsByCalendar', 'orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'orderRomainByNameDesc', 'orderRomainsByNameAsc', 'sendTargetMessage', 'setIdMessage']),
@@ -348,6 +352,18 @@ aside.control-sidebar-dark.main-messages-container {
   /* width: 48%; */
   /*width: 23%;usar media queries*/
   width: 350px;
+}
+#export-target {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+  display: none;
+}
+label {
+  cursor: pointer;
+}
+#dropdownMenuButton {
+  fill: #B3B3B3
 }
 
 </style>

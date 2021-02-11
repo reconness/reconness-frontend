@@ -341,6 +341,7 @@ label {
   opacity: 0;
   position: absolute;
   z-index: -1;
+  display: none;
 }
 .import-font{
   font-weight: 600 !important;
