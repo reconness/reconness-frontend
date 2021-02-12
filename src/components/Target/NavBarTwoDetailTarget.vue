@@ -106,6 +106,7 @@
       <aside class="control-sidebar-dark main-messages-container" @mouseleave="mouseleave">
         <div class="p-3 control-sidebar-content-target-details overflow-auto message-container">
             <input class="form-control target-input-borders" placeholder="Write your comments here..." v-model="message">
+            <CommentIco/>
             <button :disabled="message === ''" style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendMessage">Send</button>
             <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0" @click="message = ''">Cancel</button>
         </div>
@@ -364,6 +365,21 @@ label {
 }
 #dropdownMenuButton {
   fill: #B3B3B3
+}
+
+.control-sidebar-content-target-details svg {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  top: 24px;
+  right: 9%;
+}
+
+.control-sidebar-content-target-details input.target-input-borders {
+  padding-right: 13%;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="col-12" style="z-index: 40000;">
+    <div class="col-12" style="z-index: 20001;">
         <div class="modal fade" id="message-confirmation-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
