@@ -67,42 +67,42 @@
                     <i class="material-icons mt-2 icon-color-style" v-bind:style ="{background:Target.background}" style="font-size:26px">event</i>
                 </div>
                 <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> Nuevo puerto abierto<br> en subdomin <em> {{'<yanet>'}} </em> </p>
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
                   <div class="d-flex flex-column text-right">
                     <span><span class="font-weight-bold">Jun</span>24</span>
                     <span class="text-style-opacity">2020</span>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> Nuevo puerto abierto<br> en subdomin <em> {{'<yanet>'}} </em> </p>
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
                   <div class="d-flex flex-column text-right">
                     <span><span class="font-weight-bold">Jun</span>24</span>
                     <span class="text-style-opacity">2020</span>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> Nuevo puerto abierto<br> en subdomin <em> {{'<yanet>'}} </em> </p>
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
                   <div class="d-flex flex-column text-right">
                     <span><span class="font-weight-bold">Jun</span>24</span>
                     <span class="text-style-opacity">2020</span>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> Nuevo puerto abierto<br> en subdomin <em> {{'<yanet>'}} </em> </p>
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
                   <div class="d-flex flex-column text-right">
                     <span><span class="font-weight-bold">Jun</span>24</span>
                     <span class="text-style-opacity">2020</span>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> Nuevo puerto abierto<br> en subdomin <em> {{'<yanet>'}} </em> </p>
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
                   <div class="d-flex flex-column text-right">
                     <span><span class="font-weight-bold">Jun</span>24</span>
                     <span class="text-style-opacity">2020</span>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> Nuevo puerto abierto<br> en subdomin <em> {{'<yanet>'}} </em> </p>
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
                   <div class="d-flex flex-column text-right">
                     <span><span class="font-weight-bold">Jun</span>24</span>
                     <span class="text-style-opacity">2020</span>

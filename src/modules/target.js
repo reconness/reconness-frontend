@@ -83,7 +83,7 @@ export default ({
       state.styleList = '1.25rem'
       state.colorDelete = '#000000'
     },
-    orderRomainsByCalendar (state, id) {
+    orderDomainsByCalendar (state, id) {
       return state.targetListStore.find(item => item.id === id).rootDomains.sort((a, b) => {
         const as = a.date.split('/')
         const ad = new Date(as[2], as[1] - 1, as[0])
@@ -92,7 +92,7 @@ export default ({
         return ad - bd
       })
     },
-    orderRomainsByNameAsc (state, id) {
+    orderDomainsByNameAsc (state, id) {
       function compare (a, b) {
         if (a.root < b.root) {
           return -1
@@ -104,7 +104,7 @@ export default ({
       }
       return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
     },
-    orderRomainByNameDesc (state, id) {
+    orderDomainByNameDesc (state, id) {
       function compare (a, b) {
         if (b.root < a.root) {
           return -1

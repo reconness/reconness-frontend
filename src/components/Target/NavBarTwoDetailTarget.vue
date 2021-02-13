@@ -81,7 +81,8 @@
           <div class="dropdown-menu dropdown-menu-right scroll">
             <a class="dropdown-item">Delete Target</a>
             <div class="dropdown-divider"  ></div>
-            <a class="dropdown-item" href="#">Export Target</a>
+            <label for="export-target" class="nav-link pos mb-0 comments-page"> Export Target </label>
+            <input type="file" id="export-target" accept=".json"/>
            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
@@ -210,22 +211,22 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['orderRomainsByCalendar', 'orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'orderRomainByNameDesc', 'orderRomainsByNameAsc', 'sendTargetMessage', 'setIdMessage']),
+    ...mapMutations('target', ['orderDomainsByCalendar', 'orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'orderDomainByNameDesc', 'orderDomainsByNameAsc', 'sendTargetMessage', 'setIdMessage']),
     orderByMessageDate: function () {
       this.orderMessagesByCalendar(parseInt(this.$route.params.id))
     },
     orderByCalendar: function () {
-      this.orderRomainsByCalendar(parseInt(this.$route.params.id))
+      this.orderDomainsByCalendar(parseInt(this.$route.params.id))
     },
     orderByName: function () {
       if (this.active_arrow_down === true) {
         this.active_arrow_down = false
         this.active_arrow_up = true
-        return this.orderRomainByNameDesc(parseInt(this.$route.params.id))
+        return this.orderDomainByNameDesc(parseInt(this.$route.params.id))
       } else if (this.active_arrow_up === true) {
         this.active_arrow_down = true
         this.active_arrow_up = false
-        return this.orderRomainsByNameAsc(parseInt(this.$route.params.id))
+        return this.orderDomainsByNameAsc(parseInt(this.$route.params.id))
       }
     },
     orderByUserName: function () {
@@ -416,6 +417,10 @@ label {
 .slide-fade-enter-from, .slide-fade-leave-to {
   transform: translateX(100px);
   opacity: 0;
+}
+
+.dropdown-menu label.comments-page {
+  padding: .25rem 1rem;
 }
 
 </style>
