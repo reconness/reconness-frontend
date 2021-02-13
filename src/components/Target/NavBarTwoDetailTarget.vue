@@ -48,7 +48,6 @@
             data-slide="true"
             @mouseenter="mouseEnter">
             <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
-              <!-- <i class="material-icons agent-mini-color-gray">chat_bubble</i> -->
               <CommentIco/>
             </button>
           </a>
@@ -102,8 +101,8 @@
         </li>
       </ul>
     </nav>
-    <div v-show="isCommentsSectionOpen">
-      <aside class="control-sidebar-dark main-messages-container" @mouseleave="mouseleave">
+    <transition name="slide-fade">
+      <aside v-if="isCommentsSectionOpen" class="control-sidebar-dark main-messages-container overflow-auto" v-click-outside="closeComments">
         <div class="p-3 control-sidebar-content-target-details overflow-auto message-container">
             <input class="form-control target-input-borders" placeholder="Write your comments here..." v-model="message">
             <CommentIco/>
@@ -157,7 +156,7 @@
           </dl>
         </div>
       </aside>
-    </div>
+    </transition>
 
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
@@ -167,7 +166,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapState } from 'vuex'
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import CommentIco from '@/components/CommentIco.vue'
@@ -187,12 +186,28 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetMessages'])
+    ...mapGetters('target', ['getTargetMessages']),
+    ...mapState('target', ['idMessage'])
   },
   components: {
     OverlayPanel,
     TargetConfirmation,
     CommentIco
+  },
+  directives: {
+    clickOutside: {
+      beforeMount (el, binding, vnode) {
+        el.clickOutsideEvent = function (event) {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value(event, el)
+          }
+        }
+        document.body.addEventListener('click', el.clickOutsideEvent)
+      },
+      unmounted (el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent)
+      }
+    }
   },
   methods: {
     ...mapMutations('target', ['orderRomainsByCalendar', 'orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'orderRomainByNameDesc', 'orderRomainsByNameAsc', 'sendTargetMessage', 'setIdMessage']),
@@ -231,7 +246,7 @@ export default {
       this.$store.commit('target/setIdTarget', parseInt(this.$route.params.id))
     },
     mouseEnter: function () {
-      this.isCommentsSectionOpen = !this.isCommentsSectionOpen
+      this.isCommentsSectionOpen = true
     },
     mouseleave: function () {
       this.isCommentsSectionOpen = !this.isCommentsSectionOpen
@@ -246,6 +261,14 @@ export default {
     setSelectedMessage: function (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.setIdMessage(selectedId)
+    },
+    closeComments: function () {
+      const isDeleteWindowsOpened = document.getElementById('message-confirmation-modal').getAttribute('aria-modal')
+      if (this.isCommentsSectionOpen && isDeleteWindowsOpened) {
+        this.isCommentsSectionOpen = true
+      } else {
+        this.isCommentsSectionOpen = false
+      }
     }
   }
 }
@@ -380,6 +403,19 @@ label {
 
 .control-sidebar-content-target-details input.target-input-borders {
   padding-right: 13%;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from, .slide-fade-leave-to {
+  transform: translateX(100px);
+  opacity: 0;
 }
 
 </style>
