@@ -56,25 +56,10 @@ export default {
   },
   methods: {
     orderByNameDesc: function () {
-      function compare (a, b) {
-        if (b.name < a.name) {
-          return -1
-        }
-        if (b.name > a.name) {
-          return 1
-        }
-        return 0
-      }
-      return this.targetListStore.sort(compare)
+      return this.targetListStore.sort(this.$compareNamesDesc)
     },
     orderByCalendar: function () {
-      return this.targetListStore.sort((a, b) => {
-        const as = a.date.split('/')
-        const ad = new Date(as[2], as[1] - 1, as[0])
-        const bs = b.date.split('/')
-        const bd = new Date(bs[2], bs[1] - 1, bs[0])
-        return ad - bd
-      })
+      return this.targetListStore.sort(this.$orderByCalendarSplitting)
     },
     setTargetId (e) {
       const selectedTargetId = e.currentTarget.getAttribute('data-id')

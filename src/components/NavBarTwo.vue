@@ -273,44 +273,17 @@ export default {
       this.isSubfinderInstalled = event
     },
     orderByNameAsc: function () {
-      function compare (a, b) {
-        if (a.name < b.name) {
-          return -1
-        }
-        if (a.name > b.name) {
-          return 1
-        }
-        return 0
-      }
       this.active_arrow_down = true
       this.active_arrow_up = false
-      return this.agentListStore.sort(compare)
+      return this.agentListStore.sort(this.$compareNamesAsc)
     },
     orderByNameDesc: function () {
-      function compare (a, b) {
-        if (b.name < a.name) {
-          return -1
-        }
-        if (b.name > a.name) {
-          return 1
-        }
-        return 0
-      }
       this.active_arrow_down = false
       this.active_arrow_up = true
-      return this.agentListStore.sort(compare)
+      return this.agentListStore.sort(this.$compareNamesDesc)
     },
     orderByCalendar: function () {
-      function compare (a, b) {
-        if (a.date < b.date) {
-          return -1
-        }
-        if (a.date > b.date) {
-          return 1
-        }
-        return 0
-      }
-      return this.agentListStore.sort(compare)
+      return this.agentListStore.sort(this.$orderByCalendar)
     },
     toggle (event) {
       this.selectedAgentDescription = event.currentTarget.getAttribute('data-description')

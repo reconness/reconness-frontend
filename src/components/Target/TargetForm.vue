@@ -351,7 +351,7 @@ export default {
       } else {
         this.validators.blank.bugBountyUrl = false
       }
-      if (!this.validateUrl(this.target.bugBountyUrl) && !this.validators.blank.bugBountyUrl) {
+      if (!this.$validateUrl(this.target.bugBountyUrl) && !this.validators.blank.bugBountyUrl) {
         this.validators.url.bugBountyUrl = true
       } else {
         this.validators.url.bugBountyUrl = false
@@ -393,7 +393,7 @@ export default {
       this.$store.commit('setDetailsLinks', false)
     },
     addItemToRootDomains (item) {
-      if (!this.validateUrl(item.value[item.value.length - 1])) {
+      if (!this.$validateUrl(item.value[item.value.length - 1])) {
         this.rootDomainsTextItems.pop()
       } else {
         this.target.rootDomains.push(
@@ -407,15 +407,6 @@ export default {
     removeItemToRootDomains (rootDomainParam) {
       const index = this.target.rootDomains.findIndex(item => item.root === rootDomainParam.value[0])
       this.target.rootDomains.splice(index, 1)
-    },
-    validateUrl (value) {
-      var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
-      return !!pattern.test(value)
     }
   },
   data () {
