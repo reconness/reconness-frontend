@@ -188,7 +188,7 @@ export default {
   },
   computed: {
     ...mapGetters('target', ['getTargetMessages']),
-    ...mapState('target', ['idMessage'])
+    ...mapState('target', ['idMessage', 'targetListStore'])
   },
   components: {
     OverlayPanel,
@@ -216,7 +216,7 @@ export default {
       this.orderMessagesByCalendar(parseInt(this.$route.params.id))
     },
     orderByCalendar: function () {
-      this.orderDomainsByCalendar(parseInt(this.$route.params.id))
+      this.targetListStore.find(item => item.id === parseInt(this.$route.params.id)).rootDomains.sort(this.$orderByCalendarSplitting)
     },
     orderByName: function () {
       if (this.active_arrow_down === true) {

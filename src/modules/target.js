@@ -476,10 +476,10 @@ export default ({
     },
     orderMessagesByUserNameAsc (state, id) {
       function compare (a, b) {
-        if (a.message < b.message) {
+        if (a.sender < b.sender) {
           return -1
         }
-        if (a.message > b.message) {
+        if (a.sender > b.sender) {
           return 1
         }
         return 0
@@ -488,10 +488,10 @@ export default ({
     },
     orderMessagesByUserNameDesc (state, id) {
       function compare (a, b) {
-        if (b.message < a.message) {
+        if (b.sender < a.sender) {
           return -1
         }
-        if (b.message > a.message) {
+        if (b.sender > a.sender) {
           return 1
         }
         return 0
