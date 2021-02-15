@@ -21,7 +21,7 @@
           </span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
-            <router-link to="/targets/details" class="text-dark">{{item.name}}</router-link>
+          <router-link :to="{ name: 'TargetDetail', params: {id: item.id} }"  class="text-dark" >{{item.name}}</router-link>
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
             <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmation-modal">
@@ -56,25 +56,10 @@ export default {
   },
   methods: {
     orderByNameDesc: function () {
-      function compare (a, b) {
-        if (b.name < a.name) {
-          return -1
-        }
-        if (b.name > a.name) {
-          return 1
-        }
-        return 0
-      }
-      return this.targetListStore.sort(compare)
+      return this.targetListStore.sort(this.$compareNamesDesc)
     },
     orderByCalendar: function () {
-      return this.targetListStore.sort((a, b) => {
-        const as = a.date.split('/')
-        const ad = new Date(as[2], as[1] - 1, as[0])
-        const bs = b.date.split('/')
-        const bd = new Date(bs[2], bs[1] - 1, bs[0])
-        return ad - bd
-      })
+      return this.targetListStore.sort(this.$orderByCalendarSplitting)
     },
     setTargetId (e) {
       const selectedTargetId = e.currentTarget.getAttribute('data-id')
@@ -120,20 +105,6 @@ export default {
     width: 24px;
    margin-left: 10px;
 }
-
-/* .elevation-1 {
-    box-shadow: 3px 12px 23px;
-    border-radius: 13px !important;
-    width: 56px !important;
-    height: 56px!important;
-    min-width: 40px !important;
-}
-
-.vert {
-    font-size: 20px;
-    color: #a99c9c;
-    cursor: pointer;
-} */
 
 .justify-content-between h5{
   font-size: 24px;

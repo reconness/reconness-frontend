@@ -31,11 +31,13 @@
                     <p class="float-right bold-text separator-content inline-material-icons">Last week resumee<span class="material-icons search-icon blue-text">keyboard_arrow_right</span></p>
                   </div>
                   <div class="col-12 col-lg-4 pr-4">
-                  <TargetsHighestInteraction :background="'#03dced'"></TargetsHighestInteraction>
+                  <TargetsHighestInteraction :background="'#03dced'" :title= "'Targets with the most interactions in the last week'"></TargetsHighestInteraction>
                   </div>
+                  <div class="col-12 col-lg-4">
                   <DaysHighestInteraction></DaysHighestInteraction>
+                  </div>
                   <div class="col-12 col-lg-4 pl-4">
-                  <TargetsHighestInteraction :background="'rgb(134, 98, 202)'"></TargetsHighestInteraction>
+                  <TargetsHighestInteraction :background="'rgb(134, 98, 202)'" :title= "'Targets with the most interactions in the last week'"></TargetsHighestInteraction>
                   </div>
                   </div></div>
                   <div class="col-lg-12">

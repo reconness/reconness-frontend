@@ -1,6 +1,5 @@
 <template>
-    <div class="col-12 col-lg-4 home-chart">
-      <div class="">
+      <div class="home-chart">
       <div class="dhPadding ">
        <div class="row">
             <div class="col-9">
@@ -15,7 +14,7 @@
             </div>
        </div></div>
       <apexchart width="100%" height="170px" type="line" :options="options" :series="series"></apexchart>
-    </div></div>
+    </div>
 </template>
 <script>
 export default {

@@ -1,9 +1,9 @@
 <template>
-        <div :style ="{backgroundColor:background}" style="border-radius: 25px; padding: 25px; box-shadow: 13px 31px 41px #0C1F6A3B; margin-bottom: 1rem;">
+        <div :style ="{background:background}" style="border-radius: 25px; padding: 25px; box-shadow: 13px 31px 41px #0C1F6A3B; margin-bottom: 1rem;">
             <div class="row">
             <div class="col-9">
                 <p  class="targets-title">
-                Targets with the most interactions in the last week
+                {{title}}
                 </p>
             </div>
             <div class="col-3">
@@ -85,7 +85,8 @@
 export default {
   name: 'TargetsHighestInteraction',
   props: {
-    background: String
+    background: String,
+    title: String
   }
 }
 </script>

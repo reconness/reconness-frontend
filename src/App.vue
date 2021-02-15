@@ -67,7 +67,7 @@
             </li>
             <li class="nav-item">
               <router-link to="/targets/list" >
-              <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation('Targets'), this.$store.commit('target/setIsDefaultViewOnTarget', true)" >
+              <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation(''), this.$store.commit('target/setIsDefaultViewOnTarget', true)" v-bind:class="{'nav2': styleTargetState}">
                 <BullseyeArrowIco/>
                 <p style="vertical-align: 0px;">Targets </p>
               </a>
@@ -141,7 +141,7 @@ export default {
     BullseyeArrowIco
   },
   computed: {
-    ...mapState(['viewloc', 'styleAgentState'])
+    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState'])
   },
   mounted () {
     this.location = this.viewloc

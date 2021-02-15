@@ -25,16 +25,16 @@ const routes = [
   },
   {
     path: '/targets/list',
-    name: 'TargetDetail',
+    name: 'Targets',
     component: () => import('../views/TargetsListView.vue')
   },
   {
-    path: '/targets/details',
-    name: 'Targets',
+    path: '/targets/details/:id',
+    name: 'TargetDetail',
     component: () => import('../views/TargetsDetailsView.vue')
   },
   {
-    path: '/targets/rootDomainDetails',
+    path: '/targets/rootDomainDetails/:id',
     name: 'RootDomainDetails',
     component: () => import('../views/RootDomainDetailsView.vue')
   }

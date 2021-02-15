@@ -490,6 +490,9 @@ font-weight: 600;
 .router-link-exact-active  .nav-link p,.router-link-exact-active  .nav-link span{
   color: #fff;
 }
+.router-link-exact-active  .nav-link p,.router-link-exact-active  .nav-link svg{
+  fill: #fff;
+}
 .router-link-exact-active  button, .router-link-exact-active  .nav-link{
   background-color:#00B1FF;
   color: #fff;
@@ -526,6 +529,15 @@ font-weight: 600;
   color:#ffffff;
   font-size: 17px;
   opacity: 1;
+}
+.number div{
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 1px 4px;
+  border-radius: 4px;
+  color:#ffffff;
+  font-size: 17px;
+  opacity: 1;
+  margin: 3px;
 }
 
 .delete_btn{
@@ -724,3 +736,8 @@ div.card-body a svg{
   }
 }
 /*********END MARQUEE**************/
+#import {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
