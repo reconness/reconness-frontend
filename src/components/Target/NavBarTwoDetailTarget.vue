@@ -42,15 +42,7 @@
           </div>
         </li>
         <li class="nav-item border-right d-none d-sm-block">
-          <a
-            class="nav-link float-left control-sidebar-right"
-            href="#"
-            data-slide="true"
-            @mouseenter="mouseEnter">
-            <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
-              <CommentIco/>
-            </button>
-          </a>
+          <MessagesBtn/>
         </li>
       </ul>
     </nav>
@@ -114,8 +106,8 @@
 import { mapMutations, mapState } from 'vuex'
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import OverlayPanel from 'primevue/overlaypanel'
-import CommentIco from '@/components/CommentIco.vue'
-import MessagesSection from '@/components/Target/MessagesSection.vue'
+import MessagesBtn from '@/components/MessagesBtn.vue'
+import MessagesSection from '@/components/MessagesSection.vue'
 export default {
   name: 'NavBarTwoTarget',
   props: {
@@ -125,7 +117,6 @@ export default {
     return {
       active_arrow_down: true,
       active_arrow_up: false
-      // isCommentsSectionOpen: false
     }
   },
   computed: {
@@ -135,12 +126,11 @@ export default {
   components: {
     OverlayPanel,
     TargetConfirmation,
-    CommentIco,
+    MessagesBtn,
     MessagesSection
   },
   methods: {
     ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),
-    ...mapMutations(['setIsMessageSectionOpened']),
     orderByCalendar: function () {
       this.targetListStore.find(item => item.id === parseInt(this.$route.params.id)).rootDomains.sort(this.$orderByCalendarSplitting)
     },
@@ -160,17 +150,6 @@ export default {
     },
     setTargetId (e) {
       this.$store.commit('target/setIdTarget', parseInt(this.$route.params.id))
-    },
-    mouseEnter: function () {
-      // Remove when relocating item
-      // console.log(1)
-      this.setIsMessageSectionOpened(true)
-      // this.isCommentsSectionOpen = true
-      // console.log(this.isCommentsSectionOpen)
-    },
-    mouseleave: function () {
-      // Remove when relocating item
-      // this.isCommentsSectionOpen = !this.isCommentsSectionOpen
     }
   }
 }
@@ -211,9 +190,9 @@ export default {
 label {
   cursor: pointer;
 }
-#dropdownMenuButton {
+/* #dropdownMenuButton {
   fill: #B3B3B3
-}
+} */
 
 .dropdown-menu label.comments-page {
   padding: .25rem 1rem;

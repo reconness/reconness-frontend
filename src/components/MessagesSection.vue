@@ -62,17 +62,12 @@ import { mapMutations, mapGetters, mapState } from 'vuex'
 export default {
   data: function () {
     return {
-      // isCommentsSectionOpen: false,
       message: '',
       active_arrow_down_message: true,
       active_arrow_up_message: false
     }
   },
   computed: {
-    // closeWindow: function () {
-    //   console.log(this.opened || this.isCommentsSectionOpen)
-    //   return (this.opened || this.isCommentsSectionOpen)
-    // },
     ...mapGetters('target', ['getTargetMessages']),
     ...mapState('target', ['idMessage']),
     ...mapState(['isMessageSectionOpened'])
@@ -95,11 +90,8 @@ export default {
       if (this.isMessageSectionOpened && isDeleteWindowsOpened) {
         this.setIsMessageSectionOpened(true)
       } else {
-        // this.isCommentsSectionOpen = false
         this.setIsMessageSectionOpened(false)
       }
-      // console.log('----')
-      // console.log(this.closeWindow && isDeleteWindowsOpened !== null)
     },
     ...mapMutations('target', ['orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'sendTargetMessage', 'setIdMessage']),
     orderByUserName: function () {
