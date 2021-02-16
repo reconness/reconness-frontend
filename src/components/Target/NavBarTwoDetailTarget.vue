@@ -190,9 +190,6 @@ export default {
 label {
   cursor: pointer;
 }
-/* #dropdownMenuButton {
-  fill: #B3B3B3
-} */
 
 .dropdown-menu label.comments-page {
   padding: .25rem 1rem;

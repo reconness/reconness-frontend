@@ -1,5 +1,5 @@
 <template>
-  <a class="nav-link float-left control-sidebar-right"
+  <a class="nav-link float-left control-sidebar-right btn-messages-container"
       href="#" data-slide="true" @mouseenter="mouseEnter">
     <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
       <CommentIco/>
