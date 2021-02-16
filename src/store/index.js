@@ -40,7 +40,8 @@ export default createStore({
       { name: 'GoBusterMs', description: 'Breve descripcion del agente GoBusterMs', id: 3, installed: false },
       { name: 'SubkisteD', description: 'Breve descripcion del agente SubkisteD', id: 4, installed: false },
       { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: false }
-    ]
+    ],
+    isMessageSectionOpened: false
   },
   mutations: {
     addAgent (state, agent) {
@@ -171,6 +172,9 @@ export default createStore({
       if (index !== -1) {
         state.agentListStore.splice(index, 1)
       }
+    },
+    setIsMessageSectionOpened (state, value) {
+      state.isMessageSectionOpened = value
     }
   },
   actions: {
