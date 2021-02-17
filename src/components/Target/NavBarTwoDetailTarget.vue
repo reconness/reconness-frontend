@@ -110,16 +110,15 @@
           </div>
         </li>
       </ul>
+      <MessageConfirmation></MessageConfirmation>
     </nav>
     <MessagesSection :opened="this.isMessageSectionOpened"/>
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
   <!-- <Confirmation :valueName = "showRootDomains ? rootName : TargetName" ></Confirmation> -->
-  <MessageConfirmation></MessageConfirmation>
      </div>
 </template>
-
 <script>
 import { mapMutations, mapState } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
