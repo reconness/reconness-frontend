@@ -19,11 +19,27 @@ export default createStore({
     ],
     filterColour: '',
     idAgent: -1,
-    systemColors: ['transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
-      'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-      'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-      '#ff8650 0% 0% no-repeat padding-box',
-      'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
+    systemColors: [
+      {
+        primaryColor: '#03DCED',
+        secondaryColor: '#0cb8e0'
+      },
+      {
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3'
+      },
+      {
+        primaryColor: '#F96767',
+        secondaryColor: '#FF4343'
+      },
+      {
+        primaryColor: '#FF9966',
+        secondaryColor: '#f36a33'
+      },
+      {
+        primaryColor: '#3adb99',
+        secondaryColor: '#16c465'
+      }
     ],
     fromDetailsLink: false,
     idResource: -1,
