@@ -115,7 +115,8 @@
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
-  <Confirmation :valueName = "showRootDomains ? rootName : TargetName" ></Confirmation>
+  <!-- <Confirmation :valueName = "showRootDomains ? rootName : TargetName" ></Confirmation> -->
+  <MessageConfirmation></MessageConfirmation>
      </div>
 </template>
 
@@ -124,7 +125,8 @@ import { mapMutations, mapState } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
 import MessagesBtn from '@/components/MessagesBtn.vue'
 import MessagesSection from '@/components/MessagesSection.vue'
-import Confirmation from '@/components/Target/Confirmation.vue'
+// import Confirmation from '@/components/Target/Confirmation.vue'
+import MessageConfirmation from '@/components/Target/MessageConfirmation.vue'
 export default {
   name: 'NavBarTwoTarget',
   props: {
@@ -145,9 +147,10 @@ export default {
   },
   components: {
     OverlayPanel,
-    Confirmation,
+    // Confirmation,
     MessagesBtn,
-    MessagesSection
+    MessagesSection,
+    MessageConfirmation
   },
   methods: {
     ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),
