@@ -59,7 +59,7 @@
                     <div class="col-12 col-sm-4">
                       <div class="row">
                         <div class="col-12">
-                          <div v-bind:style="{background: target.background}" class="card text-white card-style  mb-3 agentform-default-color-box" style="height: 200px;">
+                          <div v-bind:style ="{background: 'linear-gradient(160deg,'+target.primaryColor+' '+ '0%,' + target.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}" class="card text-white card-style  mb-3 agentform-default-color-box" style="height: 200px;">
                                 <div class="card-body link-color">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title postal-title">{{target.name}}</h3>
@@ -257,19 +257,24 @@ import Chips from 'primevue/chips'
 export default {
   methods: {
     setBlueColor: function () {
-      this.target.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
+      this.target.primaryColor = '#03DCED'
+      this.target.secondaryColor = '#0cb8e0'
     },
     setVioletColor: function () {
-      this.target.background = 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box'
+      this.target.primaryColor = '#737be5'
+      this.target.secondaryColor = '#7159d3'
     },
     setRedColor: function () {
-      this.target.background = 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box'
+      this.target.primaryColor = '#F96767'
+      this.target.secondaryColor = '#FF4343'
     },
     setOrangeColor: function () {
-      this.target.background = '#ff8650 0% 0% no-repeat padding-box'
+      this.target.primaryColor = '#FF9966'
+      this.target.secondaryColor = '#f36a33'
     },
     setGreenColor: function () {
-      this.target.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
+      this.target.primaryColor = '#3adb99'
+      this.target.secondaryColor = '#16c465'
     },
     addTarget () {
       this.enableValidationMessages()
@@ -308,7 +313,8 @@ export default {
     resetTargetForm () {
       this.target = {
         name: '',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3',
         id: -1,
         date: new Date().toString(),
         rootDomains: [],
@@ -380,7 +386,9 @@ export default {
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.systemColors
-      this.target.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      this.target.primaryColor = randomColor.primaryColor
+      this.target.secondaryColor = randomColor.secondaryColor
     },
     verifyPencilStatus () {
       if (this.isPencilVisibleAndClick) {
@@ -413,14 +421,15 @@ export default {
     return {
       target: {
         name: '',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
         id: -1,
         date: new Date().toString(),
         rootDomains: [],
         bugBountyUrl: '',
         isPrivateProgram: false,
         inScope: '',
-        outScope: ''
+        outScope: '',
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3'
       },
       rootDomainsTextItems: [],
       isVisibleTopSection: true,
@@ -465,7 +474,8 @@ export default {
     loadSelectedTarget: function (value) {
       if (value !== undefined) {
         this.target.name = value.name
-        this.target.background = value.background
+        this.target.primaryColor = value.primaryColor
+        this.target.secondaryColor = value.secondaryColor
         this.target.id = value.id
         this.target.bugBountyUrl = value.bugBountyUrl
         this.target.isPrivateProgram = value.isPrivateProgram

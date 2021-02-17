@@ -5,9 +5,8 @@ export default ({
       {
         id: 1,
         name: 'My target 1',
-        background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#03dced',
+        secondaryColor: '#0cb8e0',
         date: '02/01/2020',
         rootDomains: [
           {
@@ -43,9 +42,8 @@ export default ({
       {
         id: 2,
         name: 'My target 2',
-        background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#03dced',
+        secondaryColor: '#0cb8e0',
         date: '21/01/2020',
         rootDomains: [
           {
@@ -59,12 +57,12 @@ export default ({
             date: '21/08/2018'
           },
           {
-            id: 2,
+            id: 3,
             root: 'anothertest1.com',
             date: '21/07/2018'
           },
           {
-            id: 2,
+            id: 4,
             root: 'anothertest2.com',
             date: '21/06/2018'
           }
@@ -85,9 +83,8 @@ export default ({
       {
         id: 3,
         name: 'My target 3',
-        background: ' linear-gradient(160deg, #F96767 0%, #FF4343 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#F96767',
+        secondaryColor: '#FF4343',
         date: '21/02/2020',
         rootDomains: [
           {
@@ -117,9 +114,8 @@ export default ({
       {
         id: 4,
         name: 'My target 4',
-        background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#03dced',
+        secondaryColor: '#0cb8e0',
         date: '21/04/2020',
         rootDomains: [
           {
@@ -149,9 +145,8 @@ export default ({
       {
         id: 5,
         name: 'My target 5',
-        background: ' linear-gradient(135deg, #3adb99 0%, #16c465 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#3adb99',
+        secondaryColor: '#16c465',
         date: '21/02/2018',
         rootDomains: [
           {
@@ -181,9 +176,9 @@ export default ({
       {
         id: 6,
         name: 'My target 6',
-        background: 'linear-gradient(130deg, #FF9966 0%, #f36a33 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        // background: 'linear-gradient(130deg, #FF9966 0%, #f36a33 100%)',
+        primaryColor: '#FF9966',
+        secondaryColor: '#f36a33',
         date: '21/01/2020',
         rootDomains: [
           {
@@ -209,9 +204,9 @@ export default ({
       {
         id: 7,
         name: 'My target 7',
-        background: ' linear-gradient(160deg, #737be5 0%, #7159d3 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        // background: ' linear-gradient(160deg, #737be5 0%, #7159d3 100%)',
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3',
         date: '21/06/2020',
         rootDomains: [
           {
@@ -241,9 +236,9 @@ export default ({
       {
         id: 8,
         name: 'My target 8',
-        background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        // background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
+        primaryColor: '#03dced',
+        secondaryColor: '#0cb8e0',
         date: '21/02/2018',
         rootDomains: [
           {
@@ -272,9 +267,8 @@ export default ({
       {
         id: 9,
         name: 'My target 9',
-        background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#03dced',
+        secondaryColor: '#0cb8e0',
         date: '21/09/2020',
         rootDomains: [
           {
@@ -303,9 +297,8 @@ export default ({
       {
         id: 10,
         name: 'My target 10',
-        background: ' linear-gradient(135deg, #3adb99 0%, #16c465 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#3adb99',
+        secondaryColor: '#16c465',
         date: '21/02/2020',
         rootDomains: [
           {
@@ -334,9 +327,8 @@ export default ({
       {
         id: 11,
         name: 'My target 11',
-        background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
-        primaryColor: '',
-        secondaryColor: '',
+        primaryColor: '#03dced',
+        secondaryColor: '#0cb8e0',
         date: '20/01/2020',
         rootDomains: [
           {
@@ -400,6 +392,11 @@ export default ({
       if (index !== -1) {
         state.targetListStore.splice(index, 1)
       }
+    },
+    removeRootDomain (state, targetid, rootID) {
+      const target = state.targetListStore.find(item => item.id === targetid)
+      const rootsIndex = target.rootDomains.findIndex(roots => roots.id === rootID)
+      target.rootDomains.splice(rootsIndex, 1)
     },
     removeTargets (state) {
       for (var index1 in state.targetIdList) {
@@ -524,7 +521,7 @@ export default ({
   getters: {
     filterByColor (state) {
       return function (colour) {
-        return state.targetListStore.filter(item => item.background.includes(colour))
+        return state.targetListStore.filter(item => ('linear-gradient(160deg,' + item.primaryColor + ' ' + '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box').includes(colour))
       }
     },
     getLasTenTargets (state) {

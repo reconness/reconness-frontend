@@ -2,7 +2,7 @@
   <div class="row">
     <div v-for="item of arrayFilterList" :key="item.id" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)"
     class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
-      <div class="card text-white card-style  mb-3" v-bind:style ="{background:item.background}">
+      <div class="card text-white card-style  mb-3" v-bind:style ="{background: 'linear-gradient(160deg,'+item.primaryColor+' '+ '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
         <input type="checkbox" :id="item.id+1"  name="checkitem" :checked="isChecked(item.id)">
         <label :for="item.id+1" v-show= check  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
@@ -14,16 +14,18 @@
           </div>
           <div class="card-body-inside">
             <ul class="list-unstyled min-height" >
-              <li v-for="item2 of item.rootDomains.slice(item.rootDomains.length - 4) " :key="item2.id">
+              <li v-for="item2 of item.rootDomains.slice(- 4) " :key="item2.id">
               <span  class="material-icons float-left mt-1"> chevron_right </span>
+              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item2.id} }">
                {{item2.root}}
+              </router-link>
               </li>
             </ul>
           </div>
           <div class="row">
             <div class="col-12">
               <div class="float-left mt-2">
-              <router-link :to="{ name: 'RootDomainDetails', params: {id: item.id} }" class="font-italic font-color">
+              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item.id} }" class="font-italic font-color">
                 <small>| RootDomains: {{item.rootDomains.length}}</small>
               </router-link> </div>
               <div class="float-right">

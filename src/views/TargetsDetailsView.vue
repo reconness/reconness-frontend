@@ -2,7 +2,6 @@
   <div>
   <!-- Contains navs-bar -->
   <NavBarTwoDetailTarget :TargetName = "Target.name" />
-  <MessageConfirmation></MessageConfirmation>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
@@ -10,22 +9,22 @@
         <div class="content">
           <div class="row">
             <div class="col-12 col-lg-4">
-           <div class="card card-style box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + Target.background}" style= "border:dotted .1rem transparent;">
+           <div class="card card-style box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}" style= "border:dotted .1rem transparent;">
               <div class="card-body p-0">
                 <div class="row">
                   <div class="col-5 border-right">
-                    <blockquote class="blockquote-style ml-4 mt-3" v-bind:style ="{borderImage:Target.background}">
+                    <blockquote class="blockquote-style ml-4 mt-3" v-bind:style ="{borderImage:LinearGradient}">
                       <p> Root Domains</p>
                     </blockquote>
                   </div>
                   <div class="col mt-3 pr-3 ml-1 pl-1">
                     <ul class="list-unstyled min-height" >
                       <li v-for="item of Target.rootDomains" :key="item.id">
-                        <span v-bind:style ="{background:Target.background}"  class="material-icons mt-1 icon-color-style"> chevron_right </span>
-                        <router-link :to="{ name: 'RootDomainDetails', params: {id: item.id} }">
+                        <span v-bind:style ="{background:LinearGradient}"  class="material-icons mt-1 gradient-style icon-color-style"> chevron_right </span>
+                        <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id} }">
                           {{item.root}}
-                          <span v-bind:style ="{background:Target.background}"
-                            class="material-icons mt-2 float-right icon-color-style"> open_in_new
+                          <span v-bind:style ="{background:LinearGradient}"
+                            class="material-icons mt-2 float-right icon-color-style gradient-style"> open_in_new
                           </span>
                         </router-link>
                       </li>
@@ -54,17 +53,17 @@
                 </dl>
               </div>
               </div>
-            <TargetsHighestInteraction v-bind:style ="{background:Target.background}" :title= "'Subdomains with more numbers of directories'"></TargetsHighestInteraction>
+            <TargetsHighestInteraction v-bind:style ="{background:LinearGradient}" :title= "'Subdomains with more numbers of directories'"></TargetsHighestInteraction>
             </div>
             <div class="col-12 col-lg-4">
-            <DaysHighestInteraction v-bind:style ="{background:Target.background}"></DaysHighestInteraction>
+            <DaysHighestInteraction v-bind:style ="{background:LinearGradient}"></DaysHighestInteraction>
               <div class="card card-style">
                 <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
-                    <blockquote class="blockquote-style"  v-bind:style ="{borderImage:Target.background}">
+                    <blockquote class="blockquote-style"  v-bind:style ="{borderImage:LinearGradient}">
                     <p class="card-text float-right">Latest new things found in the Root Domain</p>
                     </blockquote>
-                    <i class="material-icons mt-2 icon-color-style" v-bind:style ="{background:Target.background}" style="font-size:26px">event</i>
+                    <i class="material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}" style="font-size:26px">event</i>
                 </div>
                 <div class="d-flex justify-content-between item-list">
                   <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
@@ -116,20 +115,20 @@
               <div class="card-body">
                 <div class="row">
                  <div class="col-9">
-                   <blockquote class="blockquote-style"  v-bind:style ="{borderImage:Target.background}">
+                   <blockquote class="blockquote-style"  v-bind:style ="{borderImage:LinearGradient}">
                     <p>Number os subdomains by each open ports</p>
                     </blockquote>
                 </div>
                 <div class="col-3">
-                <span class = "number float-right" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + Target.background}" style= "background-clip: content-box, border-box;">
-                <div v-bind:style ="{background:Target.background}">43</div>
+                <span class = "number float-right" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}" style= "background-clip: content-box, border-box;">
+                <div v-bind:style ="{background:LinearGradient}">43</div>
                 </span>
                </div>
                </div>
                 <apexchart width="100%" height="270px"  type="bar" :options="optionsBar" :series="seriesBar"></apexchart>
               </div>
               </div>
-            <div class="card card-style" v-bind:style ="{background:Target.background}">
+            <div class="card card-style" v-bind:style ="{background:LinearGradient}">
               <div class="card-body">
                 <div class="row align-items-center">
                 <div class="col donut-legend link-color">
@@ -154,12 +153,12 @@ import { mapGetters } from 'vuex'
 import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
 import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vue'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
-import MessageConfirmation from '@/components/Target/MessageConfirmation.vue'
 export default {
   name: 'TargetsDetailsView',
   data: function () {
     return {
       Target: Object,
+      LinearGradient: String,
       optionsBar: {
         chart: {
           toolbar: { show: false },
@@ -188,18 +187,26 @@ export default {
           }
         },
         fill: {
-          // colors: '',
           type: 'gradient',
           gradient: {
-            shade: 'dark',
+            shade: 'light',
             type: 'horizontal',
             shadeIntensity: 0.5,
-            gradientToColors: '',
             inverseColors: true,
-            opacityFrom: 1,
+            opacityFrom: 0,
             opacityTo: 1,
-            stops: [0, 50, 100],
-            colorStops: []
+            colorStops: [
+              {
+                offset: 0,
+                color: ' ',
+                opacity: 1
+              },
+              {
+                offset: 20,
+                color: '',
+                opacity: 1
+              }
+            ]
           }
         },
         xaxis: {
@@ -262,8 +269,7 @@ export default {
   components: {
     DaysHighestInteraction,
     TargetsHighestInteraction,
-    NavBarTwoDetailTarget,
-    MessageConfirmation
+    NavBarTwoDetailTarget
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])
@@ -271,7 +277,9 @@ export default {
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
     this.Target = this.getTargetById(parseInt(this.$route.params.id))
-    // this.optionsBar.fill.colors = this.Target.background
+    this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
+    this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
+    this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor
   }
 }
 </script>
