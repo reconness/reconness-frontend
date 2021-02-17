@@ -12,7 +12,7 @@
             {{name}}</router-link>
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-              <button class="dropdown-item" :data-id="id" type="button">Edit</button>
+              <button class="dropdown-item" :data-id="id" type="button" @click="onEdit" data-toggle="modal" data-target="#targetModalForm">Edit</button>
               <router-link :to="{ name: 'TargetDetail', params: {id:id} }" >
               <button class="dropdown-item" :data-id="id" type="button">
                Details
@@ -33,6 +33,7 @@
             <!-- /.info-box-content -->
         </div>
         <TargetConfirmation></TargetConfirmation>
+        <TargetForm/>
     </div><!-- /.col -->
 </template>
 <style scoped>
@@ -147,10 +148,12 @@ input[type="checkbox"] {
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import { mapState, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import TargetForm from '@/components/Target/TargetForm.vue'
 export default {
   components: {
     TargetConfirmation,
-    BullseyeArrowIco
+    BullseyeArrowIco,
+    TargetForm
   },
   data: function () {
     return {
@@ -212,12 +215,8 @@ export default {
     isSelected (cardIndex) {
       return this.selectedCard === cardIndex
     },
-    setAgentId (e) {
-      const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-    },
     onEdit (e) {
-      this.setAgentId(e)
+      this.setTargetId(e)
       this.$store.commit('setDetailsLinks', false)
     },
     setDetailsLink (e) {
