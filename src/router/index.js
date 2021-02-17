@@ -34,7 +34,7 @@ const routes = [
     component: () => import('../views/TargetsDetailsView.vue')
   },
   {
-    path: '/targets/rootDomainDetails/:id',
+    path: '/targets/details/:idTarget/rootDomainDetails/:id',
     name: 'RootDomainDetails',
     component: () => import('../views/RootDomainDetailsView.vue')
   }

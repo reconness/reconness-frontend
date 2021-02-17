@@ -16,7 +16,7 @@
         </div>
         </div>
         <div v-for="item of getLasTenTargets" :key="item.id" class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
-          <span v-bind:style ="{background:item.background}"  class="info-box-icon">
+          <span v-bind:style ="{background: 'linear-gradient(135deg,'+item.primaryColor+' '+ '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"  class="info-box-icon">
             <BullseyeArrowIco/>
           </span>
           <div class="info-box-content">
@@ -25,7 +25,7 @@
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
             <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmation-modal">
-            <button class="dropdown-item" @click="setTargetId" :data-id="item.id" type="button">Delete</button>
+            <button class="dropdown-item" @click="setTargetName" :data-name="item.name" type="button">Delete</button>
             </a>
           </div>
           </span>
@@ -37,18 +37,23 @@
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
       </div><!-- /.targets-list-home -->
-    <TargetConfirmation></TargetConfirmation>
+      <Confirmation :valueName = selectedTargetName ></Confirmation>
     </div>
 </template>
 <script>
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
-import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
+import Confirmation from '@/components/Target/Confirmation.vue'
 import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'HomeRigthSidebar',
   components: {
     BullseyeArrowIco,
-    TargetConfirmation
+    Confirmation
+  },
+  data: function () {
+    return {
+      selectedTargetName: ''
+    }
   },
   computed: {
     ...mapState('target', ['targetListStore']),
@@ -61,9 +66,8 @@ export default {
     orderByCalendar: function () {
       return this.targetListStore.sort(this.$orderByCalendarSplitting)
     },
-    setTargetId (e) {
-      const selectedTargetId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('target/setIdTarget', selectedTargetId)
+    setTargetName (e) {
+      this.selectedTargetName = e.currentTarget.getAttribute('data-name')
     }
   }
 }

@@ -5,7 +5,7 @@
         <label class="float-right" :for="id+1" v-show= check @click="addListTargetId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="p-2">
         <div class="info-box">
-          <span class="info-box-icon icon-style" :style ="{background:background}"><BullseyeArrowIco/></span>
+          <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco/></span>
           <div class="info-box-content pr-1">
           <span class="info-box-text domain-names-target">
            <router-link :to="{ name: 'TargetDetail', params: {id:id} }" class="text-body" >
@@ -25,7 +25,8 @@
             <div class="marquee text-truncate">
               <div class="marquee_content">
              <small class="list-inline " v-for="item2 of rootDom.slice(- 4)" :key="item2.id">
-              {{item2.root}}, </small>
+               <router-link class="text-dark"  :to="{ name: 'RootDomainDetails', params: {idTarget: id, id: item2.id} }">
+              {{item2.root}}, </router-link>  </small>
             </div></div></div>
           </div><!-- /.info-box-content -->
             </div></div>
@@ -154,12 +155,14 @@ export default {
   data: function () {
     return {
       checkSelected: false,
-      checkDeleted: -1
+      checkDeleted: -1,
+      selectedTargetName: ''
     }
   },
   props: {
     name: String,
-    background: String,
+    primaryColor: String,
+    secondaryColor: String,
     id: Number,
     rootDom: Array
   },
@@ -225,6 +228,9 @@ export default {
     setTargetId (e) {
       const selectedTargetId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('target/setIdTarget', selectedTargetId)
+    },
+    setTargetName (e) {
+      this.selectedTargetName = e.currentTarget.getAttribute('data-name')
     }
   }
 }

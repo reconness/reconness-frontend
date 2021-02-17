@@ -136,9 +136,9 @@ export default {
 }
 </script>
 <style>
-.p-overlaypanel .p-overlaypanel-content {
+/* .p-overlaypanel .p-overlaypanel-content {
     padding: 0rem!important;
-}
+} */
 .icon-right{
   padding-left: 24% !important;
   margin-bottom: auto;

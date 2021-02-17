@@ -741,3 +741,12 @@ div.card-body a svg{
   position: absolute;
   z-index: -1;
 }
+.icon-color-style{
+  font-size: 16px;
+  opacity: 1;
+}
+
+.gradient-style{
+  -webkit-background-clip: text!important;
+  -webkit-text-fill-color: transparent!important;
+}

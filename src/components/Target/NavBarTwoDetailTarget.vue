@@ -4,23 +4,34 @@
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
-        <li class="nav-item d-flex">
+        <li class="nav-item d-flex float-left">
             <router-link to="/targets/list" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
             <p class="float-right ml-2 font-weight-bold">{{TargetName}}</p>
         </li>
+        <li class="nav-item d-flex" v-if = showRootDomains>
+          <span v-bind:style ="{background:gradient}"  class="material-icons mt-1 ml-2 icon-color-style gradient-style"> chevron_right </span>
+          <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
+        </li>
       </ul>
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" @click="setTargetId">Delete Target</a>
+        <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!showRootDomains">
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" >Delete Target</a>
         </li>
-        <li class="nav-item nav-margin border-right d-none d-sm-block">
+        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains">
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" >Delete Root Domain</a>
+        </li>
+        <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <label for="export-target" class="nav-link pos mb-0"> Export Target </label>
           <input type="file" id="export-target" accept=".json"/>
         </li>
-        <li class="nav-item dropdown border-right d-none d-sm-block">
+        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains">
+          <label for="export-target" class="nav-link pos mb-0"> Export Root Domain </label>
+          <input type="file" id="export-target" accept=".json"/>
+        </li>
+        <li class="nav-item dropdown border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <a class="nav-link" data-toggle="dropdown" href="#" role="button"
             aria-haspopup="true"  aria-expanded="false" >
             <p class="float-left">Sort by</p>
@@ -28,7 +39,7 @@
               <i class="material-icons">sort</i>
             </button>
           </a>
-          <div class="dropdown-menu dropdown-menu-right">
+          <div class="dropdown-menu dropdown-menu-right"  v-if= "!showRootDomains">
            <a class="dropdown-item" href="#" v-on:click="orderByName()">
               <i class="material-icons float-left">title</i>
               <p class="float-left">Name</p>
@@ -51,10 +62,14 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-sm-none">
         <li class="nav-item d-none d-sm-inline-block d-flex">
-            <span class="material-icons">arrow_back</span>
             <router-link to="/targets/list" class="color-blue">
-            <p class="float-right ml-2">{{TargetName}}</p>
+            <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
+            <p class="float-right ml-2 font-weight-bold">{{TargetName}}</p>
+        </li>
+        <li class="nav-item d-flex" v-if = showRootDomains>
+          <span v-bind:style ="{background:gradient }"  class="material-icons mt-1 ml-2 icon-color-style gradient-style"> chevron_right </span>
+          <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
         </li>
       </ul>
       <!-- Right navbar links -->
@@ -71,9 +86,11 @@
             <i class="material-icons">more_vert</i>
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
-            <a class="dropdown-item">Delete Target</a>
+            <a class="dropdown-item" v-if= "!this.showRootDomains">Delete Target</a>
+            <a class="dropdown-item">Delete Root Domain</a>
             <div class="dropdown-divider"  ></div>
-            <label for="export-target" class="nav-link pos mb-0 comments-page"> Export Target </label>
+            <label for="export-target" class="nav-link pos mb-0 comments-page" v-if= "!this.showRootDomains"> Export Target </label>
+            <label for="export-target" class="nav-link pos mb-0 comments-page"> Export Root Domain </label>
             <input type="file" id="export-target" accept=".json"/>
            <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
@@ -98,20 +115,23 @@
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
-  <TargetConfirmation></TargetConfirmation>
+  <Confirmation :valueName = "showRootDomains ? rootName : TargetName" ></Confirmation>
      </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import MessagesBtn from '@/components/MessagesBtn.vue'
 import MessagesSection from '@/components/MessagesSection.vue'
+import Confirmation from '@/components/Target/Confirmation.vue'
 export default {
   name: 'NavBarTwoTarget',
   props: {
-    TargetName: String
+    TargetName: String,
+    gradient: String,
+    rootName: String,
+    showRootDomains: Boolean
   },
   data: function () {
     return {
@@ -125,7 +145,7 @@ export default {
   },
   components: {
     OverlayPanel,
-    TargetConfirmation,
+    Confirmation,
     MessagesBtn,
     MessagesSection
   },
@@ -155,9 +175,6 @@ export default {
 }
 </script>
 <style scoped>
-.p-overlaypanel .p-overlaypanel-content {
-    padding: 0rem!important;
-}
 .dropdown-menu {
     min-width: 10rem;
 }

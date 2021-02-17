@@ -7,15 +7,15 @@
             <div class="modal-content">
               <div class="modal-header dialog-without-lines-header">
                 <!-- PARAMETERIZABLE -->
-                  <h5 class="modal-title"><b>Are you sure you want to delete selected target?</b></h5>
+                  <h5 class="modal-title"><b>Are you sure you want to delete selected {{nameIs}}?</b></h5>
               </div>
               <div class="modal-body">
                 <!-- PARAMETERIZABLE -->
-                  <p>Please, confirm the name of the Target <b>{{selectedTargetName}} </b> before delete it</p>
-                  <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="Target Name">
+                  <p>Please, confirm the name of the {{nameIs}} <b>{{valueName}} </b> before delete it</p>
+                  <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="Name">
               </div>
               <div class="modal-footer dialog-without-lines-footer">
-                  <button :disabled="nameTyped !== selectedTargetName" type="button" class="btn btn-primary btn-danger delete_btn" @click="removeTarget(this.nameTyped)">Delete</button>
+                  <button :disabled="nameTyped !== valueName" type="button" class="btn btn-primary btn-danger delete_btn" @click="removeTarget(this.nameTyped)">Delete</button>
                   <button @click="close()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </div><!-- /.modal-content -->
@@ -26,29 +26,35 @@
 </template>
 <script>
 import jQuery from 'jquery'
-import { mapGetters, mapMutations } from 'vuex'
 import Toast from 'primevue/toast'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       nameTyped: '',
-      selectedTargetName: ''
+      nameIs: ''
     }
   },
   props: {
-    type: String
+    type: String,
+    valueName: String
   },
   components: {
     Toast
   },
   methods: {
-    ...mapMutations('target', ['setIdTarget']),
     removeTarget: function () {
-      if (this.nameTyped === this.selectedTargetName) {
+      if (this.nameTyped === this.valueName) {
         if (this.$randomBooleanResult()) {
-          this.$store.commit('target/removeTarget', this.nameTyped)
-          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
-          if (this.$route.name === 'TargetDetail') {
+          if (this.$route.name === 'TargetDetail' || this.$route.name === 'Targets' || this.$route.name === 'Home') {
+            this.$store.commit('target/removeTarget', this.nameTyped)
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
+            if (this.$route.name === 'TargetDetail') {
+              this.$router.push({ name: 'Targets' })
+            }
+          } else {
+            this.$store.commit('target/removeRootDomain', parseInt(this.$route.params.idTarget), parseInt(this.$route.params.id))
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
             this.$router.push({ name: 'Targets' })
           }
         } else {
@@ -58,25 +64,19 @@ export default {
         jQuery('#confirmation-modal').modal('hide')
         jQuery('#targetModalForm').modal('hide')
       }
-      this.setIdTarget(-1)
     },
     close () {
       this.nameTyped = ''
-      this.setIdTarget(-1)
     }
   },
   computed: {
-    ...mapGetters('target', ['idTarget', 'getTargetById']),
-    loadSelectedTarget () {
-      const id = this.idTarget
-      return this.getTargetById(parseInt(id))
-    }
+    ...mapGetters('target', ['getTargetById'])
   },
-  watch: {
-    loadSelectedTarget: function (value) {
-      if (value !== undefined) {
-        this.selectedTargetName = value.name
-      }
+  mounted () {
+    if (this.$route.name === 'RootDomainDetails') {
+      this.nameIs = 'rootdomains'
+    } else {
+      this.nameIs = 'target'
     }
   }
 }

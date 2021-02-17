@@ -188,7 +188,7 @@ export default {
   computed: {
     ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList']),
     arrayUniqueColours () {
-      return [...new Set(this.targetListStore.map(item => item.background))]
+      return [...new Set(this.targetListStore.map(item => 'linear-gradient(160deg,' + item.primaryColor + ' ' + '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'))]
     }
   },
   components: {
@@ -197,11 +197,6 @@ export default {
     TargetConfirmList
   },
   methods: {
-    /* New methods */
-    // changeMode: function () {
-    //   this.$store.state.target.setIsDefaultViewOnTarget()
-    // },
-    /* Fin */
 
     mouseenter: function () {
       this.active = !this.active
