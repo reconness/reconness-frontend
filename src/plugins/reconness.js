@@ -52,5 +52,13 @@ export default {
       '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
       return !!pattern.test(url)
     }
+
+    app.config.globalProperties.$agentType = Object.freeze(
+      {
+        TARGET: 1,
+        ROOTDOMAIN: 2,
+        SUBDOMAIN: 3
+      }
+    )
   }
 }
