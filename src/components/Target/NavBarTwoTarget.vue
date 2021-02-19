@@ -22,7 +22,9 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
-          <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Targets</a>
+          <span :class="{'isLinkDisabled' : targetIdList.length <= 0}">
+            <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Targets</a>
+          </span>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -128,7 +130,9 @@
             <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a>
             <div class="dropdown-divider" v-show= "check" ></div>
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
-            <a class="dropdown-item " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Targets</a>
+            <span :class="{'isLinkDisabled' : targetIdList.length <= 0}">
+              <a class="dropdown-item " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Targets</a>
+            </span>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">

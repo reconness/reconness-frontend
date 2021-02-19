@@ -103,16 +103,16 @@
                             </div><!-- /.card-header -->
                             <div class="combo-box-left-padding">
                             <div class="form-group">
-                                <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox1" v-model="agent.isTargetType">
+                                <div class="custom-control custom-radio form-check">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
                                 </div>
-                                <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox2" v-model="agent.isRootDomainType">
+                                <div class="custom-control custom-radio form-check">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
                                 </div>
-                                <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox3" v-model="agent.isSubDomainType">
+                                <div class="custom-control custom-radio form-check">
+                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
                                 </div>
                             </div>
@@ -180,10 +180,13 @@
                             </div><!-- /.card-body -->
                         </div><!-- /.card-->
                         </div>
+                        <div class="col-12" v-if="validators.blank.type">
+                          <span :class="{invalid: validators.blank.type}">The field agent type is required</span>
+                        </div>
                 </div>
                 <div class="row" v-show="isVisibleMiddleSection">
                     <div class="col-12">
-                    <div style="min-height: auto;" class="info-box mb-3 agent-containers">
+                    <div style="min-height: auto;" class="info-box my-3 agent-containers">
                         <div class="info-box-content">
                         <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" @click="showMiddleSection" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span v-show="arrow_up" style="position: absolute; right: 1rem; top: .5rem;" class="material-icons">keyboard_arrow_up</span><span v-show="arrow_down" style="position: absolute; right: 1rem; top: 0.4rem;" class="material-icons">keyboard_arrow_down</span></a>
                         </div>
@@ -379,7 +382,7 @@ export default {
     },
     addAgent () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command) {
+      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {
@@ -418,9 +421,7 @@ export default {
         repository: '',
         target: '',
         command: '',
-        isTargetType: false,
-        isRootDomainType: false,
-        isSubDomainType: false,
+        type: '',
         isAliveTrigger: false,
         isHttpOpenTrigger: false,
         category: '',
@@ -434,7 +435,8 @@ export default {
           name: false,
           repository: false,
           target: false,
-          command: false
+          command: false,
+          type: false
         }
       }
     },
@@ -466,11 +468,19 @@ export default {
         this.validators.blank.command = false
       }
     },
+    enableValidationMessageType () {
+      if (this.agent.type === '') {
+        this.validators.blank.type = true
+      } else {
+        this.validators.blank.type = false
+      }
+    },
     enableValidationMessages () {
       this.enableValidationMessageName()
       this.enableValidationMessageTarget()
       this.enableValidationMessageRepository()
       this.enableValidationMessageCommand()
+      this.enableValidationMessageType()
     },
     enableBottomSection () {
       this.isVisibleBottomSection = true
@@ -548,7 +558,7 @@ export default {
         repository: '',
         target: '',
         command: '',
-        isTargetType: false,
+        type: '',
         isRootDomainType: false,
         isSubDomainType: false,
         isAliveTrigger: false,
@@ -587,9 +597,6 @@ export default {
       repository: { required },
       target: { required },
       command: { required },
-      isTargetType: { required },
-      isRootDomainType: { required },
-      isSubDomainType: { required },
       isAliveTrigger: { required },
       isHttpOpenTrigger: { required },
       category: { required }
@@ -607,8 +614,7 @@ export default {
       this.agent.repository !== '' &&
       this.agent.target !== '' &&
       this.agent.command !== '' &&
-      (this.agent.isTargetType || this.agent.isRootDomainType || this.agent.isSubDomainType) &&
-      (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
+      this.agent.type !== '' && (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
         return false
       }
       return true
@@ -629,9 +635,7 @@ export default {
         this.agent.repository = value.repository
         this.agent.target = value.target
         this.agent.command = value.command
-        this.agent.isTargetType = value.isTargetType
-        this.agent.isRootDomainType = value.isRootDomainType
-        this.agent.isSubDomainType = value.isSubDomainType
+        this.agent.type = value.type
         this.agent.isAliveTrigger = value.isAliveTrigger
         this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
         this.agent.script = value.script

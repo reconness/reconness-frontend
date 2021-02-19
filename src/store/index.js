@@ -4,14 +4,14 @@ import target from '../modules/target'
 export default createStore({
   state: {
     agentListStore: [
-      { name: 'Agente 1', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 1, repository: 'repository1.com', target: 'target 1', command: 'command 1', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 1', image: '', date: '21/01/2020', installedFrom: '' },
-      { name: 'Agente 2', background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box', id: 2, repository: 'repository2.com', target: 'target 2', command: 'command 2', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent  2', image: '', date: '21/02/2020', installedFrom: '' },
-      { name: 'Agente 3', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 3, repository: 'repository3.com', target: 'target 3', command: 'command 3', isTargetType: true, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 3', image: '', date: '21/03/2020', installedFrom: '' },
-      { name: 'Agente 4', background: '#ff8650 0% 0% no-repeat padding-box', id: 4, repository: 'repository4.com', target: 'target 4', command: 'command 4', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 4', image: '', date: '21/04/2020', installedFrom: '' },
-      { name: 'Agente 5', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 5, repository: 'repository5.com', target: 'target 5', command: 'command 5', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 5', image: '', date: '21/05/2020', installedFrom: '' },
-      { name: 'Agente 6', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', isTargetType: true, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020', installedFrom: '' },
-      { name: 'Agente 7', background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020', installedFrom: '' },
-      { name: 'Agente 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', isTargetType: false, isRootDomainType: true, isSubDomainType: false, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '' }
+      { name: 'Agente 1', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 1, repository: 'repository1.com', target: 'target 1', command: 'command 1', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 1', image: '', date: '21/01/2020', installedFrom: '' },
+      { name: 'Agente 2', background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box', id: 2, repository: 'repository2.com', target: 'target 2', command: 'command 2', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent  2', image: '', date: '21/02/2020', installedFrom: '' },
+      { name: 'Agente 3', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 3, repository: 'repository3.com', target: 'target 3', command: 'command 3', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 3', image: '', date: '21/03/2020', installedFrom: '' },
+      { name: 'Agente 4', background: '#ff8650 0% 0% no-repeat padding-box', id: 4, repository: 'repository4.com', target: 'target 4', command: 'command 4', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 4', image: '', date: '21/04/2020', installedFrom: '' },
+      { name: 'Agente 5', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 5, repository: 'repository5.com', target: 'target 5', command: 'command 5', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 5', image: '', date: '21/05/2020', installedFrom: '' },
+      { name: 'Agente 6', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020', installedFrom: '' },
+      { name: 'Agente 7', background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020', installedFrom: '' },
+      { name: 'Agente 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '' }
     ],
     resources: [
       { url: 'http://google.com', categories: ['searcher', 'docs'], id: 1 },
@@ -171,9 +171,7 @@ export default createStore({
         repository: 'installer-repository.com',
         target: 'target-installer',
         command: 'command-installer',
-        isTargetType: false,
-        isRootDomainType: false,
-        isSubDomainType: false,
+        type: 1,
         isAliveTrigger: false,
         isHttpOpenTrigger: false,
         script: '',

@@ -750,3 +750,13 @@ div.card-body a svg{
   -webkit-background-clip: text!important;
   -webkit-text-fill-color: transparent!important;
 }
+
+.isLinkDisabled {
+  cursor: not-allowed;
+}
+
+.isLinkDisabled > a {
+  color: currentColor;
+  pointer-events: none;
+  opacity: 0.5;
+}

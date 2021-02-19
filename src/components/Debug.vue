@@ -15,7 +15,7 @@
                     <p class="script-result">{{ executionResult }}</p>
                 </div>
                 <div class="modal-footer dialog-without-lines-footer">
-                    <button @click="executeCode" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn">Run</button>
+                    <button @click="executeCode" :disabled="btnValidations" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn">Run</button>
                     <button @click="clearContent" type="submit" data-dismiss="modal" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -31,6 +31,14 @@ export default {
       terminalOutput: '',
       terminalInput: '',
       executionResult: ''
+    }
+  },
+  computed: {
+    btnValidations: function () {
+      if (this.terminalOutput && this.terminalInput) {
+        return false
+      }
+      return true
     }
   },
   components: {
