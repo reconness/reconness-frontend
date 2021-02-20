@@ -508,7 +508,7 @@ export default ({
       const message = {
         id: state.idMessage++,
         message: messageInfo.message,
-        sendDate: new Date().toISOString().substring(0, 10),
+        sendDate: new Date(),
         sender: state.loggedUser.name
       }
       target.messages.push(message)

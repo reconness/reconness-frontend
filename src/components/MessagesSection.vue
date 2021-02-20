@@ -33,7 +33,7 @@
                 </a>
               </div>
             </div>
-            <div v-for="message of this.getTargetMessages(parseInt(this.$route.params.id))" :key="message.id" class="col-12">
+            <div v-for="message of this.messagesSortedDescByDate()" :key="message.id" class="col-12">
               <div class="row">
                 <div class="col-12">
                   <p>
@@ -41,7 +41,7 @@
                   </p>
                 </div>
                 <div class="col-9">
-                  <i style="color: #c2c7d0;">{{message.sender}} / {{message.sendDate}}</i>
+                  <i style="color: #c2c7d0;">{{message.sender}} / {{new Date(message.sendDate).toISOString().substring(0, 10)}}</i>
                 </div>
                 <div class="col-3">
                   <a class="float-right" @click="setSelectedMessage" href="#" data-target="#message-confirmation-modal" :data-id="message.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
@@ -107,6 +107,13 @@ export default {
     },
     orderByMessageDate: function () {
       this.orderMessagesByCalendar(parseInt(this.$route.params.id))
+    },
+    messagesSortedDescByDate () {
+      return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+        function (a, b) {
+          return new Date(b.sendDate) - new Date(a.sendDate)
+        }
+      )
     }
   },
   components: {
