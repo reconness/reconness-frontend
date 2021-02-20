@@ -240,8 +240,4 @@ input[type="checkbox"]:checked + label:after {
 input[type="checkbox"] {
   display: none;
 }
-
-div.card-body a svg{
-    fill: #B3B3B3;
-}
 </style>
