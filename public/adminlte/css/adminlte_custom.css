@@ -154,6 +154,7 @@ div.content-wrapper{
   box-shadow: 3px 12px 23px #e2d9d9;
   border-radius: 18px;
   opacity: 1;
+  height: 75%;
 }
 
 .target-list-header > li{

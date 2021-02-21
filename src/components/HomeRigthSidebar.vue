@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 col-lg-3 col-xll-2">
-    <div class="right-sidebar target-item-home ">
+    <div class="right-sidebar target-item-home overflow-auto">
         <div class="d-flex justify-content-between">
           <div class="float-left">
         <h5>TARGET LIST</h5></div>
