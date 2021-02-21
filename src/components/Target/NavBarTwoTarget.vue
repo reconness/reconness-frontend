@@ -102,15 +102,15 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav d-sm-none ml-auto">
         <li class="nav-item float-left border-right">
-          <a class="nav-link" href="#">
               <!-- <router-link to="/agent/list"> -->
+              <a v-bind:class="{ 'router-link-exact-active': isMiniView} " v-on:click="activeNavButton('isMiniView')">
             <button type="button"  class="btn btn-light margin-right" @click="this.$store.commit('target/setIsDefaultViewOnTarget', false)">
-              <i class="material-icons">format_list_bulleted</i>
-            </button>
+                <i class="material-icons">format_list_bulleted</i>
+            </button></a>
+          <a v-bind:class="{ 'router-link-exact-active': isListView} " v-on:click="activeNavButton('isListView')">
             <button type="button" class="btn btn-light" @click="this.$store.commit('target/setIsDefaultViewOnTarget', true)">
               <i class="material-icons">grid_view</i>
-            </button>
-          </a>
+            </button></a>
         </li>
         <li class="nav-item dropdown border-right">
           <a
@@ -199,6 +199,12 @@ export default {
     TargetForm,
     Toast,
     TargetConfirmList
+  },
+  mounted () {
+    if (!this.$store.state.target.isDefaultViewOnTarget) {
+      this.isMiniView = true
+      this.isListView = false
+    }
   },
   methods: {
 

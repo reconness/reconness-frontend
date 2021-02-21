@@ -8,7 +8,7 @@
         <hr class="reset-margin-top" />
         <div class="content">
           <div class="row">
-            <div class="col-12 col-lg-4">
+           <div class="col-12 col-lg-4">
            <div class="card card-style box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}" style= "border:dotted .1rem transparent;">
               <div class="card-body p-0">
                 <div class="row">
@@ -33,8 +33,8 @@
                 </div>
                 <div class="row">
                   <div class="col border-top mr-2 ml-2 m-0 description-block">
-                    <label for="import"> Import Root Domains</label>
-                    <input type="file" id="import"/>
+                    <label for="import" class="domain-names-list"> Import Root Domains</label>
+                    <input type="file" id="import" style="display:none"/>
                   </div>
                 </div>
               </div>
@@ -116,7 +116,7 @@
                 <div class="row">
                  <div class="col-9">
                    <blockquote class="blockquote-style"  v-bind:style ="{borderImage:LinearGradient}">
-                    <p>Number os subdomains by each open ports</p>
+                    <p>Number of subdomains by each open ports</p>
                     </blockquote>
                 </div>
                 <div class="col-3">
@@ -137,11 +137,12 @@
                  <p class="text-right"> 110</p>
                 </div>
                 <div class="col-7">
-                <apexchart  width="100%" height="170px" type="donut" :options="optionsDonut" :series="seriesDonut"></apexchart>
+                <apexchart  height="200" type="radialBar" :options="chartOptions" :series="seriesRadial"></apexchart>
                 </div>
               </div></div>
             </div>
-          </div></div>
+          </div>
+          </div>
         </div>
       </div>
     </div>
@@ -237,33 +238,31 @@ export default {
         name: 'series-1',
         data: [62, 44, 38, 50, 78, 57]
       }],
-      optionsDonut: {
-        legend: {
-          show: false
+      seriesRadial: [87],
+      chartOptions: {
+        chart: {
+          type: 'radialBar'
         },
-        colors: ['#fff', 'transparent'],
+        colors: ['#fff'],
         plotOptions: {
-          pie: {
-            expandOnClick: false,
-            donut: {
-              size: '90%',
-              labels: {
-                show: true,
-                name: {
-                  show: false
-                },
-                value: {
-                  label: 'Total',
-                  show: true,
-                  color: '#fff',
-                  fontSize: '38px'
-                }
+          radialBar: {
+            hollow: {
+              size: '70%'
+            },
+            track: {
+              background: '#ebebeb57'
+            },
+            dataLabels: {
+              value: {
+                offsetY: -1,
+                fontSize: '44px',
+                color: '#fff'
               }
             }
           }
-        }
-      },
-      seriesDonut: [87, 32]
+        },
+        labels: ['']
+      }
     }
   },
   components: {
