@@ -22,13 +22,14 @@
           </span>
           <div class="domain-names-list">
             <span  class="material-icons float-left mt-2"> chevron_right </span>
-            <div class="marquee text-truncate">
+            <div class="text-truncate">
               <div class="marquee_content">
              <small class="list-inline " v-for="item2 of rootDom.slice(- 4)" :key="item2.id">
                <router-link class="text-dark"  :to="{ name: 'RootDomainDetails', params: {idTarget: id, id: item2.id} }">
               {{item2.root}}, </router-link>  </small>
             </div></div></div>
-          </div><!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box-content -->
             </div></div>
             <!-- /.info-box-content -->
         </div>
@@ -94,9 +95,7 @@ z-index: 500;
 .text-truncate {
     max-width: 100px;
 }
-.domain-names-list{
-  cursor: pointer;
-}
+
 .domain-names-list .material-icons{
 font-size: 17px;
 }

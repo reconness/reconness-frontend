@@ -154,6 +154,7 @@ div.content-wrapper{
   box-shadow: 3px 12px 23px #e2d9d9;
   border-radius: 18px;
   opacity: 1;
+  height: 74.5%;
 }
 
 .target-list-header > li{
@@ -574,6 +575,7 @@ font-weight: 600;
 .nav2{
   background-color: #00B1FF;
   color: #fff;
+  fill: #fff;
 }
 
 .nav2.nav-link p, .nav2.nav-link span {
@@ -759,4 +761,10 @@ div.card-body a svg{
   color: currentColor;
   pointer-events: none;
   opacity: 0.5;
+}
+.domain-names-list{
+  cursor: pointer;
+}
+.router-link-exact-active .nav-link p, .router-link-exact-active .nav-link svg {
+  fill: #fff;
 }

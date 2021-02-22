@@ -25,9 +25,8 @@
           <div class="row">
             <div class="col-12">
               <div class="float-left mt-2">
-              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item.id} }" class="font-italic font-color">
-                <small>| RootDomains: {{item.rootDomains.length}}</small>
-              </router-link> </div>
+               <small class="font-italic font-color">| RootDomains: {{item.rootDomains.length}}</small>
+                  </div>
               <div class="float-right">
                <a href="#" class="btn btn-sm btn-info  btn-style " @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#targetModalForm">Edit Target</a>
               </div>

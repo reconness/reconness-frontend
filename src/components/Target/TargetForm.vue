@@ -63,7 +63,7 @@
                                 <div class="card-body link-color">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title postal-title">{{target.name}}</h3>
-                                    <AccountCogIco/>
+                                    <BullseyeArrowIco/>
                                 </div>
                                 <hr />
                                 <div class="card-body-inside">
@@ -251,7 +251,7 @@
 </style>
 <script>
 import jQuery from 'jquery'
-import AccountCogIco from '@/components/AccountCogIco.vue'
+import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 import Toast from 'primevue/toast'
 import Chips from 'primevue/chips'
 export default {
@@ -457,7 +457,7 @@ export default {
     }
   },
   components: {
-    AccountCogIco,
+    BullseyeArrowIco,
     Toast,
     Chips
   },
