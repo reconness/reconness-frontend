@@ -86,7 +86,7 @@
             @mouseenter="mouseenter"
           >
             <button type="button" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
-              <LocalMallIco/>
+              <LocalMallIco />
             </button>
           </a>
         </li>
@@ -166,7 +166,7 @@
               class="btn btn-sm control-sidebar-right"
               id="dropdownMenuButton"
               @mouseenter="mouseenter">
-              <LocalMallIco/>
+              <LocalMallIco />
             </button>
           </a>
         </li>
@@ -350,5 +350,9 @@ margin-right: 20px;
 }
 .margin-right{
   margin-right: 1px;
+}
+
+li.nav-item.border-right.d-none.d-sm-block svg.local-mall-ico {
+  fill: #000000 !important
 }
 </style>
