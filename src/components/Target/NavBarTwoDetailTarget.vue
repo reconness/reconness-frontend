@@ -8,7 +8,10 @@
             <router-link to="/targets/list" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <p class="float-right ml-2 font-weight-bold">{{TargetName}}</p>
+            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget} }" v-if = showRootDomains>
+            <p class="float-right ml-2 font-weight-bold color-black">{{TargetName}}</p>
+            </router-link>
+            <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
         </li>
         <li class="nav-item d-flex" v-if = showRootDomains>
           <span v-bind:style ="{background:gradient}"  class="material-icons mt-1 ml-2 icon-color-style gradient-style"> chevron_right </span>
@@ -65,7 +68,10 @@
             <router-link to="/targets/list" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <p class="float-right ml-2 font-weight-bold">{{TargetName}}</p>
+            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget} }" v-if = showRootDomains>
+            <p class="float-right ml-2 font-weight-bold color-black">{{TargetName}}</p>
+            </router-link>
+            <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
         </li>
         <li class="nav-item d-flex" v-if = showRootDomains>
           <span v-bind:style ="{background:gradient }"  class="material-icons mt-1 ml-2 icon-color-style gradient-style"> chevron_right </span>
@@ -212,6 +218,9 @@ label {
 
 .dropdown-menu label.comments-page {
   padding: .25rem 1rem;
+}
+.color-black {
+  color: #000000 !important;
 }
 
 </style>

@@ -27,7 +27,7 @@
 <script>
 import jQuery from 'jquery'
 import Toast from 'primevue/toast'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -51,6 +51,7 @@ export default {
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
             if (this.$route.name === 'TargetDetail') {
               this.$router.push({ name: 'Targets' })
+              this.setIsTargetDeleted(true)
             }
           } else {
             this.$store.commit('target/removeRootDomain', parseInt(this.$route.params.idTarget), parseInt(this.$route.params.id))
@@ -67,7 +68,8 @@ export default {
     },
     close () {
       this.nameTyped = ''
-    }
+    },
+    ...mapMutations('target', ['setIsTargetDeleted'])
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])
