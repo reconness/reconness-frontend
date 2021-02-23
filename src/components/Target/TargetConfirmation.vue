@@ -26,7 +26,7 @@
 </template>
 <script>
 import jQuery from 'jquery'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 import Toast from 'primevue/toast'
 export default {
   data () {
@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setIdTarget']),
+    ...mapMutations(['setIsDeletetFromForm']),
     removeTarget: function () {
       if (this.nameTyped === this.selectedTargetName) {
         if (this.$randomBooleanResult()) {
@@ -62,11 +63,16 @@ export default {
     },
     close () {
       this.nameTyped = ''
-      this.setIdTarget(-1)
+      if (!this.isDeletetFromForm) {
+        this.setIdTarget(-1)
+      } else {
+        this.setIsDeletetFromForm(false)
+      }
     }
   },
   computed: {
     ...mapGetters('target', ['idTarget', 'getTargetById']),
+    ...mapState(['isDeletetFromForm']),
     loadSelectedTarget () {
       const id = this.idTarget
       return this.getTargetById(parseInt(id))
