@@ -24,7 +24,9 @@
 </template>
 <script>
 export default {
-  props: ['installerOption'],
+  props: {
+    installerOption: Number
+  },
   methods: {
     installer () {
       const success = this.$randomBooleanResult()

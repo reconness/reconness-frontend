@@ -211,8 +211,8 @@
    <div class="row">
       <AgentForm></AgentForm>
       <Debug></Debug>
-      <InstallOnDebug :installerOption="this.optionNumber"/>
-      <UninstallOnDebug :installerOption="this.optionNumber" :installerOptionName="this.optionName"/>
+      <InstallOnDebug :installerOption="optionNumber"/>
+      <UninstallOnDebug :installerOption="optionNumber" :installerOptionName="optionName"/>
       <Toast :baseZIndex="200"/>
   </div>
   <ConfirmDeleteList></ConfirmDeleteList>
