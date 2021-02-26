@@ -218,7 +218,7 @@
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
-                  <button v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <button @click="setIsDeletetFromForm(true)" v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
                   <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
                   <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
@@ -363,8 +363,10 @@ import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/AccountCogIco.vue'
 import FileCodeIco from '@/components//FileCodeIco.vue'
 import Toast from 'primevue/toast'
+import { mapMutations } from 'vuex'
 export default {
   methods: {
+    ...mapMutations(['setIsDeletetFromForm']),
     setBlueColor: function () {
       this.agent.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
     },

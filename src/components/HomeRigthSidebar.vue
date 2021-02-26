@@ -123,6 +123,23 @@ export default {
   font-size: 20px;
   }
 
+@media (max-width: 768px) {
+  .right-sidebar{
+    width: 100%;
+    margin-top: 20px;
+    position: relative;
+  }
+}
+
+@media (min-width: 769px) {
+  .right-sidebar{
+    width: 95%;
+    margin-top: 0;
+    height: 100%;
+    position: absolute;
+  }
+}
+
 @media (max-width: 1100px) {
 .justify-content-between h5{
   font-size: 18px;

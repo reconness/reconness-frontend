@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-12">
     <Toast :baseZIndex="200"/>
-    <div class="modal fade" id="confirmation-modal">
+    <div class="modal fade" id="confirmation-modal" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header dialog-without-lines-header">
@@ -27,6 +27,7 @@
 <script>
 import jQuery from 'jquery'
 import Toast from 'primevue/toast'
+import { mapState } from 'vuex'
 export default {
   components: {
     Toast
@@ -54,10 +55,15 @@ export default {
     },
     close () {
       this.nameTyped = ''
-      this.$store.commit('setIdAgent', -1)
+      if (!this.isDeletetFromForm) {
+        this.$store.commit('setIdAgent', -1)
+      } else {
+        this.$store.commit('setIsDeletetFromForm', false)
+      }
     }
   },
   computed: {
+    ...mapState(['isDeletetFromForm']),
     loadSelectedAgent2 () {
       const id = this.$store.getters.idAgent
       return this.$store.getters.getAgentById(parseInt(id))

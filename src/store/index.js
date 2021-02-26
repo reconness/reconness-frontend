@@ -57,7 +57,8 @@ export default createStore({
       { name: 'SubkisteD', description: 'Breve descripcion del agente SubkisteD', id: 4, installed: false },
       { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: false }
     ],
-    isMessageSectionOpened: false
+    isMessageSectionOpened: false,
+    isDeletetFromForm: false
   },
   mutations: {
     addAgent (state, agent) {
@@ -189,6 +190,9 @@ export default createStore({
     },
     setIsMessageSectionOpened (state, value) {
       state.isMessageSectionOpened = value
+    },
+    setIsDeletetFromForm (state, value) {
+      state.isDeletetFromForm = value
     }
   },
   actions: {

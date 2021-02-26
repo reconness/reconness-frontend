@@ -126,7 +126,7 @@ div.content-wrapper{
 }
 
 .home-quote-box{
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   display: inline-block;
   background: #FFFFFF 0% 0% no-repeat padding-box;
   box-shadow: 3px 12px 23px #e2d9d9;
@@ -149,12 +149,13 @@ div.content-wrapper{
 }
 
 .right-sidebar{
-  width: 100%;
+  width: 95%;
   background: #FBFBFB 0% 0% no-repeat padding-box;
   box-shadow: 3px 12px 23px #e2d9d9;
   border-radius: 18px;
   opacity: 1;
-  height: 74.5%;
+  height: 100%;
+  position: absolute;
 }
 
 .target-list-header > li{
