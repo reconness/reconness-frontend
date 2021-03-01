@@ -414,11 +414,13 @@ export default {
     addItemToRootDomains (item) {
       if (!this.$validateUrl(item.value[item.value.length - 1])) {
         this.rootDomainsTextItems.pop()
+        this.validators.url.rootDomains = false
       } else {
         this.target.rootDomains.push(
           {
             root: item.value.slice(-1)[0],
-            id: this.target.rootDomains.length
+            id: this.target.rootDomains.length,
+            date: new Date().toLocaleDateString('es-Es')
           }
         )
       }
