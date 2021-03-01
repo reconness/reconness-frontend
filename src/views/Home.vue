@@ -1,5 +1,5 @@
 <template>
-<div class="content-wrapper">
+<div class="content-wrapper mb-3">
   <div class="container-fluid">
   <div class="row">
     <div class="col-12 col-lg-9 col-xll-10">
