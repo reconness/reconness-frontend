@@ -19,10 +19,13 @@
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
-                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="enableValidationMessageRootDomains"/>
+                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="enableValidationMessageRootDomains" id="chips_el"/>
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.rootDomains">
                             <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
+                        </div>
+                        <div class="col-12" v-if="validators.url.rootDomains">
+                            <span :class="{invalid: validators.url.rootDomains}">Invalid character. Please enter a valid URL or press Enter key to add a new root domain</span>
                         </div>
 
                         <div class="col-12">
@@ -346,11 +349,17 @@ export default {
         this.validators.blank.name = false
       }
     },
-    enableValidationMessageRootDomains () {
+    enableValidationMessageRootDomains (event) {
       if (this.target.rootDomains.length === 0) {
         this.validators.blank.rootDomains = true
       } else {
         this.validators.blank.rootDomains = false
+      }
+      const chipsActualValue = document.getElementById('chips_el').value
+      if (this.isStrWithSpaces(chipsActualValue)) {
+        this.validators.url.rootDomains = true
+      } else {
+        this.validators.url.rootDomains = false
       }
     },
     enableValidationMessageBugBountyUrl () {
@@ -405,11 +414,13 @@ export default {
     addItemToRootDomains (item) {
       if (!this.$validateUrl(item.value[item.value.length - 1])) {
         this.rootDomainsTextItems.pop()
+        this.validators.url.rootDomains = false
       } else {
         this.target.rootDomains.push(
           {
             root: item.value.slice(-1)[0],
-            id: this.target.rootDomains.length
+            id: this.target.rootDomains.length,
+            date: new Date().toLocaleDateString('es-Es')
           }
         )
       }
@@ -417,6 +428,9 @@ export default {
     removeItemToRootDomains (rootDomainParam) {
       const index = this.target.rootDomains.findIndex(item => item.root === rootDomainParam.value[0])
       this.target.rootDomains.splice(index, 1)
+    },
+    isStrWithSpaces (item) {
+      return /\s/.test(item)
     }
   },
   data () {
@@ -452,7 +466,8 @@ export default {
           outScope: false
         },
         url: {
-          bugBountyUrl: false
+          bugBountyUrl: false,
+          rootDomains: false
         }
       },
       nextTargetSequence: 30
