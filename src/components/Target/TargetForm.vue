@@ -19,7 +19,7 @@
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
-                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="enableValidationMessageRootDomains" id="chips_el"/>
+                          <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="checkSeparator" id="chips_el" :separator="','"/>
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.rootDomains">
                             <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
@@ -412,13 +412,14 @@ export default {
       this.$store.commit('setDetailsLinks', false)
     },
     addItemToRootDomains (item) {
-      if (!this.$validateUrl(item.value[item.value.length - 1])) {
+      const urlElem = typeof item === 'object' && item !== null ? item.value[item.value.length - 1] : item
+      if (!this.$validateUrl(urlElem)) {
         this.rootDomainsTextItems.pop()
         this.validators.url.rootDomains = false
       } else {
         this.target.rootDomains.push(
           {
-            root: item.value.slice(-1)[0],
+            root: urlElem,
             id: this.target.rootDomains.length,
             date: new Date().toLocaleDateString('es-Es')
           }
@@ -431,6 +432,15 @@ export default {
     },
     isStrWithSpaces (item) {
       return /\s/.test(item)
+    },
+    checkSeparator (event) {
+      const chipsActualValue = document.getElementById('chips_el').value
+      if (this.isStrWithSpaces(chipsActualValue) && chipsActualValue.replace(/\s/g, '').length > 0 && chipsActualValue.charAt(0) !== ' ') {
+        this.rootDomainsTextItems.push(chipsActualValue.trim())
+        this.addItemToRootDomains(chipsActualValue.trim())
+        document.getElementById('chips_el').value = ''
+      }
+      this.enableValidationMessageRootDomains(event)
     }
   },
   data () {
