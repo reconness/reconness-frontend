@@ -54,9 +54,13 @@ export default {
               this.setIsElementDeleted(true)
             }
           } else {
-            this.$store.commit('target/removeRootDomain', parseInt(this.$route.params.idTarget), parseInt(this.$route.params.id))
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
-            this.$router.push({ name: 'Targets' })
+            const params = {
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id)
+            }
+            this.$store.commit('target/removeRootDomain', params)
+            this.setIsElementDeleted(true)
+            this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget } })
           }
         } else {
           this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })

@@ -393,9 +393,9 @@ export default ({
         state.targetListStore.splice(index, 1)
       }
     },
-    removeRootDomain (state, targetid, rootID) {
-      const target = state.targetListStore.find(item => item.id === targetid)
-      const rootsIndex = target.rootDomains.findIndex(roots => roots.id === rootID)
+    removeRootDomain (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const rootsIndex = target.rootDomains.findIndex(roots => roots.id === params.idRootDomain)
       target.rootDomains.splice(rootsIndex, 1)
     },
     removeTargets (state) {
