@@ -51,7 +51,7 @@ export default {
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
             if (this.$route.name === 'TargetDetail') {
               this.$router.push({ name: 'Targets' })
-              this.setIsTargetDeleted(true)
+              this.setIsElementDeleted(true)
             }
           } else {
             this.$store.commit('target/removeRootDomain', parseInt(this.$route.params.idTarget), parseInt(this.$route.params.id))
@@ -69,7 +69,7 @@ export default {
     close () {
       this.nameTyped = ''
     },
-    ...mapMutations('target', ['setIsTargetDeleted'])
+    ...mapMutations(['setIsElementDeleted'])
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])

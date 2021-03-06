@@ -33,7 +33,8 @@ export default {
     Toast
   },
   computed: {
-    ...mapState('target', ['targetListStore', 'filterColour', 'isTargetDeleted']),
+    ...mapState('target', ['targetListStore', 'filterColour']),
+    ...mapState(['isElementDeleted']),
     ...mapGetters('target', ['filterByColor']),
     arrayFilterList () {
       if (this.filterColour === '') {
@@ -44,13 +45,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['setIsTargetDeleted'])
+    ...mapMutations(['setIsElementDeleted'])
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
-    if (this.isTargetDeleted) {
+    if (this.isElementDeleted) {
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
-      this.setIsTargetDeleted(false)
+      this.setIsElementDeleted(false)
     }
   }
 }

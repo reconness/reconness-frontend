@@ -362,8 +362,7 @@ export default ({
     targetIdList: [],
     colorDelete: '#000000',
     idMessage: -1,
-    loggedUser: { name: 'John Doe' },
-    isTargetDeleted: false
+    loggedUser: { name: 'John Doe' }
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -513,9 +512,6 @@ export default ({
         sender: state.loggedUser.name
       }
       target.messages.push(message)
-    },
-    setIsTargetDeleted (state, value) {
-      state.isTargetDeleted = value
     }
   },
   actions: {

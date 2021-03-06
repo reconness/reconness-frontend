@@ -58,7 +58,8 @@ export default createStore({
       { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: false }
     ],
     isMessageSectionOpened: false,
-    isDeletetFromForm: false
+    isDeletetFromForm: false,
+    isElementDeleted: false
   },
   mutations: {
     addAgent (state, agent) {
@@ -193,6 +194,9 @@ export default createStore({
     },
     setIsDeletetFromForm (state, value) {
       state.isDeletetFromForm = value
+    },
+    setIsElementDeleted (state, value) {
+      state.isElementDeleted = value
     }
   },
   actions: {
