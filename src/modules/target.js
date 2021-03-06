@@ -543,6 +543,13 @@ export default ({
     },
     getTargetMessages: (state) => (id) => {
       return state.targetListStore.find(target => target.id === id).messages
+    },
+    checkIfTargetExistsByName: (state) => (targetName) => {
+      const currentTarget = state.targetListStore.find(target => target.name === targetName)
+      if (currentTarget) {
+        return true
+      }
+      return false
     }
   }
 })

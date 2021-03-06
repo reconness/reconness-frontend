@@ -10,12 +10,15 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <input  v-model="target.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My Target" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <input  v-model="target.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My Target" @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.name">
                             <span :class="{invalid: validators.blank.name}">The field name is required</span>
+                        </div>
+                        <div class="col-12" v-if="validators.exist.name">
+                            <span :class="{invalid: validators.exist.name}">The written name is already being used by another target</span>
                         </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
@@ -257,7 +260,7 @@ import jQuery from 'jquery'
 import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
 import Toast from 'primevue/toast'
 import Chips from 'primevue/chips'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 export default {
   methods: {
     ...mapMutations(['setIsDeletetFromForm']),
@@ -283,7 +286,7 @@ export default {
     },
     addTarget () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.url.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope) {
+      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.url.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope && !this.validators.exist.name) {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {
@@ -339,6 +342,9 @@ export default {
         },
         url: {
           bugBountyUrl: false
+        },
+        exist: {
+          name: false
         }
       }
     },
@@ -388,12 +394,18 @@ export default {
         this.validators.blank.outScope = false
       }
     },
+    enableValidationMessageUniqueName () {
+      if (this.target.name) {
+        this.validators.exist.name = this.checkIfTargetExistsByName(this.target.name)
+      }
+    },
     enableValidationMessages () {
       this.enableValidationMessageName()
       this.enableValidationMessageBugBountyUrl()
       this.enableValidationMessageRootDomains()
       this.enableValidationMessageInScope()
       this.enableValidationMessageOutScope()
+      this.enableValidationMessageUniqueName()
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.systemColors
@@ -441,6 +453,11 @@ export default {
         document.getElementById('chips_el').value = ''
       }
       this.enableValidationMessageRootDomains(event)
+    },
+    onBlurExecute () {
+      this.isPencilVisible = false
+      this.isPencilVisibleAndClick = false
+      this.enableValidationMessageUniqueName()
     }
   },
   data () {
@@ -478,6 +495,9 @@ export default {
         url: {
           bugBountyUrl: false,
           rootDomains: false
+        },
+        exist: {
+          name: false
         }
       },
       nextTargetSequence: 30
@@ -494,8 +514,9 @@ export default {
       return this.$store.getters['target/getTargetById'](parseInt(id))
     },
     isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.url.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope)
-    }
+      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.url.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope && this.validators.exist.name)
+    },
+    ...mapGetters('target', ['checkIfTargetExistsByName'])
   },
   watch: {
     loadSelectedTarget: function (value) {
