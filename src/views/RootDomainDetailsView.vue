@@ -8,6 +8,15 @@
       <div class="container-fluid">
         <hr class="reset-margin-top" />
         <div class="content">
+          <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
+            Subdomains
+          </button>
+          <button type="button" class="btn  ml-5 button-style " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">Agents
+          </button>
+          <SubdomainListTable v-if="this.$store.state.target.isTableList" :gradient = "LinearGradient" :rootDomain = 'RootDomains'/>
+          <div class="row" v-else>
+          <AgentListTable/>
+          </div>
         </div>
       </div>
     </div>
@@ -15,8 +24,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
+import SubdomainListTable from '@/components/Target/SubdomainListTable.vue'
+import AgentListTable from '@/components/Target/AgentListTable.vue'
 export default {
   name: 'TargetsDetailsView',
   data: function () {
@@ -25,11 +36,17 @@ export default {
       Target: Object,
       RootDomains: Object,
       LinearGradient: '',
-      showRoot: true
+      showRoot: true,
+      buttonGradSubd: '',
+      buttonGradAg: '',
+      shadowSubd: '13px 19px 41px #d6d6d6',
+      shadowAg: ''
     }
   },
   components: {
-    NavBarTwoDetailTarget
+    NavBarTwoDetailTarget,
+    SubdomainListTable,
+    AgentListTable
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])
@@ -39,6 +56,33 @@ export default {
     this.Target = this.getTargetById(parseInt(this.$route.params.idTarget))
     this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.$route.params.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
+    this.buttonGradSubd = this.LinearGradient
+  },
+  methods: {
+    ...mapMutations('target', ['setIsDefaultTabButton']),
+    activeTabButton: function (valueIn) {
+      this.setIsDefaultTabButton(valueIn)
+      if (valueIn) {
+        this.buttonGradSubd = this.LinearGradient
+        this.buttonGradAg = 'linear-gradient(#f2f4f6, #f2f4f6)'
+        this.shadowSubd = '13px 19px 41px #d6d6d6'
+        this.shadowAg = ''
+      } else {
+        this.buttonGradSubd = 'linear-gradient(#f2f4f6, #f2f4f6)'
+        this.buttonGradAg = this.LinearGradient
+        this.shadowSubd = ''
+        this.shadowAg = '13px 19px 41px #d6d6d6'
+      }
+    }
   }
 }
 </script>
+
+<style scoped>
+.border-grad {
+    color: #212529;
+    border: 1px solid transparent;
+    border-radius: 8px;
+}
+
+</style>

@@ -12,12 +12,39 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: [
+              {
+                id: 1,
+                name: 'yahoo.com',
+                date: '2020-12-01',
+                checking: true,
+                interesting: false,
+                vulnerable: true,
+                boubty: true,
+                ignore: false,
+                scope: true,
+                agent: 'Yanet'
+              },
+              {
+                id: 2,
+                name: 'yahoo.com',
+                date: '2020-12-02',
+                checking: false,
+                interesting: true,
+                vulnerable: true,
+                boubty: true,
+                ignore: false,
+                scope: true,
+                agent: 'Portraite'
+              }
+            ]
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/a',
@@ -49,7 +76,8 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
@@ -362,7 +390,9 @@ export default ({
     targetIdList: [],
     colorDelete: '#000000',
     idMessage: -1,
-    loggedUser: { name: 'John Doe' }
+    loggedUser: { name: 'John Doe' },
+    isTargetDeleted: false,
+    isTableList: true
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -412,6 +442,9 @@ export default ({
     },
     setIsDefaultViewOnTarget (state, value) {
       state.isDefaultViewOnTarget = value
+    },
+    setIsDefaultTabButton (state, value) {
+      state.isTableList = value
     },
     isFilter (state, backg) {
       state.filterColour = backg
