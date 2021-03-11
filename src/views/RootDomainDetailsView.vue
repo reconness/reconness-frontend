@@ -11,7 +11,7 @@
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
             Subdomains <span class="text-muted-b3">(2)</span>
           </button>
-          <button type="button" class="btn  ml-5 button-style " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
+          <button disabled="true" type="button" class="btn  ml-5 button-style " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
             Agents <span class="text-muted-b3">(2)</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' :isEmpty = 'isSubDomEmpty' />

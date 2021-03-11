@@ -7,7 +7,7 @@
         <a href="#" data-toggle="modal" data-target="#subDomainInsertionForm"> <span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
          Add Subdomain</a></li>
         <li class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-          <FileImportIco  v-bind:style ="{ 'fill': color}"/>
+          <FileImportIco  v-bind:style ="{ 'fill': color, 'width': 20, 'height': 20, 'opacity': 1 }" style="width: 20px, height: 20px, opacity: 1;"/>
           <label for="export-target" class=" mb-0"> Import Subdomains </label>
           <input type="file" id="export-target"/>
         </li>
