@@ -11,7 +11,7 @@
     "@types/typography": "0.16.3",
     "@vuelidate/core": "2.0.0-alpha.8",
     "@vuelidate/validators": "2.0.0-alpha.5",
-    "apexcharts": "3.23.0",
+    "apexcharts": "3.25.0",
     "bootstrap": "^4.5.3",
     "core-js": "^3.8.3",
     "jquery": "^3.5.1",
@@ -25,7 +25,7 @@
     "vue": "^3.0.5",
     "vue-router": "^4.0.4",
     "vue3-ace-editor": "^1.0.2",
-    "vue3-apexcharts": "1.1.1",
+    "vue3-apexcharts": "1.2.1",
     "vuex": "^4.0.0",
     "webfontloader": "1.6.28"
   },
