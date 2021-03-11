@@ -8,18 +8,18 @@
                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                                <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2">New Subdomain</p>
+                                <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">New Subdomain</p>
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
-                                <input v-for="item in subdomains" :key="item" v-model="item.value" class="form-control agent-placeholder mb-4 subdomains-items-field" placeholder="New subdomain">
+                                <input v-for="item in subdomains" :key="item" v-model="item.name" class="form-control agent-placeholder mb-4 subdomains-items-field" placeholder="New subdomain" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
                                 <a href="#" class="text-body d-inline-flex" @click="createSubdomains">
-                                    <span class="material-icons">add_circle</span>
-                                    <span class="ml-2">Add New</span>
+                                    <span class="material-icons gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
+                                    <span class="ml-2 gradient-style" v-bind:style ="{background:gradient}">Add New</span>
                                 </a>
                             </div>
                         </div>
                         <div class="modal-footer border-top-0 m-auto">
-                            <button type="button" class="btn add-subdomain-btn-primary" @click="insertSubdomains">Add Subdomain</button>
+                            <button type="button" class="btn add-subdomain-btn-primary" v-bind:style ="{background: gradient}" @click="insertSubdomains">Add Subdomain</button>
                         </div>
                     </div>
                 </div>
@@ -28,6 +28,8 @@
     </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
+import jQuery from 'jquery'
 export default {
   data: function () {
     return {
@@ -36,11 +38,64 @@ export default {
   },
   methods: {
     createSubdomains: function () {
-      this.subdomains.push({ value: '' })
-    }
+      this.subdomains.push({
+        name: '',
+        added: '2020-12-01',
+        checking: true,
+        interesting: false,
+        vulnerable: true,
+        boubty: true,
+        ignore: false,
+        scope: true,
+        agent: [],
+        ipAddress: '34.234.345.34',
+        http: true
+      })
+    },
+    insertSubdomains: function () {
+      var params = {
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRootDomain: parseInt(this.$route.params.id),
+        subdomainsItems: this.subdomains
+      }
+      this.addSubdomain(params)
+      jQuery('#subDomainInsertionForm').modal('hide')
+      this.resetForm()
+    },
+    resetForm: function () {
+      this.subdomains = [{
+        name: '',
+        added: new Date().toLocaleDateString('es-Es'),
+        checking: true,
+        interesting: false,
+        vulnerable: true,
+        boubty: true,
+        ignore: false,
+        scope: true,
+        agent: [],
+        ipAddress: '34.234.345.34',
+        http: true
+      }]
+    },
+    ...mapMutations('target', ['addSubdomain'])
   },
   created: function () {
-    this.subdomains.push({ value: '' })
+    this.subdomains.push({
+      name: '',
+      added: new Date().toLocaleDateString('es-Es'),
+      checking: true,
+      interesting: false,
+      vulnerable: true,
+      boubty: true,
+      ignore: false,
+      scope: true,
+      agent: [],
+      ipAddress: '34.234.345.34',
+      http: true
+    })
+  },
+  props: {
+    gradient: String
   }
 }
 </script>

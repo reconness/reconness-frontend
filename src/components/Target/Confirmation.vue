@@ -7,15 +7,28 @@
             <div class="modal-content">
               <div class="modal-header dialog-without-lines-header">
                 <!-- PARAMETERIZABLE -->
-                  <h5 class="modal-title"><b>Are you sure you want to delete selected {{nameIs}}?</b></h5>
+                  <h5  class="modal-title">
+                    <b v-if="$store.state.valueDelete === '' && $store.state.nameRoute === 'subdomains'">Are you sure you want to delete all subdomains below?</b>
+                    <b v-else >Are you sure you want to delete selected {{$store.state.nameRoute}}?</b>
+                  </h5>
               </div>
               <div class="modal-body">
                 <!-- PARAMETERIZABLE -->
-                  <p>Please, confirm the name of the {{nameIs}} <b>{{valueName}} </b> before delete it</p>
+                  <div  v-if="$store.state.valueDelete === '' && $store.state.nameRoute === 'subdomains'">
+                  <p class="mb-0">Please, type "yes" to confirm the delete action </p>
+                   <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="">
+                  </div>
+                  <div v-else>
+                  <p class="mb-0">Please, confirm the name of the {{$store.state.nameRoute}} <b> {{$store.state.valueDelete}} </b> before delete it</p>
                   <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="Name">
-              </div>
+              </div></div>
               <div class="modal-footer dialog-without-lines-footer">
-                  <button :disabled="nameTyped !== valueName" type="button" class="btn btn-primary btn-danger delete_btn" @click="removeTarget(this.nameTyped)">Delete</button>
+                  <button :disabled="nameTyped !== 'yes'"
+                  v-if="$store.state.valueDelete === '' && $store.state.nameRoute === 'subdomains'"
+                  type="button" class="btn btn-primary btn-danger delete_btn" @click="remove(this.nameTyped)">Delete</button>
+
+                  <button v-else :disabled="nameTyped !== $store.state.valueDelete"
+                  type="button" class="btn btn-primary btn-danger delete_btn" @click="remove(this.nameTyped)">Delete</button>
                   <button @click="close()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </div><!-- /.modal-content -->
@@ -31,44 +44,47 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      nameTyped: '',
-      nameIs: ''
+      nameTyped: ''
     }
-  },
-  props: {
-    type: String,
-    valueName: String
   },
   components: {
     Toast
   },
   methods: {
-    removeTarget: function () {
-      if (this.nameTyped === this.valueName) {
-        if (this.$randomBooleanResult()) {
-          if (this.$route.name === 'TargetDetail' || this.$route.name === 'Targets' || this.$route.name === 'Home') {
+    remove: function () {
+      if (this.$randomBooleanResult()) {
+        switch (this.$store.state.nameRoute) {
+          case 'target':
             this.$store.commit('target/removeTarget', this.nameTyped)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
             if (this.$route.name === 'TargetDetail') {
               this.$router.push({ name: 'Targets' })
               this.setIsElementDeleted(true)
             }
-          } else {
-            const params = {
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
+            break
+          case 'subdomains':
+            if (this.nameTyped === 'yes') {
+              this.$store.commit('target/removeSubDomains', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id) })
+            } else {
+              this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
             }
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The subdomain has been deleted successfully', life: 3000 })
+            break
+          case 'rootdomains':
+            var params = { idTarget: parseInt(this.$route.params.idTarget), idRootDomain: parseInt(this.$route.params.id) }
             this.$store.commit('target/removeRootDomain', params)
             this.setIsElementDeleted(true)
-            this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget } })
-          }
-        } else {
-          this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
+            this.$router.push({ name: 'Targets' })
+            break
+          default:
+            break
         }
-        this.nameTyped = ''
-        jQuery('#confirmation-modal').modal('hide')
-        jQuery('#targetModalForm').modal('hide')
+      } else {
+        this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
       }
+      this.nameTyped = ''
+      jQuery('#confirmation-modal').modal('hide')
+      jQuery('#targetModalForm').modal('hide')
     },
     close () {
       this.nameTyped = ''
@@ -77,13 +93,6 @@ export default {
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])
-  },
-  mounted () {
-    if (this.$route.name === 'RootDomainDetails') {
-      this.nameIs = 'rootdomains'
-    } else {
-      this.nameIs = 'target'
-    }
   }
 }
 </script>

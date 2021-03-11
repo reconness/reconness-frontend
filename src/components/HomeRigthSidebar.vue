@@ -25,7 +25,7 @@
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
             <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmation-modal">
-            <button class="dropdown-item" @click="setTargetName" :data-name="item.name" type="button">Delete</button>
+            <button class="dropdown-item" @click="updateConfirm(item.name)" type="button">Delete</button>
             </a>
           </div>
           </span>
@@ -66,8 +66,8 @@ export default {
     orderByCalendar: function () {
       return this.targetListStore.sort(this.$orderByCalendarSplitting)
     },
-    setTargetName (e) {
-      this.selectedTargetName = e.currentTarget.getAttribute('data-name')
+    updateConfirm (itemName) {
+      return this.$store.commit('confirm', { name: itemName, route: 'target' })
     }
   }
 }

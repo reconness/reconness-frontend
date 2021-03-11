@@ -16,15 +16,52 @@ export default ({
             subdomain: [
               {
                 id: 1,
-                name: 'yahoo.com',
-                date: '2020-12-01',
+                name: 'Yanet',
+                added: '2020-12-01',
                 checking: true,
                 interesting: false,
                 vulnerable: true,
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agent: 'Yanet'
+                agent: [],
+                ipAddress: '34.234.345.34',
+                http: true
+              },
+              {
+                id: 2,
+                name: 'Portraite',
+                added: '2020-12-02',
+                checking: false,
+                interesting: true,
+                vulnerable: true,
+                boubty: true,
+                ignore: false,
+                scope: true,
+                agent: [],
+                ipAddress: '34.234.345.34',
+                http: true
+              }
+            ]
+          },
+          {
+            id: 2,
+            root: 'anotherness.com',
+            date: '21/08/2018',
+            subdomain: [
+              {
+                id: 1,
+                name: 'Yanet',
+                added: '2020-12-01',
+                checking: true,
+                interesting: false,
+                vulnerable: true,
+                boubty: true,
+                ignore: false,
+                scope: true,
+                agents: [],
+                ipAddress: '34.234.345.34',
+                http: true
               },
               {
                 id: 2,
@@ -39,12 +76,6 @@ export default ({
                 agent: 'Portraite'
               }
             ]
-          },
-          {
-            id: 2,
-            root: 'anotherness.com',
-            date: '21/08/2018',
-            subdomain: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/a',
@@ -77,22 +108,40 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [
+              {
+                id: 1,
+                name: 'Yanet',
+                added: '2020-12-01',
+                checking: true,
+                interesting: false,
+                vulnerable: true,
+                boubty: true,
+                ignore: false,
+                scope: true,
+                agent: [],
+                ipAddress: '34.234.345.34',
+                http: true
+              }
+            ]
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           },
           {
             id: 3,
             root: 'anothertest1.com',
-            date: '21/07/2018'
+            date: '21/07/2018',
+            subdomain: []
           },
           {
             id: 4,
             root: 'anothertest2.com',
-            date: '21/06/2018'
+            date: '21/06/2018',
+            subdomain: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/f',
@@ -118,12 +167,29 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: [
+              {
+                id: 1,
+                name: 'Yanet',
+                added: '2020-12-01',
+                checking: true,
+                interesting: false,
+                vulnerable: true,
+                boubty: true,
+                ignore: false,
+                scope: true,
+                agent: [],
+                ipAddress: '34.234.345.34',
+                http: true
+              }
+            ]
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/b',
@@ -149,12 +215,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/c',
@@ -180,12 +248,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/d',
@@ -212,12 +282,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         messages: [
@@ -240,12 +312,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/a',
@@ -272,12 +346,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         isPrivateProgram: true,
@@ -302,12 +378,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         isPrivateProgram: true,
@@ -332,12 +410,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         isPrivateProgram: true,
@@ -362,12 +442,14 @@ export default ({
           {
             id: 1,
             root: 'reconnes.com',
-            date: '21/09/2018'
+            date: '21/09/2018',
+            subdomain: []
           },
           {
             id: 2,
             root: 'anotherness.com',
-            date: '21/08/2018'
+            date: '21/08/2018',
+            subdomain: []
           }
         ],
         isPrivateProgram: true,
@@ -392,7 +474,8 @@ export default ({
     idMessage: -1,
     loggedUser: { name: 'John Doe' },
     isTargetDeleted: false,
-    isTableList: true
+    isTableList: true,
+    idSubdomain: 55
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -421,12 +504,29 @@ export default ({
       const index = state.targetListStore.findIndex(target => target.name === targetName)
       if (index !== -1) {
         state.targetListStore.splice(index, 1)
+        state.nameRoute = ''
+        state.valueDelete = ''
       }
     },
     removeRootDomain (state, params) {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
       const rootsIndex = target.rootDomains.findIndex(roots => roots.id === params.idRootDomain)
       target.rootDomains.splice(rootsIndex, 1)
+    },
+    removeSubDomain (state, tarjetObj) {
+      const target = state.targetListStore.find(item => item.id === tarjetObj.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === tarjetObj.idRoot)
+      const subdIndex = roots.subdomain.findIndex(subd => subd.name === tarjetObj.nameSubd)
+      roots.subdomain.splice(subdIndex, 1)
+      state.nameRoute = ''
+      state.valueDelete = ''
+    },
+    removeSubDomains (state, tarjetObj) {
+      const target = state.targetListStore.find(item => item.id === tarjetObj.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === tarjetObj.idRoot)
+      roots.subdomain = []
+      state.nameRoute = ''
+      state.valueDelete = ''
     },
     removeTargets (state) {
       for (var index1 in state.targetIdList) {
@@ -545,6 +645,17 @@ export default ({
         sender: state.loggedUser.name
       }
       target.messages.push(message)
+    },
+    setIsTargetDeleted (state, value) {
+      state.isTargetDeleted = value
+    },
+    addSubdomain (state, params) {
+      for (let index = 0; index < params.subdomainsItems; index++) {
+        params.subdomainsItems[index].id = state.idSubdomain++
+      }
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
+      roots.subdomain = roots.subdomain.concat(params.subdomainsItems)
     }
   },
   actions: {
@@ -579,6 +690,11 @@ export default ({
         return true
       }
       return false
+    },
+    getSubdomainSize: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
+      return roots.subdomain.length
     }
   }
 })

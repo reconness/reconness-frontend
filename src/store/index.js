@@ -59,9 +59,15 @@ export default createStore({
     ],
     isMessageSectionOpened: false,
     isDeletetFromForm: false,
-    isElementDeleted: false
+    isElementDeleted: false,
+    nameRoute: '',
+    valueDelete: ''
   },
   mutations: {
+    confirm (state, valueIN) {
+      state.nameRoute = valueIN.route
+      state.valueDelete = valueIN.name
+    },
     addAgent (state, agent) {
       state.agentListStore.push(agent)
     },

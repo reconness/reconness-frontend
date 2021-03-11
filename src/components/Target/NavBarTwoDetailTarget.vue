@@ -21,10 +21,10 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!showRootDomains">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" >Delete Target</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" v-on:click="updateConfirm()" >Delete Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" >Delete Root Domain</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" v-on:click="updateConfirm()" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <label for="export-target" class="nav-link pos mb-0"> Export Target </label>
@@ -121,7 +121,7 @@
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
-  <Confirmation :valueName = "showRootDomains ? rootName : TargetName" ></Confirmation>
+  <Confirmation ></Confirmation>
   <MessageConfirmation></MessageConfirmation>
      </div>
 </template>
@@ -178,7 +178,15 @@ export default {
     },
     setTargetId (e) {
       this.$store.commit('target/setIdTarget', parseInt(this.$route.params.id))
+    },
+    updateConfirm () {
+      if (this.showRootDomains) {
+        return this.$store.commit('confirm', { name: this.rootName, route: 'rootdomains' })
+      } else {
+        return this.$store.commit('confirm', { name: this.TargetName, route: 'target' })
+      }
     }
+
   }
 }
 </script>

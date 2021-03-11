@@ -9,11 +9,12 @@
         <hr class="reset-margin-top" />
         <div class="content">
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
-            Subdomains
+            Subdomains <span class="text-muted-b3">(2)</span>
           </button>
-          <button type="button" class="btn  ml-5 button-style " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">Agents
+          <button type="button" class="btn  ml-5 button-style " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
+            Agents <span class="text-muted-b3">(2)</span>
           </button>
-          <SubdomainListTable v-if="this.$store.state.target.isTableList" :gradient = "LinearGradient" :rootDomain = 'RootDomains'/>
+          <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' :isEmpty = 'isSubDomEmpty' />
           <div class="row" v-else>
           <AgentListTable/>
           </div>
@@ -34,13 +35,18 @@ export default {
     return {
       TargetName: String,
       Target: Object,
-      RootDomains: Object,
+      RootDomains: {
+        type: Object,
+        default: () => {}
+      },
       LinearGradient: '',
       showRoot: true,
       buttonGradSubd: '',
       buttonGradAg: '',
-      shadowSubd: '13px 19px 41px #d6d6d6',
-      shadowAg: ''
+      shadowSubd: '3px 12px 23px #d6d6d6',
+      shadowAg: '',
+      isSubDomEmpty: false,
+      secondaryColor: ''
     }
   },
   components: {
@@ -57,6 +63,10 @@ export default {
     this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.$route.params.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
+    this.secondaryColor = this.Target.secondaryColor
+    if (this.RootDomains.subdomain.length <= 0) {
+      this.isSubDomEmpty = true
+    }
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),
@@ -80,9 +90,10 @@ export default {
 
 <style scoped>
 .border-grad {
-    color: #212529;
-    border: 1px solid transparent;
-    border-radius: 8px;
+    color: #000000;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    opacity: 1;
 }
 
 </style>
