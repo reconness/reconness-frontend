@@ -74,7 +74,7 @@ export default {
             var params = { idTarget: parseInt(this.$route.params.idTarget), idRootDomain: parseInt(this.$route.params.id) }
             this.$store.commit('target/removeRootDomain', params)
             this.setIsElementDeleted(true)
-            this.$router.push({ name: 'Targets' })
+            this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget } })
             break
           default:
             break

@@ -693,8 +693,10 @@ export default ({
     },
     getSubdomainSize: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
-      return roots.subdomain.length
+      if (target.roots) {
+        const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
+        return roots.subdomain.length
+      }
     }
   }
 })
