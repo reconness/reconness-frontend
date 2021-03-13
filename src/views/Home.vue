@@ -176,7 +176,7 @@ export default {
       this.search_data = []
     },
     getUniqueCategories () {
-      var mergedReferences = []
+      const mergedReferences = []
       this.resources.forEach(resource => {
         resource.categories.forEach(categorie => {
           mergedReferences.push(categorie)

@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
 import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vue'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
@@ -271,7 +271,11 @@ export default {
     NavBarTwoDetailTarget
   },
   computed: {
-    ...mapGetters('target', ['getTargetById'])
+    ...mapGetters('target', ['getTargetById']),
+    ...mapState(['isElementDeleted'])
+  },
+  methods: {
+    ...mapMutations(['setIsElementDeleted'])
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
@@ -279,6 +283,11 @@ export default {
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
     this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor
+
+    if (this.isElementDeleted) {
+      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The Root Domain has been deleted successfully', life: 3000 })
+      this.setIsElementDeleted(false)
+    }
   }
 }
 </script>

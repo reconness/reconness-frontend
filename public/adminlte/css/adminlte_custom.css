@@ -758,7 +758,7 @@ div.card-body a svg{
   cursor: not-allowed;
 }
 
-.isLinkDisabled > a {
+.isLinkDisabled > a, .isLinkDisabled > input , .isLinkDisabled > span, .isLinkDisabled > label, .isLinkDisabled > div{
   color: currentColor;
   pointer-events: none;
   opacity: 0.5;
@@ -768,4 +768,7 @@ div.card-body a svg{
 }
 .router-link-exact-active .nav-link p, .router-link-exact-active .nav-link svg {
   fill: #fff;
+}
+.text-muted-b3{
+  color: #b3b3b3;
 }
