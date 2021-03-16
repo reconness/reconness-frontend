@@ -35,9 +35,9 @@
                           <label class="target-inputs-separator">Bug Bounty Program URL</label>
                           <input :readonly="$store.state.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageBugBountyUrl" class="form-control target-input-borders">
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="validators.blank.bugBountyUrl">
+                        <!-- <div class="col-12" v-if="validators.blank.bugBountyUrl">
                             <span :class="{invalid: validators.blank.bugBountyUrl}">The field bug bounty is required</span>
-                        </div>
+                        </div> -->
                         <div class="col-12" v-if="validators.url.bugBountyUrl">
                             <span :class="{invalid: validators.url.bugBountyUrl}">The field bug bounty is not a valid URL</span>
                         </div>
@@ -49,18 +49,18 @@
                         </div>
                         <div class="col-12">
                           <label class="target-inputs-separator">In Scope</label>
-                          <textarea class="form-control target-input-borders" rows="3" v-model="target.inScope" @keyup="enableValidationMessageInScope"/>
+                          <textarea class="form-control target-input-borders" rows="3" v-model="target.inScope" />
                         </div>
-                        <div class="col-12" v-if="validators.blank.inScope">
+                        <!-- <div class="col-12" v-if="validators.blank.inScope">
                             <span :class="{invalid: validators.blank.inScope}">The field in scope is required</span>
-                        </div>
+                        </div> -->
                         <div class="col-12">
                           <label class="target-inputs-separator">Out of Scope</label>
                           <textarea class="form-control target-input-borders" rows="3" v-model="target.outScope" @keyup="enableValidationMessageOutScope"/>
                         </div>
-                        <div class="col-12" v-if="validators.blank.outScope">
+                        <!-- <div class="col-12" v-if="validators.blank.outScope">
                             <span :class="{invalid: validators.blank.outScope}">The field out scope is required</span>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-12 col-sm-4">
                       <div class="row">
@@ -286,7 +286,7 @@ export default {
     },
     addTarget () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.blank.bugBountyUrl && !this.validators.url.bugBountyUrl && !this.validators.blank.inScope && !this.validators.blank.outScope && !this.validators.exist.name) {
+      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.url.bugBountyUrl && !this.validators.exist.name) {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {
@@ -369,12 +369,12 @@ export default {
       }
     },
     enableValidationMessageBugBountyUrl () {
-      if (this.target.bugBountyUrl === '') {
-        this.validators.blank.bugBountyUrl = true
-      } else {
-        this.validators.blank.bugBountyUrl = false
-      }
-      if (!this.$validateUrl(this.target.bugBountyUrl) && !this.validators.blank.bugBountyUrl) {
+      // if (this.target.bugBountyUrl === '') {
+      //   this.validators.blank.bugBountyUrl = true
+      // } else {
+      //   this.validators.blank.bugBountyUrl = false
+      // }
+      if (this.target.bugBountyUrl !== '' && !this.$validateUrl(this.target.bugBountyUrl)) {
         this.validators.url.bugBountyUrl = true
       } else {
         this.validators.url.bugBountyUrl = false
@@ -403,8 +403,8 @@ export default {
       this.enableValidationMessageName()
       this.enableValidationMessageBugBountyUrl()
       this.enableValidationMessageRootDomains()
-      this.enableValidationMessageInScope()
-      this.enableValidationMessageOutScope()
+      // this.enableValidationMessageInScope()
+      // this.enableValidationMessageOutScope()
       this.enableValidationMessageUniqueName()
     },
     setRandomColor () {
@@ -514,7 +514,7 @@ export default {
       return this.$store.getters['target/getTargetById'](parseInt(id))
     },
     isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.blank.bugBountyUrl && this.validators.url.bugBountyUrl && this.validators.blank.inScope && this.validators.blank.outScope && this.validators.exist.name)
+      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.url.bugBountyUrl && this.validators.exist.name)
     },
     ...mapGetters('target', ['checkIfTargetExistsByName'])
   },
