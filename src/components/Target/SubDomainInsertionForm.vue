@@ -11,7 +11,12 @@
                                 <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">New Subdomain</p>
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
-                                <input v-for="item in subdomains" :key="item" v-model="item.name" class="form-control agent-placeholder mb-4 subdomains-items-field" placeholder="New subdomain" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
+                                <div v-for="(item, index) in subdomains" :key="item" class="mb-4">
+                                  <input :data-index="index" v-model="item.name" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @keyup="enableValidationMessageSubDomainName" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
+                                  <div class="col-12" v-if="validators.url.subDomainName[index]">
+                                    <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
+                                  </div>
+                                </div>
                                 <a href="#" class="text-body d-inline-flex" @click="createSubdomains">
                                     <span class="material-icons gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
                                     <span class="ml-2 gradient-style" v-bind:style ="{background:gradient}">Add New</span>
@@ -33,7 +38,15 @@ import jQuery from 'jquery'
 export default {
   data: function () {
     return {
-      subdomains: []
+      subdomains: [],
+      validators: {
+        url: {
+          subDomainName: []
+        },
+        blank: {
+          subDomainName: []
+        }
+      }
     }
   },
   methods: {
@@ -53,7 +66,7 @@ export default {
       })
     },
     insertSubdomains: function () {
-      var params = {
+      const params = {
         idTarget: parseInt(this.$route.params.idTarget),
         idRootDomain: parseInt(this.$route.params.id),
         subdomainsItems: this.subdomains
@@ -76,6 +89,14 @@ export default {
         ipAddress: '34.234.345.34',
         http: true
       }]
+    },
+    enableValidationMessageSubDomainName: function (e) {
+      const textFieldIndex = e.currentTarget.getAttribute('data-index')
+      if (this.subdomains[textFieldIndex] !== '' && !this.$validateUrl(this.subdomains[textFieldIndex].name)) {
+        this.validators.url.subDomainName[textFieldIndex] = true
+      } else {
+        this.validators.url.subDomainName[textFieldIndex] = false
+      }
     },
     ...mapMutations('target', ['addSubdomain'])
   },
