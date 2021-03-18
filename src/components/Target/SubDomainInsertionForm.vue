@@ -12,9 +12,15 @@
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="mb-4">
-                                  <input :data-index="index" v-model="item.name" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @keyup="enableValidationMessageSubDomainName" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
+                                  <input :data-index="index" v-model="item.name" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
                                   <div class="col-12" v-if="validators.url.subDomainName[index]">
                                     <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
+                                  </div>
+                                  <!-- <div class="col-12" v-if="validators.blank.subDomainName[index]">
+                                    <span :class="{invalid: this.validators.blank.subDomainName[index]}">You can't insert  </span>
+                                  </div> -->
+                                  <div class="col-12" v-if="validators.exist.subDomainName[index]">
+                                    <span :class="{invalid: validators.exist.subDomainName[index]}">The written name is already being used by another subdomain</span>
                                   </div>
                                 </div>
                                 <a href="#" class="text-body d-inline-flex" @click="createSubdomains">
@@ -44,6 +50,9 @@ export default {
           subDomainName: []
         },
         blank: {
+          subDomainName: []
+        },
+        exist: {
           subDomainName: []
         }
       }
@@ -97,6 +106,27 @@ export default {
       } else {
         this.validators.url.subDomainName[textFieldIndex] = false
       }
+    },
+    enableValidationMessageSubDomainUniqueName: function (e) {
+      const textFieldIndex = parseInt(e.currentTarget.getAttribute('data-index'))
+      let founded = false
+      let index = 0
+      while (index < this.subdomains.length && !founded) {
+        if (index !== textFieldIndex) {
+          if (this.subdomains[textFieldIndex].name === this.subdomains[index].name) {
+            this.validators.exist.subDomainName[textFieldIndex] = true
+            founded = true
+          }
+        }
+        index++
+      }
+      if (!founded) {
+        this.validators.exist.subDomainName[textFieldIndex] = false
+      }
+    },
+    enableValidations: function (e) {
+      this.enableValidationMessageSubDomainUniqueName(e)
+      this.enableValidationMessageSubDomainName(e)
     },
     ...mapMutations('target', ['addSubdomain'])
   },
