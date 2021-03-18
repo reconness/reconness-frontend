@@ -16,9 +16,9 @@
                                   <div class="col-12" v-if="validators.url.subDomainName[index]">
                                     <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
                                   </div>
-                                  <!-- <div class="col-12" v-if="validators.blank.subDomainName[index]">
-                                    <span :class="{invalid: this.validators.blank.subDomainName[index]}">You can't insert  </span>
-                                  </div> -->
+                                  <div class="col-12" v-if="validators.blank.subDomainName[index]">
+                                    <span :class="{invalid: this.validators.blank.subDomainName[index]}">You must enter a name</span>
+                                  </div>
                                   <div class="col-12" v-if="validators.exist.subDomainName[index]">
                                     <span :class="{invalid: validators.exist.subDomainName[index]}">The written name is already being used by another subdomain</span>
                                   </div>
@@ -47,13 +47,13 @@ export default {
       subdomains: [],
       validators: {
         url: {
-          subDomainName: []
+          subDomainName: [false]
         },
         blank: {
-          subDomainName: []
+          subDomainName: [false]
         },
         exist: {
-          subDomainName: []
+          subDomainName: [false]
         }
       }
     }
@@ -75,14 +75,20 @@ export default {
       })
     },
     insertSubdomains: function () {
-      const params = {
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRootDomain: parseInt(this.$route.params.id),
-        subdomainsItems: this.subdomains
+      if (!this.subdomains[0].name) {
+        this.validators.blank.subDomainName[0] = true
       }
-      this.addSubdomain(params)
-      jQuery('#subDomainInsertionForm').modal('hide')
-      this.resetForm()
+      // !this.validators.blank.subDomainName && !this.validators.url.subDomainName && !this.validators.exist.subDomainName
+      if (this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
+        const params = {
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          subdomainsItems: this.subdomains
+        }
+        this.addSubdomain(params)
+        jQuery('#subDomainInsertionForm').modal('hide')
+        this.resetForm()
+      }
     },
     resetForm: function () {
       this.subdomains = [{
@@ -99,7 +105,7 @@ export default {
         http: true
       }]
     },
-    enableValidationMessageSubDomainName: function (e) {
+    enableValidationMessageSubDomainUrlName: function (e) {
       const textFieldIndex = e.currentTarget.getAttribute('data-index')
       if (this.subdomains[textFieldIndex] !== '' && !this.$validateUrl(this.subdomains[textFieldIndex].name)) {
         this.validators.url.subDomainName[textFieldIndex] = true
@@ -124,9 +130,18 @@ export default {
         this.validators.exist.subDomainName[textFieldIndex] = false
       }
     },
+    enableValidationMessageSubDomainBlankName: function (e) {
+      const textFieldIndex = e.currentTarget.getAttribute('data-index')
+      if (!this.subdomains[textFieldIndex].name) {
+        this.validators.blank.subDomainName[textFieldIndex] = true
+      } else {
+        this.validators.blank.subDomainName[textFieldIndex] = false
+      }
+    },
     enableValidations: function (e) {
       this.enableValidationMessageSubDomainUniqueName(e)
-      this.enableValidationMessageSubDomainName(e)
+      this.enableValidationMessageSubDomainUrlName(e)
+      this.enableValidationMessageSubDomainBlankName(e)
     },
     ...mapMutations('target', ['addSubdomain'])
   },
@@ -144,6 +159,11 @@ export default {
       ipAddress: '34.234.345.34',
       http: true
     })
+  },
+  computed: {
+    isFormValid () {
+      return (this.validators.blank.subDomainName || this.validators.url.subDomainName || this.validators.exist.subDomainName)
+    }
   },
   props: {
     gradient: String
