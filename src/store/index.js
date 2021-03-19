@@ -224,6 +224,9 @@ export default createStore({
     },
     getRandomColor: state => {
       return state.systemColors[Math.floor(Math.random() * state.systemColors.length)]
+    },
+    getLastAgentSubdom (state) {
+      return state.agentListStore.filter(item => item.type === 3).slice(-4)
     }
   }
 })

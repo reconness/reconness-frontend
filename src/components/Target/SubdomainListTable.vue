@@ -11,20 +11,20 @@
           <label for="export-target" class=" mb-0"> Import Subdomains </label>
           <input type="file" id="export-target"/>
         </li>
-        <li :class="{'isLinkDisabled' : isEmpty}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
+        <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
           <a href="#" > <FileExportIco  v-bind:style ="{'fill': color}" />  Export All Subdomains</a></li>
-        <li :class="{'isLinkDisabled' : isEmpty}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
+        <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
         <a href="#" data-toggle="modal" data-target="#confirmation-modal"  @click="updateConfirm('')"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">delete</span> Delete All Subdomains</a></li>
       </ul>
     </nav>
     <div class="row mt-4">
     <div class="col-lg-8">
-    <div class="mb-3 has-search" :class="{'isLinkDisabled' : isEmpty}">
+    <div class="mb-3 has-search" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
       <span class="material-icons search-icon form-control-feddback">search</span>
       <input  class="form-control form-style" type="search" placeholder="Find"  >
     </div>
     </div>
-       <div class="col-lg-4" :class="{'isLinkDisabled' : isEmpty}">
+       <div class="col-lg-4" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
          <label class="float-left mr-3 ml-3 label-style" for="dropdownMenuButton">Filter by</label>
          <div class="dropdown" >
   <button class="btn btn-style  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,14 +41,25 @@
 <div class="card card-style">
   <div class="card-body">
 <div class="card card-table" v-if=" this.getSubdomainSize(this.routeParams) > 0">
-  <div class=" row mb-2"  >
+  <div class=" row mb-2"  v-if="this.showHeader">
    <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':gradient}"> <p class="ml-2 m-0"> Subdomain</p> </div>
    <div class="col-3 border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> Details</div>
    <div class="col mr-3 border-right-radius text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> Labels</div>
    <div class="col-2 p-0" >
-     <button class="border-table text-light-white p-2 text-center w-100" v-bind:style ="{'background':gradient}"> Edit List</button></div>
+     <button class="border-table text-light-white p-2 text-center w-100"  @click="this.showHeader = !this.showHeader"   v-bind:style ="{'background':gradient}"> Edit List</button></div>
   </div>
-     <div class="row mb-2" v-for="item of rootDomain.subdomain" :key="item.id" >
+  <div class=" row mb-2" v-else>
+     <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':gradient}">
+        <p class="ml-2 mr-2 m-0"> Selected <span class="badge badge-pill badge-light" v-bind:style ="{'color':color}"> {{$store.state.target.countElementSelected}} </span></p> </div>
+     <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="selectedAll()"> Selected All</div>
+     <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="unselectedAll()"> Unselected All</div>
+     <div class="col border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> </div>
+     <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> <a>Export</a></div>
+     <div data-toggle="modal" data-target="#confirmationList-modal" :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}">
+       <a>Delete</a></div>
+     <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="done()"> Done</div>
+  </div>
+     <div class="row mb-2" v-for="item of rootDomain.subdomain" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
     <div class="col-2  border-left-radius border">
       <p class="m-2 mb-2">{{item.name}}</p>
     </div>
@@ -72,7 +83,7 @@
           </div>
         </div>
      </div></div></div>
-    <div class="col mr-3 border border-right-radius">
+    <div class="col border" :class="{'border-right-radius' : showHeader, 'border-right-0': !showHeader}" >
       <div class="row mt-2 mx-4">
         <div class="col">
           <div class="custom-control custom-checkbox form-check mb-2" :class= "'check-color-' + color.substring(1)">
@@ -106,7 +117,7 @@
         </div>
   </div>
     </div>
-    <div class="col-2 border-table abs-center border p-0">
+    <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
           <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: gradient}">forward</span>
         </div>
@@ -118,6 +129,12 @@
           :data-name="item.name" @click="updateConfirm(item.name)"
           >delete</span>
         </div>
+    </div>
+    <div class="col-2 border-right-radius abs-center border p-0" v-else>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" :id="'customCheckbox' + item.id" class="custom-control-input" name="checkbox-dinamic" @click="selectRow(item.id, item.name)">
+        <label class="custom-control-label" :for="'customCheckbox' + item.id" ></label>
+      </div>
     </div>
 </div></div>
 <div v-else>
@@ -131,6 +148,7 @@ There are no subdomains associated with this root domain. <br>
     <small class="font-weight-bold">Delete</small>
   </OverlayPanel>
   <Confirmation></Confirmation>
+  <ConfirmationList :nameRoute= 'rName'></ConfirmationList>
   <SubDomainInsertionForm :gradient="gradient"/>
 </div>
 </template>
@@ -138,6 +156,7 @@ There are no subdomains associated with this root domain. <br>
 import SubDomainInsertionForm from '@/components/Target/SubDomainInsertionForm.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import Confirmation from '@/components/Target/Confirmation.vue'
+import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
@@ -151,7 +170,10 @@ export default {
       routeParams: {
         idTarget: parseInt(this.$route.params.idTarget),
         idRootDomain: parseInt(this.$route.params.id)
-      }
+      },
+      showHeader: true,
+      isElementSelected: true,
+      rName: 'subdomains'
     }
   },
   props: {
@@ -160,8 +182,7 @@ export default {
     rootDomain: {
       type: Object,
       default: () => {}
-    },
-    isEmpty: Boolean
+    }
   },
   components: {
     SubDomainInsertionForm,
@@ -169,7 +190,8 @@ export default {
     Confirmation,
     FileExportIco,
     FileImportIco,
-    HeartIco
+    HeartIco,
+    ConfirmationList
   },
   methods: {
     toggle (event) {
@@ -177,6 +199,52 @@ export default {
     },
     updateConfirm (itemName) {
       return this.$store.commit('confirm', { name: itemName, route: 'subdomains' })
+    },
+    selectRow (id, name) {
+      if (document.getElementById('customCheckbox' + id).checked) {
+        document.getElementById('row' + id).style.background = 'rgb(242, 244, 246)'
+        this.$store.commit('target/addSelectedList', { idTarget: parseInt(this.$route.params.idTarget), idRoot: this.rootDomain.id, idSubdom: id, nameSubdom: name })
+        this.$store.commit('target/addCountElementSelected')
+      } else {
+        document.getElementById('row' + id).style.background = '#fff'
+        this.$store.commit('target/removeCountElementSelected', id)
+      }
+      if (this.$store.state.target.countElementSelected !== 0) {
+        this.isElementSelected = false
+      } else {
+        this.isElementSelected = true
+      }
+    },
+    selectedAll () {
+      this.$store.commit('target/cancelElementSelected')
+      const checkboxes = document.getElementsByName('checkbox-dinamic')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = true
+        this.isElementSelected = false
+        document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
+        const subdom = this.rootDomain.subdomain.find(item => item.id === Number(checkboxes[i].id.substr(14)))
+        this.$store.commit('target/addSelectedList', { idTarget: parseInt(this.$route.params.idTarget), idRoot: this.rootDomain.id, idSubdom: checkboxes[i].id.substr(14), nameSubdom: subdom.name })
+        this.$store.commit('target/addCountElementSelected')
+      }
+    },
+    unselectedAll () {
+      if (this.$store.state.target.countElementSelected !== 0) {
+        const checkboxes = document.getElementsByName('checkbox-dinamic')
+        for (let i = 0, n = checkboxes.length; i < n; i++) {
+          if (checkboxes[i].checked === true) {
+            checkboxes[i].checked = false
+            this.isElementSelected = true
+            document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = '#fff'
+            this.$store.commit('target/removeCountElementSelected')
+          }
+        }
+        this.$store.commit('target/cancelElementSelected')
+      }
+    },
+    done () {
+      this.isElementSelected = true
+      this.showHeader = true
+      this.$store.commit('target/cancelElementSelected')
     }
   },
   computed: {
@@ -207,33 +275,11 @@ export default {
   font-weight: 400!important;
   padding:.375rem .75rem;
 }
-.border-table {
-    border: 1px solid transparent;
-    border-radius: 12px;
-}
-.border-right-radius {
-    border-right: 1px solid transparent;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-.border-left-radius {
-    border-left: 1px solid transparent;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-}
-.card-table, .card-table ul li{
-  background: transparent;
-  box-shadow: none;
-}
+
 .list-style-item{
   display: block;
   border: 1px solid rgba(0,0,0,.125);
 }
-.card-style{
-  background: #f2f4f6;
-  box-shadow: 13px 11px 41px #d6d6d6;
-}
-.abs-center{ display: flex; align-items: center; justify-content: center;}
 
 .container input {
   position: absolute;
@@ -252,11 +298,6 @@ opacity: 1;
 font-weight: initial;
 font-size: 16px;
 }
-.text-light-white {
-    color: #ffffff!important;
-    opacity: 1;
-}
-
 .text-dark-0{
   color: #000000;
 }
@@ -309,5 +350,9 @@ font-size: 16px;
     border-color: #7159d3;
     background-color: #7159d3;
     box-shadow: none;
+}
+.background-row {
+  background: #fff;
+  border-radius: 12px;
 }
 </style>

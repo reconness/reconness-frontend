@@ -475,7 +475,9 @@ export default ({
     loggedUser: { name: 'John Doe' },
     isTargetDeleted: false,
     isTableList: true,
-    idSubdomain: 55
+    idSubdomain: 55,
+    elementSelectedList: [],
+    countElementSelected: 0
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -539,6 +541,16 @@ export default ({
       state.check = false
       state.styleList = '1.25rem'
       state.colorDelete = '#000000'
+    },
+    removeSubdomainChecked (state) {
+      for (var index1 in state.elementSelectedList) {
+        const target = state.targetListStore.find(target => target.id === state.elementSelectedList[index1].idTarget)
+        const roots = target.rootDomains.find(roots => roots.id === state.elementSelectedList[index1].idRoot)
+        const subdIndex = roots.subdomain.findIndex(subd => subd.id === state.elementSelectedList[index1].idSubdom)
+        roots.subdomain.splice(subdIndex, 1)
+      }
+      state.elementSelectedList = []
+      state.nameRoute = ''
     },
     setIsDefaultViewOnTarget (state, value) {
       state.isDefaultViewOnTarget = value
@@ -656,6 +668,22 @@ export default ({
       const target = state.targetListStore.find(item => item.id === params.idTarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       roots.subdomain = roots.subdomain.concat(params.subdomainsItems)
+    },
+    addSelectedList (state, ObjectIn) {
+      state.elementSelectedList.push(ObjectIn)
+    },
+    cancelElementSelected (state) {
+      state.elementSelectedList = []
+      state.nameRoute = ''
+      state.countElementSelected = 0
+    },
+    removeCountElementSelected (state, idSub) {
+      state.countElementSelected = state.countElementSelected - 1
+      const subdIndex = state.elementSelectedList.findIndex(item => item.idSubdom === idSub)
+      state.elementSelectedList.splice(subdIndex, 1)
+    },
+    addCountElementSelected (state) {
+      state.countElementSelected = state.countElementSelected + 1
     }
   },
   actions: {
