@@ -27,13 +27,14 @@
        <div class="col-lg-4" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
          <label class="float-left mr-3 ml-3 label-style" for="dropdownMenuButton">Filter by</label>
          <div class="dropdown" >
-  <button class="btn btn-style  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button class="btn btn-style-dropd  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
    Label
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
+    <a class="dropdown-item" href="#">Service</a>
+    <a class="dropdown-item" href="#">Port</a>
+    <a class="dropdown-item" href="#">Agent</a>
+    <a class="dropdown-item" href="#">Date</a>
   </div>
 </div>
        </div>
@@ -79,7 +80,7 @@
             </div>
           </div>
           <div class="col-12 border-top">
-            <span class="material-icons badge abs-center mx-auto mt-1 p-0" v-bind:style ="{background: gradient, color: '#ffffff', 'font-weight': 100}"> http</span>
+            <span class="badge abs-center mx-auto mt-1 icon-badge-style" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
           </div>
         </div>
      </div></div></div>
@@ -217,8 +218,8 @@ export default {
     },
     selectedAll () {
       this.$store.commit('target/cancelElementSelected')
-      const checkboxes = document.getElementsByName('checkbox-dinamic')
-      for (let i = 0, n = checkboxes.length; i < n; i++) {
+      var checkboxes = document.getElementsByName('checkbox-dinamic')
+      for (var i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = true
         this.isElementSelected = false
         document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
@@ -229,8 +230,8 @@ export default {
     },
     unselectedAll () {
       if (this.$store.state.target.countElementSelected !== 0) {
-        const checkboxes = document.getElementsByName('checkbox-dinamic')
-        for (let i = 0, n = checkboxes.length; i < n; i++) {
+        var checkboxes = document.getElementsByName('checkbox-dinamic')
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
           if (checkboxes[i].checked === true) {
             checkboxes[i].checked = false
             this.isElementSelected = true
@@ -259,14 +260,20 @@ export default {
     border-radius: 12px;
     opacity: 1;
 }
-.btn-style {
+.btn-style-dropd{
     background-color: transparent;
     border-color: #495057;
     color: #495057;
     border: 1px solid #ced4da;
     font-weight: 400;
     font-size: 1rem;
+    border-radius: 12px;
+    opacity: 1;
 }
+.btn-style-dropd.dropdown-toggle::after {
+    margin-left: 5em;
+}
+
 .icon-color-style{
   font-size: 20px;
   opacity: 1;
@@ -354,5 +361,13 @@ font-size: 16px;
 .background-row {
   background: #fff;
   border-radius: 12px;
+}
+.icon-badge-style {
+ font-weight: 400;
+ font-size:10px!important;
+ width: 23px;
+ height: 23px;
+ opacity: 1;
+ border-radius: 4px;
 }
 </style>
