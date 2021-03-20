@@ -761,7 +761,7 @@ div.card-body a svg{
 .isLinkDisabled > a, .isLinkDisabled > input , .isLinkDisabled > span, .isLinkDisabled > label, .isLinkDisabled > div{
   color: currentColor;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.5 !important;
 }
 .domain-names-list{
   cursor: pointer;
@@ -772,3 +772,32 @@ div.card-body a svg{
 .text-muted-b3{
   color: #b3b3b3;
 }
+/*subdomain and agent tables*/
+.border-table {
+  border: 1px solid transparent;
+  border-radius: 12px;
+}
+.border-right-radius {
+  border-right: 1px solid transparent;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.border-left-radius {
+  border-left: 1px solid transparent;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.card-table, .card-table ul li{
+  background: transparent;
+  box-shadow: none;
+}
+.card-style{
+  background: #f2f4f6;
+  box-shadow: 13px 11px 41px #d6d6d6;
+}
+.text-light-white {
+  color: #ffffff!important;
+  opacity: 1;
+}
+
+.abs-center{ display: flex; align-items: center; justify-content: center;}

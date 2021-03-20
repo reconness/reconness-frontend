@@ -11,13 +11,11 @@
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
             Subdomains <span class="text-muted-b3">(2)</span>
           </button>
-          <button disabled="true" type="button" class="btn  ml-5 button-style " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
+          <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
             Agents <span class="text-muted-b3">(2)</span>
           </button>
-          <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' :isEmpty = 'isSubDomEmpty' />
-          <div class="row" v-else>
-          <AgentListTable/>
-          </div>
+          <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' />
+          <AgentListTable v-else :gradient = "LinearGradient"/>
         </div>
       </div>
     </div>
@@ -45,7 +43,6 @@ export default {
       buttonGradAg: '',
       shadowSubd: '3px 12px 23px #d6d6d6',
       shadowAg: '',
-      isSubDomEmpty: false,
       secondaryColor: ''
     }
   },
@@ -64,9 +61,6 @@ export default {
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor
-    if (this.RootDomains.subdomain.length <= 0) {
-      this.isSubDomEmpty = true
-    }
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),
