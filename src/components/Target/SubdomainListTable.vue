@@ -21,20 +21,19 @@
     <div class="col-lg-8">
     <div class="mb-3 has-search" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
       <span class="material-icons search-icon form-control-feddback">search</span>
-      <input  class="form-control form-style" type="search" placeholder="Find"  >
+      <input  class="form-control form-style" type="search" placeholder="Find"  v-model= "searchModel"  v-on:keyup.enter="this.searchCriteria = this.searchModel">
     </div>
     </div>
        <div class="col-lg-4" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
          <label class="float-left mr-3 ml-3 label-style" for="dropdownMenuButton">Filter by</label>
          <div class="dropdown" >
-  <button class="btn btn-style-dropd  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   Label
+    <button class="btn btn-style-dropd  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   {{elementSelected}}
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Service</a>
-    <a class="dropdown-item" href="#">Port</a>
-    <a class="dropdown-item" href="#">Agent</a>
-    <a class="dropdown-item" href="#">Date</a>
+    <div v-for="element in this.selectList" :key="element.id" @click="this.elementSelected = element.name">
+      <a class="dropdown-item" href="#">{{element.name}} </a>
+    </div>
   </div>
 </div>
        </div>
@@ -60,7 +59,7 @@
        <a>Delete</a></div>
      <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="done()"> Done</div>
   </div>
-     <div class="row mb-2" v-for="item of rootDomain.subdomain" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
+     <div class="row mb-2" v-for="item of this.search(this.searchCriteria)" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
     <div class="col-2  border-left-radius border">
       <p class="m-2 mb-2">{{item.name}}</p>
     </div>
@@ -178,7 +177,11 @@ export default {
       },
       showHeader: true,
       isElementSelected: true,
-      rName: 'subdomains'
+      rName: 'subdomains',
+      selectList: [{ id: 1, name: 'Select' }, { id: 2, name: 'Label' }, { id: 3, name: 'Service' }, { id: 4, name: 'Port' }, { id: 5, name: 'Agent' }, { id: 6, name: 'Date' }],
+      elementSelected: 'Select',
+      searchModel: '',
+      searchCriteria: ''
     }
   },
   props: {
@@ -250,6 +253,13 @@ export default {
       this.isElementSelected = true
       this.showHeader = true
       this.$store.commit('target/cancelElementSelected')
+    },
+    search (searchValue) {
+      if (searchValue === '' || searchValue === undefined) {
+        return this.rootDomain.subdomain
+      } else {
+        return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(searchValue.toLowerCase())))
+      }
     }
   },
   computed: {
