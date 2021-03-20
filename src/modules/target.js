@@ -26,7 +26,8 @@ export default ({
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: false,
+                isAlive: false
               },
               {
                 id: 2,
@@ -40,7 +41,8 @@ export default ({
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: true
               }
             ]
           },
@@ -61,7 +63,8 @@ export default ({
                 scope: true,
                 agents: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: true
               },
               {
                 id: 2,
@@ -73,7 +76,9 @@ export default ({
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agent: 'Portraite'
+                agent: 'Portraite',
+                http: false,
+                isAlive: true
               }
             ]
           }
@@ -121,7 +126,8 @@ export default ({
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: true
               }
             ]
           },
@@ -181,7 +187,8 @@ export default ({
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: false
               }
             ]
           },

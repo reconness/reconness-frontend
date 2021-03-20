@@ -75,12 +75,16 @@
       </div><div class="col abs-center mx-auto">
         <div class="row abs-center icons-size">
           <div class="col-12">
-            <div class="abs-center mx-auto mb-1">
+            <div v-if="item.isAlive == true" class="abs-center mx-auto mb-1">
+              <HeartIco/>
+            </div>
+            <div v-else class="abs-center mx-auto mb-1 inactive-ico">
               <HeartIco/>
             </div>
           </div>
           <div class="col-12 border-top">
-            <span class="badge abs-center mx-auto mt-1 icon-badge-style" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
+            <span v-if="item.http == true" class="badge abs-center mx-auto mt-1 icon-badge-style" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
+            <span v-else class="badge abs-center mx-auto mt-1 icon-badge-style inactive-gradient" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
           </div>
         </div>
      </div></div></div>
@@ -369,5 +373,11 @@ font-size: 16px;
  height: 23px;
  opacity: 1;
  border-radius: 4px;
+}
+div.inactive-ico svg {
+  fill: #B3B3B3 !important;
+}
+.inactive-gradient{
+  background: linear-gradient(160deg, rgb(177, 177, 177) 0%, rgb(177, 177, 177) 100%) !important;
 }
 </style>
