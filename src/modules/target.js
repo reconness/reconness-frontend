@@ -24,9 +24,10 @@ export default ({
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agent: [],
-                ipAddress: '34.234.345.34',
-                http: true
+                agent: ['Agente 1', 'Agente 2'],
+                ipAddress: '34.234.345.37',
+                http: true,
+                isAlive: true
               },
               {
                 id: 2,
@@ -40,7 +41,8 @@ export default ({
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: false
               }
             ]
           },
@@ -59,9 +61,11 @@ export default ({
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agents: [],
+                agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: true,
+                isMainPortal: true
               },
               {
                 id: 2,
@@ -73,7 +77,11 @@ export default ({
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agent: 'Portraite'
+                agent: ['Portraite'],
+                isAlive: false,
+                ipAddress: '34.234.345.34',
+                http: true,
+                isMainPortal: true
               }
             ]
           }
@@ -121,7 +129,9 @@ export default ({
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: false,
+                isMainPortal: false
               }
             ]
           },
@@ -181,7 +191,9 @@ export default ({
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
-                http: true
+                http: true,
+                isAlive: true,
+                isMainPortal: false
               }
             ]
           },
@@ -725,6 +737,13 @@ export default ({
       if (roots) {
         return roots.subdomain.length
       }
+    },
+    getSubDomain: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idtarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)
+      const subdomain = roots.subdomain.find(subdItem => subdItem.id === params.idsubdomain)
+      // console.log(subdomain)
+      return subdomain
     }
   }
 })

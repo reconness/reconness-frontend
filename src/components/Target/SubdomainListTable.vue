@@ -120,7 +120,9 @@
     </div>
     <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
+          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: parseInt(item.id)} }">
           <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: gradient}">forward</span>
+          </router-link>
         </div>
         <div class="abs-center mx-auto">
           <span class="material-icons icon-color-style gradient-style delete-hover"
@@ -218,8 +220,8 @@ export default {
     },
     selectedAll () {
       this.$store.commit('target/cancelElementSelected')
-      var checkboxes = document.getElementsByName('checkbox-dinamic')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkbox-dinamic')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = true
         this.isElementSelected = false
         document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
@@ -230,8 +232,8 @@ export default {
     },
     unselectedAll () {
       if (this.$store.state.target.countElementSelected !== 0) {
-        var checkboxes = document.getElementsByName('checkbox-dinamic')
-        for (var i = 0, n = checkboxes.length; i < n; i++) {
+        const checkboxes = document.getElementsByName('checkbox-dinamic')
+        for (let i = 0, n = checkboxes.length; i < n; i++) {
           if (checkboxes[i].checked === true) {
             checkboxes[i].checked = false
             this.isElementSelected = true
