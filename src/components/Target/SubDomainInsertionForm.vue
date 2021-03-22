@@ -62,23 +62,23 @@ export default {
     createSubdomains: function () {
       this.subdomains.push({
         name: '',
-        added: '2020-12-01',
-        checking: true,
+        added: new Date().toLocaleDateString('es-Es'),
+        checking: false,
         interesting: false,
-        vulnerable: true,
-        boubty: true,
+        vulnerable: false,
+        boubty: false,
         ignore: false,
-        scope: true,
+        scope: false,
         agent: [],
-        ipAddress: '34.234.345.34',
-        http: true
+        ipAddress: '',
+        http: false,
+        isAlive: false
       })
     },
     insertSubdomains: function () {
       if (!this.subdomains[0].name) {
         this.validators.blank.subDomainName[0] = true
       }
-      // !this.validators.blank.subDomainName && !this.validators.url.subDomainName && !this.validators.exist.subDomainName
       if (this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
           idTarget: parseInt(this.$route.params.idTarget),
@@ -94,15 +94,16 @@ export default {
       this.subdomains = [{
         name: '',
         added: new Date().toLocaleDateString('es-Es'),
-        checking: true,
+        checking: false,
         interesting: false,
-        vulnerable: true,
-        boubty: true,
+        vulnerable: false,
+        boubty: false,
         ignore: false,
-        scope: true,
+        scope: false,
         agent: [],
-        ipAddress: '34.234.345.34',
-        http: true
+        ipAddress: '',
+        http: false,
+        isAlive: false
       }]
     },
     enableValidationMessageSubDomainUrlName: function (e) {
@@ -149,15 +150,16 @@ export default {
     this.subdomains.push({
       name: '',
       added: new Date().toLocaleDateString('es-Es'),
-      checking: true,
+      checking: false,
       interesting: false,
-      vulnerable: true,
-      boubty: true,
+      vulnerable: false,
+      boubty: false,
       ignore: false,
-      scope: true,
+      scope: false,
       agent: [],
-      ipAddress: '34.234.345.34',
-      http: true
+      ipAddress: '',
+      http: false,
+      isAlive: false
     })
   },
   computed: {

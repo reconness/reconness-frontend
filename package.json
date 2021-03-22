@@ -12,7 +12,7 @@
     "@vuelidate/core": "2.0.0-alpha.8",
     "@vuelidate/validators": "2.0.0-alpha.5",
     "apexcharts": "3.25.0",
-    "bootstrap": "^4.5.3",
+    "bootstrap": "^4.6.0",
     "core-js": "^3.8.3",
     "jquery": "^3.5.1",
     "material-icons": "^0.3.1",
@@ -38,13 +38,13 @@
     "@vue/compiler-sfc": "3.0.2",
     "@vue/eslint-config-standard": "6.0.0",
     "babel-eslint": "10.1.0",
-    "eslint": "7.21.0",
+    "eslint": "7.22.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.1.0",
     "eslint-plugin-vue": "7.7.0",
-    "node-sass": "4.14.1",
+    "node-sass": "5.0.0",
     "sass-loader": "8.0.2"
   }
 }
