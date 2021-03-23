@@ -33,15 +33,19 @@
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!showRootDomains">
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" v-on:click="updateConfirm()" >Delete Target</a>
         </li>
-        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains">
+        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" v-on:click="updateConfirm()" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <label for="export-target" class="nav-link pos mb-0"> Export Target </label>
           <input type="file" id="export-target" accept=".json"/>
         </li>
-        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains">
+        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
           <label for="export-target" class="nav-link pos mb-0"> Export Root Domain </label>
+          <input type="file" id="export-target" accept=".json"/>
+        </li>
+        <li class="nav-item nav-margin border-right border-left d-none d-sm-block" v-if= "showRootDomains && $route.params.idsubdomain">
+          <label for="export-target" class="nav-link pos mb-0"> Export SubDomain </label>
           <input type="file" id="export-target" accept=".json"/>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
@@ -103,12 +107,12 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
             <a class="dropdown-item" v-if= "!this.showRootDomains">Delete Target</a>
-            <a class="dropdown-item">Delete Root Domain</a>
-            <div class="dropdown-divider"  ></div>
+            <a class="dropdown-item" v-if="!$route.params.idsubdomain">Delete Root Domain</a>
+            <div class="dropdown-divider" v-if="!$route.params.idsubdomain"></div>
             <label for="export-target" class="nav-link pos mb-0 comments-page" v-if= "!this.showRootDomains"> Export Target </label>
-            <label for="export-target" class="nav-link pos mb-0 comments-page"> Export Root Domain </label>
-            <input type="file" id="export-target" accept=".json"/>
-           <div class="dropdown-divider"></div>
+            <label for="export-target" v-if="!$route.params.idsubdomain" class="nav-link pos mb-0 comments-page"> Export Root Domain </label>
+            <input v-if="!$route.params.idsubdomain" type="file" id="export-target" accept=".json"/>
+           <div class="dropdown-divider" v-if="!$route.params.idsubdomain"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
                <a class="dropdown-item item-sort" href="#" v-on:click="orderByName()">
