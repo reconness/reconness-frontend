@@ -2,7 +2,7 @@
   <div>
   <!-- Contains navs-bar -->
   <NavBarTwoDetailTarget :TargetName = "Target.name"
-  :gradient = "LinearGradient" :rootName = "RootDomains.root" :showRootDomains = "showRoot"/>
+  :gradient = "LinearGradient" :rootName = "RootDomains.root" :showRootDomains = "showRoot" :subDomainName="subdomainName"/>
       <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
@@ -53,7 +53,8 @@ export default {
       shadowAg: '',
       secondaryColor: '',
       //  eliminar esta variable y poner como props
-      gradient: ''
+      gradient: '',
+      subdomainName: ''
     }
   },
   components: {
@@ -74,6 +75,9 @@ export default {
     this.secondaryColor = this.Target.secondaryColor
     // poner como props
     this.gradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
+    if (this.$route.params.idsubdomain) {
+      this.subdomainName = this.RootDomains.subdomain.find(item => item.id === parseInt(this.$route.params.idsubdomain)).name
+    }
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),

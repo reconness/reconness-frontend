@@ -489,7 +489,8 @@ export default ({
     isTableList: true,
     idSubdomain: 55,
     elementSelectedList: [],
-    countElementSelected: 0
+    countElementSelected: 0,
+    nameSubDomainOpened: ''
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -696,6 +697,10 @@ export default ({
     },
     addCountElementSelected (state) {
       state.countElementSelected = state.countElementSelected + 1
+    },
+    setNameSubDomainOpened (state, name) {
+      state.nameSubDomainOpened = name
+      return state.nameSubDomainOpened
     }
   },
   actions: {

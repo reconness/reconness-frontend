@@ -40,7 +40,7 @@
                             <label class="form-check-label custom-control-label" for="interesting">Interesting</label>
                         </div>
                         <div class="custom-control custom-checkbox form-check private-program-container ml-4 mt-3">
-                            <input class="form-check-input custom-control-input" type="checkbox" id="bounty" v-model="loadedSubdomain.boubty">
+                            <input class="form-check-input custom-control-input" type="checkbox" id="bounty" v-model="loadedSubdomain.bounty">
                             <label class="form-check-label custom-control-label" for="bounty">Bounty</label>
                         </div>
                         <div class="custom-control custom-checkbox form-check private-program-container ml-4 mt-3">
