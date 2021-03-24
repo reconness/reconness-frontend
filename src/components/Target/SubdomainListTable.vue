@@ -123,7 +123,9 @@
     </div>
     <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
+          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: parseInt(item.id)} }">
           <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: gradient}">forward</span>
+          </router-link>
         </div>
         <div class="abs-center mx-auto">
           <span class="material-icons icon-color-style gradient-style delete-hover"
@@ -164,7 +166,7 @@ import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'SubdomainListTable',
@@ -225,8 +227,8 @@ export default {
     },
     selectedAll () {
       this.$store.commit('target/cancelElementSelected')
-      var checkboxes = document.getElementsByName('checkbox-dinamic')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkbox-dinamic')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = true
         this.isElementSelected = false
         document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
@@ -237,8 +239,8 @@ export default {
     },
     unselectedAll () {
       if (this.$store.state.target.countElementSelected !== 0) {
-        var checkboxes = document.getElementsByName('checkbox-dinamic')
-        for (var i = 0, n = checkboxes.length; i < n; i++) {
+        const checkboxes = document.getElementsByName('checkbox-dinamic')
+        for (let i = 0, n = checkboxes.length; i < n; i++) {
           if (checkboxes[i].checked === true) {
             checkboxes[i].checked = false
             this.isElementSelected = true
@@ -260,10 +262,18 @@ export default {
       } else {
         return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(searchValue.toLowerCase())))
       }
-    }
+    },
+    ...mapMutations(['setIsElementDeleted'])
   },
   computed: {
-    ...mapGetters('target', ['getSubdomainSize'])
+    ...mapGetters('target', ['getSubdomainSize']),
+    ...mapState(['isElementDeleted'])
+  },
+  mounted () {
+    if (this.isElementDeleted) {
+      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The SubDomain has been deleted successfully', life: 3000 })
+      this.setIsElementDeleted(false)
+    }
   }
 }
 </script>
@@ -341,36 +351,6 @@ font-size: 16px;
   position: absolute;
   z-index: -1;
   display: none;
-}
-.check-color-0cb8e0 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #0cb8e0;
-    background-color: #0cb8e0;
-    box-shadow: none;
-}
-.check-color-FF4343 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #FF4343;
-    background-color: #FF4343;
-    box-shadow: none;
-}
-.check-color-16c465 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #16c465;
-    background-color: #16c465;
-    box-shadow: none;
-}
-.check-color-f36a33 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #f36a33;
-    background-color: #f36a33;
-    box-shadow: none;
-}
-.check-color-7159d3 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #7159d3;
-    background-color: #7159d3;
-    box-shadow: none;
 }
 .background-row {
   background: #fff;

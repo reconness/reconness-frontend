@@ -24,10 +24,10 @@ export default ({
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agent: [],
-                ipAddress: '34.234.345.34',
-                http: false,
-                isAlive: false
+                agent: ['Agente 1', 'Agente 2'],
+                ipAddress: '34.234.345.37',
+                http: true,
+                isAlive: true
               },
               {
                 id: 2,
@@ -42,7 +42,7 @@ export default ({
                 agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: true
+                isAlive: false
               }
             ]
           },
@@ -61,10 +61,11 @@ export default ({
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agents: [],
+                agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: true
+                isAlive: true,
+                isMainPortal: true
               },
               {
                 id: 2,
@@ -76,9 +77,11 @@ export default ({
                 boubty: true,
                 ignore: false,
                 scope: true,
-                agent: 'Portraite',
-                http: false,
-                isAlive: true
+                agent: ['Portraite'],
+                isAlive: false,
+                ipAddress: '34.234.345.34',
+                http: true,
+                isMainPortal: true
               }
             ]
           }
@@ -127,7 +130,8 @@ export default ({
                 agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: true
+                isAlive: false,
+                isMainPortal: false
               }
             ]
           },
@@ -188,7 +192,8 @@ export default ({
                 agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: false
+                isAlive: true,
+                isMainPortal: false
               }
             ]
           },
@@ -484,7 +489,8 @@ export default ({
     isTableList: true,
     idSubdomain: 55,
     elementSelectedList: [],
-    countElementSelected: 0
+    countElementSelected: 0,
+    nameSubDomainOpened: ''
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -691,6 +697,10 @@ export default ({
     },
     addCountElementSelected (state) {
       state.countElementSelected = state.countElementSelected + 1
+    },
+    setNameSubDomainOpened (state, name) {
+      state.nameSubDomainOpened = name
+      return state.nameSubDomainOpened
     }
   },
   actions: {
@@ -732,6 +742,13 @@ export default ({
       if (roots) {
         return roots.subdomain.length
       }
+    },
+    getSubDomain: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idtarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)
+      const subdomain = roots.subdomain.find(subdItem => subdItem.id === params.idsubdomain)
+      // console.log(subdomain)
+      return subdomain
     }
   }
 })

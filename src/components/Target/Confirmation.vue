@@ -65,10 +65,15 @@ export default {
           case 'subdomains':
             if (this.nameTyped === 'yes') {
               this.$store.commit('target/removeSubDomains', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id) })
+              this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The subdomain has been deleted successfully', life: 3000 })
+            } else if (!this.$route.params.idsubdomain) {
+              this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
+              this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The subdomain has been deleted successfully', life: 3000 })
             } else {
               this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
+              this.$router.push({ name: 'RootDomainDetails', params: { idTarget: parseInt(this.$route.params.idTarget), id: parseInt(this.$route.params.id) } })
+              this.setIsElementDeleted(true)
             }
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The subdomain has been deleted successfully', life: 3000 })
             break
           case 'rootdomains':
             var params = { idTarget: parseInt(this.$route.params.idTarget), idRootDomain: parseInt(this.$route.params.id) }
