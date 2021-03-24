@@ -330,36 +330,6 @@ font-size: 16px;
   z-index: -1;
   display: none;
 }
-.check-color-0cb8e0 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #0cb8e0;
-    background-color: #0cb8e0;
-    box-shadow: none;
-}
-.check-color-FF4343 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #FF4343;
-    background-color: #FF4343;
-    box-shadow: none;
-}
-.check-color-16c465 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #16c465;
-    background-color: #16c465;
-    box-shadow: none;
-}
-.check-color-f36a33 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #f36a33;
-    background-color: #f36a33;
-    box-shadow: none;
-}
-.check-color-7159d3 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #7159d3;
-    background-color: #7159d3;
-    box-shadow: none;
-}
 .background-row {
   background: #fff;
   border-radius: 12px;

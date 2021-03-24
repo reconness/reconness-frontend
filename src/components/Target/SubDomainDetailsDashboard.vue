@@ -7,11 +7,11 @@
                     <div class="m-4">
                     <p>Ip: <b>{{ loadedSubdomain.ipAddress }}</b></p>
                     <p>Agents: <b>{{ loadedSubdomain.agent.join(", ") }}</b></p>
-                    <div class="custom-control custom-checkbox form-check private-program-container">
+                    <div class="custom-control custom-checkbox form-check private-program-container" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                         <input class="form-check-input custom-control-input" type="checkbox" id="is_alive" v-model="loadedSubdomain.isAlive">
                         <label class="form-check-label custom-control-label" for="is_alive">Is Alive</label>
                     </div>
-                    <div class="custom-control custom-checkbox form-check private-program-container mt-2">
+                    <div class="custom-control custom-checkbox form-check private-program-container mt-2" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                         <input class="form-check-input custom-control-input" type="checkbox" id="http_open" v-model="loadedSubdomain.http">
                         <label class="form-check-label custom-control-label" for="http_open">Has HTTP Open</label>
                     </div>
@@ -21,36 +21,36 @@
                     <!-- /x<div class="col-12"> -->
                     <div class="">
                         <div class="d-flex">
-                        <div class="custom-control custom-checkbox form-check private-program-container">
+                        <div class="custom-control custom-checkbox form-check private-program-container" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                             <input class="form-check-input custom-control-input" type="checkbox" id="checking" v-model="loadedSubdomain.checking">
                             <label class="form-check-label custom-control-label" for="checking">Checking</label>
                         </div>
-                        <div class="custom-control custom-checkbox form-check private-program-container ml-4">
+                        <div class="custom-control custom-checkbox form-check private-program-container ml-4" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                             <input class="form-check-input custom-control-input" type="checkbox" id="vulnerable" v-model="loadedSubdomain.vulnerable">
                             <label class="form-check-label custom-control-label" for="vulnerable">Vulnerable</label>
                         </div>
-                        <div class="custom-control custom-checkbox form-check private-program-container ml-4">
+                        <div class="custom-control custom-checkbox form-check private-program-container ml-4" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                             <input class="form-check-input custom-control-input" type="checkbox" id="ignore" v-model="loadedSubdomain.ignore">
                             <label class="form-check-label custom-control-label" for="ignore">Ignore</label>
                         </div>
                         </div>
                         <div class="d-flex">
-                        <div class="custom-control custom-checkbox form-check private-program-container mt-3">
+                        <div class="custom-control custom-checkbox form-check private-program-container mt-3" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                             <input class="form-check-input custom-control-input" type="checkbox" id="interesting" v-model="loadedSubdomain.interesting">
                             <label class="form-check-label custom-control-label" for="interesting">Interesting</label>
                         </div>
-                        <div class="custom-control custom-checkbox form-check private-program-container ml-4 mt-3">
+                        <div class="custom-control custom-checkbox form-check private-program-container ml-4 mt-3" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                             <input class="form-check-input custom-control-input" type="checkbox" id="bounty" v-model="loadedSubdomain.bounty">
                             <label class="form-check-label custom-control-label" for="bounty">Bounty</label>
                         </div>
-                        <div class="custom-control custom-checkbox form-check private-program-container ml-4 mt-3">
+                        <div class="custom-control custom-checkbox form-check private-program-container ml-4 mt-3" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                             <input class="form-check-input custom-control-input" type="checkbox" id="scope" v-model="loadedSubdomain.scope">
                             <label class="form-check-label custom-control-label" for="scope">Scope</label>
                         </div>
                         </div>
                     </div>
-                    <div class="custom-control custom-checkbox form-check private-program-container mt-4">
-                        <input class="form-check-input custom-control-input" type="checkbox" id="is_main_portal" v-model="loadedSubdomain.scope">
+                    <div class="custom-control custom-checkbox form-check private-program-container mt-4" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
+                        <input class="form-check-input custom-control-input" type="checkbox" id="is_main_portal" v-model="loadedSubdomain.isMainPortal">
                         <label class="form-check-label custom-control-label" for="is_main_portal">Is main Portal</label>
                     </div>
                     <div class="mt-5">
@@ -70,11 +70,12 @@ import { mapGetters } from 'vuex'
 export default {
   data: function () {
     return {
-      loadedSubdomain: {}
+      loadedSubdomain: {},
+      loadedTarget: {}
     }
   },
   computed: {
-    ...mapGetters('target', ['getSubDomain'])
+    ...mapGetters('target', ['getSubDomain', 'getTargetById'])
   },
   created () {
     this.loadedSubdomain = this.getSubDomain({
@@ -82,6 +83,7 @@ export default {
       idrootdomain: parseInt(this.$route.params.id),
       idsubdomain: parseInt(this.$route.params.idsubdomain)
     })
+    this.loadedTarget = this.getTargetById(parseInt(this.$route.params.idTarget))
   }
 }
 </script>
