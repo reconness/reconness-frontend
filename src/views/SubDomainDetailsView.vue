@@ -9,20 +9,20 @@
         <hr class="reset-margin-top" />
         <div class="content">
           <div class="submenu-details-tab-menu mt-5 mb-4">
-            <button type="button" class="btn ml-4 border-grad subdomain-active-tab pl-5 pr-5" v-on:click="activeTabButton(true)">
+            <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.DASHBOARD}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.DASHBOARD">
               Dashboard
             </button>
-            <button type="button" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="activeTabButton(true)">
+            <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.AGENTS}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="setActiveTabButton(activeTab.AGENTS)">
               Agents
             </button>
-            <button type="button" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="activeTabButton(true)">
+            <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.SERVICES}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.SERVICES">
               Services
             </button>
-            <button type="button" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="activeTabButton(true)">
+            <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.DIRECTORIES}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.DIRECTORIES">
               Directories
             </button>
           </div>
-          <SubDomainDetailsDashboard/>
+          <SubDomainDetailsDashboard v-if="parseInt(this.selectedTab) === this.activeTab.DASHBOARD"/>
         </div>
       </div>
     </div>
@@ -52,9 +52,18 @@ export default {
       shadowSubd: '3px 12px 23px #d6d6d6',
       shadowAg: '',
       secondaryColor: '',
-      //  eliminar esta variable y poner como props
       gradient: '',
-      subdomainName: ''
+      subdomainName: '',
+      selectedTab: 1,
+      activeTab: Object.freeze(
+        {
+          DASHBOARD: 1,
+          AGENTS: 2,
+          SERVICES: 3,
+          DIRECTORIES: 4
+        }
+      )
+
     }
   },
   components: {
@@ -81,19 +90,8 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),
-    activeTabButton: function (valueIn) {
-      this.setIsDefaultTabButton(valueIn)
-      if (valueIn) {
-        this.buttonGradSubd = this.LinearGradient
-        this.buttonGradAg = 'linear-gradient(#f2f4f6, #f2f4f6)'
-        this.shadowSubd = '13px 19px 41px #d6d6d6'
-        this.shadowAg = ''
-      } else {
-        this.buttonGradSubd = 'linear-gradient(#f2f4f6, #f2f4f6)'
-        this.buttonGradAg = this.LinearGradient
-        this.shadowSubd = ''
-        this.shadowAg = '13px 19px 41px #d6d6d6'
-      }
+    setActiveTabButton: function (tab) {
+      this.selectedTab = tab
     }
   }
 }

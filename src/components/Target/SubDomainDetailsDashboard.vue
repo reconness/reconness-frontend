@@ -92,7 +92,7 @@ export default {
     width: 90px;
     height: 47px;
 }
-.subdomain-active-tab{
+.subdomain_active_tab{
   background: linear-gradient(rgb(242, 244, 246), rgb(242, 244, 246)) padding-box padding-box, linear-gradient(160deg, rgb(255,255,255) 0%, rgb(255,255,255) 100%) border-box border-box;box-shadow: rgb(214, 214, 214) 3px 12px 23px;
 }
 </style>
