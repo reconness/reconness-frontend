@@ -55,7 +55,7 @@
                     </div>
                     <div class="mt-5">
                         <button type="button" style="color: #00B1FF;" class="subdomain-border btn create-agent-buttons-main-action">Save</button>
-                        <button type="button" class="agent-border btn create-agent-buttons-main-action btn-danger delete_btn ml-4">Delete</button>
+                        <button type="button" class="agent-border btn create-agent-buttons-main-action btn-danger delete_btn ml-4" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false" @click="updateConfirm(loadedSubdomain.name)">Delete</button>
                     </div>
                     </div>
                 </div>
@@ -84,6 +84,11 @@ export default {
       idsubdomain: parseInt(this.$route.params.idsubdomain)
     })
     this.loadedTarget = this.getTargetById(parseInt(this.$route.params.idTarget))
+  },
+  methods: {
+    updateConfirm (itemName) {
+      return this.$store.commit('confirm', { name: itemName, route: 'subdomains' })
+    }
   }
 }
 </script>

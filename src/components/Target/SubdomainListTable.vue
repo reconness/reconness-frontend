@@ -163,7 +163,7 @@ import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'SubdomainListTable',
@@ -248,10 +248,18 @@ export default {
       this.isElementSelected = true
       this.showHeader = true
       this.$store.commit('target/cancelElementSelected')
-    }
+    },
+    ...mapMutations(['setIsElementDeleted'])
   },
   computed: {
-    ...mapGetters('target', ['getSubdomainSize'])
+    ...mapGetters('target', ['getSubdomainSize']),
+    ...mapState(['isElementDeleted'])
+  },
+  mounted () {
+    if (this.isElementDeleted) {
+      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The SubDomain has been deleted successfully', life: 3000 })
+      this.setIsElementDeleted(false)
+    }
   }
 }
 </script>

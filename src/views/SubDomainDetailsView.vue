@@ -33,8 +33,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 import SubDomainDetailsDashboard from '@/components/Target/SubDomainDetailsDashboard.vue'
-// import SubdomainListTable from '@/components/Target/SubdomainListTable.vue'
-// import AgentListTable from '@/components/Target/AgentListTable.vue'
+
 export default {
   name: 'TargetsDetailsView',
   data: function () {
@@ -69,8 +68,6 @@ export default {
   components: {
     NavBarTwoDetailTarget,
     SubDomainDetailsDashboard
-    // SubdomainListTable,
-    // AgentListTable
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])
@@ -82,7 +79,6 @@ export default {
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor
-    // poner como props
     this.gradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     if (this.$route.params.idsubdomain) {
       this.subdomainName = this.RootDomains.subdomain.find(item => item.id === parseInt(this.$route.params.idsubdomain)).name
