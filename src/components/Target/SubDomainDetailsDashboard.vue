@@ -18,7 +18,6 @@
                     <p class="mt-3 mb-3 font-weight-bold">
                         Labels
                     </p>
-                    <!-- /x<div class="col-12"> -->
                     <div class="">
                         <div class="d-flex">
                         <div class="custom-control custom-checkbox form-check private-program-container" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
@@ -98,8 +97,5 @@ export default {
     border-radius: 12px;
     width: 90px;
     height: 47px;
-}
-.subdomain_active_tab{
-  background: linear-gradient(rgb(242, 244, 246), rgb(242, 244, 246)) padding-box padding-box, linear-gradient(160deg, rgb(255,255,255) 0%, rgb(255,255,255) 100%) border-box border-box;box-shadow: rgb(214, 214, 214) 3px 12px 23px;
 }
 </style>

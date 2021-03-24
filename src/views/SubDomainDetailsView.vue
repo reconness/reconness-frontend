@@ -23,6 +23,9 @@
             </button>
           </div>
           <SubDomainDetailsDashboard v-if="parseInt(this.selectedTab) === this.activeTab.DASHBOARD"/>
+          <SubDomainDetailsAgents v-if="parseInt(this.selectedTab) === this.activeTab.AGENTS"/>
+          <SubDomainDetailsServices v-if="parseInt(this.selectedTab) === this.activeTab.SERVICES"/>
+          <SubDomainDetailsDirectories v-if="parseInt(this.selectedTab) === this.activeTab.DIRECTORIES"/>
         </div>
       </div>
     </div>
@@ -33,6 +36,9 @@
 import { mapGetters, mapMutations } from 'vuex'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 import SubDomainDetailsDashboard from '@/components/Target/SubDomainDetailsDashboard.vue'
+import SubDomainDetailsAgents from '@/components/Target/SubDomainDetailsAgents.vue'
+import SubDomainDetailsServices from '@/components/Target/SubDomainDetailsServices.vue'
+import SubDomainDetailsDirectories from '@/components/Target/SubDomainDetailsDirectories.vue'
 
 export default {
   name: 'TargetsDetailsView',
@@ -67,7 +73,10 @@ export default {
   },
   components: {
     NavBarTwoDetailTarget,
-    SubDomainDetailsDashboard
+    SubDomainDetailsDashboard,
+    SubDomainDetailsAgents,
+    SubDomainDetailsDirectories,
+    SubDomainDetailsServices
   },
   computed: {
     ...mapGetters('target', ['getTargetById'])
