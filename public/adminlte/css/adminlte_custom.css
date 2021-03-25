@@ -799,6 +799,7 @@ div.card-body a svg{
   color: #ffffff!important;
   opacity: 1;
 }
+
 .abs-center{ display: flex; align-items: center; justify-content: center;}
 
 .check-color-0cb8e0 .custom-control-input:checked~.custom-control-label::before {

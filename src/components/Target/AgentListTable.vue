@@ -75,7 +75,30 @@ export default {
       return this.getLastAgentSubdom.sort(this.$compareNamesDesc)
     },
     orderByCalendar: function () {
-      return this.getLastAgentSubdom.sort(this.$orderByCalendarSplitting)
+      if (this.lastrun_arrow_down) {
+        this.lastrun_arrow_down = false
+        this.lastrun_arrow_up = true
+        return this.getLastAgentSubdom.sort(function (a, b) {
+          const as = a.lastRun.split('/')
+          const ad = new Date(as[2], as[1] - 1, as[0])
+          const bs = b.lastRun.split('/')
+          const bd = new Date(bs[2], bs[1] - 1, bs[0])
+          return bd - ad
+        })
+      } else {
+        this.lastrun_arrow_down = true
+        this.lastrun_arrow_up = false
+        return this.getLastAgentSubdom.sort(function (a, b) {
+          // if (a.lastRun !== ' ' || b.lastRun !== ' ') {
+          console.log(a.lastRun + 'entro')
+          const as = a.lastRun.split('/')
+          const ad = new Date(as[2], as[1] - 1, as[0])
+          const bs = b.lastRun.split('/')
+          const bd = new Date(bs[2], bs[1] - 1, bs[0])
+          return ad - bd
+          // }
+        })
+      }
     }
   }
 }

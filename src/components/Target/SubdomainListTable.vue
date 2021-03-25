@@ -32,7 +32,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <div v-for="element in this.selectList" :key="element.id" @click="this.elementSelected = element.name">
-      <a class="dropdown-item" href="#">{{element.name}} </a>
+      <a class="dropdown-item" href="#" @click="this.dropdownCriteria = element.id" >{{element.name}} </a>
     </div>
   </div>
 </div>
@@ -59,19 +59,24 @@
        <a>Delete</a></div>
      <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="done()"> Done</div>
   </div>
-     <div class="row mb-2" v-for="item of this.search(this.searchCriteria)" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
+     <div class="row mb-2" v-for="item of this.search()" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
     <div class="col-2  border-left-radius border">
       <p class="m-2 mb-2">{{item.name}}</p>
     </div>
     <div class="col-3 border-top border-bottom">
     <div class="row mt-2 mb-2">
-      <div class="col-8">
+      <div class="col-9">
       <dl class="ml-2">
-        <dd> <p class="text-muted-b3 mr-2 m-0 float-left"> Agents: {{color.substring(2)}} </p> <p class="text-dark-0 m-0">Ping, Dnsprobe  </p></dd>
+        <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Agents: </p>
+        <p class="text-dark-0 m-0 float-left" v-for="item2 of item.agent" :key="item2.id">{{item2}},   </p>
+        </dd>
         <dd> <p class="text-muted-b3 mr-2 m-0 float-left">IpAddress: </p> <p class="text-dark-0 m-0"> {{item.ipAddress}} </p></dd>
+        <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Ports: </p>
+          <p class="text-dark-0 m-0 float-left" v-for="item2 of item.ports" :key="item2.id">{{item2}}, </p>
+        </dd>
         <dd> <p class="text-muted-b3 mr-2 m-0 float-left">Added: </p><p class="text-dark-0 m-0"> {{item.added}}</p> </dd>
       </dl>
-      </div><div class="col abs-center mx-auto">
+      </div><div class="col abs-center ml-2 mr-2">
         <div class="row abs-center icons-size">
           <div class="col-12">
             <div v-if="item.isAlive == true" class="abs-center mx-auto mb-1">
@@ -82,7 +87,7 @@
             </div>
           </div>
           <div class="col-12 border-top">
-            <span v-if="item.http == true" class="badge abs-center mx-auto mt-1 icon-badge-style" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
+            <span v-if="item.http == true" class="badge abs-center mx-auto mt-1 icon-badge-style" v-bind:style ="{background: '#00B1FF 0% 0% no-repeat padding-box', color: '#ffffff'}"> H T<br>T P</span>
             <span v-else class="badge abs-center mx-auto mt-1 icon-badge-style inactive-gradient" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
           </div>
         </div>
@@ -105,7 +110,7 @@
           <label class="form-check-label text-body custom-control-label" for="vulnerable">Vulnerable</label>
           </div>
           <div class="form-check custom-control custom-checkbox" :class= "'check-color-' + color.substring(1)">
-          <input  readonly="readonly" onclick="return false;"  class="custom-control-input form-check-input" type="checkbox" id="bounty" :checked= item.boubty>
+          <input  readonly="readonly" onclick="return false;"  class="custom-control-input form-check-input" type="checkbox" id="bounty" :checked= item.bounty>
           <label class="form-check-label text-body custom-control-label" for="bounty">Bounty</label>
           </div>
         </div>
@@ -183,7 +188,8 @@ export default {
       selectList: [{ id: 1, name: 'Select' }, { id: 2, name: 'Label' }, { id: 3, name: 'Service' }, { id: 4, name: 'Port' }, { id: 5, name: 'Agent' }, { id: 6, name: 'Date' }],
       elementSelected: 'Select',
       searchModel: '',
-      searchCriteria: ''
+      searchCriteria: '',
+      dropdownCriteria: 1
     }
   },
   props: {
@@ -256,12 +262,35 @@ export default {
       this.showHeader = true
       this.$store.commit('target/cancelElementSelected')
     },
-    search (searchValue) {
-      if (searchValue === '' || searchValue === undefined) {
-        return this.rootDomain.subdomain
-      } else {
-        return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(searchValue.toLowerCase())))
+    search () {
+      if (this.searchCriteria === '' || this.searchCriteria === undefined) {
+        if (this.dropdownCriteria === 1) {
+          return this.rootDomain.subdomain
+        }
+      } else if (this.dropdownCriteria === 2) {
+        if ('interesting'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.interesting === true))
+        } else if ('checking'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.checking === true))
+        } else if ('vulnerable'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.vulnerable === true))
+        } else if ('bounty'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.bounty === true))
+        } else if ('ignore'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.ignore === true))
+        } else if ('scope'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.scope === true))
+        }
+      } else if (this.dropdownCriteria === 3) {
+        return this.rootDomain.subdomain.filter(item => (item.services.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+      } else if (this.dropdownCriteria === 4) {
+        return this.rootDomain.subdomain.filter(item => (item.ports.find(item2 => item2 === Number(this.searchCriteria))))
+      } else if (this.dropdownCriteria === 5) {
+        return this.rootDomain.subdomain.filter(item => (item.agent.find(item2 => item2.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+      } else if (this.dropdownCriteria === 6) {
+        return this.rootDomain.subdomain.filter(item => (item.added === this.searchCriteria))
       }
+      return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(this.searchCriteria.toLowerCase())))
     },
     ...mapMutations(['setIsElementDeleted'])
   },

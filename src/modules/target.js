@@ -21,13 +21,15 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
-                agent: ['Agente 1', 'Agente 2'],
+                agent: ['Agent 1', 'Agent 2'],
                 ipAddress: '34.234.345.37',
                 http: true,
-                isAlive: true
+                isAlive: true,
+                ports: [21, 22],
+                services: [{ id: 1, name: 'Https', port: 80 }, { id: 2, name: 'Http', port: 81 }]
               },
               {
                 id: 2,
@@ -36,13 +38,15 @@ export default ({
                 checking: false,
                 interesting: true,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
-                agent: [],
+                agent: ['Agent 3', 'Agent 4'],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: false
+                isAlive: false,
+                ports: [21, 22, 80, 443],
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 82 }]
               }
             ]
           },
@@ -58,14 +62,16 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
                 isAlive: true,
-                isMainPortal: true
+                ports: [21, 22, 80, 443],
+                isMainPortal: true,
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 81 }]
               },
               {
                 id: 2,
@@ -74,14 +80,16 @@ export default ({
                 checking: false,
                 interesting: true,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
                 agent: ['Portraite'],
                 isAlive: false,
+                ports: [21],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isMainPortal: true
+                isMainPortal: true,
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }]
               }
             ]
           }
@@ -124,7 +132,7 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
                 agent: [],
@@ -186,7 +194,7 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
                 agent: [],
