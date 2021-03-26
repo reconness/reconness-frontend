@@ -9,7 +9,7 @@
         <hr class="reset-margin-top" />
         <div class="content">
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
-            Subdomains <span class="text-muted-b3">(2)</span>
+            Subdomains <span class="text-muted-b3"> ({{this.getSubdomainSize(this.routeParams)}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
             Agents <span class="text-muted-b3">(2)</span>
@@ -43,7 +43,11 @@ export default {
       buttonGradAg: '',
       shadowSubd: '3px 12px 23px #d6d6d6',
       shadowAg: '',
-      secondaryColor: ''
+      secondaryColor: '',
+      routeParams: {
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRootDomain: parseInt(this.$route.params.id)
+      }
     }
   },
   components: {
@@ -52,7 +56,7 @@ export default {
     AgentListTable
   },
   computed: {
-    ...mapGetters('target', ['getTargetById'])
+    ...mapGetters('target', ['getTargetById', 'getSubdomainSize'])
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)

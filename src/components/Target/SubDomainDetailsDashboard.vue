@@ -6,7 +6,7 @@
                 <div class="col-12">
                     <div class="m-4">
                     <p>Ip: <b>{{ loadedSubdomain.ipAddress }}</b></p>
-                    <p>Agents: <b>{{ loadedSubdomain.agent.join(", ") }}</b></p>
+                    <p>Agents: <b v-for="item2 of loadedSubdomain.agent" :key="item2.id">{{ item2.name}},</b></p>
                     <div class="custom-control custom-checkbox form-check private-program-container" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                         <input class="form-check-input custom-control-input" type="checkbox" id="is_alive" v-model="loadedSubdomain.isAlive">
                         <label class="form-check-label custom-control-label" for="is_alive">Is Alive</label>

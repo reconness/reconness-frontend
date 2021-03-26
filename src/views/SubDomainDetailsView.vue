@@ -13,19 +13,19 @@
               Dashboard
             </button>
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.AGENTS}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="setActiveTabButton(activeTab.AGENTS)">
-              Agents
+              Agents ({{this.getSubdomainSize[0]}})
             </button>
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.SERVICES}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.SERVICES">
-              Services
+              Services ({{this.getSubdomainSize[1]}})
             </button>
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.DIRECTORIES}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.DIRECTORIES">
-              Directories
+              Directories ({{this.getSubdomainSize[2]}})
             </button>
           </div>
           <SubDomainDetailsDashboard v-if="parseInt(this.selectedTab) === this.activeTab.DASHBOARD"/>
-          <SubDomainDetailsAgents v-if="parseInt(this.selectedTab) === this.activeTab.AGENTS"/>
-          <SubDomainDetailsServices v-if="parseInt(this.selectedTab) === this.activeTab.SERVICES"/>
-          <SubDomainDetailsDirectories v-if="parseInt(this.selectedTab) === this.activeTab.DIRECTORIES"/>
+          <SubDomainDetailsAgents v-if="parseInt(this.selectedTab) === this.activeTab.AGENTS" :gradient = "LinearGradient"/>
+          <SubDomainDetailsServices v-if="parseInt(this.selectedTab) === this.activeTab.SERVICES" :gradient = "LinearGradient"/>
+          <SubDomainDetailsDirectories v-if="parseInt(this.selectedTab) === this.activeTab.DIRECTORIES" :gradient = "LinearGradient" />
         </div>
       </div>
     </div>
@@ -50,6 +50,10 @@ export default {
         type: Object,
         default: () => {}
       },
+      Subdomain: {
+        type: Object,
+        default: () => {}
+      },
       LinearGradient: '',
       showRoot: true,
       buttonGradSubd: '',
@@ -67,7 +71,10 @@ export default {
           SERVICES: 3,
           DIRECTORIES: 4
         }
-      )
+      ),
+      serviceCount: 0,
+      agentCount: 0,
+      directoriesCount: 0
 
     }
   },
@@ -79,7 +86,15 @@ export default {
     SubDomainDetailsServices
   },
   computed: {
-    ...mapGetters('target', ['getTargetById'])
+    ...mapGetters('target', ['getTargetById', 'getSubDomain']),
+    getSubdomainSize () {
+      const loadedSubdomain = this.getSubDomain({
+        idtarget: parseInt(this.$route.params.idTarget),
+        idrootdomain: parseInt(this.$route.params.id),
+        idsubdomain: parseInt(this.$route.params.idsubdomain)
+      })
+      return [loadedSubdomain.agent.length, loadedSubdomain.services.length, loadedSubdomain.directories.length]
+    }
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
@@ -90,7 +105,8 @@ export default {
     this.secondaryColor = this.Target.secondaryColor
     this.gradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     if (this.$route.params.idsubdomain) {
-      this.subdomainName = this.RootDomains.subdomain.find(item => item.id === parseInt(this.$route.params.idsubdomain)).name
+      this.Subdomain = this.RootDomains.subdomain.find(item => item.id === parseInt(this.$route.params.idsubdomain))
+      this.subdomainName = this.Subdomain.name
     }
   },
   methods: {

@@ -68,7 +68,7 @@
       <div class="col-9">
       <dl class="ml-2">
         <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Agents: </p>
-        <p class="text-dark-0 m-0 float-left" v-for="item2 of item.agent" :key="item2.id">{{item2}},   </p>
+        <p class="text-dark-0 m-0 float-left" v-for="item2 of item.agent" :key="item2.id">{{item2.name}},   </p>
         </dd>
         <dd> <p class="text-muted-b3 mr-2 m-0 float-left">IpAddress: </p> <p class="text-dark-0 m-0"> {{item.ipAddress}} </p></dd>
         <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Ports: </p>

@@ -13,11 +13,11 @@
             </router-link>
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
         </li>
-        <li class="nav-item d-flex" v-if = "showRootDomains && !$route.params.idsubdomain">
+        <li class="nav-item d-flex float-left" v-if = "showRootDomains && !$route.params.idsubdomain">
           <span v-bind:style ="{background:gradient}"  class="material-icons mt-1 ml-2 icon-color-style gradient-style"> chevron_right </span>
           <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
         </li>
-        <li class="nav-item d-flex" v-if = "showRootDomains && $route.params.idsubdomain">
+        <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
           <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id} }">
           <span class="material-icons mt-1 ml-2 icon-color-style font-weight-bold"> chevron_right </span>
             <span class="ml-2 font-weight-bold">{{rootName}}</span>
