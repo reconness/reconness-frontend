@@ -7,12 +7,12 @@
         <a href="#" data-toggle="modal" data-target="#subDomainInsertionForm"> <span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
          Add Subdomain</a></li>
         <li class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-          <FileImportIco  v-bind:style ="{ 'fill': color, 'width': 20, 'height': 20, 'opacity': 1 }" style="width: 20px, height: 20px, opacity: 1;"/>
-          <label for="export-target" class=" mb-0"> Import Subdomains </label>
+          <FileImportIco  v-bind:style ="{ 'fill': color}"/>
+          <label for="export-target" class="domain-names-list mb-0"> Import Subdomains </label>
           <input type="file" id="export-target"/>
         </li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-          <a href="#" > <FileExportIco  v-bind:style ="{'fill': color}" />  Export All Subdomains</a></li>
+         <a href="#"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
         <a href="#" data-toggle="modal" data-target="#confirmation-modal"  @click="updateConfirm('')"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">delete</span> Delete All Subdomains</a></li>
       </ul>
@@ -28,7 +28,7 @@
          <label class="float-left mr-3 ml-3 label-style" for="dropdownMenuButton">Filter by</label>
          <div class="dropdown" >
     <button class="btn btn-style-dropd  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   {{elementSelected}}
+   <p class="float-left m-0">  {{elementSelected}}</p>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <div v-for="element in this.selectList" :key="element.id" @click="this.elementSelected = element.name">
@@ -324,7 +324,8 @@ export default {
     opacity: 1;
 }
 .btn-style-dropd.dropdown-toggle::after {
-    margin-left: 5em;
+    float: right;
+    margin-top: 9px;
 }
 
 .icon-color-style{
@@ -370,10 +371,14 @@ font-size: 16px;
   height: 25px;
   opacity: 1;
 }
-.nav-item a svg{
+.nav-item svg{
     width: 20px;
     height: 20px;
     opacity: 1;
+    cursor: pointer;
+}
+.nav-item svg, .nav-item .material-icons{
+    vertical-align: text-bottom;
 }
 #export-target {
   opacity: 0;

@@ -14,18 +14,21 @@
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
         </li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && !$route.params.idsubdomain">
-          <span v-bind:style ="{background:gradient}"  class="material-icons mt-1 ml-2 icon-color-style gradient-style"> chevron_right </span>
+          <span v-bind:style ="{background:gradient}"  class="material-icons ml-2 icon-color-style gradient-style" style="line-height: 1.6"> chevron_right </span>
           <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
         </li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
           <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id} }">
-          <span class="material-icons mt-1 ml-2 icon-color-style font-weight-bold"> chevron_right </span>
-            <span class="ml-2 font-weight-bold">{{rootName}}</span>
+          <span class="material-icons ml-2 icon-color-style font-weight-bold" style="line-height: 1.6"> chevron_right </span>
+        </router-link></li>
+        <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
+          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id} }">
+          <span class="ml-2 font-weight-bold">{{rootName}}</span>
           </router-link>
         </li>
         <li class="nav-item d-flex" v-if = "$route.params.idsubdomain">
-          <span v-bind:style ="{background:gradient}"  class="material-icons mt-1 ml-2 icon-color-style gradient-style"> chevron_right </span>
-          <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{subDomainName}}</span>
+          <span v-bind:style ="{background:gradient}"  class="material-icons ml-2 icon-color-style gradient-style font-weight-bold" style="line-height: 1.6"> chevron_right </span>
+          <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style font-weight-bold">{{subDomainName}}</span>
         </li>
       </ul>
       <!-- Right navbar links -->
@@ -245,5 +248,7 @@ label {
 .color-black {
   color: #000000 !important;
 }
-
+.font-weight-bold {
+    font-weight: 600 !important;
+}
 </style>

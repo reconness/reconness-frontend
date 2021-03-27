@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <hr class="reset-margin-top" />
         <div class="content">
-          <div class="submenu-details-tab-menu mt-5 mb-4">
+          <div class="submenu-details-tab-menu mt-4 mb-4">
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.DASHBOARD}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.DASHBOARD">
               Dashboard
             </button>
