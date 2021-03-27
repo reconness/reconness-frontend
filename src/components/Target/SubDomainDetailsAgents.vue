@@ -31,15 +31,20 @@
         <p class="m-2"> Never</p>
         </div>
         <div class="col-2 border-table abs-center border p-0">
-            <button type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0">Run</button>
+            <button type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm">Run</button>
+        </div>
+        <div class="row">
+          <AgentExecution/>
         </div>
       </div>
       </div>
     </div>
-  </div></div>
+  </div>
+  </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import AgentExecution from '@/components/AgentExecution.vue'
 export default {
   name: 'AgentListTable',
   data: function () {
@@ -105,6 +110,9 @@ export default {
         })
       }
     }
+  },
+  components: {
+    AgentExecution
   }
 }
 </script>
@@ -115,5 +123,4 @@ export default {
     width: 60px;
     height: 30px;
 }
-
 </style>
