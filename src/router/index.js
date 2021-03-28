@@ -37,6 +37,11 @@ const routes = [
     path: '/targets/details/:idTarget/rootDomainDetails/:id',
     name: 'RootDomainDetails',
     component: () => import('../views/RootDomainDetailsView.vue')
+  },
+  {
+    path: '/targets/details/:idTarget/rootDomainDetails/:id/subDomainDetails/:idsubdomain',
+    name: 'SubDomainDetails',
+    component: () => import('../views/SubDomainDetailsView.vue')
   }
 ]
 const router = createRouter({

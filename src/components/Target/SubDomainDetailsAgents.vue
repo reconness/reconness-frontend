@@ -18,7 +18,7 @@
           <div class="col-2 p-0" >
           <button class="border-table text-light-white p-2 text-center w-100" v-bind:style ="{'background':gradient}"> Actions</button></div>
         </div>
-      <div class="row mb-2" v-for="item of this.getLastAgentSubdom" :key="item.id">
+      <div class="row mb-2" v-for="item of this.listAgents" :key="item.id">
         <div class="col-2  border-left-radius border">
            <p class="m-2"> {{item.name}}</p>
         </div>
@@ -31,15 +31,20 @@
         <p class="m-2"> Never</p>
         </div>
         <div class="col-2 border-table abs-center border p-0">
-            <button type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0">Run</button>
+            <button type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm">Run</button>
+        </div>
+        <div class="row">
+          <AgentExecution/>
         </div>
       </div>
       </div>
     </div>
-  </div></div>
+  </div>
+  </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import AgentExecution from '@/components/AgentExecution.vue'
 export default {
   name: 'AgentListTable',
   data: function () {
@@ -54,7 +59,14 @@ export default {
     gradient: String
   },
   computed: {
-    ...mapGetters(['getLastAgentSubdom'])
+    ...mapGetters('target', ['getSubDomain']),
+    listAgents () {
+      return this.getSubDomain({
+        idtarget: parseInt(this.$route.params.idTarget),
+        idrootdomain: parseInt(this.$route.params.id),
+        idsubdomain: parseInt(this.$route.params.idsubdomain)
+      }).agent
+    }
   },
   methods: {
     orderByName: function () {
@@ -67,18 +79,18 @@ export default {
     orderByNameAsc: function () {
       this.active_arrow_down = true
       this.active_arrow_up = false
-      return this.getLastAgentSubdom.sort(this.$compareNamesAsc)
+      return this.listAgents.sort(this.$compareNamesAsc)
     },
     orderByNameDesc: function () {
       this.active_arrow_down = false
       this.active_arrow_up = true
-      return this.getLastAgentSubdom.sort(this.$compareNamesDesc)
+      return this.listAgents.sort(this.$compareNamesDesc)
     },
     orderByCalendar: function () {
       if (this.lastrun_arrow_down) {
         this.lastrun_arrow_down = false
         this.lastrun_arrow_up = true
-        return this.getLastAgentSubdom.sort(function (a, b) {
+        return this.listAgents.sort(function (a, b) {
           const as = a.lastRun.split('/')
           const ad = new Date(as[2], as[1] - 1, as[0])
           const bs = b.lastRun.split('/')
@@ -88,18 +100,19 @@ export default {
       } else {
         this.lastrun_arrow_down = true
         this.lastrun_arrow_up = false
-        return this.getLastAgentSubdom.sort(function (a, b) {
-          // if (a.lastRun !== ' ' || b.lastRun !== ' ') {
+        return this.listAgents.sort(function (a, b) {
           console.log(a.lastRun + 'entro')
           const as = a.lastRun.split('/')
           const ad = new Date(as[2], as[1] - 1, as[0])
           const bs = b.lastRun.split('/')
           const bd = new Date(bs[2], bs[1] - 1, bs[0])
           return ad - bd
-          // }
         })
       }
     }
+  },
+  components: {
+    AgentExecution
   }
 }
 </script>
@@ -110,5 +123,4 @@ export default {
     width: 60px;
     height: 30px;
 }
-
 </style>

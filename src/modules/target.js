@@ -21,13 +21,18 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
-                agent: [],
-                ipAddress: '34.234.345.34',
-                http: false,
-                isAlive: false
+                agent: [{ name: 'Agent 1', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 1, repository: 'repository1.com', target: 'target 1', command: 'command 1', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 1', image: '', date: '21/01/2020', installedFrom: '', lastRun: '01/01/2021' },
+                  { name: 'Agent 2', background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box', id: 2, repository: 'repository2.com', target: 'target 2', command: 'command 2', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent  2', image: '', date: '21/02/2020', installedFrom: '', lastRun: '02/01/2021' }],
+                ipAddress: '34.234.345.37',
+                http: true,
+                isAlive: true,
+                ports: [21, 22],
+                services: [{ id: 1, name: 'Https', port: 80 }, { id: 2, name: 'Http', port: 81 }],
+                directories: [{ id: 1, path: '/_tmp-war-DefaultWebAoo', method: 'GET', status: 301, size: '60B' },
+                  { id: 2, path: '/_tmp-war-DefaultWebAou', method: 'GET', status: 301, size: '60B' }]
               },
               {
                 id: 2,
@@ -36,13 +41,17 @@ export default ({
                 checking: false,
                 interesting: true,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
-                agent: [],
+                agent: [{ name: 'Agent 3', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 3, repository: 'repository3.com', target: 'target 3', command: 'command 3', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 3', image: '', date: '21/03/2020', installedFrom: '', lastRun: '' },
+                  { name: 'Agent 4', background: '#ff8650 0% 0% no-repeat padding-box', id: 4, repository: 'repository4.com', target: 'target 4', command: 'command 4', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 4', image: '', date: '21/04/2020', installedFrom: '', lastRun: '01/03/2021' }],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: true
+                isAlive: false,
+                ports: [21, 22, 80, 443],
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 82 }],
+                directories: []
               }
             ]
           },
@@ -58,13 +67,17 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
-                agents: [],
+                agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: true
+                isAlive: true,
+                ports: [21, 22, 80, 443],
+                isMainPortal: true,
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 81 }],
+                directories: []
               },
               {
                 id: 2,
@@ -73,12 +86,17 @@ export default ({
                 checking: false,
                 interesting: true,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
-                agent: 'Portraite',
-                http: false,
-                isAlive: true
+                agent: ['Portraite'],
+                isAlive: false,
+                ports: [21],
+                ipAddress: '34.234.345.34',
+                http: true,
+                isMainPortal: true,
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }],
+                directories: []
               }
             ]
           }
@@ -121,13 +139,17 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: true
+                isAlive: false,
+                isMainPortal: false,
+                ports: [21],
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }],
+                directories: []
               }
             ]
           },
@@ -182,13 +204,17 @@ export default ({
                 checking: true,
                 interesting: false,
                 vulnerable: true,
-                boubty: true,
+                bounty: true,
                 ignore: false,
                 scope: true,
                 agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
-                isAlive: false
+                isAlive: true,
+                isMainPortal: false,
+                ports: [21],
+                services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }],
+                directories: []
               }
             ]
           },
@@ -484,7 +510,8 @@ export default ({
     isTableList: true,
     idSubdomain: 55,
     elementSelectedList: [],
-    countElementSelected: 0
+    countElementSelected: 0,
+    nameSubDomainOpened: ''
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -691,6 +718,10 @@ export default ({
     },
     addCountElementSelected (state) {
       state.countElementSelected = state.countElementSelected + 1
+    },
+    setNameSubDomainOpened (state, name) {
+      state.nameSubDomainOpened = name
+      return state.nameSubDomainOpened
     }
   },
   actions: {
@@ -732,6 +763,13 @@ export default ({
       if (roots) {
         return roots.subdomain.length
       }
+    },
+    getSubDomain: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idtarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)
+      const subdomain = roots.subdomain.find(subdItem => subdItem.id === params.idsubdomain)
+      // console.log(subdomain)
+      return subdomain
     }
   }
 })

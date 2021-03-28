@@ -801,3 +801,37 @@ div.card-body a svg{
 }
 
 .abs-center{ display: flex; align-items: center; justify-content: center;}
+
+.check-color-0cb8e0 .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #0cb8e0;
+  background-color: #0cb8e0;
+  box-shadow: none;
+}
+.check-color-FF4343 .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #FF4343;
+  background-color: #FF4343;
+  box-shadow: none;
+}
+.check-color-16c465 .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #16c465;
+  background-color: #16c465;
+  box-shadow: none;
+}
+.check-color-f36a33 .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #f36a33;
+  background-color: #f36a33;
+  box-shadow: none;
+}
+.check-color-7159d3 .custom-control-input:checked~.custom-control-label::before {
+  color: #fff;
+  border-color: #7159d3;
+  background-color: #7159d3;
+  box-shadow: none;
+}
+.subdomain_active_tab{
+  background: linear-gradient(rgb(242, 244, 246), rgb(242, 244, 246)) padding-box padding-box, linear-gradient(160deg, rgb(255,255,255) 0%, rgb(255,255,255) 100%) border-box border-box;box-shadow: rgb(214, 214, 214) 3px 12px 23px;
+}

@@ -7,12 +7,12 @@
         <a href="#" data-toggle="modal" data-target="#subDomainInsertionForm"> <span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
          Add Subdomain</a></li>
         <li class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-          <FileImportIco  v-bind:style ="{ 'fill': color, 'width': 20, 'height': 20, 'opacity': 1 }" style="width: 20px, height: 20px, opacity: 1;"/>
-          <label for="export-target" class=" mb-0"> Import Subdomains </label>
+          <FileImportIco  v-bind:style ="{ 'fill': color}"/>
+          <label for="export-target" class="domain-names-list mb-0"> Import Subdomains </label>
           <input type="file" id="export-target"/>
         </li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-          <a href="#" > <FileExportIco  v-bind:style ="{'fill': color}" />  Export All Subdomains</a></li>
+         <a href="#"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
         <a href="#" data-toggle="modal" data-target="#confirmation-modal"  @click="updateConfirm('')"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">delete</span> Delete All Subdomains</a></li>
       </ul>
@@ -28,11 +28,11 @@
          <label class="float-left mr-3 ml-3 label-style" for="dropdownMenuButton">Filter by</label>
          <div class="dropdown" >
     <button class="btn btn-style-dropd  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   {{elementSelected}}
+   <p class="float-left m-0">  {{elementSelected}}</p>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <div v-for="element in this.selectList" :key="element.id" @click="this.elementSelected = element.name">
-      <a class="dropdown-item" href="#">{{element.name}} </a>
+      <a class="dropdown-item" href="#" @click="this.dropdownCriteria = element.id" >{{element.name}} </a>
     </div>
   </div>
 </div>
@@ -59,19 +59,24 @@
        <a>Delete</a></div>
      <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="done()"> Done</div>
   </div>
-     <div class="row mb-2" v-for="item of this.search(this.searchCriteria)" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
+     <div class="row mb-2" v-for="item of this.search()" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
     <div class="col-2  border-left-radius border">
       <p class="m-2 mb-2">{{item.name}}</p>
     </div>
     <div class="col-3 border-top border-bottom">
     <div class="row mt-2 mb-2">
-      <div class="col-8">
+      <div class="col-9">
       <dl class="ml-2">
-        <dd> <p class="text-muted-b3 mr-2 m-0 float-left"> Agents: {{color.substring(2)}} </p> <p class="text-dark-0 m-0">Ping, Dnsprobe  </p></dd>
+        <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Agents: </p>
+        <p class="text-dark-0 m-0 float-left" v-for="item2 of item.agent" :key="item2.id">{{item2.name}},   </p>
+        </dd>
         <dd> <p class="text-muted-b3 mr-2 m-0 float-left">IpAddress: </p> <p class="text-dark-0 m-0"> {{item.ipAddress}} </p></dd>
+        <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Ports: </p>
+          <p class="text-dark-0 m-0 float-left" v-for="item2 of item.ports" :key="item2.id">{{item2}}, </p>
+        </dd>
         <dd> <p class="text-muted-b3 mr-2 m-0 float-left">Added: </p><p class="text-dark-0 m-0"> {{item.added}}</p> </dd>
       </dl>
-      </div><div class="col abs-center mx-auto">
+      </div><div class="col abs-center ml-2 mr-2">
         <div class="row abs-center icons-size">
           <div class="col-12">
             <div v-if="item.isAlive == true" class="abs-center mx-auto mb-1">
@@ -82,7 +87,7 @@
             </div>
           </div>
           <div class="col-12 border-top">
-            <span v-if="item.http == true" class="badge abs-center mx-auto mt-1 icon-badge-style" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
+            <span v-if="item.http == true" class="badge abs-center mx-auto mt-1 icon-badge-style" v-bind:style ="{background: '#00B1FF 0% 0% no-repeat padding-box', color: '#ffffff'}"> H T<br>T P</span>
             <span v-else class="badge abs-center mx-auto mt-1 icon-badge-style inactive-gradient" v-bind:style ="{background: gradient, color: '#ffffff'}"> H T<br>T P</span>
           </div>
         </div>
@@ -105,7 +110,7 @@
           <label class="form-check-label text-body custom-control-label" for="vulnerable">Vulnerable</label>
           </div>
           <div class="form-check custom-control custom-checkbox" :class= "'check-color-' + color.substring(1)">
-          <input  readonly="readonly" onclick="return false;"  class="custom-control-input form-check-input" type="checkbox" id="bounty" :checked= item.boubty>
+          <input  readonly="readonly" onclick="return false;"  class="custom-control-input form-check-input" type="checkbox" id="bounty" :checked= item.bounty>
           <label class="form-check-label text-body custom-control-label" for="bounty">Bounty</label>
           </div>
         </div>
@@ -123,7 +128,9 @@
     </div>
     <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
+          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: parseInt(item.id)} }">
           <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: gradient}">forward</span>
+          </router-link>
         </div>
         <div class="abs-center mx-auto">
           <span class="material-icons icon-color-style gradient-style delete-hover"
@@ -164,7 +171,7 @@ import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'SubdomainListTable',
@@ -181,7 +188,8 @@ export default {
       selectList: [{ id: 1, name: 'Select' }, { id: 2, name: 'Label' }, { id: 3, name: 'Service' }, { id: 4, name: 'Port' }, { id: 5, name: 'Agent' }, { id: 6, name: 'Date' }],
       elementSelected: 'Select',
       searchModel: '',
-      searchCriteria: ''
+      searchCriteria: '',
+      dropdownCriteria: 1
     }
   },
   props: {
@@ -225,8 +233,8 @@ export default {
     },
     selectedAll () {
       this.$store.commit('target/cancelElementSelected')
-      var checkboxes = document.getElementsByName('checkbox-dinamic')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkbox-dinamic')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = true
         this.isElementSelected = false
         document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
@@ -237,8 +245,8 @@ export default {
     },
     unselectedAll () {
       if (this.$store.state.target.countElementSelected !== 0) {
-        var checkboxes = document.getElementsByName('checkbox-dinamic')
-        for (var i = 0, n = checkboxes.length; i < n; i++) {
+        const checkboxes = document.getElementsByName('checkbox-dinamic')
+        for (let i = 0, n = checkboxes.length; i < n; i++) {
           if (checkboxes[i].checked === true) {
             checkboxes[i].checked = false
             this.isElementSelected = true
@@ -254,16 +262,47 @@ export default {
       this.showHeader = true
       this.$store.commit('target/cancelElementSelected')
     },
-    search (searchValue) {
-      if (searchValue === '' || searchValue === undefined) {
-        return this.rootDomain.subdomain
-      } else {
-        return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(searchValue.toLowerCase())))
+    search () {
+      if (this.searchCriteria === '' || this.searchCriteria === undefined) {
+        if (this.dropdownCriteria === 1) {
+          return this.rootDomain.subdomain
+        }
+      } else if (this.dropdownCriteria === 2) {
+        if ('interesting'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.interesting === true))
+        } else if ('checking'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.checking === true))
+        } else if ('vulnerable'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.vulnerable === true))
+        } else if ('bounty'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.bounty === true))
+        } else if ('ignore'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.ignore === true))
+        } else if ('scope'.includes(this.searchCriteria.toLowerCase())) {
+          return this.rootDomain.subdomain.filter(item => (item.scope === true))
+        }
+      } else if (this.dropdownCriteria === 3) {
+        return this.rootDomain.subdomain.filter(item => (item.services.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+      } else if (this.dropdownCriteria === 4) {
+        return this.rootDomain.subdomain.filter(item => (item.ports.find(item2 => item2 === Number(this.searchCriteria))))
+      } else if (this.dropdownCriteria === 5) {
+        return this.rootDomain.subdomain.filter(item => (item.agent.find(item2 => item2.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+      } else if (this.dropdownCriteria === 6) {
+        return this.rootDomain.subdomain.filter(item => (item.added === this.searchCriteria))
       }
-    }
+      return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(this.searchCriteria.toLowerCase())))
+    },
+    ...mapMutations(['setIsElementDeleted'])
   },
   computed: {
-    ...mapGetters('target', ['getSubdomainSize'])
+    ...mapGetters('target', ['getSubdomainSize']),
+    ...mapState(['isElementDeleted'])
+  },
+  mounted () {
+    if (this.isElementDeleted) {
+      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The SubDomain has been deleted successfully', life: 3000 })
+      this.setIsElementDeleted(false)
+    }
   }
 }
 </script>
@@ -285,7 +324,8 @@ export default {
     opacity: 1;
 }
 .btn-style-dropd.dropdown-toggle::after {
-    margin-left: 5em;
+    float: right;
+    margin-top: 9px;
 }
 
 .icon-color-style{
@@ -331,46 +371,20 @@ font-size: 16px;
   height: 25px;
   opacity: 1;
 }
-.nav-item a svg{
+.nav-item svg{
     width: 20px;
     height: 20px;
     opacity: 1;
+    cursor: pointer;
+}
+.nav-item svg, .nav-item .material-icons{
+    vertical-align: text-bottom;
 }
 #export-target {
   opacity: 0;
   position: absolute;
   z-index: -1;
   display: none;
-}
-.check-color-0cb8e0 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #0cb8e0;
-    background-color: #0cb8e0;
-    box-shadow: none;
-}
-.check-color-FF4343 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #FF4343;
-    background-color: #FF4343;
-    box-shadow: none;
-}
-.check-color-16c465 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #16c465;
-    background-color: #16c465;
-    box-shadow: none;
-}
-.check-color-f36a33 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #f36a33;
-    background-color: #f36a33;
-    box-shadow: none;
-}
-.check-color-7159d3 .custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: #7159d3;
-    background-color: #7159d3;
-    box-shadow: none;
 }
 .background-row {
   background: #fff;
