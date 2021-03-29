@@ -511,7 +511,11 @@ export default ({
     idSubdomain: 55,
     elementSelectedList: [],
     countElementSelected: 0,
-    nameSubDomainOpened: ''
+    nameSubDomainOpened: '',
+    agentStatus: {
+      id: -1,
+      status: -1
+    }
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -722,6 +726,9 @@ export default ({
     setNameSubDomainOpened (state, name) {
       state.nameSubDomainOpened = name
       return state.nameSubDomainOpened
+    },
+    setAgentStatus (state, agentStatus) {
+      state.agentStatus = agentStatus
     }
   },
   actions: {

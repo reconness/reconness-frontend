@@ -6,30 +6,30 @@
             <div class="modal-content agent-containers">
                    <div class="modal-body">
                           <div class="row">
-                            <div class="col-12 col-sm-5 col-md-6">
+                            <div class="col-12 col-sm-5 col-md-6 col-lg-4">
                                 <div class="info-box agent_info_panel">
                                     <div class="info-box-content">
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold">My Agent</span>
                                         <span class="mr-4">00:06:00</span>
-                                        <MotionPauseOutline />
+                                        <MotionPauseOutline v-if="this.agentStatus == 1" @click="this.setAgentStatus(this.$agentStatus.PAUSED)"/>
+                                        <MotionPlayOutline v-else @click="this.setAgentStatus(this.$agentStatus.RUNNING)"/>
                                         <div class="mt-2 output-selector">
                                           <span class="mr-2">Terminal</span><span class="pl-2 border-left">Logs</span>
                                         </div>
                                       </div>
-                                        <!-- <span class="info-box-number">
-                                        10
-                                        <small>%</small>
-                                        </span> -->
                                     </div>
                                     <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
                                       <span class="border container-circular-bar">
+                                        <div class="circular-bar-container border">
+                                          <CircleProgress :percent="40" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                                        </div>
                                       </span>
                                     </span>
                                     <!-- /.info-box-content -->
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-7 col-md-6">
+                            <div class="col-12 col-sm-7 col-md-6 col-lg-8">
                                 <div class="info-box bg-transparent process_status_panel">
                                         <div class="info-box-content">
                                             <div class="d-flex space_between">
@@ -73,22 +73,35 @@
 <script>
 import { VAceEditor } from 'vue3-ace-editor'
 import MotionPauseOutline from '@/components/Icons/MotionPauseOutline.vue'
+import MotionPlayOutline from '@/components/Icons/MotionPlayOutline.vue'
 import OverlayPanel from 'primevue/overlaypanel'
+import CircleProgress from 'vue3-circle-progress'
+import { mapMutations, mapState } from 'vuex'
 export default {
   data: function () {
     return {
       terminal_ouput: '',
-      logs_generated: ''
+      logs_generated: '',
+      is_running: false
     }
   },
   components: {
     VAceEditor,
     MotionPauseOutline,
-    OverlayPanel
+    MotionPlayOutline,
+    OverlayPanel,
+    CircleProgress
+  },
+  computed: {
+    ...mapState('target', ['agentStatus'])
   },
   methods: {
+    ...mapMutations('target', ['setAgentStatus']),
     toggle (event) {
       this.$refs.op.toggle(event)
+    },
+    changeAgentStatus (status) {
+      this.setAgentStatus(status)
     }
   }
 }
@@ -107,6 +120,8 @@ export default {
 .container-circular-bar{
   width: 3rem;
   height: 3rem;
+  border: 2px solid #dee2e6 !important;
+  border-radius: 10px;
 }
 .agent_info_panel{
   background: #FF5A5A 0% 0% no-repeat padding-box;
@@ -129,5 +144,21 @@ export default {
 .output-selector{
   font-size: 14px;
 }
-
+.circular-bar-container{
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.3);
+}
+.vue3-circular-progressbar{
+  margin-left: 10%;
+}
+.vue3-circular-progressbar svg{
+  margin-bottom: 27%;
+}
+.progress{
+  height: 5px !important;
+}
 </style>

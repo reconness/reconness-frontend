@@ -44,7 +44,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import AgentExecution from '@/components/AgentExecution.vue'
+import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'AgentListTable',
   data: function () {
