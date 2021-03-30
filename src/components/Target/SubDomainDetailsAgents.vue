@@ -31,10 +31,11 @@
         <p class="m-2"> Never</p>
         </div>
         <div class="col-2 border-table abs-center border p-0">
-            <button type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm">Run</button>
+            <button v-if="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) === parseInt(agentStatus.id)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
+            <button v-else type="button" :disabled="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) !== parseInt(agentStatus.id)" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
         </div>
         <div class="row">
-          <AgentExecution/>
+          <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
         </div>
       </div>
       </div>
@@ -43,7 +44,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'AgentListTable',
@@ -52,7 +53,9 @@ export default {
       active_arrow_down: true,
       active_arrow_up: false,
       lastrun_arrow_down: true,
-      lastrun_arrow_up: false
+      lastrun_arrow_up: false,
+      selectedAgentName: '',
+      selectedAgentId: -1
     }
   },
   props: {
@@ -60,6 +63,7 @@ export default {
   },
   computed: {
     ...mapGetters('target', ['getSubDomain']),
+    ...mapState('target', ['agentStatus']),
     listAgents () {
       return this.getSubDomain({
         idtarget: parseInt(this.$route.params.idTarget),
@@ -101,7 +105,6 @@ export default {
         this.lastrun_arrow_down = true
         this.lastrun_arrow_up = false
         return this.listAgents.sort(function (a, b) {
-          console.log(a.lastRun + 'entro')
           const as = a.lastRun.split('/')
           const ad = new Date(as[2], as[1] - 1, as[0])
           const bs = b.lastRun.split('/')
@@ -109,6 +112,10 @@ export default {
           return ad - bd
         })
       }
+    },
+    selectAgent (e) {
+      this.selectedAgentName = e.currentTarget.getAttribute('data-name')
+      this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
     }
   },
   components: {
@@ -120,7 +127,7 @@ export default {
 .agent-border {
     border: 1px solid #e3e5e8;
     border-radius: 12px;
-    width: 60px;
+    width: 80px;
     height: 30px;
 }
 </style>

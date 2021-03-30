@@ -10,10 +10,10 @@
                                 <div class="info-box agent_info_panel">
                                     <div class="info-box-content">
                                       <div class="border-right">
-                                        <span class="info-box-text mb-2 font-weight-bold">My Agent</span>
+                                        <span class="info-box-text mb-2 font-weight-bold">{{ nameAgent }}</span>
                                         <span class="mr-4">00:06:00</span>
-                                        <MotionPauseOutline v-if="this.agentStatus == 1" @click="this.setAgentStatus(this.$agentStatus.PAUSED)"/>
-                                        <MotionPlayOutline v-else @click="this.setAgentStatus(this.$agentStatus.RUNNING)"/>
+                                        <MotionPauseOutline v-if="this.agentStatus.status == 1" @click="switchAgentStatus(this.$agentStatus.PAUSED)"/>
+                                        <MotionPlayOutline v-else @click="switchAgentStatus(this.$agentStatus.RUNNING)"/>
                                         <div class="mt-2 output-selector">
                                           <span class="mr-2">Terminal</span><span class="pl-2 border-left">Logs</span>
                                         </div>
@@ -53,7 +53,7 @@
                             <div class="col-12">
                                 <v-ace-editor v-model:value="terminal_ouput" lang="csharp" style="height:300px" theme="monokai"/>
                                 <div class="d-flex flex-row-reverse mt-3">
-                                  <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
+                                  <button @click="setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
                                 </div>
                                 <div class="text-center">
                                   <span class="material-icons cursor-pointer" @mouseover="toggle">keyboard_arrow_down</span>
@@ -100,9 +100,13 @@ export default {
     toggle (event) {
       this.$refs.op.toggle(event)
     },
-    changeAgentStatus (status) {
-      this.setAgentStatus(status)
+    switchAgentStatus (event) {
+      this.setAgentStatus({ status: event, id: parseInt(this.idAgent) })
     }
+  },
+  props: {
+    idAgent: Number,
+    nameAgent: String
   }
 }
 </script>

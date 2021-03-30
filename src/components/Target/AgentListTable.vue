@@ -90,7 +90,6 @@ export default {
         this.lastrun_arrow_up = false
         return this.getLastAgentSubdom.sort(function (a, b) {
           // if (a.lastRun !== ' ' || b.lastRun !== ' ') {
-          console.log(a.lastRun + 'entro')
           const as = a.lastRun.split('/')
           const ad = new Date(as[2], as[1] - 1, as[0])
           const bs = b.lastRun.split('/')
