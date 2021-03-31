@@ -764,7 +764,7 @@ export default ({
       state.isTargetDeleted = value
     },
     addSubdomain (state, params) {
-      for (let index = 0; index < params.subdomainsItems; index++) {
+      for (var index = 0; index < params.subdomainsItems.length; index++) {
         params.subdomainsItems[index].id = state.idSubdomain++
       }
       const target = state.targetListStore.find(item => item.id === params.idTarget)

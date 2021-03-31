@@ -70,7 +70,10 @@ export default {
         agent: [],
         ipAddress: '',
         http: false,
-        isAlive: false
+        isAlive: false,
+        ports: [],
+        services: [],
+        directories: []
       })
     },
     insertSubdomains: function () {
@@ -101,7 +104,10 @@ export default {
         agent: [],
         ipAddress: '',
         http: false,
-        isAlive: false
+        isAlive: false,
+        ports: [],
+        services: [],
+        directories: []
       }]
     },
     enableValidationMessageSubDomainUrlName: function (e) {
@@ -157,7 +163,10 @@ export default {
       agent: [],
       ipAddress: '',
       http: false,
-      isAlive: false
+      isAlive: false,
+      ports: [],
+      services: [],
+      directories: []
     })
   },
   computed: {
