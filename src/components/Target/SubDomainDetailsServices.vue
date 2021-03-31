@@ -5,11 +5,11 @@
     <div class="card-body">
       <div class="card card-table">
         <div class=" row mb-2"  >
-          <div class="col border-left-radius border-right text-light-white domain-names-list p-2" v-bind:style ="{'background':gradient}"> <p class="ml-2 m-0" v-on:click="orderByName()"> Name
+          <div class="col border-left-radius border-right text-light-white domain-names-list p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0" v-on:click="orderByName()"> Name
            <i class="material-icons right float-right" v-show="active_arrow_down">keyboard_arrow_down</i>
            <i class="material-icons right float-right" v-show="active_arrow_up">keyboard_arrow_up</i></p>
           </div>
-          <div class="col border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" v-on:click="orderByPort()">Port
+          <div class="col border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" v-on:click="orderByPort()">Port
            <i class="material-icons right float-right" v-show="active_arrow_port_down">keyboard_arrow_down</i>
            <i class="material-icons right float-right" v-show="active_arrow_port_up">keyboard_arrow_up</i>
           </div>
@@ -35,7 +35,7 @@ export default {
     }
   },
   props: {
-    gradient: String
+    color: String
   },
   computed: {
     ...mapGetters('target', ['getSubDomain']),
