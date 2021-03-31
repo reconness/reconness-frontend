@@ -15,14 +15,14 @@
                                         <MotionPauseOutline v-if="this.agentStatus.status == 1" @click="switchAgentStatus(this.$agentStatus.PAUSED)"/>
                                         <MotionPlayOutline v-else @click="switchAgentStatus(this.$agentStatus.RUNNING)"/>
                                         <div class="mt-2 output-selector">
-                                          <span class="mr-2">Terminal</span><span class="pl-2 border-left">Logs</span>
+                                          <span @click="is_terminal_open = true" class="mr-2 cursor-pointer">Terminal</span><span @click="is_terminal_open = false" class="pl-2 border-left cursor-pointer">Logs</span>
                                         </div>
                                       </div>
                                     </div>
                                     <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
                                       <span class="border container-circular-bar">
                                         <div class="circular-bar-container border">
-                                          <CircleProgress :percent="40" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                                          <CircleProgress :percent="55" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
                                         </div>
                                       </span>
                                     </span>
@@ -37,13 +37,14 @@
                                               <span class="info-box-text">00:06:00</span>
                                             </div>
                                             <div class="progress">
-                                                <div class="progress-bar agent_exec_progress_bar main_reconnes_bg-color" style="width: 70%"></div>
+                                                <div class="progress-bar agent_exec_progress_bar main_reconnes_bg-color" style="width: 55%"></div>
                                             </div>
                                             <div class="d-flex align_left-ordered_columns">
                                             <span class="processbar-text">running</span>
-                                            <div class="align_left-ordered_columns">
-                                              <span>Terminal</span>
-                                              <span  class="material-icons ml-2 blue-text" style="line-height: 1.6"> chevron_right </span>
+                                            <div class="align_left-ordered_columns agent-terminal-fade">
+                                              <span v-if="is_terminal_open">Terminal</span>
+                                              <span v-else>Logs</span>
+                                              <span @click="is_terminal_open = !is_terminal_open" class="material-icons ml-2 blue-text cursor-pointer" style="line-height: 1.6"> chevron_right </span>
                                             </div>
                                             </div>
                                         </div>
@@ -56,7 +57,7 @@
                                   <button @click="setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
                                 </div>
                                 <div class="text-center">
-                                  <span class="material-icons cursor-pointer" @mouseover="toggle">keyboard_arrow_down</span>
+                                  <span class="material-icons cursor-pointer" @click="minimizeWindow" @mouseover="toggle">keyboard_arrow_down</span>
                                 </div>
                             </div>
                           </div>
@@ -77,12 +78,14 @@ import MotionPlayOutline from '@/components/Icons/MotionPlayOutline.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import CircleProgress from 'vue3-circle-progress'
 import { mapMutations, mapState } from 'vuex'
+import jQuery from 'jquery'
 export default {
   data: function () {
     return {
       terminal_ouput: '',
       logs_generated: '',
-      is_running: false
+      is_running: false,
+      is_terminal_open: true
     }
   },
   components: {
@@ -102,6 +105,9 @@ export default {
     },
     switchAgentStatus (event) {
       this.setAgentStatus({ status: event, id: parseInt(this.idAgent) })
+    },
+    minimizeWindow () {
+      jQuery('#agentExecutionModalForm').modal('hide')
     }
   },
   props: {
