@@ -1,6 +1,5 @@
 <template>
     <div class="col-12">
-        <form>
             <div class="modal fade" id="subDomainInsertionForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content root-domain-window custom-border-radius ">
@@ -12,7 +11,7 @@
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="mb-4">
-                                  <input :data-index="index" v-model="item.name" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
+                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
                                   <div class="col-12" v-if="validators.url.subDomainName[index]">
                                     <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
                                   </div>
@@ -35,7 +34,6 @@
                     </div>
                 </div>
             </div>
-        </form>
     </div>
 </template>
 <script>
@@ -72,7 +70,10 @@ export default {
         agent: [],
         ipAddress: '',
         http: false,
-        isAlive: false
+        isAlive: false,
+        ports: [],
+        services: [],
+        directories: []
       })
     },
     insertSubdomains: function () {
@@ -103,7 +104,10 @@ export default {
         agent: [],
         ipAddress: '',
         http: false,
-        isAlive: false
+        isAlive: false,
+        ports: [],
+        services: [],
+        directories: []
       }]
     },
     enableValidationMessageSubDomainUrlName: function (e) {
@@ -159,7 +163,10 @@ export default {
       agent: [],
       ipAddress: '',
       http: false,
-      isAlive: false
+      isAlive: false,
+      ports: [],
+      services: [],
+      directories: []
     })
   },
   computed: {

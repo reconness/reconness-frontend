@@ -60,5 +60,13 @@ export default {
         SUBDOMAIN: 3
       }
     )
+
+    app.config.globalProperties.$agentStatus = Object.freeze(
+      {
+        RUNNING: 1,
+        PAUSED: 2,
+        FINISHED: 3
+      }
+    )
   }
 }

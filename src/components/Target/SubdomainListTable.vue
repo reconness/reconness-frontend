@@ -4,7 +4,7 @@
     <nav class="navbar navbar-expand">
       <ul class="navbar-nav">
         <li class="nav-item nav-margin border-right  border-left d-none d-sm-block mr-4 pr-4 pl-4">
-        <a href="#" data-toggle="modal" data-target="#subDomainInsertionForm"> <span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
+        <a href="#" data-toggle="modal" data-target="#subDomainInsertionForm"> <span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: color}">add_circle</span>
          Add Subdomain</a></li>
         <li class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
           <FileImportIco  v-bind:style ="{ 'fill': color}"/>
@@ -14,7 +14,7 @@
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
          <a href="#"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-        <a href="#" data-toggle="modal" data-target="#confirmation-modal"  @click="updateConfirm('')"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: gradient}">delete</span> Delete All Subdomains</a></li>
+        <a href="#" data-toggle="modal" data-target="#confirmation-modal"  @click="updateConfirm('')"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: color}">delete</span> Delete All Subdomains</a></li>
       </ul>
     </nav>
     <div class="row mt-4">
@@ -30,7 +30,7 @@
     <button class="btn btn-style-dropd  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
    <p class="float-left m-0">  {{elementSelected}}</p>
   </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <div class="dropdown-menu w-50" aria-labelledby="dropdownMenuButton">
     <div v-for="element in this.selectList" :key="element.id" @click="this.elementSelected = element.name">
       <a class="dropdown-item" href="#" @click="this.dropdownCriteria = element.id" >{{element.name}} </a>
     </div>
@@ -42,22 +42,22 @@
   <div class="card-body">
 <div class="card card-table" v-if=" this.getSubdomainSize(this.routeParams) > 0">
   <div class=" row mb-2"  v-if="this.showHeader">
-   <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':gradient}"> <p class="ml-2 m-0"> Subdomain</p> </div>
-   <div class="col-3 border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> Details</div>
-   <div class="col mr-3 border-right-radius text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> Labels</div>
+   <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0"> Subdomain</p> </div>
+   <div class="col-3 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> Details</div>
+   <div class="col mr-3 border-right-radius text-light-white p-2 text-center" v-bind:style ="{'background':color}"> Labels</div>
    <div class="col-2 p-0" >
-     <button class="border-table text-light-white p-2 text-center w-100"  @click="this.showHeader = !this.showHeader"   v-bind:style ="{'background':gradient}"> Edit List</button></div>
+     <button class="border-table text-light-white p-2 text-center w-100"  @click="this.showHeader = !this.showHeader"   v-bind:style ="{'background':color}"> Edit List</button></div>
   </div>
   <div class=" row mb-2" v-else>
-     <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':gradient}">
+     <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':color}">
         <p class="ml-2 mr-2 m-0"> Selected <span class="badge badge-pill badge-light" v-bind:style ="{'color':color}"> {{$store.state.target.countElementSelected}} </span></p> </div>
-     <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="selectedAll()"> Selected All</div>
-     <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="unselectedAll()"> Unselected All</div>
-     <div class="col border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> </div>
-     <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}"> <a>Export</a></div>
-     <div data-toggle="modal" data-target="#confirmationList-modal" :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':gradient}">
+     <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="selectedAll()"> Selected All</div>
+     <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="unselectedAll()"> Unselected All</div>
+     <div class="col border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> </div>
+     <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> <a>Export</a></div>
+     <div data-toggle="modal" data-target="#confirmationList-modal" :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}">
        <a>Delete</a></div>
-     <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':gradient}" @click="done()"> Done</div>
+     <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="done()"> Done</div>
   </div>
      <div class="row mb-2" v-for="item of this.search()" :key="item.id" :id="'row' + item.id" :class="{'background-row' : !showHeader}">
     <div class="col-2  border-left-radius border">
@@ -68,11 +68,11 @@
       <div class="col-9">
       <dl class="ml-2">
         <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Agents: </p>
-        <p class="text-dark-0 m-0 float-left" v-for="item2 of item.agent" :key="item2.id">{{item2.name}},   </p>
+        <p class="text-dark-0 m-0 float-left">{{ printAgent(item.agent)}} </p>
         </dd>
         <dd> <p class="text-muted-b3 mr-2 m-0 float-left">IpAddress: </p> <p class="text-dark-0 m-0"> {{item.ipAddress}} </p></dd>
         <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Ports: </p>
-          <p class="text-dark-0 m-0 float-left" v-for="item2 of item.ports" :key="item2.id">{{item2}}, </p>
+          <p class="text-dark-0 m-0 float-left">{{item.ports.join(', ')}} </p>
         </dd>
         <dd> <p class="text-muted-b3 mr-2 m-0 float-left">Added: </p><p class="text-dark-0 m-0"> {{item.added}}</p> </dd>
       </dl>
@@ -129,7 +129,7 @@
     <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
           <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: parseInt(item.id)} }">
-          <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: gradient}">forward</span>
+          <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: color}">forward</span>
           </router-link>
         </div>
         <div class="abs-center mx-auto">
@@ -286,11 +286,18 @@ export default {
       } else if (this.dropdownCriteria === 4) {
         return this.rootDomain.subdomain.filter(item => (item.ports.find(item2 => item2 === Number(this.searchCriteria))))
       } else if (this.dropdownCriteria === 5) {
-        return this.rootDomain.subdomain.filter(item => (item.agent.find(item2 => item2.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+        return this.rootDomain.subdomain.filter(item => (item.agent.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
       } else if (this.dropdownCriteria === 6) {
         return this.rootDomain.subdomain.filter(item => (item.added === this.searchCriteria))
       }
       return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(this.searchCriteria.toLowerCase())))
+    },
+    printAgent (agents) {
+      var listAgent = []
+      for (var index1 of agents) {
+        listAgent.push(index1.name)
+      }
+      return listAgent.join(', ')
     },
     ...mapMutations(['setIsElementDeleted'])
   },

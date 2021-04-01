@@ -23,9 +23,9 @@
             </button>
           </div>
           <SubDomainDetailsDashboard v-if="parseInt(this.selectedTab) === this.activeTab.DASHBOARD"/>
-          <SubDomainDetailsAgents v-if="parseInt(this.selectedTab) === this.activeTab.AGENTS" :gradient = "LinearGradient"/>
-          <SubDomainDetailsServices v-if="parseInt(this.selectedTab) === this.activeTab.SERVICES" :gradient = "LinearGradient"/>
-          <SubDomainDetailsDirectories v-if="parseInt(this.selectedTab) === this.activeTab.DIRECTORIES" :gradient = "LinearGradient" />
+          <SubDomainDetailsAgents v-if="parseInt(this.selectedTab) === this.activeTab.AGENTS" :color = "secondaryColor"/>
+          <SubDomainDetailsServices v-if="parseInt(this.selectedTab) === this.activeTab.SERVICES" :color = "secondaryColor"/>
+          <SubDomainDetailsDirectories v-if="parseInt(this.selectedTab) === this.activeTab.DIRECTORIES" :color = "secondaryColor" />
         </div>
       </div>
     </div>

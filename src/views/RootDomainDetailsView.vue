@@ -12,10 +12,10 @@
             Subdomains <span class="text-muted-b3"> ({{this.getSubdomainSize(this.routeParams)}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
-            Agents <span class="text-muted-b3">(2)</span>
+            Agents <span class="text-muted-b3">(4)</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' />
-          <AgentListTable v-else :gradient = "LinearGradient"/>
+          <AgentListTable v-else :color = "secondaryColor"/>
         </div>
       </div>
     </div>

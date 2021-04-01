@@ -835,3 +835,24 @@ div.card-body a svg{
 .subdomain_active_tab{
   background: linear-gradient(rgb(242, 244, 246), rgb(242, 244, 246)) padding-box padding-box, linear-gradient(160deg, rgb(255,255,255) 0%, rgb(255,255,255) 100%) border-box border-box;box-shadow: rgb(214, 214, 214) 3px 12px 23px;
 }
+.main_reconnes_bg-color{
+  background-color: #00B1FF !important;
+}
+.main_reconnes_text-color{
+  color: #00B1FF !important;
+}
+.cursor-pointer{
+  cursor: pointer !important;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from, .slide-fade-leave-to {
+  transform: translateX(100px);
+  opacity: 0;
+}
