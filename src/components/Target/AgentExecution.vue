@@ -12,8 +12,8 @@
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold">{{ nameAgent }}</span>
                                         <span class="mr-4">00:06:00</span>
-                                        <MotionPauseOutline v-if="this.agentStatus.status == 1" @click="switchAgentStatus(this.$agentStatus.PAUSED)"/>
-                                        <MotionPlayOutline v-else @click="switchAgentStatus(this.$agentStatus.RUNNING)"/>
+                                        <MotionPauseOutlineIco v-if="this.agentStatus.status == 1" @click="switchAgentStatus(this.$agentStatus.PAUSED)"/>
+                                        <MotionPlayOutlineIco v-else @click="switchAgentStatus(this.$agentStatus.RUNNING)"/>
                                         <div class="mt-2 output-selector">
                                           <span @click="is_terminal_open = true" class="mr-2 cursor-pointer">Terminal</span><span @click="is_terminal_open = false" class="pl-2 border-left cursor-pointer">Logs</span>
                                         </div>
@@ -73,8 +73,8 @@
 </template>
 <script>
 import { VAceEditor } from 'vue3-ace-editor'
-import MotionPauseOutline from '@/components/Icons/MotionPauseOutline.vue'
-import MotionPlayOutline from '@/components/Icons/MotionPlayOutline.vue'
+import MotionPauseOutlineIco from '@/components/Icons/MotionPauseOutlineIco.vue'
+import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import CircleProgress from 'vue3-circle-progress'
 import { mapMutations, mapState } from 'vuex'
@@ -90,8 +90,8 @@ export default {
   },
   components: {
     VAceEditor,
-    MotionPauseOutline,
-    MotionPlayOutline,
+    MotionPauseOutlineIco,
+    MotionPlayOutlineIco,
     OverlayPanel,
     CircleProgress
   },
