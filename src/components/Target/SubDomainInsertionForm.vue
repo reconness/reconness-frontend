@@ -10,15 +10,18 @@
                                 <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">New Subdomain</p>
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
-                                <div v-for="(item, index) in subdomains" :key="item" class="mb-4">
+                                <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container">
                                   <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
-                                  <div class="col-12" v-if="validators.url.subDomainName[index]">
+                                  <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index">
+                                    <MinusCircleIco/>
+                                  </span>
+                                  <div class="col-12 mb-2 remove-space-generated-ico" v-if="validators.url.subDomainName[index]">
                                     <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
                                   </div>
-                                  <div class="col-12" v-if="validators.blank.subDomainName[index]">
+                                  <div class="col-12 mb-2" v-if="validators.blank.subDomainName[index]">
                                     <span :class="{invalid: this.validators.blank.subDomainName[index]}">You must enter a name</span>
                                   </div>
-                                  <div class="col-12" v-if="validators.exist.subDomainName[index]">
+                                  <div class="col-12 mb-2 remove-space-generated-ico" v-if="validators.exist.subDomainName[index]">
                                     <span :class="{invalid: validators.exist.subDomainName[index]}">The written name is already being used by another subdomain</span>
                                   </div>
                                 </div>
@@ -39,7 +42,11 @@
 <script>
 import { mapMutations } from 'vuex'
 import jQuery from 'jquery'
+import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
+  components: {
+    MinusCircleIco
+  },
   data: function () {
     return {
       subdomains: [],
@@ -163,7 +170,13 @@ export default {
       this.enableValidationMessageSubDomainUrlName(e)
       this.enableValidationMessageSubDomainBlankName(e)
     },
-    ...mapMutations('target', ['addSubdomain'])
+    ...mapMutations('target', ['addSubdomain']),
+    removeSubdomainName: function (e) {
+      const subdomainIndex = parseInt(e.currentTarget.getAttribute('data-index'))
+      if (subdomainIndex !== 0) {
+        this.subdomains.splice(subdomainIndex, 1)
+      }
+    }
   },
   created: function () {
     this.subdomains.push({
@@ -221,5 +234,21 @@ export default {
         overflow: auto;
         padding-right: 10px;
         bottom: 0 !important;
+    }
+    span.circle-minus-properties{
+      position: relative;
+      z-index: 2;
+      display: block;
+      line-height: 2.375rem;
+      text-align: center;
+      top: -38px;
+      right: -96%;
+      width: 25px;
+    }
+    .subdomains-items-field{
+      padding-right: 5%;
+    }
+    .remove-space-generated-ico{
+      margin-top: -3%;
     }
 </style>
