@@ -41,7 +41,7 @@
     </div>
 </template>
 <script>
-import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import Confirmation from '@/components/Target/Confirmation.vue'
 import { mapState, mapGetters } from 'vuex'
 export default {

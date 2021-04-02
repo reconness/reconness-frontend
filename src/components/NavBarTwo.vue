@@ -229,7 +229,7 @@ import Toast from 'primevue/toast'
 import OverlayPanel from 'primevue/overlaypanel'
 import ConfirmDeleteList from '@/components/ConfirmDeleteList.vue'
 import jQuery from 'jquery'
-import LocalMallIco from '@/components/LocalMallIco.vue'
+import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
 export default {
   name: 'NavBarTwo',
   data: function () {

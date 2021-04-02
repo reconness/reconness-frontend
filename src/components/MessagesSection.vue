@@ -57,7 +57,7 @@
     </transition>
 </template>
 <script>
-import CommentIco from '@/components/CommentIco.vue'
+import CommentIco from '@/components/Icons/CommentIco.vue'
 import { mapMutations, mapGetters, mapState } from 'vuex'
 export default {
   data: function () {

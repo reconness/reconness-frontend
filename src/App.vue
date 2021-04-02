@@ -123,7 +123,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 export default {
   name: 'App',
   data: function () {

@@ -248,7 +248,7 @@
 </style>
 <script>
 import jQuery from 'jquery'
-import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import Toast from 'primevue/toast'
 import Chips from 'primevue/chips'
 import { mapMutations, mapGetters } from 'vuex'
