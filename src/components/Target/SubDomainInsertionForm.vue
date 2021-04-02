@@ -11,7 +11,7 @@
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="mb-4">
-                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
+                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
                                   <div class="col-12" v-if="validators.url.subDomainName[index]">
                                     <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
                                   </div>
@@ -58,23 +58,26 @@ export default {
   },
   methods: {
     createSubdomains: function () {
-      this.subdomains.push({
-        name: '',
-        added: new Date().toLocaleDateString('es-Es'),
-        checking: false,
-        interesting: false,
-        vulnerable: false,
-        boubty: false,
-        ignore: false,
-        scope: false,
-        agent: [],
-        ipAddress: '',
-        http: false,
-        isAlive: false,
-        ports: [],
-        services: [],
-        directories: []
-      })
+      this.enableValidationMessageSubDomainBlankNameManual()
+      if (this.isFormValid) {
+        this.subdomains.push({
+          name: '',
+          added: new Date().toLocaleDateString('es-Es'),
+          checking: false,
+          interesting: false,
+          vulnerable: false,
+          boubty: false,
+          ignore: false,
+          scope: false,
+          agent: [],
+          ipAddress: '',
+          http: false,
+          isAlive: false,
+          ports: [],
+          services: [],
+          directories: []
+        })
+      }
     },
     insertSubdomains: function () {
       if (!this.subdomains[0].name) {
@@ -137,11 +140,23 @@ export default {
     },
     enableValidationMessageSubDomainBlankName: function (e) {
       const textFieldIndex = e.currentTarget.getAttribute('data-index')
-      if (!this.subdomains[textFieldIndex].name) {
+      if (this.subdomains[textFieldIndex].name === '') {
         this.validators.blank.subDomainName[textFieldIndex] = true
       } else {
         this.validators.blank.subDomainName[textFieldIndex] = false
       }
+    },
+    enableValidationMessageSubDomainBlankNameManual: function () {
+      let founded = false
+      let index = 0
+      while (index < this.subdomains.length && !founded) {
+        if (this.$validateIsBlank(this.subdomains[index].name)) {
+          this.validators.blank.subDomainName[index] = true
+          founded = true
+        }
+        index++
+      }
+      return founded
     },
     enableValidations: function (e) {
       this.enableValidationMessageSubDomainUniqueName(e)
@@ -171,7 +186,7 @@ export default {
   },
   computed: {
     isFormValid () {
-      return (this.validators.blank.subDomainName || this.validators.url.subDomainName || this.validators.exist.subDomainName)
+      return (!this.enableValidationMessageSubDomainBlankNameManual() /* || this.validators.url.subDomainName || this.validators.exist.subDomainName */)
     }
   },
   props: {
