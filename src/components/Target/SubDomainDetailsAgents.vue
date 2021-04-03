@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'AgentListTable',
@@ -116,7 +116,9 @@ export default {
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
       this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
-    }
+      this.setAgentStatus({ status: this.$agentStatus.RUNNING, id: parseInt(this.selectedAgentId) })
+    },
+    ...mapMutations('target', ['setAgentStatus'])
   },
   components: {
     AgentExecution
