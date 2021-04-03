@@ -40,7 +40,8 @@
                                                 <div :style="{ width: progressValue+'%' }" class="progress-bar agent_exec_progress_bar main_reconnes_bg-color"></div>
                                             </div>
                                             <div class="d-flex align_left-ordered_columns">
-                                            <span class="processbar-text">running</span>
+                                            <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
+                                            <span v-else class="processbar-text">paused</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
                                               <span v-if="is_terminal_open">Terminal</span>
                                               <span v-else>Logs</span>
