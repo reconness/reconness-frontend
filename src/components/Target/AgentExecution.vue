@@ -43,9 +43,9 @@
                                             <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
                                             <span v-else class="processbar-text">paused</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
-                                              <span v-if="is_terminal_open">Terminal</span>
-                                              <span v-else>Logs</span>
-                                              <span @click="is_terminal_open = !is_terminal_open" class="material-icons ml-2 blue-text cursor-pointer" style="line-height: 1.6"> chevron_right </span>
+                                              <span class="font-weight-bold" v-if="is_terminal_open">Terminal</span>
+                                              <span class="font-weight-bold" v-else>Logs</span>
+                                              <span @click="is_terminal_open = !is_terminal_open" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
                                             </div>
                                             </div>
                                         </div>
