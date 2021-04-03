@@ -186,4 +186,7 @@ input[type="checkbox"] {
 .card-title {
     font-size: 0.9rem;
 }
+div.card-header span{
+  font-size: 20px;
+}
 </style>
