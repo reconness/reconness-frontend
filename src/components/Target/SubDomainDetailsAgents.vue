@@ -34,9 +34,7 @@
             <button v-if="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) === parseInt(agentStatus.id)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
             <button v-else type="button" :disabled="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) !== parseInt(agentStatus.id)" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
         </div>
-        <div class="row">
-          <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
-        </div>
+        <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
       </div>
       </div>
     </div>

@@ -109,6 +109,11 @@ export default {
       this.$refs.op.toggle(event)
     },
     switchAgentStatus (event) {
+      if (event === this.$agentStatus.PAUSED) {
+        this.pauseClock()
+      } else {
+        this.timer = setInterval(this.tick, 1000)
+      }
       this.setAgentStatus({ status: event, id: parseInt(this.idAgent) })
     },
     minimizeWindow () {
@@ -135,11 +140,17 @@ export default {
       this.time = hours + ':' + mins + ':' + secs
       this.executeProgressBar()
     },
+    playClock () {
+      this.timer = setInterval(this.tick, 1000)
+    },
     stopClock () {
       clearInterval(this.timer)
-      this.timer = null
       this.now = -1
       this.progressValue = 0
+    },
+    pauseClock () {
+      clearInterval(this.timer)
+      this.timer = null
     },
     closeWindow () {
       this.setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })
@@ -160,7 +171,7 @@ export default {
   watch: {
     agentStatus (value) {
       if (value.status === this.$agentStatus.RUNNING && !this.minimized) {
-        this.timer = setInterval(this.tick, 1000)
+        this.playClock()
       }
     }
   }
