@@ -11,7 +11,7 @@
                                     <div class="info-box-content">
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold">{{ nameAgent }}</span>
-                                        <span class="mr-4">00:06:00</span>
+                                        <span class="mr-4">{{ time }}</span>
                                         <MotionPauseOutlineIco v-if="this.agentStatus.status == 1" @click="switchAgentStatus(this.$agentStatus.PAUSED)"/>
                                         <MotionPlayOutlineIco v-else @click="switchAgentStatus(this.$agentStatus.RUNNING)"/>
                                         <div class="mt-2 output-selector">
@@ -22,7 +22,7 @@
                                     <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
                                       <span class="border container-circular-bar">
                                         <div class="circular-bar-container border">
-                                          <CircleProgress :percent="55" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                                          <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
                                         </div>
                                       </span>
                                     </span>
@@ -34,10 +34,10 @@
                                         <div class="info-box-content">
                                             <div class="d-flex space_between">
                                               <span class="info-box-text">Process status</span>
-                                              <span class="info-box-text">00:06:00</span>
+                                              <span class="info-box-text">{{ time }}</span>
                                             </div>
                                             <div class="progress">
-                                                <div class="progress-bar agent_exec_progress_bar main_reconnes_bg-color" style="width: 55%"></div>
+                                                <div :style="{ width: progressValue+'%' }" class="progress-bar agent_exec_progress_bar main_reconnes_bg-color"></div>
                                             </div>
                                             <div class="d-flex align_left-ordered_columns">
                                             <span class="processbar-text">running</span>
@@ -54,7 +54,7 @@
                             <div class="col-12">
                                 <v-ace-editor v-model:value="terminal_ouput" lang="csharp" style="height:300px" theme="monokai"/>
                                 <div class="d-flex flex-row-reverse mt-3">
-                                  <button @click="setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
+                                  <button @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
                                 </div>
                                 <div class="text-center">
                                   <span class="material-icons cursor-pointer" @click="minimizeWindow" @mouseover="toggle">keyboard_arrow_down</span>
@@ -85,7 +85,12 @@ export default {
       terminal_ouput: '',
       logs_generated: '',
       is_running: false,
-      is_terminal_open: true
+      is_terminal_open: true,
+      time: '00:00:00',
+      now: 0,
+      timer: null,
+      minimized: false,
+      progressValue: 0
     }
   },
   components: {
@@ -104,15 +109,71 @@ export default {
       this.$refs.op.toggle(event)
     },
     switchAgentStatus (event) {
+      if (event === this.$agentStatus.PAUSED) {
+        this.pauseClock()
+      } else {
+        this.timer = setInterval(this.tick, 1000)
+      }
       this.setAgentStatus({ status: event, id: parseInt(this.idAgent) })
     },
     minimizeWindow () {
       jQuery('#agentExecutionModalForm').modal('hide')
+      this.minimized = true
+    },
+    tick () {
+      this.now++
+      let remain = this.now
+      let hours = Math.floor(remain / 3600)
+      let mins = Math.floor(remain / 60)
+      remain -= mins * 60
+      let secs = remain
+
+      if (hours < 10) {
+        hours = '0' + hours
+      }
+      if (mins < 10) {
+        mins = '0' + mins
+      }
+      if (secs < 10) {
+        secs = '0' + secs
+      }
+      this.time = hours + ':' + mins + ':' + secs
+      this.executeProgressBar()
+    },
+    playClock () {
+      this.timer = setInterval(this.tick, 1000)
+    },
+    stopClock () {
+      clearInterval(this.timer)
+      this.now = -1
+      this.progressValue = 0
+    },
+    pauseClock () {
+      clearInterval(this.timer)
+      this.timer = null
+    },
+    closeWindow () {
+      this.setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })
+      this.stopClock()
+    },
+    executeProgressBar () {
+      if (this.progressValue <= 100) {
+        this.progressValue += 5
+      } else {
+        this.progressValue = 0
+      }
     }
   },
   props: {
     idAgent: Number,
     nameAgent: String
+  },
+  watch: {
+    agentStatus (value) {
+      if (value.status === this.$agentStatus.RUNNING && !this.minimized) {
+        this.playClock()
+      }
+    }
   }
 }
 </script>

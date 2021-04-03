@@ -30,15 +30,18 @@
         <p class="m-2"> Never</p>
         </div>
         <div class="col-2 border border-right-radius text-center">
-            <button type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0">Run</button>
+            <button v-if="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) === parseInt(agentStatus.id)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
+            <button v-else :disabled="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) !== parseInt(agentStatus.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
         </div>
+        <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
       </div>
       </div>
     </div>
   </div></div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
+import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'AgentListTable',
   data: function () {
@@ -46,14 +49,20 @@ export default {
       active_arrow_down: true,
       active_arrow_up: false,
       lastrun_arrow_down: true,
-      lastrun_arrow_up: false
+      lastrun_arrow_up: false,
+      selectedAgentName: '',
+      selectedAgentId: -1
     }
   },
   props: {
     color: String
   },
+  components: {
+    AgentExecution
+  },
   computed: {
-    ...mapGetters(['getLastAgentSubdom', 'getLastAgentSubdomSort'])
+    ...mapGetters(['getLastAgentSubdom', 'getLastAgentSubdomSort']),
+    ...mapState('target', ['agentStatus'])
   },
   methods: {
     orderByName: function () {
@@ -62,6 +71,11 @@ export default {
       } else if (this.active_arrow_up === true) {
         return this.orderByNameAsc()
       }
+    },
+    selectAgent (e) {
+      this.selectedAgentName = e.currentTarget.getAttribute('data-name')
+      this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.setAgentStatus({ status: this.$agentStatus.RUNNING, id: parseInt(this.selectedAgentId) })
     },
     orderByNameAsc: function () {
       this.active_arrow_down = true
@@ -96,7 +110,8 @@ export default {
         }
         )
       }
-    }
+    },
+    ...mapMutations('target', ['setAgentStatus'])
   }
 }
 </script>
@@ -104,7 +119,7 @@ export default {
 .agent-border {
     border: 1px solid #e3e5e8;
     border-radius: 12px;
-    width: 60px;
+    width: 80px;
     height: 30px;
 }
 
