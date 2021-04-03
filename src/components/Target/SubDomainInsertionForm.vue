@@ -251,4 +251,7 @@ export default {
     .remove-space-generated-ico{
       margin-top: -3%;
     }
+    span.circle-minus-properties svg{
+      fill: #ff4545
+    }
 </style>
