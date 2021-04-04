@@ -22,13 +22,26 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   methods: {
     removeMessageFn: function () {
-      this.removeMessage(parseInt(this.$route.params.id))
+      if (this.$route.name === 'TargetDetail') {
+        this.removeTargetMessage(parseInt(this.$route.params.id))
+      } else if (this.$route.name === 'RootDomainDetails') {
+        this.removeRootDomainMessage({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id)
+        })
+      } else if (this.$route.name === 'SubDomainDetails') {
+        this.removeSubDomainMessage({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          idSubDomain: parseInt(this.$route.params.idsubdomain)
+        })
+      }
       jQuery('#message-confirmation-modal').modal('hide')
     },
     setSelectedMessage (e) {
       this.$store.commit('setIdMessage', -1)
     },
-    ...mapMutations('target', ['setIdMessage', 'removeMessage'])
+    ...mapMutations('target', ['setIdMessage', 'removeTargetMessage', 'removeRootDomainMessage', 'removeSubDomainMessage'])
   },
   computed: {
     ...mapState('target', ['idMessage'])

@@ -129,7 +129,8 @@ export default ({
                 isAlive: false,
                 ports: [21, 22, 80, 443],
                 services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 82 }],
-                directories: []
+                directories: [],
+                messages: []
               }
             ],
             messages: [
@@ -288,19 +289,22 @@ export default ({
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 3,
             root: 'anothertest1.com',
             date: '21/07/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 4,
             root: 'anothertest2.com',
             date: '21/06/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/f',
@@ -345,7 +349,8 @@ export default ({
                 isMainPortal: false,
                 ports: [21],
                 services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }],
-                directories: []
+                directories: [],
+                messages: []
               }
             ],
             messages: [
@@ -361,7 +366,8 @@ export default ({
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/b',
@@ -836,10 +842,23 @@ export default ({
     setIdMessage (state, id) {
       state.idMessage = parseInt(id)
     },
-    removeMessage (state, idTarget) {
+    removeTargetMessage (state, idTarget) {
       const target = state.targetListStore.find(item => item.id === parseInt(idTarget))
       const messageIndex = target.messages.findIndex(message => message.id === parseInt(state.idMessage))
       target.messages.splice(messageIndex, 1)
+    },
+    removeRootDomainMessage (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+      const messageIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idMessage))
+      rootdomain.messages.splice(messageIndex, 1)
+    },
+    removeSubDomainMessage (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+      const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.id === params.idSubDomain)
+      const messageIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idMessage))
+      subdomain.messages.splice(messageIndex, 1)
     },
     sendTargetMessage (state, messageInfo, rootGetters) {
       const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
