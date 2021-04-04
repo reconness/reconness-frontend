@@ -68,7 +68,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetMessages']),
+    ...mapGetters('target', ['getTargetMessages', 'getRootDomainMessages', 'getSubDomainMessages']),
     ...mapState('target', ['idMessage']),
     ...mapState(['isMessageSectionOpened'])
   },
@@ -109,11 +109,32 @@ export default {
       this.orderMessagesByCalendar(parseInt(this.$route.params.id))
     },
     messagesSortedDescByDate () {
-      return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
-        function (a, b) {
-          return new Date(b.sendDate) - new Date(a.sendDate)
-        }
-      )
+      if (this.$route.name === 'TargetDetail') {
+        return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+          function (a, b) {
+            return new Date(b.sendDate) - new Date(a.sendDate)
+          }
+        )
+      } else if (this.$route.name === 'RootDomainDetails') {
+        return this.getRootDomainMessages({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id)
+        }).sort(
+          function (a, b) {
+            return new Date(b.sendDate) - new Date(a.sendDate)
+          }
+        )
+      } else if (this.$route.name === 'SubDomainDetails') {
+        return this.getSubDomainMessages({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          idSubDomain: parseInt(this.$route.params.idsubdomain)
+        }).sort(
+          function (a, b) {
+            return new Date(b.sendDate) - new Date(a.sendDate)
+          }
+        )
+      }
     }
   },
   components: {
