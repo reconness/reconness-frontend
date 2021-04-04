@@ -851,6 +851,29 @@ export default ({
       }
       target.messages.push(message)
     },
+    sendRootDomainMessage (state, messageInfo) {
+      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
+      const message = {
+        id: state.idMessage++,
+        message: messageInfo.message,
+        sendDate: new Date(),
+        sender: state.loggedUser.name
+      }
+      rootdomain.messages.push(message)
+    },
+    sendSubDomainMessage (state, messageInfo) {
+      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
+      const subdomain = rootdomain.subdomain.find(subDomain => subDomain.id === messageInfo.idSubDomain)
+      const message = {
+        id: state.idMessage++,
+        message: messageInfo.message,
+        sendDate: new Date(),
+        sender: state.loggedUser.name
+      }
+      subdomain.messages.push(message)
+    },
     setIsTargetDeleted (state, value) {
       state.isTargetDeleted = value
     },
@@ -913,7 +936,6 @@ export default ({
       return state.targetListStore.find(target => target.id === id).messages
     },
     getRootDomainMessages: (state) => (params) => {
-      console.log(params)
       const target = state.targetListStore.find(target => target.id === params.idTarget)
       return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
     },

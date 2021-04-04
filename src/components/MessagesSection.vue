@@ -75,10 +75,25 @@ export default {
   methods: {
     ...mapMutations(['setIsMessageSectionOpened']),
     sendMessage: function () {
-      this.sendTargetMessage({
-        idTarget: parseInt(this.$route.params.id),
-        message: this.message
-      })
+      if (this.$route.name === 'TargetDetail') {
+        this.sendTargetMessage({
+          idTarget: parseInt(this.$route.params.id),
+          message: this.message
+        })
+      } else if (this.$route.name === 'RootDomainDetails') {
+        this.sendRootDomainMessage({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          message: this.message
+        })
+      } else if (this.$route.name === 'SubDomainDetails') {
+        this.sendSubDomainMessage({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          idSubDomain: parseInt(this.$route.params.idsubdomain),
+          message: this.message
+        })
+      }
       this.message = ''
     },
     setSelectedMessage: function (e) {
@@ -93,7 +108,7 @@ export default {
         this.setIsMessageSectionOpened(false)
       }
     },
-    ...mapMutations('target', ['orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'sendTargetMessage', 'setIdMessage']),
+    ...mapMutations('target', ['orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'sendTargetMessage', 'setIdMessage', 'sendRootDomainMessage', 'sendSubDomainMessage']),
     orderByUserName: function () {
       if (this.active_arrow_down_message === true) {
         this.active_arrow_down_message = false
