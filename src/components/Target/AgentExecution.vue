@@ -112,8 +112,6 @@ export default {
     switchAgentStatus (event) {
       if (event === this.$agentStatus.PAUSED) {
         this.pauseClock()
-      } else {
-        this.timer = setInterval(this.tick, 1000)
       }
       this.setAgentStatus({ status: event, id: parseInt(this.idAgent) })
     },
@@ -232,5 +230,8 @@ export default {
 }
 .progress{
   height: 5px !important;
+}
+#agentExecutionModalForm .info-box-content svg:hover{
+  cursor: pointer;
 }
 </style>
