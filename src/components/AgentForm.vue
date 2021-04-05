@@ -360,8 +360,8 @@
 import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
-import AccountCogIco from '@/components/AccountCogIco.vue'
-import FileCodeIco from '@/components//FileCodeIco.vue'
+import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
 import Toast from 'primevue/toast'
 import { mapMutations } from 'vuex'
 export default {

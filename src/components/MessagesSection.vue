@@ -57,7 +57,7 @@
     </transition>
 </template>
 <script>
-import CommentIco from '@/components/CommentIco.vue'
+import CommentIco from '@/components/Icons/CommentIco.vue'
 import { mapMutations, mapGetters, mapState } from 'vuex'
 export default {
   data: function () {
@@ -68,17 +68,32 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetMessages']),
+    ...mapGetters('target', ['getTargetMessages', 'getRootDomainMessages', 'getSubDomainMessages']),
     ...mapState('target', ['idMessage']),
     ...mapState(['isMessageSectionOpened'])
   },
   methods: {
     ...mapMutations(['setIsMessageSectionOpened']),
     sendMessage: function () {
-      this.sendTargetMessage({
-        idTarget: parseInt(this.$route.params.id),
-        message: this.message
-      })
+      if (this.$route.name === 'TargetDetail') {
+        this.sendTargetMessage({
+          idTarget: parseInt(this.$route.params.id),
+          message: this.message
+        })
+      } else if (this.$route.name === 'RootDomainDetails') {
+        this.sendRootDomainMessage({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          message: this.message
+        })
+      } else if (this.$route.name === 'SubDomainDetails') {
+        this.sendSubDomainMessage({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          idSubDomain: parseInt(this.$route.params.idsubdomain),
+          message: this.message
+        })
+      }
       this.message = ''
     },
     setSelectedMessage: function (e) {
@@ -93,7 +108,7 @@ export default {
         this.setIsMessageSectionOpened(false)
       }
     },
-    ...mapMutations('target', ['orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'sendTargetMessage', 'setIdMessage']),
+    ...mapMutations('target', ['orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'sendTargetMessage', 'setIdMessage', 'sendRootDomainMessage', 'sendSubDomainMessage']),
     orderByUserName: function () {
       if (this.active_arrow_down_message === true) {
         this.active_arrow_down_message = false
@@ -109,11 +124,32 @@ export default {
       this.orderMessagesByCalendar(parseInt(this.$route.params.id))
     },
     messagesSortedDescByDate () {
-      return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
-        function (a, b) {
-          return new Date(b.sendDate) - new Date(a.sendDate)
-        }
-      )
+      if (this.$route.name === 'TargetDetail') {
+        return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+          function (a, b) {
+            return new Date(b.sendDate) - new Date(a.sendDate)
+          }
+        )
+      } else if (this.$route.name === 'RootDomainDetails') {
+        return this.getRootDomainMessages({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id)
+        }).sort(
+          function (a, b) {
+            return new Date(b.sendDate) - new Date(a.sendDate)
+          }
+        )
+      } else if (this.$route.name === 'SubDomainDetails') {
+        return this.getSubDomainMessages({
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id),
+          idSubDomain: parseInt(this.$route.params.idsubdomain)
+        }).sort(
+          function (a, b) {
+            return new Date(b.sendDate) - new Date(a.sendDate)
+          }
+        )
+      }
     }
   },
   components: {

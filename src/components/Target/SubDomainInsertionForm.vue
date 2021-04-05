@@ -10,15 +10,18 @@
                                 <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">New Subdomain</p>
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
-                                <div v-for="(item, index) in subdomains" :key="item" class="mb-4">
-                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
-                                  <div class="col-12" v-if="validators.url.subDomainName[index]">
+                                <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container">
+                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
+                                  <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index">
+                                    <MinusCircleIco/>
+                                  </span>
+                                  <div class="col-12 mb-2 remove-space-generated-ico" v-if="validators.url.subDomainName[index]">
                                     <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
                                   </div>
-                                  <div class="col-12" v-if="validators.blank.subDomainName[index]">
+                                  <div class="col-12 mb-2" v-if="validators.blank.subDomainName[index]">
                                     <span :class="{invalid: this.validators.blank.subDomainName[index]}">You must enter a name</span>
                                   </div>
-                                  <div class="col-12" v-if="validators.exist.subDomainName[index]">
+                                  <div class="col-12 mb-2 remove-space-generated-ico" v-if="validators.exist.subDomainName[index]">
                                     <span :class="{invalid: validators.exist.subDomainName[index]}">The written name is already being used by another subdomain</span>
                                   </div>
                                 </div>
@@ -39,7 +42,11 @@
 <script>
 import { mapMutations } from 'vuex'
 import jQuery from 'jquery'
+import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
+  components: {
+    MinusCircleIco
+  },
   data: function () {
     return {
       subdomains: [],
@@ -58,23 +65,26 @@ export default {
   },
   methods: {
     createSubdomains: function () {
-      this.subdomains.push({
-        name: '',
-        added: new Date().toLocaleDateString('es-Es'),
-        checking: false,
-        interesting: false,
-        vulnerable: false,
-        boubty: false,
-        ignore: false,
-        scope: false,
-        agent: [],
-        ipAddress: '',
-        http: false,
-        isAlive: false,
-        ports: [],
-        services: [],
-        directories: []
-      })
+      this.enableValidationMessageSubDomainBlankNameManual()
+      if (this.isFormValid) {
+        this.subdomains.push({
+          name: '',
+          added: new Date().toLocaleDateString('es-Es'),
+          checking: false,
+          interesting: false,
+          vulnerable: false,
+          boubty: false,
+          ignore: false,
+          scope: false,
+          agent: [],
+          ipAddress: '',
+          http: false,
+          isAlive: false,
+          ports: [],
+          services: [],
+          directories: []
+        })
+      }
     },
     insertSubdomains: function () {
       if (!this.subdomains[0].name) {
@@ -137,18 +147,36 @@ export default {
     },
     enableValidationMessageSubDomainBlankName: function (e) {
       const textFieldIndex = e.currentTarget.getAttribute('data-index')
-      if (!this.subdomains[textFieldIndex].name) {
+      if (this.subdomains[textFieldIndex].name === '') {
         this.validators.blank.subDomainName[textFieldIndex] = true
       } else {
         this.validators.blank.subDomainName[textFieldIndex] = false
       }
+    },
+    enableValidationMessageSubDomainBlankNameManual: function () {
+      let founded = false
+      let index = 0
+      while (index < this.subdomains.length && !founded) {
+        if (this.$validateIsBlank(this.subdomains[index].name)) {
+          this.validators.blank.subDomainName[index] = true
+          founded = true
+        }
+        index++
+      }
+      return founded
     },
     enableValidations: function (e) {
       this.enableValidationMessageSubDomainUniqueName(e)
       this.enableValidationMessageSubDomainUrlName(e)
       this.enableValidationMessageSubDomainBlankName(e)
     },
-    ...mapMutations('target', ['addSubdomain'])
+    ...mapMutations('target', ['addSubdomain']),
+    removeSubdomainName: function (e) {
+      const subdomainIndex = parseInt(e.currentTarget.getAttribute('data-index'))
+      if (subdomainIndex !== 0) {
+        this.subdomains.splice(subdomainIndex, 1)
+      }
+    }
   },
   created: function () {
     this.subdomains.push({
@@ -171,7 +199,7 @@ export default {
   },
   computed: {
     isFormValid () {
-      return (this.validators.blank.subDomainName || this.validators.url.subDomainName || this.validators.exist.subDomainName)
+      return (!this.enableValidationMessageSubDomainBlankNameManual() /* || this.validators.url.subDomainName || this.validators.exist.subDomainName */)
     }
   },
   props: {
@@ -206,5 +234,24 @@ export default {
         overflow: auto;
         padding-right: 10px;
         bottom: 0 !important;
+    }
+    span.circle-minus-properties{
+      position: relative;
+      z-index: 2;
+      display: block;
+      line-height: 2.375rem;
+      text-align: center;
+      top: -38px;
+      right: -96%;
+      width: 25px;
+    }
+    .subdomains-items-field{
+      padding-right: 5%;
+    }
+    .remove-space-generated-ico{
+      margin-top: -3%;
+    }
+    span.circle-minus-properties svg{
+      fill: #ff4545
     }
 </style>

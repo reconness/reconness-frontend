@@ -54,7 +54,7 @@
 import { mapState, mapGetters } from 'vuex'
 import AgentForm from '@/components/AgentForm.vue'
 import AgentConfirmation from '@/components/AgentConfirmation.vue'
-import AccountCogIco from '@/components/AccountCogIco.vue'
+import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 
 export default {
   name: 'AgentsList',

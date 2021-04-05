@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import target from '../modules/target'
+import pipelines from '../modules/pipelines'
 
 export default createStore({
   state: {
@@ -49,6 +50,7 @@ export default createStore({
     viewloc: 'Home',
     styleAgentState: false,
     styleTargetState: false,
+    stylePipelinesState: false,
     colorDelete: '#000000',
     agentsInstallers: [
       { name: 'Subfinder', description: 'Breve descripcion del agente Subfinder', id: 1, installed: false },
@@ -156,11 +158,15 @@ export default createStore({
     updateLocView (state, namePath) {
       state.styleTargetState = false
       state.styleAgentState = false
+      state.stylePipelinesState = false
       if (namePath === 'Agents') {
         state.styleAgentState = true
       }
       if (namePath === 'Targets') {
         state.styleTargetState = true
+      }
+      if (namePath === 'Pipelines') {
+        state.stylePipelinesState = true
       }
       state.viewloc = namePath
     },
@@ -208,7 +214,8 @@ export default createStore({
   actions: {
   },
   modules: {
-    target
+    target,
+    pipelines
   },
   getters: {
     idAgent: state => {

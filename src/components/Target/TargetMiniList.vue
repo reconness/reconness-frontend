@@ -146,7 +146,7 @@ input[type="checkbox"] {
 <script>
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import { mapState, mapMutations } from 'vuex'
-import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
 export default {
   components: {

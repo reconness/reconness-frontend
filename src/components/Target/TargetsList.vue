@@ -44,7 +44,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
-import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 

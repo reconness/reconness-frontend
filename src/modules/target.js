@@ -64,7 +64,21 @@ export default ({
                 ports: [21, 22],
                 services: [{ id: 1, name: 'Https', port: 80 }, { id: 2, name: 'Http', port: 81 }],
                 directories: [{ id: 1, path: '/_tmp-war-DefaultWebAoo', method: 'GET', status: 301, size: '60B' },
-                  { id: 2, path: '/_tmp-war-DefaultWebAou', method: 'GET', status: 301, size: '60B' }]
+                  { id: 2, path: '/_tmp-war-DefaultWebAou', method: 'GET', status: 301, size: '60B' }],
+                messages: [
+                  {
+                    id: 1,
+                    sender: 'Cardenal',
+                    sendDate: '2020-03-01',
+                    message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+                  },
+                  {
+                    id: 2,
+                    sender: 'Orozco',
+                    sendDate: '2020-05-01',
+                    message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+                  }
+                ]
               },
               {
                 id: 2,
@@ -115,7 +129,22 @@ export default ({
                 isAlive: false,
                 ports: [21, 22, 80, 443],
                 services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 82 }],
-                directories: []
+                directories: [],
+                messages: []
+              }
+            ],
+            messages: [
+              {
+                id: 1,
+                sender: 'Sarah Jessica',
+                sendDate: '2020-07-01',
+                message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+              },
+              {
+                id: 2,
+                sender: 'Daddy',
+                sendDate: '2020-08-01',
+                message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
             ]
           },
@@ -141,7 +170,21 @@ export default ({
                 ports: [21, 22, 80, 443],
                 isMainPortal: true,
                 services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 81 }],
-                directories: []
+                directories: [],
+                messages: [
+                  {
+                    id: 1,
+                    sender: 'Parker',
+                    sendDate: '2020-02-01',
+                    message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+                  },
+                  {
+                    id: 2,
+                    sender: 'Habana',
+                    sendDate: '2020-09-01',
+                    message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+                  }
+                ]
               },
               {
                 id: 2,
@@ -160,7 +203,16 @@ export default ({
                 http: true,
                 isMainPortal: true,
                 services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }],
-                directories: []
+                directories: [],
+                messages: []
+              }
+            ],
+            messages: [
+              {
+                id: 1,
+                sender: 'Bieber',
+                sendDate: '2020-12-01',
+                message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
             ]
           }
@@ -213,7 +265,23 @@ export default ({
                 isMainPortal: false,
                 ports: [21],
                 services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }],
-                directories: []
+                directories: [],
+                messages: [
+                  {
+                    id: 1,
+                    sender: 'Vinil',
+                    sendDate: '2020-01-01',
+                    message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+                  }
+                ]
+              }
+            ],
+            messages: [
+              {
+                id: 1,
+                sender: 'Queen',
+                sendDate: '2020-01-01',
+                message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
             ]
           },
@@ -221,19 +289,22 @@ export default ({
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 3,
             root: 'anothertest1.com',
             date: '21/07/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 4,
             root: 'anothertest2.com',
             date: '21/06/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/f',
@@ -278,7 +349,16 @@ export default ({
                 isMainPortal: false,
                 ports: [21],
                 services: [{ id: 1, name: 'Http', port: 80 }, { id: 2, name: 'Http', port: 80 }],
-                directories: []
+                directories: [],
+                messages: []
+              }
+            ],
+            messages: [
+              {
+                id: 1,
+                sender: 'Raymond',
+                sendDate: '2020-03-01',
+                message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
             ]
           },
@@ -286,7 +366,8 @@ export default ({
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/b',
@@ -313,13 +394,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/c',
@@ -346,13 +429,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/d',
@@ -380,13 +465,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         messages: [
@@ -410,13 +497,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/a',
@@ -444,13 +533,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         isPrivateProgram: true,
@@ -476,13 +567,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         isPrivateProgram: true,
@@ -508,13 +601,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         isPrivateProgram: true,
@@ -540,13 +635,15 @@ export default ({
             id: 1,
             root: 'reconnes.com',
             date: '21/09/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
-            subdomain: []
+            subdomain: [],
+            messages: []
           }
         ],
         isPrivateProgram: true,
@@ -745,10 +842,23 @@ export default ({
     setIdMessage (state, id) {
       state.idMessage = parseInt(id)
     },
-    removeMessage (state, idTarget) {
+    removeTargetMessage (state, idTarget) {
       const target = state.targetListStore.find(item => item.id === parseInt(idTarget))
       const messageIndex = target.messages.findIndex(message => message.id === parseInt(state.idMessage))
       target.messages.splice(messageIndex, 1)
+    },
+    removeRootDomainMessage (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+      const messageIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idMessage))
+      rootdomain.messages.splice(messageIndex, 1)
+    },
+    removeSubDomainMessage (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+      const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.id === params.idSubDomain)
+      const messageIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idMessage))
+      subdomain.messages.splice(messageIndex, 1)
     },
     sendTargetMessage (state, messageInfo, rootGetters) {
       const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
@@ -759,6 +869,29 @@ export default ({
         sender: state.loggedUser.name
       }
       target.messages.push(message)
+    },
+    sendRootDomainMessage (state, messageInfo) {
+      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
+      const message = {
+        id: state.idMessage++,
+        message: messageInfo.message,
+        sendDate: new Date(),
+        sender: state.loggedUser.name
+      }
+      rootdomain.messages.push(message)
+    },
+    sendSubDomainMessage (state, messageInfo) {
+      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
+      const subdomain = rootdomain.subdomain.find(subDomain => subDomain.id === messageInfo.idSubDomain)
+      const message = {
+        id: state.idMessage++,
+        message: messageInfo.message,
+        sendDate: new Date(),
+        sender: state.loggedUser.name
+      }
+      subdomain.messages.push(message)
     },
     setIsTargetDeleted (state, value) {
       state.isTargetDeleted = value
@@ -820,6 +953,15 @@ export default ({
     },
     getTargetMessages: (state) => (id) => {
       return state.targetListStore.find(target => target.id === id).messages
+    },
+    getRootDomainMessages: (state) => (params) => {
+      const target = state.targetListStore.find(target => target.id === params.idTarget)
+      return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
+    },
+    getSubDomainMessages: (state) => (params) => {
+      const target = state.targetListStore.find(target => target.id === params.idTarget)
+      const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+      return rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain).messages
     },
     checkIfTargetExistsByName: (state) => (targetName) => {
       const currentTarget = state.targetListStore.find(target => target.name === targetName)

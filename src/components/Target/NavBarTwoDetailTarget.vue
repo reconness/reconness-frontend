@@ -134,7 +134,7 @@
         </li>
       </ul>
     </nav>
-    <MessagesSection :opened="this.isMessageSectionOpened"/>
+    <MessagesSection :opened="this.isMessageSectionOpened" :key="messages_component"/>
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
@@ -161,7 +161,8 @@ export default {
   data: function () {
     return {
       active_arrow_down: true,
-      active_arrow_up: false
+      active_arrow_up: false,
+      messages_component: 0
     }
   },
   computed: {

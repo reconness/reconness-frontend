@@ -67,21 +67,20 @@
             </li>
             <li class="nav-item">
               <router-link to="/targets/list" >
-              <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation(''), this.$store.commit('target/setIsDefaultViewOnTarget', true)" v-bind:class="{'nav2': styleTargetState}">
+              <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation('Targets'), this.$store.commit('target/setIsDefaultViewOnTarget', true)" v-bind:class="{'nav2': styleTargetState}">
                 <BullseyeArrowIco/>
                 <p style="vertical-align: 0px;">Targets </p>
               </a>
             </router-link>
             </li>
             <li class="nav-item has-treeview menu-open">
-              <a href="#" class="nav-link" v-on:click="hideArrow">
-                <span class="material-icons badge badge-dark">
-                code</span>
-                <p>Pipelines
-                  <span v-show="arrow_down" class="material-icons right">arrow_drop_down</span>
-                  <span v-show="arrow_up" class="material-icons right">arrow_drop_up</span>
-                </p>
-              </a>
+              <router-link to="/pipelines/list"   >
+                <a class="nav-link" v-on:click="addLocation('Pipelines'), this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)" >
+                <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
+                <p>Pipelines</p>
+                <span v-show="arrow_down" class="material-icons float-right">arrow_drop_down</span>
+                <span v-show="arrow_up" class="material-icons float-right">arrow_drop_up</span></a>
+              </router-link>
               <ul class="nav nav-treeview">
                 <li class="nav-item" ><router-link to="/agents/list">
                   <a href="#" class="nav-link" id ='agentNav'  v-on:click="addLocation('Agents')" v-bind:class="{'nav2': styleAgentState}" >
@@ -123,7 +122,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import BullseyeArrowIco from '@/components/BullseyeArrowIco.vue'
+import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 export default {
   name: 'App',
   data: function () {
@@ -141,16 +140,12 @@ export default {
     BullseyeArrowIco
   },
   computed: {
-    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState'])
+    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState'])
   },
   mounted () {
     this.location = this.viewloc
   },
   methods: {
-    hideArrow: function () {
-      this.arrow_down = !this.arrow_down
-      this.arrow_up = !this.arrow_up
-    },
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -169,6 +164,8 @@ export default {
       }
     },
     addLocation: function (loc) {
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
       this.$store.commit('updateLocView', loc)
     }
   }
@@ -194,6 +191,13 @@ export default {
 }
 .badge-dark {
 background-color: #000000;
+}
+.style-badge{
+  background-color: #ffffff;
+}
+.style-badge.material-icons{
+color: #007bff!important;
+font-weight: 100;
 }
 .badge{
   padding: 0px;

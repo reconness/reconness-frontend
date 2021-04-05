@@ -1,7 +1,7 @@
 export default {
   install: (app, options) => {
     app.config.globalProperties.$randomBooleanResult = function () {
-      var success = Math.random() < 0.5
+      const success = Math.random() < 0.5
       return success
     }
 
@@ -44,13 +44,19 @@ export default {
     }
 
     app.config.globalProperties.$validateUrl = function (url) {
-      var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      const pattern = new RegExp('^((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
       '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
       '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
       '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
       return !!pattern.test(url)
+    }
+
+    app.config.globalProperties.$validateIsBlank = function (value) {
+      if (value.match(/^ *$/) !== null) {
+        return true
+      }
+      return false
     }
 
     app.config.globalProperties.$agentType = Object.freeze(
