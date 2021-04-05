@@ -275,7 +275,8 @@ export default {
     ...mapState(['isElementDeleted'])
   },
   methods: {
-    ...mapMutations(['setIsElementDeleted'])
+    ...mapMutations(['setIsElementDeleted']),
+    ...mapMutations('target', ['setCurrentView'])
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
@@ -288,6 +289,7 @@ export default {
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The Root Domain has been deleted successfully', life: 3000 })
       this.setIsElementDeleted(false)
     }
+    this.setCurrentView(this.$route.name)
   }
 }
 </script>

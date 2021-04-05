@@ -108,9 +108,11 @@ export default {
       this.Subdomain = this.RootDomains.subdomain.find(item => item.id === parseInt(this.$route.params.idsubdomain))
       this.subdomainName = this.Subdomain.name
     }
+    this.setCurrentView(this.$route.name)
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),
+    ...mapMutations('target', ['setCurrentView']),
     setActiveTabButton: function (tab) {
       this.selectedTab = tab
     }
