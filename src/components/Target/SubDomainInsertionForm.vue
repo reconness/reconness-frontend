@@ -65,7 +65,6 @@ export default {
   },
   methods: {
     createSubdomains: function () {
-      this.enableValidationMessageSubDomainBlankNameManual()
       if (this.isFormValid) {
         this.subdomains.push({
           name: '',
@@ -90,7 +89,7 @@ export default {
       if (!this.subdomains[0].name) {
         this.validators.blank.subDomainName[0] = true
       }
-      if (this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
+      if (!this.enableValidationMessageSubDomainBlankNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
           idTarget: parseInt(this.$route.params.idTarget),
           idRootDomain: parseInt(this.$route.params.id),
