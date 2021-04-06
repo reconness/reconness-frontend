@@ -65,9 +65,11 @@ export default {
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor
+    this.setCurrentView(this.$route.name)
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),
+    ...mapMutations('target', ['setCurrentView']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {

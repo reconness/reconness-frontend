@@ -21,19 +21,21 @@
                 </button>
               </a>
               <div class="dropdown-menu dropdown-menu-right">
-              <a class="dropdown-item" href="#" v-on:click="orderByUserName()">
+              <a class="dropdown-item float-left" href="#" v-on:click="orderByUserName()">
                   <i class="material-icons float-left">title</i>
                   <p class="float-left">User Name</p>
-                  <i class="material-icons arrow-right" v-show="active_arrow_down_message">keyboard_arrow_down</i>
-                  <i class="material-icons arrow-right" v-show="active_arrow_up_message">keyboard_arrow_up</i>
+                  <i class="material-icons arrow-right" v-if="!order_by_date && active_arrow_down_message">keyboard_arrow_down</i>
+                  <i class="material-icons arrow-right" v-if="!order_by_date && active_arrow_up_message">keyboard_arrow_up</i>
                 </a>
-                <a class="dropdown-item" href="#" v-on:click="orderByMessageDate()">
+                <a class="dropdown-item float-left" href="#" v-on:click="orderByMessageDate()">
                   <i class="material-icons float-left">event</i>
-                  <p class="icon-right">Created</p>
+                  <p class="float-left">Created</p>
+                  <i class="material-icons arrow-right" v-if="order_by_date && active_arrow_down_message">keyboard_arrow_down</i>
+                  <i class="material-icons arrow-right" v-if="order_by_date && active_arrow_up_message">keyboard_arrow_up</i>
                 </a>
               </div>
             </div>
-            <div v-for="message of this.messagesSortedDescByDate()" :key="message.id" class="col-12">
+            <div v-for="message of this.getMessages" :key="message.id" class="col-12">
               <div class="row">
                 <div class="col-12">
                   <p>
@@ -64,13 +66,106 @@ export default {
     return {
       message: '',
       active_arrow_down_message: true,
-      active_arrow_up_message: false
+      active_arrow_up_message: false,
+      order_by_date: true,
+      order_by_user: false
     }
   },
   computed: {
     ...mapGetters('target', ['getTargetMessages', 'getRootDomainMessages', 'getSubDomainMessages']),
-    ...mapState('target', ['idMessage']),
-    ...mapState(['isMessageSectionOpened'])
+    ...mapState('target', ['idMessage', 'currentView']),
+    ...mapState(['isMessageSectionOpened']),
+    getMessages: function () {
+      if (this.order_by_date) {
+        if (this.active_arrow_down_message) {
+          if (this.currentView === 'TargetDetail') {
+            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+              this.sortDescendingOrderByDateFn
+            )
+          } else if (this.currentView === 'RootDomainDetails') {
+            return this.getRootDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id)
+            }).sort(
+              this.sortDescendingOrderByDateFn
+            )
+          } else {
+            return this.getSubDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id),
+              idSubDomain: parseInt(this.$route.params.idsubdomain)
+            }).sort(
+              this.sortDescendingOrderByDateFn
+            )
+          }
+        } else {
+          if (this.currentView === 'TargetDetail') {
+            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+              this.sortAscendingOrderByDateFn
+            )
+          } else if (this.currentView === 'RootDomainDetails') {
+            return this.getRootDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id)
+            }).sort(
+              this.sortAscendingOrderByDateFn
+            )
+          } else {
+            return this.getSubDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id),
+              idSubDomain: parseInt(this.$route.params.idsubdomain)
+            }).sort(
+              this.sortAscendingOrderByDateFn
+            )
+          }
+        }
+      } else { // order by user
+        if (this.active_arrow_down_message) {
+          if (this.currentView === 'TargetDetail') {
+            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+              this.sortDescendingOrderByUserNameFn
+            )
+          } else if (this.currentView === 'RootDomainDetails') {
+            return this.getRootDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id)
+            }).sort(
+              this.sortDescendingOrderByUserNameFn
+            )
+          } else {
+            return this.getSubDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id),
+              idSubDomain: parseInt(this.$route.params.idsubdomain)
+            }).sort(
+              this.sortDescendingOrderByUserNameFn
+            )
+          }
+        } else {
+          if (this.currentView === 'TargetDetail') {
+            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+              this.sortAscendingOrderByUserNameFn
+            )
+          } else if (this.currentView === 'RootDomainDetails') {
+            return this.getRootDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id)
+            }).sort(
+              this.sortAscendingOrderByUserNameFn
+            )
+          } else {
+            return this.getSubDomainMessages({
+              idTarget: parseInt(this.$route.params.idTarget),
+              idRootDomain: parseInt(this.$route.params.id),
+              idSubDomain: parseInt(this.$route.params.idsubdomain)
+            }).sort(
+              this.sortAscendingOrderByUserNameFn
+            )
+          }
+        }
+      }
+    }
   },
   methods: {
     ...mapMutations(['setIsMessageSectionOpened']),
@@ -108,48 +203,47 @@ export default {
         this.setIsMessageSectionOpened(false)
       }
     },
-    ...mapMutations('target', ['orderMessagesByCalendar', 'orderMessagesByUserNameAsc', 'orderMessagesByUserNameDesc', 'sendTargetMessage', 'setIdMessage', 'sendRootDomainMessage', 'sendSubDomainMessage']),
+    ...mapMutations('target', ['sendTargetMessage', 'setIdMessage', 'sendRootDomainMessage', 'sendSubDomainMessage']),
     orderByUserName: function () {
+      this.order_by_date = false
+      this.changeArrowDirection()
+    },
+    orderByMessageDate: function () {
+      this.order_by_date = true
+      this.changeArrowDirection()
+    },
+    changeArrowDirection: function () {
       if (this.active_arrow_down_message === true) {
         this.active_arrow_down_message = false
         this.active_arrow_up_message = true
-        return this.orderMessagesByUserNameDesc(parseInt(this.$route.params.id))
       } else if (this.active_arrow_up_message === true) {
         this.active_arrow_down_message = true
         this.active_arrow_up_message = false
-        return this.orderMessagesByUserNameAsc(parseInt(this.$route.params.id))
       }
     },
-    orderByMessageDate: function () {
-      this.orderMessagesByCalendar(parseInt(this.$route.params.id))
+    sortDescendingOrderByDateFn: function (a, b) {
+      return new Date(b.sendDate) - new Date(a.sendDate)
     },
-    messagesSortedDescByDate () {
-      if (this.$route.name === 'TargetDetail') {
-        return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
-          function (a, b) {
-            return new Date(b.sendDate) - new Date(a.sendDate)
-          }
-        )
-      } else if (this.$route.name === 'RootDomainDetails') {
-        return this.getRootDomainMessages({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id)
-        }).sort(
-          function (a, b) {
-            return new Date(b.sendDate) - new Date(a.sendDate)
-          }
-        )
-      } else if (this.$route.name === 'SubDomainDetails') {
-        return this.getSubDomainMessages({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
-          idSubDomain: parseInt(this.$route.params.idsubdomain)
-        }).sort(
-          function (a, b) {
-            return new Date(b.sendDate) - new Date(a.sendDate)
-          }
-        )
+    sortAscendingOrderByDateFn: function (a, b) {
+      return new Date(a.sendDate) - new Date(b.sendDate)
+    },
+    sortDescendingOrderByUserNameFn: function (a, b) {
+      if (b.sender < a.sender) {
+        return -1
       }
+      if (b.sender > a.sender) {
+        return 1
+      }
+      return 0
+    },
+    sortAscendingOrderByUserNameFn: function (a, b) {
+      if (a.sender < b.sender) {
+        return -1
+      }
+      if (a.sender > b.sender) {
+        return 1
+      }
+      return 0
     }
   },
   components: {
@@ -207,6 +301,7 @@ div.sidebar-list.comments-list {
   border-radius: 0.5rem;
   margin: auto;
   margin-top: 10px;
+  overflow: visible;
 }
 div.control-sidebar-dark.main-messages-container{
  border-radius: 12px;

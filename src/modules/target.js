@@ -676,7 +676,8 @@ export default ({
     agentStatus: {
       id: -1,
       status: -1
-    }
+    },
+    currentView: ''
   },
   mutations: {
     removebyIdTarget (state, id) {
@@ -806,39 +807,6 @@ export default ({
       }
       return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
     },
-    orderMessagesByCalendar (state, id) {
-      return state.targetListStore.find(item => item.id === id).messages.sort((a, b) => {
-        const as = a.sendDate.split('-')
-        const ad = new Date(as[2], as[1] - 1, as[0])
-        const bs = b.sendDate.split('-')
-        const bd = new Date(bs[2], bs[1] - 1, bs[0])
-        return bd - ad
-      })
-    },
-    orderMessagesByUserNameAsc (state, id) {
-      function compare (a, b) {
-        if (a.sender < b.sender) {
-          return -1
-        }
-        if (a.sender > b.sender) {
-          return 1
-        }
-        return 0
-      }
-      return (state.targetListStore.find(item => item.id === id)).messages.sort(compare)
-    },
-    orderMessagesByUserNameDesc (state, id) {
-      function compare (a, b) {
-        if (b.sender < a.sender) {
-          return -1
-        }
-        if (b.sender > a.sender) {
-          return 1
-        }
-        return 0
-      }
-      return (state.targetListStore.find(item => item.id === id)).messages.sort(compare)
-    },
     setIdMessage (state, id) {
       state.idMessage = parseInt(id)
     },
@@ -926,6 +894,9 @@ export default ({
     },
     setAgentStatus (state, agentStatus) {
       state.agentStatus = agentStatus
+    },
+    setCurrentView (state, viewName) {
+      state.currentView = viewName
     }
   },
   actions: {
