@@ -80,18 +80,14 @@ export default {
         if (this.active_arrow_down_message) {
           if (this.currentView === 'TargetDetail') {
             return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
-              function (a, b) {
-                return new Date(b.sendDate) - new Date(a.sendDate)
-              }
+              this.sortDescendingOrderByDateFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainMessages({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
-              function (a, b) {
-                return new Date(b.sendDate) - new Date(a.sendDate)
-              }
+              this.sortDescendingOrderByDateFn
             )
           } else {
             return this.getSubDomainMessages({
@@ -99,28 +95,20 @@ export default {
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
             }).sort(
-              function (a, b) {
-                return new Date(b.sendDate) - new Date(a.sendDate)
-              }
+              this.sortDescendingOrderByDateFn
             )
           }
-        // Current down message end
-        // Current up message (order by date)
         } else {
           if (this.currentView === 'TargetDetail') {
             return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
-              function (a, b) {
-                return new Date(a.sendDate) - new Date(b.sendDate)
-              }
+              this.sortAscendingOrderByDateFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainMessages({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
-              function (a, b) {
-                return new Date(a.sendDate) - new Date(b.sendDate)
-              }
+              this.sortAscendingOrderByDateFn
             )
           } else {
             return this.getSubDomainMessages({
@@ -128,9 +116,7 @@ export default {
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
             }).sort(
-              function (a, b) {
-                return new Date(a.sendDate) - new Date(b.sendDate)
-              }
+              this.sortAscendingOrderByDateFn
             )
           }
         }
@@ -138,30 +124,14 @@ export default {
         if (this.active_arrow_down_message) {
           if (this.currentView === 'TargetDetail') {
             return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
-              function (a, b) {
-                if (b.sender < a.sender) {
-                  return -1
-                }
-                if (b.sender > a.sender) {
-                  return 1
-                }
-                return 0
-              }
+              this.sortDescendingOrderByUserNameFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainMessages({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
-              function (a, b) {
-                if (b.sender < a.sender) {
-                  return -1
-                }
-                if (b.sender > a.sender) {
-                  return 1
-                }
-                return 0
-              }
+              this.sortDescendingOrderByUserNameFn
             )
           } else {
             return this.getSubDomainMessages({
@@ -169,44 +139,20 @@ export default {
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
             }).sort(
-              function (a, b) {
-                if (b.sender < a.sender) {
-                  return -1
-                }
-                if (b.sender > a.sender) {
-                  return 1
-                }
-                return 0
-              }
+              this.sortDescendingOrderByUserNameFn
             )
           }
         } else {
           if (this.currentView === 'TargetDetail') {
             return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
-              function (a, b) {
-                if (a.sender < b.sender) {
-                  return -1
-                }
-                if (a.sender > b.sender) {
-                  return 1
-                }
-                return 0
-              }
+              this.sortAscendingOrderByUserNameFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainMessages({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
-              function (a, b) {
-                if (a.sender < b.sender) {
-                  return -1
-                }
-                if (a.sender > b.sender) {
-                  return 1
-                }
-                return 0
-              }
+              this.sortAscendingOrderByUserNameFn
             )
           } else {
             return this.getSubDomainMessages({
@@ -214,15 +160,7 @@ export default {
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
             }).sort(
-              function (a, b) {
-                if (a.sender < b.sender) {
-                  return -1
-                }
-                if (a.sender > b.sender) {
-                  return 1
-                }
-                return 0
-              }
+              this.sortAscendingOrderByUserNameFn
             )
           }
         }
@@ -282,6 +220,30 @@ export default {
         this.active_arrow_down_message = true
         this.active_arrow_up_message = false
       }
+    },
+    sortDescendingOrderByDateFn: function (a, b) {
+      return new Date(b.sendDate) - new Date(a.sendDate)
+    },
+    sortAscendingOrderByDateFn: function (a, b) {
+      return new Date(a.sendDate) - new Date(b.sendDate)
+    },
+    sortDescendingOrderByUserNameFn: function (a, b) {
+      if (b.sender < a.sender) {
+        return -1
+      }
+      if (b.sender > a.sender) {
+        return 1
+      }
+      return 0
+    },
+    sortAscendingOrderByUserNameFn: function (a, b) {
+      if (a.sender < b.sender) {
+        return -1
+      }
+      if (a.sender > b.sender) {
+        return 1
+      }
+      return 0
     }
   },
   components: {
