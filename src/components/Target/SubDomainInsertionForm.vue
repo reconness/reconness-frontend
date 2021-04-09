@@ -10,22 +10,24 @@
                                 <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">New Subdomain</p>
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
-                                <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container">
+                                <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container mt-2">
                                   <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
-                                  <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-if="index>0">
-                                    <MinusCircleIco/>
-                                  </span>
-                                  <div class="col-12 mb-2 remove-space-generated-ico" v-if="validators.url.subDomainName[index]">
+                                  <div style="height: 0;">
+                                    <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-show="index>0">
+                                      <MinusCircleIco/>
+                                    </span>
+                                  </div>
+                                  <div class="col-12 mb-2" v-if="validators.url.subDomainName[index]">
                                     <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
                                   </div>
                                   <div class="col-12 mb-2" v-if="validators.blank.subDomainName[index]">
                                     <span :class="{invalid: this.validators.blank.subDomainName[index]}">You must enter a name</span>
                                   </div>
-                                  <div class="col-12 mb-2 remove-space-generated-ico" v-if="validators.exist.subDomainName[index]">
+                                  <div class="col-12 mb-2" v-if="validators.exist.subDomainName[index]">
                                     <span :class="{invalid: validators.exist.subDomainName[index]}">The written name is already being used by another subdomain</span>
                                   </div>
                                 </div>
-                                <a href="#" class="text-body d-inline-flex" @click="createSubdomains">
+                                <a href="#" class="text-body d-inline-flex mt-3" @click="createSubdomains">
                                     <span class="material-icons gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
                                     <span class="ml-2 gradient-style" v-bind:style ="{background:gradient}">Add New</span>
                                 </a>
