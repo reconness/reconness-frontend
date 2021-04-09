@@ -4,7 +4,7 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content root-domain-window custom-border-radius ">
                         <div class="modal-body">
-                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <button type="button" @click="resetForm" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                                 <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">New Subdomain</p>
@@ -12,7 +12,7 @@
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container">
                                   <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
-                                  <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index">
+                                  <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-if="index>0">
                                     <MinusCircleIco/>
                                   </span>
                                   <div class="col-12 mb-2 remove-space-generated-ico" v-if="validators.url.subDomainName[index]">
@@ -86,7 +86,7 @@ export default {
       }
     },
     insertSubdomains: function () {
-      if (!this.subdomains[0].name) {
+      if (this.$validateIsBlank(this.subdomains[0].name)) {
         this.validators.blank.subDomainName[0] = true
       }
       if (!this.enableValidationMessageSubDomainBlankNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
@@ -118,10 +118,21 @@ export default {
         services: [],
         directories: []
       }]
+      this.validators = {
+        url: {
+          subDomainName: [false]
+        },
+        blank: {
+          subDomainName: [false]
+        },
+        exist: {
+          subDomainName: [false]
+        }
+      }
     },
     enableValidationMessageSubDomainUrlName: function (e) {
       const textFieldIndex = e.currentTarget.getAttribute('data-index')
-      if (this.subdomains[textFieldIndex] !== '' && !this.$validateUrl(this.subdomains[textFieldIndex].name)) {
+      if (!this.$validateIsBlank(this.subdomains[textFieldIndex].name) && !this.$validateUrl(this.subdomains[textFieldIndex].name)) {
         this.validators.url.subDomainName[textFieldIndex] = true
       } else {
         this.validators.url.subDomainName[textFieldIndex] = false
@@ -198,7 +209,7 @@ export default {
   },
   computed: {
     isFormValid () {
-      return (!this.enableValidationMessageSubDomainBlankNameManual() /* || this.validators.url.subDomainName || this.validators.exist.subDomainName */)
+      return (!this.enableValidationMessageSubDomainBlankNameManual() || this.validators.url.subDomainName || this.validators.exist.subDomainName)
     }
   },
   props: {
