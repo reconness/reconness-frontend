@@ -134,7 +134,7 @@ export default {
     },
     enableValidationMessageSubDomainUrlName: function (e) {
       const textFieldIndex = e.currentTarget.getAttribute('data-index')
-      if (!this.$validateIsBlank(this.subdomains[textFieldIndex].name) && !this.$validateUrl(this.subdomains[textFieldIndex].name)) {
+      if (!this.$validateIsBlank(this.subdomains[textFieldIndex].name) && !this.$validateUrlWithoutProtocol(this.subdomains[textFieldIndex].name)) {
         this.validators.url.subDomainName[textFieldIndex] = true
       } else {
         this.validators.url.subDomainName[textFieldIndex] = false
@@ -168,7 +168,7 @@ export default {
     enableValidationMessageSubDomainBlankNameManual: function () {
       let founded = false
       let index = 0
-      while (index < this.subdomains.length && !founded) {
+      while (index < this.subdomains.length) {
         if (this.$validateIsBlank(this.subdomains[index].name)) {
           this.validators.blank.subDomainName[index] = true
           founded = true
@@ -187,6 +187,7 @@ export default {
       const subdomainIndex = parseInt(e.currentTarget.getAttribute('data-index'))
       if (subdomainIndex !== 0) {
         this.subdomains.splice(subdomainIndex, 1)
+        this.validators.blank.subDomainName.splice(subdomainIndex, 1)
       }
     }
   },
