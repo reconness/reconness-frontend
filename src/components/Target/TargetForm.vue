@@ -382,7 +382,10 @@ export default {
     },
     enableValidationMessageUniqueName () {
       if (this.target.name) {
-        this.validators.exist.name = this.checkIfTargetExistsByName(this.target.name)
+        this.validators.exist.name = this.checkIfTargetExistsByName({
+          name: this.target.name,
+          id: this.target.id
+        })
       }
     },
     enableValidationMessages () {
