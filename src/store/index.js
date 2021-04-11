@@ -10,9 +10,9 @@ export default createStore({
       { name: 'Agent 3', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 3, repository: 'repository3.com', target: 'target 3', command: 'command 3', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 3', image: '', date: '21/03/2020', installedFrom: '', lastRun: '99/99/9999' },
       { name: 'Agent 4', background: '#ff8650 0% 0% no-repeat padding-box', id: 4, repository: 'repository4.com', target: 'target 4', command: 'command 4', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 4', image: '', date: '21/04/2020', installedFrom: '', lastRun: '01/03/2021' },
       { name: 'Agent 5', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 5, repository: 'repository5.com', target: 'target 5', command: 'command 5', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 5', image: '', date: '21/05/2020', installedFrom: '', lastRun: '03/03/2021' },
-      { name: 'Agent 6', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020', installedFrom: '', lastRun: '12/02/2021' },
+      { name: 'Agent 6', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020', installedFrom: '', lastRun: '12/02/2021' },
       { name: 'Agent 7', background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020', installedFrom: '', lastRun: '24/02/2021' },
-      { name: 'Agent 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '', lastRun: '29/01/2021' }
+      { name: 'Agent 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '', lastRun: '01/01/2021' }
     ],
     resources: [
       { url: 'http://google.com', categories: ['searcher', 'docs'], id: 1 },
@@ -234,6 +234,9 @@ export default createStore({
     },
     getLastAgentSubdom (state) {
       return state.agentListStore.filter(item => item.type === 3).slice(-4)
+    },
+    getLastAgentRootDomain (state) {
+      return state.agentListStore.filter(item => item.type === 2).slice(-4)
     }
   }
 })

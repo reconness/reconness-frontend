@@ -353,7 +353,12 @@ export default {
         this.validators.blank.rootDomains = false
       }
       const chipsActualValue = document.getElementById('chips_el').value
-      if (this.isStrWithSpaces(chipsActualValue) || !this.$validateUrl(chipsActualValue)) {
+      if (this.isStrWithSpaces(chipsActualValue)) {
+        this.validators.url.rootDomains = true
+      } else {
+        this.validators.url.rootDomains = false
+      }
+      if (chipsActualValue !== '' && !this.$validateUrl(chipsActualValue)) {
         this.validators.url.rootDomains = true
       } else {
         this.validators.url.rootDomains = false
