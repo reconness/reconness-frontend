@@ -677,9 +677,13 @@ export default ({
       id: -1,
       status: -1
     },
-    currentView: ''
+    currentView: '',
+    countSubdomainList: 0
   },
   mutations: {
+    changeCounterSubdom (state, countSubd) {
+      state.countSubdomainList = countSubd
+    },
     removebyIdTarget (state, id) {
       const index = state.targetIdList.findIndex(target => target.id === id)
       if (index !== -1) {
