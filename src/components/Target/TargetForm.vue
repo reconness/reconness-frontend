@@ -28,7 +28,7 @@
                             <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
                         </div>
                         <div class="col-12" v-if="validators.url.rootDomains">
-                            <span :class="{invalid: validators.url.rootDomains}">Invalid character. Please enter a valid URL or press Enter key to add a new root domain</span>
+                            <span :class="{invalid: validators.url.rootDomains}">Invalid character. Please enter a valid URL or press Enter or Space key to add a new root domain</span>
                         </div>
 
                         <div class="col-12">
@@ -353,7 +353,7 @@ export default {
         this.validators.blank.rootDomains = false
       }
       const chipsActualValue = document.getElementById('chips_el').value
-      if (this.isStrWithSpaces(chipsActualValue)) {
+      if (this.isStrWithSpaces(chipsActualValue) || !this.$validateUrl(chipsActualValue)) {
         this.validators.url.rootDomains = true
       } else {
         this.validators.url.rootDomains = false
