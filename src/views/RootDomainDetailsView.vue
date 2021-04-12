@@ -9,10 +9,11 @@
         <hr class="reset-margin-top" />
         <div class="content">
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
-            Subdomains <span class="text-muted-b3"> ({{this.getSubdomainSize(this.routeParams)}})</span>
+            Subdomains
+            <span  class="text-muted-b3"> ({{  countSubdomainList /*this.getSubdomainSize(this.routeParams) */}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
-            Agents <span class="text-muted-b3">(4)</span>
+            Agents <span class="text-muted-b3">({{getLastAgentRootDomain.length}})</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' />
           <AgentListTable v-else :color = "secondaryColor"/>
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 import SubdomainListTable from '@/components/Target/SubdomainListTable.vue'
 import AgentListTable from '@/components/Target/AgentListTable.vue'
@@ -56,7 +57,9 @@ export default {
     AgentListTable
   },
   computed: {
-    ...mapGetters('target', ['getTargetById', 'getSubdomainSize'])
+    ...mapState('target', ['countSubdomainList']),
+    ...mapGetters('target', ['getTargetById', 'getSubdomainSize']),
+    ...mapGetters(['getLastAgentRootDomain'])
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)

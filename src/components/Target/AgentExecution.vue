@@ -10,7 +10,7 @@
                                 <div class="info-box agent_info_panel">
                                     <div class="info-box-content">
                                       <div class="border-right">
-                                        <span class="info-box-text mb-2 font-weight-bold">{{ nameAgent }}</span>
+                                        <span class="info-box-text mb-2 font-weight-bold overflow-visible">{{ nameAgent }}</span>
                                         <span class="mr-4">{{ time }}</span>
                                         <MotionPauseOutlineIco v-if="this.agentStatus.status == 1" @click="switchAgentStatus(this.$agentStatus.PAUSED)"/>
                                         <MotionPlayOutlineIco v-else @click="switchAgentStatus(this.$agentStatus.RUNNING)"/>
@@ -53,7 +53,7 @@
                                     </div>
                             </div>
                             <div class="col-12">
-                                <v-ace-editor v-model:value="terminal_ouput" lang="csharp" style="height:300px" theme="monokai"/>
+                                <v-ace-editor v-model:value="terminal_ouput" lang="csharp" :readonly="true" style="height:300px" theme="monokai"/>
                                 <div class="d-flex flex-row-reverse mt-3">
                                   <button @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
                                 </div>

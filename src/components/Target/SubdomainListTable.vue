@@ -21,7 +21,7 @@
     <div class="col-lg-8">
     <div class="mb-3 has-search" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
       <span class="material-icons search-icon form-control-feddback">search</span>
-      <input  class="form-control form-style" type="search" placeholder="Find"  v-model= "searchModel"  v-on:keyup.enter="this.searchCriteria = this.searchModel">
+      <input  id="input-search" class="form-control form-style" type="search" placeholder="Find"  v-model= "searchModel"  v-on:keyup.enter="this.searchCriteria = this.searchModel" @mouseup="searchEvent(this.searchModel)">
     </div>
     </div>
        <div class="col-lg-4" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
@@ -32,7 +32,7 @@
   </button>
   <div class="dropdown-menu w-50" aria-labelledby="dropdownMenuButton">
     <div v-for="element in this.selectList" :key="element.id" @click="this.elementSelected = element.name">
-      <a class="dropdown-item" href="#" @click="this.dropdownCriteria = element.id" >{{element.name}} </a>
+      <a  v-if="this.elementSelected !== element.name" class="dropdown-item" href="#" @click="this.dropdownCriteria = element.id" >{{element.name}} </a>
     </div>
   </div>
 </div>
@@ -185,8 +185,8 @@ export default {
       showHeader: true,
       isElementSelected: true,
       rName: 'subdomains',
-      selectList: [{ id: 1, name: 'Select' }, { id: 2, name: 'Label' }, { id: 3, name: 'Service' }, { id: 4, name: 'Port' }, { id: 5, name: 'Agent' }, { id: 6, name: 'Date' }],
-      elementSelected: 'Select',
+      selectList: [{ id: 1, name: 'Subdomain' }, { id: 2, name: 'Label' }, { id: 3, name: 'Service' }, { id: 4, name: 'Port' }, { id: 5, name: 'Agent' }, { id: 6, name: 'Date' }],
+      elementSelected: 'Subdomain',
       searchModel: '',
       searchCriteria: '',
       dropdownCriteria: 1
@@ -262,35 +262,67 @@ export default {
       this.showHeader = true
       this.$store.commit('target/cancelElementSelected')
     },
+    searchEvent (oldValue) {
+      setTimeout(function () {
+        var newValue = document.getElementById('input-search').value
+        if (newValue === '' && oldValue !== '') {
+          this.searchCriteria = ''
+        }
+      }.bind(this), 1)
+    },
     search () {
       if (this.searchCriteria === '' || this.searchCriteria === undefined) {
         if (this.dropdownCriteria === 1) {
+          var countElementList = this.getSubdomainSize(this.routeParams)
+          this.$store.commit('target/changeCounterSubdom', countElementList)
           return this.rootDomain.subdomain
         }
       } else if (this.dropdownCriteria === 2) {
         if ('interesting'.includes(this.searchCriteria.toLowerCase())) {
-          return this.rootDomain.subdomain.filter(item => (item.interesting === true))
+          const listSubdomain = this.rootDomain.subdomain.filter(item => (item.interesting === true))
+          this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+          return listSubdomain
         } else if ('checking'.includes(this.searchCriteria.toLowerCase())) {
-          return this.rootDomain.subdomain.filter(item => (item.checking === true))
+          const listSubdomain = this.rootDomain.subdomain.filter(item => (item.checking === true))
+          this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+          return listSubdomain
         } else if ('vulnerable'.includes(this.searchCriteria.toLowerCase())) {
-          return this.rootDomain.subdomain.filter(item => (item.vulnerable === true))
+          const listSubdomain = this.rootDomain.subdomain.filter(item => (item.vulnerable === true))
+          this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+          return listSubdomain
         } else if ('bounty'.includes(this.searchCriteria.toLowerCase())) {
-          return this.rootDomain.subdomain.filter(item => (item.bounty === true))
+          const listSubdomain = this.rootDomain.subdomain.filter(item => (item.bounty === true))
+          this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+          return listSubdomain
         } else if ('ignore'.includes(this.searchCriteria.toLowerCase())) {
-          return this.rootDomain.subdomain.filter(item => (item.ignore === true))
+          const listSubdomain = this.rootDomain.subdomain.filter(item => (item.ignore === true))
+          this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+          return listSubdomain
         } else if ('scope'.includes(this.searchCriteria.toLowerCase())) {
-          return this.rootDomain.subdomain.filter(item => (item.scope === true))
+          const listSubdomain = this.rootDomain.subdomain.filter(item => (item.scope === true))
+          this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+          return listSubdomain
         }
       } else if (this.dropdownCriteria === 3) {
-        return this.rootDomain.subdomain.filter(item => (item.services.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+        const listSubdomain = this.rootDomain.subdomain.filter(item => (item.services.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+        this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+        return listSubdomain
       } else if (this.dropdownCriteria === 4) {
-        return this.rootDomain.subdomain.filter(item => (item.ports.find(item2 => item2 === Number(this.searchCriteria))))
+        const listSubdomain = this.rootDomain.subdomain.filter(item => (item.ports.find(item2 => item2 === Number(this.searchCriteria))))
+        this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+        return listSubdomain
       } else if (this.dropdownCriteria === 5) {
-        return this.rootDomain.subdomain.filter(item => (item.agent.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+        const listSubdomain = this.rootDomain.subdomain.filter(item => (item.agent.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
+        this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+        return listSubdomain
       } else if (this.dropdownCriteria === 6) {
-        return this.rootDomain.subdomain.filter(item => (item.added === this.searchCriteria))
+        const listSubdomain = this.rootDomain.subdomain.filter(item => (item.added === this.searchCriteria))
+        this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+        return listSubdomain
       }
-      return this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(this.searchCriteria.toLowerCase())))
+      const listSubdomain = this.rootDomain.subdomain.filter(item => (item.name.toLowerCase().includes(this.searchCriteria.toLowerCase())))
+      this.$store.commit('target/changeCounterSubdom', listSubdomain.length)
+      return listSubdomain
     },
     printAgent (agents) {
       var listAgent = []

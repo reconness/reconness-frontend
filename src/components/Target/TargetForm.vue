@@ -28,7 +28,7 @@
                             <span :class="{invalid: validators.blank.rootDomains}">The field root domain is required</span>
                         </div>
                         <div class="col-12" v-if="validators.url.rootDomains">
-                            <span :class="{invalid: validators.url.rootDomains}">Invalid character. Please enter a valid URL or press Enter key to add a new root domain</span>
+                            <span :class="{invalid: validators.url.rootDomains}">Invalid character. Please enter a valid URL or press Enter or Space key to add a new root domain</span>
                         </div>
 
                         <div class="col-12">
@@ -358,6 +358,11 @@ export default {
       } else {
         this.validators.url.rootDomains = false
       }
+      if (chipsActualValue !== '' && !this.$validateUrl(chipsActualValue)) {
+        this.validators.url.rootDomains = true
+      } else {
+        this.validators.url.rootDomains = false
+      }
     },
     enableValidationMessageBugBountyUrl () {
       if (this.target.bugBountyUrl !== '' && !this.$validateUrl(this.target.bugBountyUrl)) {
@@ -382,7 +387,10 @@ export default {
     },
     enableValidationMessageUniqueName () {
       if (this.target.name) {
-        this.validators.exist.name = this.checkIfTargetExistsByName(this.target.name)
+        this.validators.exist.name = this.checkIfTargetExistsByName({
+          name: this.target.name,
+          id: this.target.id
+        })
       }
     },
     enableValidationMessages () {
@@ -417,7 +425,8 @@ export default {
           {
             root: urlElem,
             id: this.target.rootDomains.length,
-            date: new Date().toLocaleDateString('es-Es')
+            date: new Date().toLocaleDateString('es-Es'),
+            subdomain: []
           }
         )
       }

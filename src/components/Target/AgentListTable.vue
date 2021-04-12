@@ -17,7 +17,7 @@
         <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-      <div class="row mb-2" v-for="item of this.getLastAgentSubdom" :key="item.id">
+      <div class="row mb-2" v-for="item of this.getLastAgentRootDomain" :key="item.id">
         <div class="col-2  border-left-radius border">
            <p class="m-2"> {{item.name}}</p>
         </div>
@@ -61,7 +61,7 @@ export default {
     AgentExecution
   },
   computed: {
-    ...mapGetters(['getLastAgentSubdom', 'getLastAgentSubdomSort']),
+    ...mapGetters(['getLastAgentRootDomain']),
     ...mapState('target', ['agentStatus'])
   },
   methods: {
@@ -80,18 +80,18 @@ export default {
     orderByNameAsc: function () {
       this.active_arrow_down = true
       this.active_arrow_up = false
-      return this.getLastAgentSubdom.sort(this.$compareNamesAsc)
+      return this.getLastAgentRootDomain.sort(this.$compareNamesAsc)
     },
     orderByNameDesc: function () {
       this.active_arrow_down = false
       this.active_arrow_up = true
-      return this.getLastAgentSubdom.sort(this.$compareNamesDesc)
+      return this.getLastAgentRootDomain.sort(this.$compareNamesDesc)
     },
     orderByCalendar: function () {
       if (this.lastrun_arrow_down) {
         this.lastrun_arrow_down = false
         this.lastrun_arrow_up = true
-        return this.getLastAgentSubdom.sort(function (a, b) {
+        return this.getLastAgentRootDomain.sort(function (a, b) {
           const as = a.lastRun.split('/')
           const ad = new Date(as[2], as[1] - 1, as[0])
           const bs = b.lastRun.split('/')
@@ -101,7 +101,7 @@ export default {
       } else {
         this.lastrun_arrow_down = true
         this.lastrun_arrow_up = false
-        return this.getLastAgentSubdom.sort(function (a, b) {
+        return this.getLastAgentRootDomain.sort(function (a, b) {
           const as = a.lastRun.split('/')
           const ad = new Date(as[2], as[1] - 1, as[0])
           const bs = b.lastRun.split('/')

@@ -677,9 +677,13 @@ export default ({
       id: -1,
       status: -1
     },
-    currentView: ''
+    currentView: '',
+    countSubdomainList: 0
   },
   mutations: {
+    changeCounterSubdom (state, countSubd) {
+      state.countSubdomainList = countSubd
+    },
     removebyIdTarget (state, id) {
       const index = state.targetIdList.findIndex(target => target.id === id)
       if (index !== -1) {
@@ -934,9 +938,9 @@ export default ({
       const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
       return rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain).messages
     },
-    checkIfTargetExistsByName: (state) => (targetName) => {
-      const currentTarget = state.targetListStore.find(target => target.name === targetName)
-      if (currentTarget) {
+    checkIfTargetExistsByName: (state) => (targetInfo) => {
+      const currentTarget = state.targetListStore.find(target => target.name === targetInfo.name)
+      if (currentTarget && currentTarget.id !== targetInfo.id) {
         return true
       }
       return false

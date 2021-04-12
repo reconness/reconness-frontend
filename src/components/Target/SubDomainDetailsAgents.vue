@@ -60,14 +60,10 @@ export default {
     color: String
   },
   computed: {
-    ...mapGetters('target', ['getSubDomain']),
+    ...mapGetters(['getLastAgentSubdom']),
     ...mapState('target', ['agentStatus']),
     listAgents () {
-      return this.getSubDomain({
-        idtarget: parseInt(this.$route.params.idTarget),
-        idrootdomain: parseInt(this.$route.params.id),
-        idsubdomain: parseInt(this.$route.params.idsubdomain)
-      }).agent
+      return this.getLastAgentSubdom
     }
   },
   methods: {
