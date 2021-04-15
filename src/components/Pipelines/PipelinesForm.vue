@@ -12,8 +12,8 @@
               </blockquote>
               <div class="card-tools" v-show="this.step === 1">
                 <a class="domain-names-list mr-2">Selected {{listAgents.length}}</a>
-                <a v-if="listAgents.length === 0" class="domain-names-list" @click="SelectedAll()" style="color: #00B1FF">Selected All</a>
-                <a v-else class="domain-names-list" @click="DeSelectedAll()" style="color: #00B1FF">Deselected All</a>
+                <a v-if="listAgents.length === 0" class="domain-names-list" @click="selectedAll()" style="color: #00B1FF">Selected All</a>
+                <a v-else class="domain-names-list" @click="deSelectedAll()" style="color: #00B1FF">Deselected All</a>
               </div>
             </div>
             <div class="modal-body">
@@ -109,13 +109,13 @@ export default {
         }
       }
     },
-    DeSelectedAll () {
+    deSelectedAll () {
       this.listAgents = []
       for (var item of this.agentListStore) {
         document.getElementById('agent' + item.id).classList.remove('style-border-item')
       }
     },
-    SelectedAll () {
+    selectedAll () {
       for (var item of this.agentListStore) {
         document.getElementById('agent' + item.id).classList.add('style-border-item')
         this.listAgents.push(item.id)
@@ -132,7 +132,7 @@ export default {
     },
     cancelAll () {
       if (this.step === 1) {
-        this.DeSelectedAll()
+        this.deSelectedAll()
         this.step = 1
       }
       if (this.step === 2 && this.agentStartingPoint !== 0) {
