@@ -2,9 +2,9 @@
   <div class="row">
     <div class="col-12">
       <div class="modal fade" id="pipelinesModalForm"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg modal-dialog-top" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-top modal-dialog-centered" role="document" :class="{'modal-xl': thirdStep}">
           <div class="modal-content agent-containers">
-            <div class="modal-header">
+            <div class="modal-header" :class="{'border-0' : thirdStep}">
               <blockquote class="blockquote-style">
                 <h5 v-show="this.step === 1">Select some agents to create your Pipeline</h5>
                 <h5 v-show="this.step === 2">Select one to start your pipeline</h5>
@@ -29,12 +29,14 @@
                       </span>
                     </div>
                 </div>
-                <div class="" v-show="this.step === 3">
+                <div class="col-12" v-show="this.step === 3">
+                  <PipelinesFormStepSettings/>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-               <button @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
+            <div class="modal-footer" :class="{'border-0' : thirdStep}">
+               <button v-if="this.step !== 3" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
+               <button v-else @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">DONE</button>
                <button @click="cancelAll()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
           </div>
@@ -47,6 +49,7 @@
 <script>
 import { mapState } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import PipelinesFormStepSettings from '@/components/Pipelines/PipelinesFormStepSettings.vue'
 export default {
   name: 'PipelinesForm',
   data: function () {
@@ -80,16 +83,20 @@ export default {
       } else {
         return false
       }
+    },
+    thirdStep () {
+      return this.step === 3
     }
   },
   components: {
-    AccountCogIco
+    AccountCogIco,
+    PipelinesFormStepSettings
   },
   methods: {
     selectAndDeselectedItem (itemID) {
       if (this.step === 1) {
         if (this.listAgents.includes(itemID)) {
-          var index = this.listAgents.indexOf(itemID)
+          const index = this.listAgents.indexOf(itemID)
           if (index !== -1) {
             this.listAgents.splice(index, 1)
           }
