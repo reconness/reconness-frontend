@@ -2,18 +2,18 @@
   <div class="row">
     <div class="col-12">
       <div class="modal fade" id="pipelinesModalForm"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg modal-dialog-top modal-dialog-centered" role="document" :class="{'modal-xl': thirdStep}">
+        <div class="modal-dialog modal-lg modal-dialog-top modal-dialog-centered" role="document" :class="{'modal-xl': thirdStep}">>
           <div class="modal-content agent-containers">
-            <div class="modal-header" :class="{'border-0' : thirdStep}">
+            <div class="modal-header"  :class="{'border-0' : thirdStep}">
               <blockquote class="blockquote-style">
                 <h5 v-show="this.step === 1">Select some agents to create your Pipeline</h5>
                 <h5 v-show="this.step === 2">Select one to start your pipeline</h5>
                 <h5 v-show="this.step === 3">Pipeline Settings</h5>
               </blockquote>
               <div class="card-tools" v-show="this.step === 1">
-                <a class="domain-names-list mr-2">Selected {{listAgents.length}}</a>
-                <a v-if="listAgents.length === 0" class="domain-names-list" @click="selectedAll()" style="color: #00B1FF">Selected All</a>
-                <a v-else class="domain-names-list" @click="deSelectedAll()" style="color: #00B1FF">Deselected All</a>
+                <a class="domain-names-list mr-2 pr-2 border-right">Selected {{listAgents.length}}</a>
+                <a v-if="listAgents.length === 0" class="domain-names-list" @click="SelectedAll()" style="color: #00B1FF">Selected All</a>
+                <a v-else class="domain-names-list" @click="DeSelectedAll()" style="color: #00B1FF">Deselected All</a>
               </div>
             </div>
             <div class="modal-body">
@@ -36,7 +36,7 @@
             </div>
             <div class="modal-footer" :class="{'border-0' : thirdStep}">
                <button v-if="this.step !== 3" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
-               <button v-else @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">DONE</button>
+               <button v-else @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
                <button @click="cancelAll()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
           </div>
@@ -158,15 +158,16 @@ export default {
 <style scoped>
 .text-custom{
     color: #fff;
-    font-size: 20px;
+    font-size: 15px;
 }
 .small-text{
   color:rgb(228, 229, 230);
-  font-size: 90%;
+  font-size: 80%;
+  opacity: 0.8;
 }
 .info-box{
- border-radius: 12px;
- box-shadow: 13px 11px 41px #d6d6d6;
+ border-radius: 18px;
+ box-shadow: 13px 19px 41px #d6d6d6;
  opacity: 1;
 }
 .info-box span svg {
@@ -186,15 +187,42 @@ export default {
 blockquote > h5{
     color: #000;
     margin-bottom: auto;
+    opacity: 1;
 }
 .style-border-item{
-    border: 2px solid;
-    color: #fff;
+    border: 3px solid #fff;
 }
 .isLinkDisabled {
   color: currentColor;
   pointer-events: none;
   opacity: 0.5 !important;
   cursor: not-allowed;
+}
+.modal-header{
+  border-bottom: 1px solid #f1f3f5;
+  opacity: 1;
+}
+.modal-footer{
+  border-top: 1px solid #f1f3f5;
+  opacity: 1;
+}
+.card-tools > a{
+  font-size: 14px;
+  opacity: 1;
+}
+.card-tools .border-right{
+  border-right: 1px solid #f1f3f5!important;
+}
+.info-box {
+transition: all .25s ease;
+width:100%;
+}
+.info-box:hover {
+-webkit-transform:scale(1.25);
+-moz-transform:scale(1.25);
+-ms-transform:scale(1.25);
+-o-transform:scale(1.25);
+transform:scale(1.05);
+transition: all .25s ease;
 }
 </style>
