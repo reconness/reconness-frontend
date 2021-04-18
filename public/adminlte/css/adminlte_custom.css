@@ -868,3 +868,13 @@ div.card-body a svg{
 span.p-datepicker-prev-icon.pi.pi-chevron-left, span.p-datepicker-next-icon.pi.pi-chevron-right{
   color: #00B1FF !important;
 }
+div.p-datepicker.p-component.p-datepicker-inline{
+  border: none;
+}
+table.p-datepicker-calendar thead{
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+div.p-datepicker-header{
+  border-bottom: none !important;
+}
