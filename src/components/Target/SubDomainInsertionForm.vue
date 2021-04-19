@@ -46,7 +46,7 @@
     </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import jQuery from 'jquery'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
@@ -95,7 +95,7 @@ export default {
       if (this.$validateIsBlank(this.subdomains[0].name)) {
         this.validators.blank.subDomainName[0] = true
       }
-      if (!this.enableValidationMessageSubDomainBlankNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
+      if (!this.enableValidationMessageSubDomainBlankNameManual() && !this.enableValidationMessageSubDomainUniqueNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
           idTarget: parseInt(this.$route.params.idTarget),
           idRootDomain: parseInt(this.$route.params.id),
@@ -182,6 +182,26 @@ export default {
       }
       return founded
     },
+    enableValidationMessageSubDomainUniqueNameManual: function () {
+      let founded = false
+      let index = 0
+      const params = {
+        name: '',
+        idtarget: parseInt(this.$route.params.idTarget),
+        idrootdomain: parseInt(this.$route.params.id)
+      }
+      while (index < this.subdomains.length && !founded) {
+        params.name = this.subdomains[index].name
+        if (this.checkIfSubdomainExistsByName(params)) {
+          this.validators.exist.subDomainName[index] = true
+          founded = true
+        } else {
+          this.validators.exist.subDomainName[index] = false
+        }
+        index++
+      }
+      return founded
+    },
     enableValidations: function (e) {
       this.enableValidationMessageSubDomainUniqueName(e)
       this.enableValidationMessageSubDomainUrlName(e)
@@ -219,7 +239,8 @@ export default {
   computed: {
     isFormValid () {
       return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
-    }
+    },
+    ...mapGetters('target', ['checkIfSubdomainExistsByName'])
   },
   props: {
     gradient: String
