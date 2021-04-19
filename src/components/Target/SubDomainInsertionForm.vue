@@ -17,15 +17,6 @@
                                       <MinusCircleIco/>
                                     </span>
                                   </div>
-                                  <div class="col-12 mb-2" v-if="validators.url.subDomainName[index]">
-                                    <span :class="{invalid: this.validators.url.subDomainName[index]}">The typed name is not a valid URL</span>
-                                  </div>
-                                  <div class="col-12 mb-2" v-if="validators.blank.subDomainName[index]">
-                                    <span :class="{invalid: this.validators.blank.subDomainName[index]}">You must enter a name</span>
-                                  </div>
-                                  <div class="col-12 mb-2" v-if="validators.exist.subDomainName[index]">
-                                    <span :class="{invalid: validators.exist.subDomainName[index]}">The written name is already being used by another subdomain</span>
-                                  </div>
                                 </div>
                                 <a href="#" class="text-body d-inline-flex mt-3" @click="createSubdomains">
                                     <span class="material-icons gradient-style" v-bind:style ="{background: gradient}">add_circle</span>
@@ -34,7 +25,20 @@
                             </div>
                         </div>
                         <div class="modal-footer border-top-0 m-auto">
-                            <button type="button" class="btn add-subdomain-btn-primary" v-bind:style ="{background: gradient}" @click="insertSubdomains">Add Subdomain</button>
+                            <div class="row text-center">
+                              <div class="col-12">
+                                <button type="button" class="btn add-subdomain-btn-primary" v-bind:style ="{background: gradient}" @click="insertSubdomains">Add Subdomain</button>
+                              </div>
+                              <div class="col-12 mt-2" v-if="this.validators.blank.subDomainName.indexOf(true) >= 0">
+                                <span :class="{invalid: this.validators.blank.subDomainName.indexOf(true) >= 0}">You must not leave any text field blank</span>
+                              </div>
+                              <div class="col-12 mt-1" v-if="validators.url.subDomainName.indexOf(true) >= 0">
+                                <span :class="{invalid: validators.url.subDomainName.indexOf(true) >= 0}">Some of the specified urls are not valid</span>
+                              </div>
+                              <div class="col-12 mt-1" v-if="this.validators.exist.subDomainName.indexOf(true) >= 0">
+                                <span :class="{invalid: this.validators.exist.subDomainName.indexOf(true) >= 0}">Some of the the specified values already exist</span>
+                              </div>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -42,7 +46,7 @@
     </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import jQuery from 'jquery'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
@@ -67,7 +71,7 @@ export default {
   },
   methods: {
     createSubdomains: function () {
-      if (this.isFormValid) {
+      if (this.isFormValid || !this.enableValidationMessageSubDomainBlankNameManual()) {
         this.subdomains.push({
           name: '',
           added: new Date().toLocaleDateString('es-Es'),
@@ -91,13 +95,14 @@ export default {
       if (this.$validateIsBlank(this.subdomains[0].name)) {
         this.validators.blank.subDomainName[0] = true
       }
-      if (!this.enableValidationMessageSubDomainBlankNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
+      if (!this.enableValidationMessageSubDomainBlankNameManual() && !this.enableValidationMessageSubDomainUniqueNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
           idTarget: parseInt(this.$route.params.idTarget),
           idRootDomain: parseInt(this.$route.params.id),
           subdomainsItems: this.subdomains
         }
         this.addSubdomain(params)
+        this.validators.exist.subDomainName.length = this.validators.exist.subDomainName.length + 1
         jQuery('#subDomainInsertionForm').modal('hide')
         this.resetForm()
       }
@@ -177,6 +182,26 @@ export default {
       }
       return founded
     },
+    enableValidationMessageSubDomainUniqueNameManual: function () {
+      let founded = false
+      let index = 0
+      const params = {
+        name: '',
+        idtarget: parseInt(this.$route.params.idTarget),
+        idrootdomain: parseInt(this.$route.params.id)
+      }
+      while (index < this.subdomains.length && !founded) {
+        params.name = this.subdomains[index].name
+        if (this.checkIfSubdomainExistsByName(params)) {
+          this.validators.exist.subDomainName[index] = true
+          founded = true
+        } else {
+          this.validators.exist.subDomainName[index] = false
+        }
+        index++
+      }
+      return founded
+    },
     enableValidations: function (e) {
       this.enableValidationMessageSubDomainUniqueName(e)
       this.enableValidationMessageSubDomainUrlName(e)
@@ -188,6 +213,7 @@ export default {
       if (subdomainIndex !== 0) {
         this.subdomains.splice(subdomainIndex, 1)
         this.validators.blank.subDomainName.splice(subdomainIndex, 1)
+        this.validators.exist.subDomainName.splice(subdomainIndex, 1)
       }
     }
   },
@@ -212,8 +238,9 @@ export default {
   },
   computed: {
     isFormValid () {
-      return (!this.enableValidationMessageSubDomainBlankNameManual() || this.validators.url.subDomainName || this.validators.exist.subDomainName)
-    }
+      return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
+    },
+    ...mapGetters('target', ['checkIfSubdomainExistsByName'])
   },
   props: {
     gradient: String
@@ -222,7 +249,7 @@ export default {
 </script>
 <style scoped>
     .root-domain-window {
-        height: 413px;
+        height: 434px;
         background: #FFFFFF 0% 0% no-repeat padding-box;
     }
     .root-domain-name {

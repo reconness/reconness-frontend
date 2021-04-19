@@ -5,7 +5,7 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex">
-           <a href="#" class="color-blue" data-toggle="modal" data-target="#targetModalForm">
+           <a href="#" class="color-blue" data-toggle="modal" data-target="#pipelinesModalForm">
             <span class="material-icons">control_point</span>
             <p class="float-right">New Pipeline</p>
           </a>
@@ -67,13 +67,14 @@
       </ul>
     </nav>
     <ConfirmationPipelinesList :nameRoute= 'rName'></ConfirmationPipelinesList>
+    <PipelinesForm></PipelinesForm>
   </div>
-    </template>
-
+</template>
 <script>
 import { mapState, mapMutations } from 'vuex'
 import jQuery from 'jquery'
 import ConfirmationPipelinesList from '@/components/Pipelines/ConfirmationPipelinesList.vue'
+import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 export default {
   name: 'NavBarTwoPipelines',
   data: function () {
@@ -86,7 +87,8 @@ export default {
     }
   },
   components: {
-    ConfirmationPipelinesList
+    ConfirmationPipelinesList,
+    PipelinesForm
   },
   computed: {
     ...mapState('pipelines', ['pipelinesListStore', 'check', 'colorDelete', 'pipelinesIdList'])

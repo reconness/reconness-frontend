@@ -242,13 +242,6 @@
         height: 30px;
     }
 
-    .custom-control-input:checked~.custom-control-label::before {
-      color: #fff;
-      border-color: #00B1FF;
-      background-color: #00B1FF;
-      box-shadow: none;
-    }
-
     .agentform-color-spacing-bottom{
         margin-top: 18px !important;
     }
