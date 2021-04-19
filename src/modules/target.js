@@ -959,7 +959,6 @@ export default ({
       return subdomain
     },
     checkIfSubdomainExistsByName: (state) => (params) => {
-      console.log(1)
       const target = state.targetListStore.find(item => item.id === params.idtarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)
       const subdomain = roots.subdomain.find(subdItem => subdItem.name === params.name)
