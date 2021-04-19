@@ -936,7 +936,12 @@ export default ({
     getSubDomainMessages: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
       const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
-      return rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain).messages
+      const subdomain = rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain)
+      if (subdomain) {
+        return subdomain.messages
+      } else {
+        return []
+      }
     },
     checkIfTargetExistsByName: (state) => (targetInfo) => {
       const currentTarget = state.targetListStore.find(target => target.name === targetInfo.name)
