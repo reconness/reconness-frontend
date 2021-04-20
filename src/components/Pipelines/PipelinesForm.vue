@@ -22,7 +22,7 @@
                    <div class="info-box float-left  abs-center"   :style ="{background:item.background}" @click="selectAndDeselectedItem(item.id)" :id="'agent' + item.id">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
                         <span class="info-box-text  text-custom agent-mini-agent-name">{{item.name }}</span>
-                        <small class="small-text">Details</small>
+                        <a class="active agent-mini-agent-details agent-mini-color-gray" @click="setDetailsLink" href="#" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text cursor-pointer">Details</small></a>
                       </div>
                       <span class="number float-right ml-2 abs-center"  :style ="{background:item.background}" >
                       <div><AccountCogIco/></div>
@@ -43,6 +43,7 @@
         </div>
       </div>
     </div>
+    <AgentForm/>
   </div>
 </template>
 
@@ -50,6 +51,7 @@
 import { mapState } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import PipelinesFormStepSettings from '@/components/Pipelines/PipelinesFormStepSettings.vue'
+import AgentForm from '@/components/AgentForm.vue'
 export default {
   name: 'PipelinesForm',
   data: function () {
@@ -90,7 +92,8 @@ export default {
   },
   components: {
     AccountCogIco,
-    PipelinesFormStepSettings
+    PipelinesFormStepSettings,
+    AgentForm
   },
   methods: {
     selectAndDeselectedItem (itemID) {
@@ -150,6 +153,11 @@ export default {
         this.agentStartingPoint = 0
         this.step = 1
       }
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('setDetailsLinks', true)
     }
   }
 
