@@ -7,7 +7,9 @@
         <label :for="item.id+1" v-show= check  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" class="mb-0"></label>
         <div class="card-header border-bottom-0 mb-1 mt-3 p-0 pl-2 pr-3 ">
            <span  class="material-icons main_reconnes_text-color mr-1 float-left"> chevron_right </span>
-           <h3 class="card-title domain-names-target domain-names-list">{{item.name}}</h3>
+            <router-link :to="{ name: 'PipelineDetail', params: {id: item.id} }" class="text-body card-title domain-names-target">
+           {{item.name}}
+           </router-link>
             <div class="card-tools mr-0">
                <ul class="nav nav-pills ml-auto">
                    <li class="nav-item icon-gray mr-1">

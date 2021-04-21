@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import jQuery from 'jquery'
 import { mapState } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import PipelinesFormStepSettings from '@/components/Pipelines/PipelinesFormStepSettings.vue'
@@ -132,12 +133,18 @@ export default {
       }
     },
     nextPage () {
-      if (this.step === 1) {
-        this.step = 2
-      } else {
-        if (this.step === 2) {
+      switch (this.step) {
+        case 1:
+          this.step = 2
+          break
+        case 2:
           this.step = 3
-        }
+          break
+        case 3:
+          this.step = 1
+          this.$router.push({ name: 'PipelineDetail', params: { id: 1 } })
+          jQuery('#pipelinesModalForm').modal('hide')
+          break
       }
     },
     cancelAll () {
@@ -232,5 +239,8 @@ width:100%;
 -o-transform:scale(1.25);
 transform:scale(1.05);
 transition: all .25s ease;
+}
+.agent-mini-agent-details{
+  width: fit-content;
 }
 </style>

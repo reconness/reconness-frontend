@@ -47,6 +47,11 @@ const routes = [
     path: '/pipelines/list',
     name: 'Pipelines',
     component: () => import('../views/PipelinesListView.vue')
+  },
+  {
+    path: '/pipelines/details/:id',
+    name: 'PipelineDetail',
+    component: () => import('../views/PipelineDetailsView.vue')
   }
 ]
 const router = createRouter({
