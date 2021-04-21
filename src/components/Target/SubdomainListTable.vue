@@ -70,7 +70,7 @@
         <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Agents: </p>
         <p class="text-dark-0 m-0 float-left">{{ printAgent(item.agent)}} </p>
         </dd>
-        <dd> <p class="text-muted-b3 mr-2 m-0 float-left">IpAddress: </p> <p class="text-dark-0 m-0"> {{item.ipAddress}} </p></dd>
+        <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left">IpAddress: </p> <p class="text-dark-0 m-0"> {{item.ipAddress}} </p></dd>
         <dd class="clearfix"> <p class="text-muted-b3 mr-2 m-0 float-left"> Ports: </p>
           <p class="text-dark-0 m-0 float-left">{{item.ports.join(', ')}} </p>
         </dd>

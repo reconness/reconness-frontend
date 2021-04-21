@@ -179,5 +179,10 @@ export default {
       state.styleList = '1.25rem'
       state.colorDelete = '#000000'
     }
+  },
+  getters: {
+    getPipelineById: (state) => (id) => {
+      return state.pipelinesListStore.find(pipeline => pipeline.id === id)
+    }
   }
 }

@@ -11,7 +11,7 @@
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container mt-2">
-                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">
+                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations">
                                   <div style="height: 0;">
                                     <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-show="index>0">
                                       <MinusCircleIco/>
@@ -293,5 +293,8 @@ export default {
     }
     span.circle-minus-properties svg{
       fill: #ff4545
+    }
+    input.subdomains-items-field{
+      border-radius: 11px;
     }
 </style>

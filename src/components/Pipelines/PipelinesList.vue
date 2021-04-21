@@ -8,7 +8,9 @@
         <label :for="item.id+1" v-show= check  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" ></label>
          <div class="p-2">
          <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
+           <router-link :to="{ name: 'PipelineDetail', params: {id: item.id} }">
            <h1 class="domain-names-list">{{item.name}}</h1>
+           </router-link>
            <span class="info-box-icon abs-center icon-gray border-bottom pb-2"><GearIcon/></span>
           </div>
            <div class="row pl-2 mt-2">
