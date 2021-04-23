@@ -72,10 +72,11 @@
             <h5>Schedule</h5>
           </div>
           <div class="col-12 col-lg-1 m-auto">
-            <span  class="material-icons"> chevron_left </span>
+            <span  class="material-icons blue-text"> chevron_left </span>
           </div>
-          <div class="col-12 col-lg-5">
+          <div class="col-12 col-lg-6">
             <div class="event-settings d-flex flex-column">
+              <span id="close-icon-pipeline-setting" class="material-icons">close</span>
               <div class="d-inline-flex justify-content-between">
                 <div class="d-inline-flex">
                   <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
@@ -92,22 +93,32 @@
               </div>
               <div class="mt-4">
                 <hr style="border: 0.5px solid #F1F3F5;"/>
-                <span class="float-left">Repeat</span>
-                <span class="float-right">Daily</span>
+                <!-- <span class="float-left">Repeat</span> -->
+                <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
+                <div class="form-group">
+                  <select class="form-control float-right">
+                    <option>None</option>
+                    <option>Hourly</option>
+                    <option>Daily</option>
+                    <option>Monthly</option>
+                    <option>Yearly</option>
+                  </select>
+                </div>
+                <!-- <span class="float-right">Daily</span> -->
               </div>
             </div>
           </div>
-          <div class="col-12 col-lg-5">
+          <div class="col-12 col-lg-4">
             <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event">
                 <span class="blue-text cursor-pointer">Add Event</span>
             </div>
           </div>
           <div class="col-12 col-lg-1 m-auto">
-            <span  class="material-icons"> chevron_right </span>
+            <span  class="material-icons blue-text"> chevron_right </span>
           </div>
           <div class="col-12">
             <div class="d-flex justify-content-center align-items-center mt-4">
-              <Calendar v-model="settings_data.event_date" :inline="true"/>
+              <Calendar v-model="settings_data.event_date" :inline="true" :minDate="new Date()"/>
             </div>
           </div>
         </div>
@@ -126,7 +137,8 @@ export default {
       settings_data: {
         event_date: null,
         locations: [],
-        location: -1
+        location: -1,
+        enabled: false
       }
     }
   },
@@ -192,5 +204,20 @@ h1{
 }
 .pipeline_diagram span.chevron_right{
   margin-top: 15px !important;
+}
+.schedule_section select{
+    border: 0;
+    outline: 0;
+    width: 44%;
+}
+#pipeline-setting-repeat{
+    bottom: 17px;
+    position: absolute;
+}
+#close-icon-pipeline-setting{
+      position: relative;
+    top: -7px;
+    left: 91%;
+    color: #00B1FF;
 }
 </style>
