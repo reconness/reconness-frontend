@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-12">
             <div class="pipeline_diagram">
-              <span  class="material-icons main_reconnes_text-color mt-1 float-left"> chevron_right </span>
+              <span  class="material-icons main_reconnes_text-color mt-1 float-left chevron_right"> chevron_right </span>
               <div class="card card-custom-pipeline w-auto mb-3">
                 <div class="p-2">
                   <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
@@ -33,18 +33,18 @@
             <hr/>
             <p>Set an option to set where you are going to run your pipeline</p>
             <div class="form-group">
-              <div class="custom-control custom-checkbox form-check">
-                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4">
-                <label class="form-check-label custom-control-label" for="agent_customCheckbox4">Target</label>
-              </div>
-              <div class="custom-control custom-checkbox form-check">
-                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5">
-                <label class="form-check-label custom-control-label" for="agent_customCheckbox5">RootDomain</label>
-              </div>
-              <div class="custom-control custom-checkbox form-check">
-                <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox6">
-                <label class="form-check-label custom-control-label" for="agent_customCheckbox6">Subdomain</label>
-              </div>
+                <div class="custom-control custom-radio form-check">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="settings_data.location">
+                <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
+                </div>
+                <div class="custom-control custom-radio form-check">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="settings_data.location">
+                <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
+                </div>
+                <div class="custom-control custom-radio form-check">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="settings_data.location">
+                <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
+                </div>
             </div>
         </div>
         </div>
@@ -56,7 +56,6 @@
         </div>
         <div class="col-12">
           <div class="p-2 w-100 mt-5 d-inline-flex settings-location border-top border-bottom">
-            <!-- <span class="material-icons blue-text cursor-pointer">control_point</span> -->
             <div class="pipeline_spacing w-100 d-flex">
               <FileImportIco />
               <p class="ml-1 mb-0 blue-text cursor-pointer">Add another location</p>
@@ -72,8 +71,12 @@
           <div class="col-12">
             <h5>Schedule</h5>
           </div>
+          <div class="col-12 col-lg-1 m-auto">
+            <span  class="material-icons blue-text"> chevron_left </span>
+          </div>
           <div class="col-12 col-lg-6">
             <div class="event-settings d-flex flex-column">
+              <span id="close-icon-pipeline-setting" class="material-icons">close</span>
               <div class="d-inline-flex justify-content-between">
                 <div class="d-inline-flex">
                   <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
@@ -90,19 +93,32 @@
               </div>
               <div class="mt-4">
                 <hr style="border: 0.5px solid #F1F3F5;"/>
-                <span class="float-left">Repeat</span>
-                <span class="float-right">Daily</span>
+                <!-- <span class="float-left">Repeat</span> -->
+                <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
+                <div class="form-group">
+                  <select class="form-control float-right">
+                    <option>None</option>
+                    <option>Hourly</option>
+                    <option>Daily</option>
+                    <option>Monthly</option>
+                    <option>Yearly</option>
+                  </select>
+                </div>
+                <!-- <span class="float-right">Daily</span> -->
               </div>
             </div>
           </div>
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-lg-4">
             <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event">
                 <span class="blue-text cursor-pointer">Add Event</span>
             </div>
           </div>
+          <div class="col-12 col-lg-1 m-auto">
+            <span  class="material-icons blue-text"> chevron_right </span>
+          </div>
           <div class="col-12">
             <div class="d-flex justify-content-center align-items-center mt-4">
-              <Calendar v-model="event_date" :inline="true"/>
+              <Calendar v-model="settings_data.event_date" :inline="true" :minDate="new Date()"/>
             </div>
           </div>
         </div>
@@ -118,7 +134,12 @@ export default {
   name: 'PipelinesFormStepSettings',
   data: function () {
     return {
-      event_date: null
+      settings_data: {
+        event_date: null,
+        locations: [],
+        location: -1,
+        enabled: false
+      }
     }
   },
   components: {
@@ -180,5 +201,23 @@ h1{
 }
 .settings-location svg{
   fill: #00B1FF;
+}
+.pipeline_diagram span.chevron_right{
+  margin-top: 15px !important;
+}
+.schedule_section select{
+    border: 0;
+    outline: 0;
+    width: 44%;
+}
+#pipeline-setting-repeat{
+    bottom: 17px;
+    position: absolute;
+}
+#close-icon-pipeline-setting{
+      position: relative;
+    top: -7px;
+    left: 91%;
+    color: #00B1FF;
 }
 </style>
