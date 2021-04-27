@@ -6,7 +6,8 @@
           <div class="modal-content agent-containers">
             <div class="modal-header"  :class="{'border-0' : thirdStep}">
               <blockquote class="blockquote-style">
-                <h5 v-show="this.step === 1">Select some agents to create your Pipeline</h5>
+                <h5 v-show="this.step === 1 && this.routeName === 'Pipelines'">Select some agents to create your Pipeline</h5>
+                <h5 v-show="this.step === 1 && this.routeName === 'PipelineDetail'">Add agents to pipeline</h5>
                 <h5 v-show="this.step === 2">Select one to start your pipeline</h5>
                 <h5 v-show="this.step === 3">Pipeline Settings</h5>
               </blockquote>
@@ -35,7 +36,7 @@
               </div>
             </div>
             <div class="modal-footer" :class="{'border-0' : thirdStep}">
-               <button v-if="this.step !== 3" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
+               <button v-if="this.step !== 3 && this.routeName === 'Pipelines'" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
                <button v-else @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
                <button @click="cancelAll()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
@@ -61,6 +62,9 @@ export default {
       step: 1,
       agentStartingPoint: 0
     }
+  },
+  props: {
+    routeName: String
   },
   computed: {
     ...mapState(['agentListStore']),

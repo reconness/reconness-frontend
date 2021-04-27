@@ -24,6 +24,21 @@ export default {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5
+          },
+          {
+            name: 'Agent 6',
+            background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
+            id: 6
+          },
+          {
+            name: 'Agent 7',
+            background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box',
+            id: 7
+          },
+          {
+            name: 'Agent 8',
+            background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
+            id: 8
           }
         ]
       },
@@ -133,7 +148,11 @@ export default {
     styleList: '1.25rem',
     pipelinesIdList: [],
     idPipeline: -1,
-    colorDelete: '#000000'
+    colorDelete: '#000000',
+    checkDetail: false,
+    styleListDetail: '1.25rem',
+    pipelinesIdAgentsList: [],
+    colorDeleteDetail: '#000000'
   },
   mutations: {
     removebyIdPipelines (state, id) {
@@ -178,6 +197,60 @@ export default {
       state.check = !state.check
       state.styleList = '1.25rem'
       state.colorDelete = '#000000'
+    },
+    updatePipelineName (state, pipeline) {
+      state.pipelinesListStore.find(item => item.id === pipeline.id).name = pipeline.name
+    },
+    editListDetail (state) {
+      state.checkDetail = !state.check
+      state.styleListDetail = '0px'
+    },
+    addIdAgentPipelineDetail (state, pipeline) {
+      state.pipelinesIdAgentsList.push(pipeline)
+      if (state.pipelinesIdAgentsList.length === 1) {
+        state.colorDeleteDetail = '#ff4545'
+      }
+    },
+    removebyIdAgentPipelinesDetail (state, id) {
+      const index = state.pipelinesIdAgentsList.findIndex(pipeline => pipeline.id === id)
+      if (index !== -1) {
+        state.pipelinesIdAgentsList.splice(index, 1)
+        if (state.pipelinesIdAgentsList.length === 0) {
+          state.colorDeleteDetail = '#000000'
+        }
+      }
+    },
+    cancelIdAgentPipelinesDetail (state) {
+      state.pipelinesIdAgentsList = []
+      state.checkDetail = !state.checkDetail
+      state.styleListDetail = '1.25rem'
+      state.colorDeleteDetail = '#000000'
+    },
+    removeAgentsPipelinesChecked (state, idPipeline) {
+      const Pipeline = state.pipelinesListStore.find(pipeline => pipeline.id === idPipeline)
+      for (const index1 in state.pipelinesIdAgentsList) {
+        const index = Pipeline.agent.findIndex(agent => agent.id === state.pipelinesIdAgentsList[index1].id)
+        if (index !== -1) {
+          Pipeline.agent.splice(index, 1)
+        }
+      }
+      state.pipelinesIdAgentsList = []
+      state.checkDetail = false
+      state.styleListDetail = '1.25rem'
+      state.colorDeleteDetail = '#000000'
+    },
+    cancelElementSelected (state, nameRoute) {
+      if (nameRoute === 'pipelines') {
+        state.pipelinesIdList = []
+        state.check = !state.check
+        state.styleList = '1.25rem'
+        state.colorDelete = '#000000'
+      } else {
+        state.pipelinesIdAgentsList = []
+        state.checkDetail = !state.checkDetail
+        state.styleListDetail = '1.25rem'
+        state.colorDeleteDetail = '#000000'
+      }
     }
   },
   getters: {

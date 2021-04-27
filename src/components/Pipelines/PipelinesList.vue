@@ -16,23 +16,8 @@
            <div class="row pl-2 mt-2">
               <div class="col-10 p-0">
               <div class="card card-custom-container pt-4 pb-4  pr-0 pl-4" style="position: relative;">
-                <div class="row">
-                  <div v-for="(item2,index) of item.agent.slice(0,3)" :key="item2.id" class="col-4 p-0" style="position: relative;">
-                    <div class="info-box-background  w-85 float-left" style="position: relative; left: 0px; top: -1px;">
-                  </div>
-                    <div v-if="index !== 2" class="mt-3 w-15 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="index !== 2" class="mt-3 black-circle">  </div>
-                    <div class="info-box float-left w-85 abs-center"  :style ="{background:item2.background}" style="position: absolute; left: 6px; top: -1px;">
-                      <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
-                        <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
-                        <small class="small-text">Details</small>
-                      </div>
-                      <span class="number float-right ml-1 abs-center"  :style ="{background:item2.background}" >
-                      <div><AccountCogIco/></div>
-                      </span>
-                    </div>
-                  </div>
-                </div></div></div>
+                <PipelineWorkflow :AgentsPipelineList= 'item.agent'/>
+              </div></div>
                <div class="col abs-center ">
                  <div class="row p-2">
                    <div class="col-12">
@@ -44,21 +29,20 @@
                  </div>
                </div>
            </div>
-       </div>
-    </div></div></div>
+    </div></div></div></div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
+import PipelineWorkflow from '@/components/Pipelines/PipelineWorkflow.vue'
 export default {
   name: 'PipelinesList',
   components: {
-    AccountCogIco,
     RocketIco,
-    GearIcon
+    GearIcon,
+    PipelineWorkflow
   },
   data: function () {
     return {
@@ -131,13 +115,6 @@ width:100%;
 transform:scale(1.05);
 transition: all .25s ease;
 }
-.icon-gray{
-  fill: #f1f3f5;
-  opacity: 1;
-  width: 24px;
-  height: 24px;
-  border-bottom: 1px solid #f1f3f5!important;
-}
 .card-custom{
  background: #ffffff 0% 0% no-repeat padding-box;
  box-shadow: 22px 22px 13px #d6d6d6;
@@ -157,51 +134,17 @@ h1{
   border-radius: 12px;
   opacity: 1;
 }
-.info-box{
-  overflow: hidden;
-  text-overflow: ellipsis;
+.icon-gray{
+  fill: #f1f3f5;
+  opacity: 1;
+  width: 24px;
+  height: 24px;
+  border-bottom: 1px solid #f1f3f5!important;
 }
 .info-box-icon svg{
   width: 25px;
   height: 25px;
   opacity: 1;
-}
-.number {
-    display: inline-table;
-    border-radius: 8px;
-}
-.info-box-background{
-    position: absolute;
-    background: transparent;
-    border: 1px solid;
-    border-radius: 12px;
-    opacity: 1;
-    height: 85px;
-}
-.border-right{
-  opacity: 1;
-}
-
-.info-box span svg {
-    fill: #ffffff;
-    width: 18px;
-    height: 18px;
-}
-.number div{
-    background-color: rgba(255, 255, 255, 0.15);
-    padding: 1px 4px;
-    border-radius: 4px;
-    color: #ffffff;
-    font-size: 12px;
-    opacity: 1;
-    margin: 3px;
-}
-.text-custom{
-    color: #fff;
-    font-size: 16px;
-}
-.small-text{
-  color:rgb(228, 229, 230);
 }
 
 @media (min-width: 1600px){
@@ -210,35 +153,6 @@ h1{
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
  }
-}
-@media (min-width: 1200px){
-.text-custom{
-    color: #fff;
-    font-size: 12px;
-}
-.small-text{
-  font-size: 70%;
-  color:rgb(228, 229, 230);
-}
-.info-box span svg {
-    fill: #ffffff;
-    width: 15px;
-    height: 15px;
-}
-
-.number div {
-    background-color: rgba(255, 255, 255, 0.15);
-    padding: 1px 1px;
-    border-radius: 4px;
-    color: #ffffff;
-    font-size: 10px;
-    opacity: 1;
-    margin: 0px;
-}
-}
-
-.w-85 {
-    width: 85%!important;
 }
 
 input[type="checkbox"] + label:before {
@@ -267,22 +181,5 @@ input[type="checkbox"]:checked + label:after {
 }
 input[type="checkbox"] {
   display: none;
-}
-.w-15 {
-    width: 15%!important;
-}
-.margin-center{
-  margin-top: 2.5rem!important;
-}
-.black-circle{
-    height: 8px;
-    width: 8px;
-    position: absolute;
-    left: 98%;
-    background: black;
-    border-color: black;
-    border-radius: 100%;
-    margin-top: 2.4rem!important;
-    z-index: 10;
 }
 </style>

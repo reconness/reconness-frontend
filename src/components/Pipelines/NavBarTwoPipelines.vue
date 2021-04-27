@@ -66,8 +66,8 @@
         </li>
       </ul>
     </nav>
-    <ConfirmationPipelinesList :nameRoute= 'rName'></ConfirmationPipelinesList>
-    <PipelinesForm></PipelinesForm>
+    <ConfirmationPipelinesList :nameRoute= 'this.$route.name'></ConfirmationPipelinesList>
+    <PipelinesForm :routeName= 'this.$route.name'></PipelinesForm>
   </div>
 </template>
 <script>
@@ -82,8 +82,7 @@ export default {
       active_arrow_down: true,
       active_arrow_up: false,
       isMiniView: false,
-      isListView: true,
-      rName: 'pipelines'
+      isListView: true
     }
   },
   components: {
