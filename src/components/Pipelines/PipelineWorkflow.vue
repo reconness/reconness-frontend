@@ -5,7 +5,7 @@
                   </div>
                     <div v-if="index !== 2" class="mt-3 w-15 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
                     <div v-if="index !== 2" class="mt-3 black-circle">  </div>
-                    <div class="info-box float-left w-85 abs-center"  :style ="{background:item2.background}" style="position: absolute; left: 6px; top: -1px;">
+                    <div class="info-box float-left w-85 abs-center"  :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
                         <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
                         <small class="small-text">Details</small>
@@ -33,6 +33,7 @@ export default {
 .info-box{
   overflow: hidden;
   text-overflow: ellipsis;
+  border-radius: 18px;
 }
 .number {
     display: inline-table;
@@ -42,7 +43,7 @@ export default {
     position: absolute;
     background: transparent;
     border: 1px solid;
-    border-radius: 12px;
+    border-radius: 18px;
     opacity: 1;
     height: 85px;
 }

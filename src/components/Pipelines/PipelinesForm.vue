@@ -13,8 +13,8 @@
               </blockquote>
               <div class="card-tools" v-show="this.step === 1">
                 <a class="domain-names-list mr-2 pr-2 border-right">Selected {{listAgents.length}}</a>
-                <a v-if="listAgents.length === 0" class="domain-names-list" @click="SelectedAll()" style="color: #00B1FF">Selected All</a>
-                <a v-else class="domain-names-list" @click="DeSelectedAll()" style="color: #00B1FF">Deselected All</a>
+                <a v-if="listAgents.length === 0" class="domain-names-list" @click="selectedAll()" style="color: #00B1FF">Selected All</a>
+                <a v-else class="domain-names-list" @click="deSelectedAll()" style="color: #00B1FF">Deselected All</a>
               </div>
             </div>
             <div class="modal-body">
@@ -37,7 +37,7 @@
             </div>
             <div class="modal-footer" :class="{'border-0' : thirdStep}">
                <button v-if="this.step !== 3 && this.routeName === 'Pipelines'" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
-               <button v-else @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
+               <button v-else @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
                <button @click="cancelAll()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
           </div>
@@ -50,7 +50,7 @@
 
 <script>
 import jQuery from 'jquery'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import PipelinesFormStepSettings from '@/components/Pipelines/PipelinesFormStepSettings.vue'
 import AgentForm from '@/components/AgentForm.vue'
@@ -68,6 +68,7 @@ export default {
   },
   computed: {
     ...mapState(['agentListStore']),
+    ...mapGetters('pipelines', ['getPipelineById']),
     iterList () {
       if (this.step === 1) {
         return this.agentListStore
@@ -165,13 +166,22 @@ export default {
         this.step = 1
       }
     },
+    save () {
+      if (this.routeName === 'PipelineDetail') {
+        const Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
+        for (var index of this.listAgents) {
+          Pipeline.agent.push(this.$store.getters.getAgentById(parseInt(index)))
+        }
+      }
+      this.deSelectedAll()
+      this.step = 1
+    },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
       this.$store.commit('setDetailsLinks', true)
     }
   }
-
 }
 </script>
 <style scoped>
