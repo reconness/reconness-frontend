@@ -52,7 +52,7 @@
           <div class="pipeline_spacing">
           <p class="float-right blue-text mb-1 cursor-pointer">Search</p>
           <div id="input-searcher-container">
-            <AutoComplete v-for="(item, index) in settings_data.locations" :key="item.id" v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index"/>
+            <AutoComplete v-for="(item, index) in settings_data.locations" :key="item.id" v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType"/>
           </div>
           </div>
         </div>
@@ -190,10 +190,12 @@ export default {
         this.filteredEntities = this.filterSubDomainsByName(e.target.value)
       }
     },
-    // updateType: function (e) {
-    //   const index = e.currentTarget.getAttribute('data-index')
-    //   this.generalLocationType = this.settings_data.locations[index].entity.entityType
-    // },
+    updateType: function (e) {
+      const index = e.currentTarget.getAttribute('data-index')
+      if (this.settings_data.locations[index].entity.entityType > -1) {
+        this.generalLocationType = this.settings_data.locations[index].entity.entityType
+      }
+    },
     loadEntityData (e) {}
   },
   computed: {
