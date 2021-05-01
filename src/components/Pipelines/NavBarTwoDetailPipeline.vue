@@ -11,14 +11,14 @@
           <span class="material-icons float-right cursor-pointer" @click="showInputPipelineName = false; name = this.pipelineName"> open_in_new</span>
         </li>
         <li class="nav-item d-flex" v-if="!showInputPipelineName">
-          <div class="d-flex flex-row float-left" v-bind:class="{ 'justify-content-end': isPencilVisible}" >
+          <div class="d-flex flex-row float-left w-75" v-bind:class="{ 'justify-content-end': isPencilVisible}" >
               <input  v-model="name"
                 v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}"
                 class="form-control agent-placeholder agent-name-input" placeholder="My Pipeline"
                 @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true"
                 @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true"
                 @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false; editPipeline()" >
-              <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
+              <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main mt-2">edit</span>
             </div><!-- /.d-flex -->
         </li>
       </ul>
@@ -34,10 +34,13 @@
           </span>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
+          <a class="nav-link pos" v-show= "checkDetail" href="#" @click="close()">Cancel Remove</a>
+        </li>
+        <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#">Run</a>
         </li>
          <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#" @click="close()">Cancel</a>
+          <a class="nav-link pos" href="#" >Cancel</a>
         </li>
       </ul>
     </nav>
@@ -106,5 +109,9 @@ export default {
 <style scoped>
 .agent-name-input{
   background-color: transparent;
+  font-size: 16px;
+}
+.pencil-align-main{
+  font-size: 17px;
 }
 </style>

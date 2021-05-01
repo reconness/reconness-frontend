@@ -971,6 +971,60 @@ export default ({
         return true
       }
       return false
+    },
+    filterTargetsByName: (state) => (name) => {
+      const temporal = state.targetListStore.filter(item => item.name.includes(name))
+      const entities = []
+      temporal.forEach(element => {
+        entities.push(
+          {
+            name: element.name,
+            entityType: 1,
+            entityId: element.id
+          }
+        )
+      })
+      return entities
+    },
+    filterRootDomainsByName: (state) => (name) => {
+      let temporal = []
+      state.targetListStore.forEach(element => {
+        temporal = temporal.concat(
+          element.rootDomains.filter(item => item.root.includes(name))
+        )
+      })
+      const entities = []
+      temporal.forEach(element => {
+        entities.push(
+          {
+            name: element.root,
+            entityType: 2,
+            entityId: element.id
+          }
+        )
+      })
+      return entities
+    },
+    filterSubDomainsByName: (state) => (name) => {
+      let temporal = []
+      state.targetListStore.forEach(target => {
+        target.rootDomains.forEach(rootDomain => {
+          temporal = temporal.concat(
+            rootDomain.subdomain.filter(item => item.name.includes(name))
+          )
+        })
+      })
+      const entities = []
+      temporal.forEach(element => {
+        entities.push(
+          {
+            name: element.name,
+            entityType: 3,
+            entityId: element.id
+          }
+        )
+      })
+      return entities
     }
   }
 })

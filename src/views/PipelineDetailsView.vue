@@ -10,7 +10,7 @@
         <div id='scroll-div'>
         <div class="content" id="content">
           <div class="row">
-            <div class="col-12 col-md-3 col-xl-2 p-3">
+            <div class="col-12 col-md-3 col-xl-2 "  :style="{padding: changePading}">
               <div class="info-box abs-center color-blue">
                 <div class="d-flex flex-column text-right">
                   <span data-toggle="modal" data-target="#pipelinesModalForm" class="cursor-pointer material-icons text-center">control_point</span>
@@ -18,7 +18,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-3 col-xl-2 p-3 order-12"
+            <div class="col-12 col-md-3 col-xl-2  order-12" :style="{padding: changePading}"
               v-for="item of this.getPipelineById(parseInt(this.$route.params.id)).agent" :key="item.id" >
               <PipelineAgent
                 :pipelineName="item.name"
@@ -42,8 +42,8 @@
                       </div>
                   </div></div>
                   <div class="row border-container ml-3 mr-3 mt-2">
-                  <div class="col-11">
-                    <PipelineWorkflow :AgentsPipelineList='this.getPipelineById(parseInt(this.$route.params.id)).agent' class="w-50 p-3 pr-0"/>
+                  <div class="col-11 mb-5">
+                    <PipelineWorkflow :AgentsPipelineList='this.getPipelineById(parseInt(this.$route.params.id)).agent' class="w-75 p-3 pr-0"/>
                   </div>
                    <div class="col">
                       <p class="ml-auto mt-3 mr-3 d-flex flex-column text-right">
@@ -62,7 +62,7 @@
 </template>
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import NavBarTwoDetailPipeline from '@/components/Pipelines/NavBarTwoDetailPipeline.vue'
 import PipelineAgent from '@/components/Pipelines/PipelineAgent.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
@@ -81,19 +81,26 @@ export default {
     PipelineWorkflow
   },
   computed: {
-    ...mapGetters('pipelines', ['getPipelineById'])
+    ...mapGetters('pipelines', ['getPipelineById']),
+    ...mapState('pipelines', ['checkDetail']),
+    changePading () {
+      var padding
+      if (this.checkDetail) {
+        padding = '.5rem'
+      } else {
+        padding = '1rem'
+      }
+      return padding
+    }
   },
   methods: {
     collapseDown () {
-      // document.getElementById('collapseWorkflowSection').classList.add('show')
-      // document.getElementById('collapseWorkflowSection').classList.remove('hide')
-      document.getElementById('content').scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
-      // document.getElementById('content').style.top = 120 + 'px'
+      // document.getElementById('content').scrollIntoView({ behavior: 'smooth', inline: 'end' })
+      // document.getElementById('scroll-div').scrollTop += 130
+      document.getElementById('scroll-div').scrollBy({ top: 120, behavior: 'smooth' })
     },
     collapseUp () {
-      // document.getElementById('collapseWorkflowSection').classList.remove('show')
-      // document.getElementById('collapseWorkflowSection').classList.add('hide')
-      document.getElementById('content').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'end' })
+      document.getElementById('scroll-div').scrollBy({ top: -120, behavior: 'smooth' })
     }
   }
 }
@@ -119,5 +126,7 @@ export default {
 div small{
   color: #b3b3b3;
 }
+.p-edit {
 
+}
 </style>
