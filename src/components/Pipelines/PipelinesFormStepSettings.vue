@@ -34,15 +34,15 @@
             <p>Set an option to set where you are going to run your pipeline</p>
             <div class="form-group">
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="settings_data.location">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="generalLocationType">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
                 </div>
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="settings_data.location">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="generalLocationType">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
                 </div>
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="settings_data.location">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="generalLocationType">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
                 </div>
             </div>
@@ -51,14 +51,16 @@
         <div class="col-12">
           <div class="pipeline_spacing">
           <p class="float-right blue-text mb-1 cursor-pointer">Search</p>
-          <input :readonly="$store.state.fromDetailsLink" class="form-control target-input-borders">
+          <div id="input-searcher-container">
+            <AutoComplete v-for="(item, index) in settings_data.locations" :key="item.id" v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index"/>
+          </div>
           </div>
         </div>
         <div class="col-12">
           <div class="p-2 w-100 mt-5 d-inline-flex settings-location border-top border-bottom">
             <div class="pipeline_spacing w-100 d-flex">
               <FileImportIco />
-              <p class="ml-1 mb-0 blue-text cursor-pointer">Add another location</p>
+              <p class="ml-1 mb-0 blue-text cursor-pointer" @click="addLocation({})">Add another location</p>
             </div>
           </div>
         </div>
@@ -93,7 +95,6 @@
               </div>
               <div class="mt-4">
                 <hr style="border: 0.5px solid #F1F3F5;"/>
-                <!-- <span class="float-left">Repeat</span> -->
                 <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
                 <div class="form-group">
                   <select class="form-control float-right">
@@ -104,7 +105,6 @@
                     <option>Yearly</option>
                   </select>
                 </div>
-                <!-- <span class="float-right">Daily</span> -->
               </div>
             </div>
           </div>
@@ -127,25 +127,82 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import Calendar from 'primevue/calendar'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import FileImportIco from '@/components/Icons/PlusCircleIco.vue'
+import AutoComplete from 'primevue/autocomplete'
 export default {
   name: 'PipelinesFormStepSettings',
   data: function () {
     return {
       settings_data: {
         event_date: null,
-        locations: [],
-        location: -1,
+        locations: [
+          {
+            entity: {
+              name: 'candiman.com',
+              entityType: 1,
+              entityId: 1
+            }
+          },
+          {
+            entity: {
+              name: 'pacha.com',
+              entityType: 2,
+              entityId: 2
+            }
+          }
+        ],
         enabled: false
-      }
+      },
+      generalLocationType: 1,
+      entityNameSearchData: '',
+      filteredEntities: []
     }
   },
   components: {
     Calendar,
     RocketIco,
-    FileImportIco
+    FileImportIco,
+    AutoComplete
+  },
+  methods: {
+    addLocation: function (item) {
+      if (Object.entries(item).length === 0) {
+        this.settings_data.locations.push(
+          {
+            entity: {
+              name: '',
+              entityType: -1,
+              entityId: -1
+            }
+          }
+        )
+      }
+    },
+    filterEntities: function (e) {
+      if (this.generalLocationType === this.$agentType.TARGET) {
+        this.filteredEntities = this.filterTargetsByName(e.target.value)
+      } else if (this.generalLocationType === this.$agentType.ROOTDOMAIN) {
+        this.filteredEntities = this.filterRootDomainsByName(e.target.value)
+      } else {
+        this.filteredEntities = this.filterSubDomainsByName(e.target.value)
+      }
+    },
+    // updateType: function (e) {
+    //   const index = e.currentTarget.getAttribute('data-index')
+    //   this.generalLocationType = this.settings_data.locations[index].entity.entityType
+    // },
+    loadEntityData (e) {}
+  },
+  computed: {
+    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName'])
+  },
+  created: function () {
+    if (this.settings_data.locations.length === 0) {
+      this.addLocation({})
+    }
   }
 }
 </script>
@@ -219,5 +276,18 @@ h1{
     top: -7px;
     left: 91%;
     color: #00B1FF;
+}
+#input-searcher-container{
+  /* max-height: 168px;
+  overflow-y: scroll; */
+  width: 100%;
+}
+.dropdown-menu{
+  display: inherit !important;
+  width: 100%;
+  position: relative;
+}
+span.p-autocomplete{
+  margin-top: 7px;
 }
 </style>

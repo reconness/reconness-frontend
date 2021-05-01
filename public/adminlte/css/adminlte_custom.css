@@ -878,3 +878,6 @@ table.p-datepicker-calendar thead{
 div.p-datepicker-header{
   border-bottom: none !important;
 }
+div.pipeline_spacing span.p-autocomplete, div.pipeline_spacing  input.p-autocomplete-input{
+  width: 100% !important;
+}
