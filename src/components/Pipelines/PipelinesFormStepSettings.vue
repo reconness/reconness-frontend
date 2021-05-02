@@ -209,6 +209,12 @@
           <div class="col-12 col-lg-1 m-auto">
             <span  class="material-icons blue-text"> chevron_right </span>
           </div> -->
+          <div class="col-12">
+            <ol class="carousel-indicators pipeline-settings-control-nav">
+              <li data-target="#carouselPipelineControls" data-slide-to="0" class="active rounded-circle"></li>
+              <li data-target="#carouselPipelineControls" data-slide-to="1" class="rounded-circle"></li>
+            </ol>
+          </div>
           <div class="col-12 pipeline_spacing">
             <div class="d-flex justify-content-center align-items-center mt-4">
               <Calendar v-model="settings_data.event_date" :inline="true" :minDate="new Date()"/>
@@ -403,5 +409,14 @@ a.pipeline-settings-nav span.carousel-control-prev-icon{
 }
 a.pipeline-settings-nav span.carousel-control-next-icon{
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300a1ff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+ol.carousel-indicators.pipeline-settings-control-nav{
+  position: relative !important;
+  margin-bottom: 0;
+}
+ol.carousel-indicators.pipeline-settings-control-nav li{
+  width: 15px;
+  height: 15px;
+  background-color: #00B1FF;
 }
 </style>
