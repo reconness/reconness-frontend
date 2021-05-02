@@ -68,17 +68,110 @@
       </div>
     </div>
     <div class="col-12 col-lg-6">
-      <div class="schedule_section pipeline_spacing">
+      <div class="schedule_section">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 pipeline_spacing">
             <h5>Schedule</h5>
           </div>
-          <div class="col-12 col-lg-1 m-auto">
-            <span  class="material-icons blue-text"> chevron_left </span>
+          <!-- Inicio Carrusel -->
+          <div class="col-12 pipeline_spacing">
+            <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="carousel" data-interval="false" data-wrap="false">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="row">
+                    <div class="col-12 col-lg-6">
+                      <div class="event-settings d-flex flex-column">
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
+                        <div class="d-inline-flex justify-content-between">
+                          <div class="d-inline-flex">
+                            <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
+                          </div>
+                          <div class="form-group">
+                            <div class="custom-control custom-switch wizard-setting-switch">
+                              <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-inline-flex">
+                          <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span>
+                        </div>
+                        <div class="mt-4">
+                          <hr style="border: 0.5px solid #F1F3F5;"/>
+                          <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
+                          <div class="form-group">
+                            <select class="form-control float-right">
+                              <option>None</option>
+                              <option>Hourly</option>
+                              <option>Daily</option>
+                              <option>Monthly</option>
+                              <option>Yearly</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      <div class="event-settings d-flex flex-column">
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
+                        <div class="d-inline-flex justify-content-between">
+                          <div class="d-inline-flex">
+                            <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
+                          </div>
+                          <div class="form-group">
+                            <div class="custom-control custom-switch wizard-setting-switch">
+                              <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-inline-flex">
+                          <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span>
+                        </div>
+                        <div class="mt-4">
+                          <hr style="border: 0.5px solid #F1F3F5;"/>
+                          <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
+                          <div class="form-group">
+                            <select class="form-control float-right">
+                              <option>None</option>
+                              <option>Hourly</option>
+                              <option>Daily</option>
+                              <option>Monthly</option>
+                              <option>Yearly</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="row">
+                    <div class="col-12 col-lg-6">
+                      <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event add-event-height">
+                          <span class="blue-text cursor-pointer">Add Event</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev pipeline-settings-nav" href="#carouselPipelineControls" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next pipeline-settings-nav" href="#carouselPipelineControls" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
           </div>
-          <div class="col-12 col-lg-6">
+          <!-- Fin Carrusel -->
+          <!-- <div class="col-12 col-lg-1 m-auto">
+            <span  class="material-icons blue-text"> chevron_left </span>
+          </div> -->
+          <!-- <div class="col-12 col-lg-5">
             <div class="event-settings d-flex flex-column">
-              <span id="close-icon-pipeline-setting" class="material-icons">close</span>
+              <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
               <div class="d-inline-flex justify-content-between">
                 <div class="d-inline-flex">
                   <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
@@ -107,16 +200,16 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-12 col-lg-4">
+          </div> -->
+          <!-- <div class="col-12 col-lg-5">
             <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event">
                 <span class="blue-text cursor-pointer">Add Event</span>
             </div>
           </div>
           <div class="col-12 col-lg-1 m-auto">
             <span  class="material-icons blue-text"> chevron_right </span>
-          </div>
-          <div class="col-12">
+          </div> -->
+          <div class="col-12 pipeline_spacing">
             <div class="d-flex justify-content-center align-items-center mt-4">
               <Calendar v-model="settings_data.event_date" :inline="true" :minDate="new Date()"/>
             </div>
@@ -154,7 +247,13 @@ export default {
             }
           }
         ],
-        enabled: false
+        calendars: [
+          {
+            enabled: false,
+            time: '',
+            date: ''
+          }
+        ]
       },
       generalLocationType: 1,
       entityNameSearchData: '',
@@ -218,6 +317,7 @@ export default {
     border: 1px solid #F1F3F5;
     padding: 8px;
     border-radius: 12px;
+    height: 203px !important;
   }
   .wizard-setting-switch-label::after{
     background-color: #ffffff !important;
@@ -274,7 +374,7 @@ h1{
     position: absolute;
 }
 #close-icon-pipeline-setting{
-      position: relative;
+    position: relative;
     top: -7px;
     left: 91%;
     color: #00B1FF;
@@ -291,5 +391,17 @@ h1{
 }
 span.p-autocomplete{
   margin-top: 7px;
+}
+a.carousel-control-prev.pipeline-settings-nav, a.carousel-control-next.pipeline-settings-nav{
+  margin: auto;
+  height: fit-content;
+  width: 10% !important;
+  opacity: 1;
+}
+a.pipeline-settings-nav span.carousel-control-prev-icon{
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300a1ff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+a.pipeline-settings-nav span.carousel-control-next-icon{
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300a1ff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
 }
 </style>
