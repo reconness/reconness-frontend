@@ -84,5 +84,25 @@ export default {
         FINISHED: 3
       }
     )
+
+    app.config.globalProperties.$isOddNumber = function (value) {
+      return (value % 2) === 1
+    }
+
+    app.config.globalProperties.$getWeekDay = function (value) {
+      const weekday = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ]
+      if (weekday[value]) {
+        return weekday[value]
+      }
+      return weekday[0]
+    }
   }
 }

@@ -77,14 +77,14 @@
           <div class="col-12 pipeline_spacing">
             <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="carousel" data-interval="false" data-wrap="false">
               <div class="carousel-inner">
-                <div class="carousel-item active">
+                <div class="carousel-item" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item">
                   <div class="row">
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][0]">
                       <div class="event-settings d-flex flex-column">
                         <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
-                            <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
+                            <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(settings_data.calendars[0].date.getDay()) + ' ' + settings_data.calendars[0].date.getDate() }}</span>
                           </div>
                           <div class="form-group">
                             <div class="custom-control custom-switch wizard-setting-switch">
@@ -94,9 +94,10 @@
                           </div>
                         </div>
                         <div class="d-inline-flex">
-                          <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span>
+                          <!-- <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span> -->
+                          <Calendar v-model="settings_data.calendars.time" :inline="true" hourFormat="12" :timeOnly="true"/>
                         </div>
-                        <div class="mt-4">
+                        <div>
                           <hr style="border: 0.5px solid #F1F3F5;"/>
                           <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
@@ -111,12 +112,12 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][1]">
                       <div class="event-settings d-flex flex-column">
                         <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
-                            <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
+                            <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(settings_data.calendars[0].date.getDay()) + ' ' + settings_data.calendars[0].date.getDate() }}</span>
                           </div>
                           <div class="form-group">
                             <div class="custom-control custom-switch wizard-setting-switch">
@@ -126,9 +127,10 @@
                           </div>
                         </div>
                         <div class="d-inline-flex">
-                          <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span>
+                          <!-- <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span> -->
+                          <Calendar v-model="settings_data.calendars.time" :inline="true" hourFormat="12" :timeOnly="true"/>
                         </div>
-                        <div class="mt-4">
+                        <div>
                           <hr style="border: 0.5px solid #F1F3F5;"/>
                           <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
@@ -141,20 +143,29 @@
                             </select>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-6" v-else>
+                      <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event add-event-height">
+                          <span class="blue-text cursor-pointer" @click="addCalendarEvent({})">Add Event</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" v-if="loadParsedCalendarsToCarousel[loadParsedCalendarsToCarousel.length-1][1]">
                   <div class="row">
                     <div class="col-12 col-lg-6">
                       <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event add-event-height">
-                          <span class="blue-text cursor-pointer">Add Event</span>
+                          <span class="blue-text cursor-pointer" @click="addCalendarEvent({})">Add Event</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <ol class="carousel-indicators pipeline-settings-control-nav mt-3">
+                <li data-target="#carouselPipelineControls" :data-slide-to="index" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" class="rounded-circle" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item"></li>
+                <li data-target="#carouselPipelineControls" :data-slide-to="loadParsedCalendarsToCarousel.length" v-if="loadParsedCalendarsToCarousel[loadParsedCalendarsToCarousel.length-1][1]" class="rounded-circle"></li>
+              </ol>
             </div>
             <a class="carousel-control-prev pipeline-settings-nav" href="#carouselPipelineControls" role="button" data-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -165,59 +176,9 @@
               <span class="sr-only">Next</span>
             </a>
           </div>
-          <!-- Fin Carrusel -->
-          <!-- <div class="col-12 col-lg-1 m-auto">
-            <span  class="material-icons blue-text"> chevron_left </span>
-          </div> -->
-          <!-- <div class="col-12 col-lg-5">
-            <div class="event-settings d-flex flex-column">
-              <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
-              <div class="d-inline-flex justify-content-between">
-                <div class="d-inline-flex">
-                  <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
-                </div>
-                <div class="form-group">
-                  <div class="custom-control custom-switch wizard-setting-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
-                  </div>
-                </div>
-              </div>
-              <div class="d-inline-flex">
-                <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span>
-              </div>
-              <div class="mt-4">
-                <hr style="border: 0.5px solid #F1F3F5;"/>
-                <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
-                <div class="form-group">
-                  <select class="form-control float-right">
-                    <option>None</option>
-                    <option>Hourly</option>
-                    <option>Daily</option>
-                    <option>Monthly</option>
-                    <option>Yearly</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          <!-- <div class="col-12 col-lg-5">
-            <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event">
-                <span class="blue-text cursor-pointer">Add Event</span>
-            </div>
-          </div>
-          <div class="col-12 col-lg-1 m-auto">
-            <span  class="material-icons blue-text"> chevron_right </span>
-          </div> -->
-          <div class="col-12">
-            <ol class="carousel-indicators pipeline-settings-control-nav">
-              <li data-target="#carouselPipelineControls" data-slide-to="0" class="active rounded-circle"></li>
-              <li data-target="#carouselPipelineControls" data-slide-to="1" class="rounded-circle"></li>
-            </ol>
-          </div>
           <div class="col-12 pipeline_spacing">
             <div class="d-flex justify-content-center align-items-center mt-4">
-              <Calendar v-model="settings_data.event_date" :inline="true" :minDate="new Date()"/>
+              <Calendar v-model="settings_data.event_date" :inline="true" :minDate="new Date()" :date-select="hola(this.settings_data.event_date)"/>
             </div>
           </div>
         </div>
@@ -257,7 +218,7 @@ export default {
           {
             enabled: false,
             time: '',
-            date: ''
+            date: new Date()
           }
         ]
       },
@@ -286,6 +247,17 @@ export default {
         )
       }
     },
+    addCalendarEvent: function (item) {
+      if (Object.entries(item).length === 0) {
+        this.settings_data.calendars.push(
+          {
+            enabled: false,
+            time: '',
+            date: new Date()
+          }
+        )
+      }
+    },
     filterEntities: function (e) {
       if (this.generalLocationType === this.$agentType.TARGET) {
         this.filteredEntities = this.filterTargetsByName(e.target.value)
@@ -301,14 +273,36 @@ export default {
         this.generalLocationType = this.settings_data.locations[index].entity.entityType
       }
     },
+    hola: function (e) {
+      console.log(e)
+    },
     loadEntityData (e) {}
   },
   computed: {
-    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName'])
+    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
+    loadParsedCalendarsToCarousel: function () {
+      const carouselItems = []
+      let carouselPairItems = []
+      for (let index = 0; index < this.settings_data.calendars.length; index++) {
+        carouselPairItems.push({
+          enabled: this.settings_data.calendars[index].enabled,
+          time: this.settings_data.calendars[index].time,
+          date: this.settings_data.calendars[index].date
+        })
+        if (this.$isOddNumber(index + 1)) {
+          carouselItems.push(carouselPairItems)
+        } else {
+          carouselPairItems = []
+        }
+      }
+      console.log(carouselItems)
+      return carouselItems
+    }
   },
   created: function () {
     if (this.settings_data.locations.length === 0) {
       this.addLocation({})
+      this.addCalendarEvent({})
     }
   }
 }
@@ -323,7 +317,7 @@ export default {
     border: 1px solid #F1F3F5;
     padding: 8px;
     border-radius: 12px;
-    height: 203px !important;
+    height: 246px !important;
   }
   .wizard-setting-switch-label::after{
     background-color: #ffffff !important;
@@ -410,13 +404,27 @@ a.pipeline-settings-nav span.carousel-control-prev-icon{
 a.pipeline-settings-nav span.carousel-control-next-icon{
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300a1ff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
 }
-ol.carousel-indicators.pipeline-settings-control-nav{
+ ol.carousel-indicators.pipeline-settings-control-nav{
   position: relative !important;
   margin-bottom: 0;
 }
-ol.carousel-indicators.pipeline-settings-control-nav li{
+.carousel-indicators li{
+    background-color: #00B1FF;
+}
+.carousel-indicators .active{
+    background-color: #00B1FF;
+}
+/*ol.carousel-indicators.pipeline-settings-control-nav li{
   width: 15px;
   height: 15px;
   background-color: #00B1FF;
+} */
+.carousel-indicators li {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+}
+span.p-calendar.p-component.p-inputwrapper.p-calendar-timeonly{
+  width: 100% !important;
 }
 </style>
