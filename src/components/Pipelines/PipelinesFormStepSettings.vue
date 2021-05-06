@@ -52,7 +52,7 @@
           <div class="pipeline_spacing">
           <p class="float-right blue-text mb-1 cursor-pointer">Search</p>
           <div id="input-searcher-container">
-            <AutoComplete v-for="(item, index) in settings_data.locations" :key="item.id" v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType"/>
+            <AutoComplete v-for="(item, index) in settings_data.locations" :key="item.id" v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
           </div>
           </div>
         </div>
@@ -87,7 +87,7 @@
                           </div>
                           <div class="form-group">
                             <div class="custom-control custom-switch wizard-setting-switch">
-                              <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                              <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="settings_data.calendars[index].enabled">
                               <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
                             </div>
                           </div>
@@ -97,14 +97,14 @@
                         </div>
                         <div>
                           <hr style="border: 0.5px solid #F1F3F5;"/>
-                          <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
+                          <span class="float-left pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
-                            <select class="form-control float-right">
-                              <option>None</option>
-                              <option>Hourly</option>
-                              <option>Daily</option>
-                              <option>Monthly</option>
-                              <option>Yearly</option>
+                            <select class="form-control float-right" v-model="settings_data.calendars[index].repeat">
+                              <option value="0">None</option>
+                              <option value="1">Hourly</option>
+                              <option value="2">Daily</option>
+                              <option value="3">Monthly</option>
+                              <option value="4">Yearly</option>
                             </select>
                           </div>
                         </div>
@@ -129,14 +129,14 @@
                         </div>
                         <div>
                           <hr style="border: 0.5px solid #F1F3F5;"/>
-                          <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
+                          <span class="float-left pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
-                            <select class="form-control float-right">
-                              <option>None</option>
-                              <option>Hourly</option>
-                              <option>Daily</option>
-                              <option>Monthly</option>
-                              <option>Yearly</option>
+                            <select class="form-control float-right" v-model="settings_data.calendars[index].repeat">
+                             <option value="0">None</option>
+                              <option value="1">Hourly</option>
+                              <option value="2">Daily</option>
+                              <option value="3">Monthly</option>
+                              <option value="4">Yearly</option>
                             </select>
                           </div>
                         </div>
@@ -196,7 +196,7 @@ export default {
       event_date: null,
       settings_data: {
         locations: [
-          {
+          /* {
             entity: {
               name: 'candiman.com',
               entityType: 1,
@@ -206,18 +206,12 @@ export default {
           {
             entity: {
               name: 'pacha.com',
-              entityType: 2,
+             /* entityType: 2,
               entityId: 2
             }
-          }
+          } */
         ],
-        calendars: [
-          {
-            enabled: false,
-            time: '',
-            date: new Date()
-          }
-        ]
+        calendars: []
       },
       generalLocationType: 1,
       entityNameSearchData: '',
@@ -229,6 +223,9 @@ export default {
     RocketIco,
     FileImportIco,
     AutoComplete
+  },
+  emits: {
+    pipelineSettingsDone: null
   },
   methods: {
     addLocation: function (item) {
@@ -250,7 +247,8 @@ export default {
           {
             enabled: false,
             time: new Date(),
-            date: new Date()
+            date: new Date(),
+            repeat: 0
           }
         )
       }
@@ -268,18 +266,23 @@ export default {
       const index = e.currentTarget.getAttribute('data-index')
       if (this.settings_data.locations[index].entity.entityType > -1) {
         this.generalLocationType = this.settings_data.locations[index].entity.entityType
+        // this.sendPipelineSettings()
       }
     },
     onChangeDate: function (e) {
       if (this.settings_data.calendars[this.settings_data.calendars.length - 1] && this.event_date) {
         this.settings_data.calendars[this.settings_data.calendars.length - 1].date = this.event_date
+        // this.sendPipelineSettings()
       }
+    },
+    sendPipelineSettings: function (e) {
+      this.$emit('pipelineSettingsDone', this.settings_data)
     }
   },
   computed: {
     ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
     loadParsedCalendarsToCarousel: function () {
-      var carouselItems = []
+      const carouselItems = []
       let carouselPairItems = []
       for (let index = 0; index < this.settings_data.calendars.length; index++) {
         carouselPairItems.push({
@@ -294,6 +297,14 @@ export default {
         }
       }
       return carouselItems
+    }
+  },
+  watch: {
+    settings_data: {
+      handler: function () {
+        this.sendPipelineSettings()
+      },
+      deep: true
     }
   },
   created: function () {
@@ -366,7 +377,7 @@ h1{
     outline: 0;
     width: 44%;
 }
-#pipeline-setting-repeat{
+span.pipeline-setting-repeat{
     bottom: 17px;
     position: absolute;
 }

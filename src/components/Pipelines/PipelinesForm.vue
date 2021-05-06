@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-12" v-show="this.step === 3">
-                  <PipelinesFormStepSettings/>
+                  <PipelinesFormStepSettings @pipelineSettingsDone="updatePipelineSettings"/>
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default {
       }
       if (this.step === 2) {
         const list = this.agentListStore.filter(item2 => ((this.listAgents).includes(item2.id)))
-        for (var item of list) {
+        for (const item of list) {
           document.getElementById('agent' + item.id).classList.remove('style-border-item')
         }
         return list
@@ -127,12 +127,12 @@ export default {
     },
     deSelectedAll () {
       this.listAgents = []
-      for (var item of this.agentListStore) {
+      for (const item of this.agentListStore) {
         document.getElementById('agent' + item.id).classList.remove('style-border-item')
       }
     },
     selectedAll () {
-      for (var item of this.agentListStore) {
+      for (const item of this.agentListStore) {
         document.getElementById('agent' + item.id).classList.add('style-border-item')
         this.listAgents.push(item.id)
       }
@@ -169,7 +169,7 @@ export default {
     save () {
       if (this.routeName === 'PipelineDetail') {
         const Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
-        for (var index of this.listAgents) {
+        for (const index of this.listAgents) {
           Pipeline.agent.push(this.$store.getters.getAgentById(parseInt(index)))
         }
       }
@@ -180,6 +180,9 @@ export default {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
       this.$store.commit('setDetailsLinks', true)
+    },
+    updatePipelineSettings (e) {
+      console.log(e)
     }
   }
 }
