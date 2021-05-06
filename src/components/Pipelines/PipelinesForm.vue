@@ -37,7 +37,7 @@
             </div>
             <div class="modal-footer" :class="{'border-0' : thirdStep}">
                <button v-if="this.step !== 3 && this.routeName === 'Pipelines'" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
-               <button v-else @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
+               <button v-else @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!pipelineFormIsValid">DONE</button>
                <button @click="cancelAll()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
           </div>
@@ -60,7 +60,8 @@ export default {
     return {
       listAgents: [],
       step: 1,
-      agentStartingPoint: 0
+      agentStartingPoint: 0,
+      settings_data: []
     }
   },
   props: {
@@ -94,6 +95,13 @@ export default {
     },
     thirdStep () {
       return this.step === 3
+    },
+    pipelineFormIsValid () {
+      if ((this.settings_data.locations.length === 1 && this.settings_data.locations[0].entity.name === undefined) ||
+        (this.settings_data.locations.length === 1 && this.$validateIsBlank(this.settings_data.locations[0].entity.name))) {
+        return false
+      }
+      return true
     }
   },
   components: {
@@ -183,6 +191,7 @@ export default {
     },
     updatePipelineSettings (e) {
       console.log(e)
+      this.settings_data = e
     }
   }
 }
