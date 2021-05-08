@@ -49,11 +49,16 @@
         </div>
         </div>
         <div class="col-12">
-          <div class="pipeline_spacing">
+          <div class="pipeline_spacing locations-container">
           <p class="float-right blue-text mb-1 cursor-pointer">Search</p>
-          <div id="input-searcher-container">
-            <AutoComplete v-for="(item, index) in settings_data.locations" :key="item.id" v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
-          </div>
+            <div v-for="(item, index) in settings_data.locations" :key="item.id" class="input-searcher-container">
+              <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
+              <div style="height: 0;">
+                <span @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
+                  <MinusCircleIco/>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-12">
@@ -80,7 +85,7 @@
                   <div class="row">
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][0]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index="index">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][0].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][0].date.getDate() }}</span>
@@ -112,7 +117,7 @@
                     </div>
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][1]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer">close</span>
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" @click="removeEvent">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][1].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][1].date.getDate() }}</span>
@@ -189,28 +194,14 @@ import Calendar from 'primevue/calendar'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import FileImportIco from '@/components/Icons/PlusCircleIco.vue'
 import AutoComplete from 'primevue/autocomplete'
+import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
   name: 'PipelinesFormStepSettings',
   data: function () {
     return {
       event_date: null,
       settings_data: {
-        locations: [
-          /* {
-            entity: {
-              name: 'candiman.com',
-              entityType: 1,
-              entityId: 1
-            }
-          },
-          {
-            entity: {
-              name: 'pacha.com',
-             /* entityType: 2,
-              entityId: 2
-            }
-          } */
-        ],
+        locations: [],
         calendars: []
       },
       generalLocationType: 1,
@@ -222,7 +213,8 @@ export default {
     Calendar,
     RocketIco,
     FileImportIco,
-    AutoComplete
+    AutoComplete,
+    MinusCircleIco
   },
   emits: {
     pipelineSettingsDone: null
@@ -277,6 +269,18 @@ export default {
     },
     sendPipelineSettings: function (e) {
       this.$emit('pipelineSettingsDone', this.settings_data)
+    },
+    removeEvent: function (e) {
+      const closeIconIndex = e.currentTarget.getAttribute('data-index')
+      if (closeIconIndex !== 0) {
+        this.settings_data.calendars.splice(closeIconIndex, 1)
+      }
+    },
+    removeLocation: function (e) {
+      const locationIndex = parseInt(e.currentTarget.getAttribute('data-index'))
+      if (parseInt(locationIndex) > 0) {
+        this.settings_data.locations.splice(locationIndex, 1)
+      }
     }
   },
   computed: {
@@ -387,10 +391,8 @@ span.pipeline-setting-repeat{
     left: 91%;
     color: #00B1FF;
 }
-#input-searcher-container{
-  /* max-height: 168px;
-  overflow-y: scroll; */
-  width: 100%;
+.input-searcher-container{
+  max-height: 168px;
 }
 .dropdown-menu{
   display: inherit !important;
@@ -429,5 +431,25 @@ a.pipeline-settings-nav span.carousel-control-next-icon{
 }
 span.p-calendar.p-component.p-inputwrapper.p-calendar-timeonly{
   width: 100% !important;
+}
+span.pipe-circle-minus-properties{
+  position: relative;
+  z-index: 2;
+  display: block;
+  line-height: 2.375rem;
+  text-align: center;
+  top: -41px;
+  right: -89%;
+  width: 25px;
+}
+input.p-autocomplete-input.p-inputtext.p-component {
+  padding-right: 6%;
+}
+span.pipe-circle-minus-properties svg{
+  fill: #ff4545
+}
+.locations-container{
+  max-height: 358px;
+  overflow-y: auto;
 }
 </style>

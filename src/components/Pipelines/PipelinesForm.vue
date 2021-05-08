@@ -50,7 +50,7 @@
 
 <script>
 import jQuery from 'jquery'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import PipelinesFormStepSettings from '@/components/Pipelines/PipelinesFormStepSettings.vue'
 import AgentForm from '@/components/AgentForm.vue'
@@ -61,7 +61,7 @@ export default {
       listAgents: [],
       step: 1,
       agentStartingPoint: 0,
-      settings_data: []
+      settings_data: null
     }
   },
   props: {
@@ -70,6 +70,7 @@ export default {
   computed: {
     ...mapState(['agentListStore']),
     ...mapGetters('pipelines', ['getPipelineById']),
+    ...mapGetters(['getAgentById']),
     iterList () {
       if (this.step === 1) {
         return this.agentListStore
@@ -97,8 +98,8 @@ export default {
       return this.step === 3
     },
     pipelineFormIsValid () {
-      if ((this.settings_data.locations.length === 1 && this.settings_data.locations[0].entity.name === undefined) ||
-        (this.settings_data.locations.length === 1 && this.$validateIsBlank(this.settings_data.locations[0].entity.name))) {
+      if (this.settings_data && ((this.settings_data.locations.length === 1 && this.settings_data.locations[0].entity.name === undefined) ||
+        (this.settings_data.locations.length === 1 && this.$validateIsBlank(this.settings_data.locations[0].entity.name)))) {
         return false
       }
       return true
@@ -110,6 +111,7 @@ export default {
     AgentForm
   },
   methods: {
+    ...mapMutations('pipelines', ['addPipeline']),
     selectAndDeselectedItem (itemID) {
       if (this.step === 1) {
         if (this.listAgents.includes(itemID)) {
@@ -136,7 +138,9 @@ export default {
     deSelectedAll () {
       this.listAgents = []
       for (const item of this.agentListStore) {
-        document.getElementById('agent' + item.id).classList.remove('style-border-item')
+        if (document.getElementById('agent' + item.id)) {
+          document.getElementById('agent' + item.id).classList.remove('style-border-item')
+        }
       }
     },
     selectedAll () {
@@ -181,6 +185,22 @@ export default {
           Pipeline.agent.push(this.$store.getters.getAgentById(parseInt(index)))
         }
       }
+      const fullDataAgents = []
+      let agentData = null
+      this.listAgents.forEach(idAgent => {
+        agentData = this.getAgentById(parseInt(idAgent))
+        fullDataAgents.push(agentData)
+      })
+      const pipelineEntity = {
+        name: '',
+        date: new Date().toLocaleDateString('es-Es'),
+        statusRun: false,
+        agent: fullDataAgents
+      }
+      this.addPipeline(pipelineEntity)
+
+      jQuery('#pipelinesModalForm').modal('hide')
+
       this.deSelectedAll()
       this.step = 1
     },
@@ -190,7 +210,6 @@ export default {
       this.$store.commit('setDetailsLinks', true)
     },
     updatePipelineSettings (e) {
-      console.log(e)
       this.settings_data = e
     }
   }

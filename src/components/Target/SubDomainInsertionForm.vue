@@ -74,7 +74,7 @@ export default {
       if (this.isFormValid || !this.enableValidationMessageSubDomainBlankNameManual()) {
         this.subdomains.push({
           name: '',
-          added: new Date().toLocaleDateString('es-Es'),
+          added: new Date().toISOString().slice(0, 10),
           checking: false,
           interesting: false,
           vulnerable: false,
@@ -220,7 +220,7 @@ export default {
   created: function () {
     this.subdomains.push({
       name: '',
-      added: new Date().toLocaleDateString('es-Es'),
+      added: new Date().toISOString().slice(0, 10),
       checking: false,
       interesting: false,
       vulnerable: false,
@@ -281,8 +281,8 @@ export default {
       display: block;
       line-height: 2.375rem;
       text-align: center;
-      top: -38px;
-      right: -96%;
+      top: -41px;
+      right: -94%;
       width: 25px;
     }
     .subdomains-items-field{
