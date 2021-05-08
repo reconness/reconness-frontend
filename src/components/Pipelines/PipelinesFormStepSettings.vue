@@ -17,9 +17,9 @@
                         <img src="@/assets/pipeline_setting_diagram.png" class="m-2"/>
                       </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-3 m-auto">
                       <div class="ml-3 pipe-setting-ico_container">
-                        <span class="info-box-icon abs-center icon-gray pb-2"><RocketIco/></span>
+                        <span class="info-box-icon d-flex justify-content-start icon-gray pb-2"><RocketIco/></span>
                         <span>Run</span>
                       </div>
                     </div>
@@ -49,11 +49,16 @@
         </div>
         </div>
         <div class="col-12">
-          <div class="pipeline_spacing">
+          <div class="pipeline_spacing locations-container">
           <p class="float-right blue-text mb-1 cursor-pointer">Search</p>
-          <div id="input-searcher-container">
-            <AutoComplete v-for="(item, index) in settings_data.locations" :key="item.id" v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType"/>
-          </div>
+            <div v-for="(item, index) in settings_data.locations" :key="item.id" class="input-searcher-container">
+              <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
+              <div style="height: 0;">
+                <span v-if="index>0" @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
+                  <MinusCircleIco/>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-12">
@@ -68,57 +73,114 @@
       </div>
     </div>
     <div class="col-12 col-lg-6">
-      <div class="schedule_section pipeline_spacing">
+      <div class="schedule_section">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 pipeline_spacing">
             <h5>Schedule</h5>
           </div>
-          <div class="col-12 col-lg-1 m-auto">
-            <span  class="material-icons blue-text"> chevron_left </span>
-          </div>
-          <div class="col-12 col-lg-6">
-            <div class="event-settings d-flex flex-column">
-              <span id="close-icon-pipeline-setting" class="material-icons">close</span>
-              <div class="d-inline-flex justify-content-between">
-                <div class="d-inline-flex">
-                  <span class="material-icons">calendar_today</span><span class="ml-1">Wednesday 2</span>
+          <div class="col-12 pipeline_spacing">
+            <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="carousel" data-interval="false" data-wrap="false">
+              <div class="carousel-inner">
+                <div class="carousel-item" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item">
+                  <div class="row">
+                    <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][0]">
+                      <div class="event-settings d-flex flex-column">
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index="index">close</span>
+                        <div class="d-inline-flex justify-content-between">
+                          <div class="d-inline-flex">
+                            <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][0].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][0].date.getDate() }}</span>
+                          </div>
+                          <div class="form-group">
+                            <div class="custom-control custom-switch wizard-setting-switch">
+                              <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="settings_data.calendars[index].enabled">
+                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-inline-flex">
+                          <Calendar v-model="settings_data.calendars[index].time" :inline="true" hourFormat="12" :timeOnly="true"/>
+                        </div>
+                        <div>
+                          <hr style="border: 0.5px solid #F1F3F5;"/>
+                          <span class="float-left pipeline-setting-repeat">Repeat</span>
+                          <div class="form-group">
+                            <select class="form-control float-right" v-model="settings_data.calendars[index].repeat">
+                              <option value="0">None</option>
+                              <option value="1">Hourly</option>
+                              <option value="2">Daily</option>
+                              <option value="3">Monthly</option>
+                              <option value="4">Yearly</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][1]">
+                      <div class="event-settings d-flex flex-column">
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" @click="removeEvent">close</span>
+                        <div class="d-inline-flex justify-content-between">
+                          <div class="d-inline-flex">
+                            <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][1].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][1].date.getDate() }}</span>
+                          </div>
+                          <div class="form-group">
+                            <div class="custom-control custom-switch wizard-setting-switch">
+                              <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-inline-flex">
+                          <Calendar v-model="settings_data.calendars[index+1].time" :inline="true" hourFormat="12" :timeOnly="true"/>
+                        </div>
+                        <div>
+                          <hr style="border: 0.5px solid #F1F3F5;"/>
+                          <span class="float-left pipeline-setting-repeat">Repeat</span>
+                          <div class="form-group">
+                            <select class="form-control float-right" v-model="settings_data.calendars[index].repeat">
+                             <option value="0">None</option>
+                              <option value="1">Hourly</option>
+                              <option value="2">Daily</option>
+                              <option value="3">Monthly</option>
+                              <option value="4">Yearly</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-6" v-else>
+                      <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event add-event-height">
+                          <span class="blue-text cursor-pointer" @click="addCalendarEvent({})">Add Event</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <div class="custom-control custom-switch wizard-setting-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                <div class="carousel-item" v-if="loadParsedCalendarsToCarousel[loadParsedCalendarsToCarousel.length-1][1]">
+                  <div class="row">
+                    <div class="col-12 col-lg-6">
+                      <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event add-event-height">
+                          <span class="blue-text cursor-pointer" @click="addCalendarEvent({})">Add Event</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="d-inline-flex">
-                <span class="material-icons">query_builder</span><span class="ml-1">03:30pm</span>
-              </div>
-              <div class="mt-4">
-                <hr style="border: 0.5px solid #F1F3F5;"/>
-                <span class="float-left" id="pipeline-setting-repeat">Repeat</span>
-                <div class="form-group">
-                  <select class="form-control float-right">
-                    <option>None</option>
-                    <option>Hourly</option>
-                    <option>Daily</option>
-                    <option>Monthly</option>
-                    <option>Yearly</option>
-                  </select>
-                </div>
-              </div>
+              <ol class="carousel-indicators pipeline-settings-control-nav mt-3">
+                <li data-target="#carouselPipelineControls" :data-slide-to="index" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" class="rounded-circle" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item"></li>
+                <li data-target="#carouselPipelineControls" :data-slide-to="loadParsedCalendarsToCarousel.length" v-if="loadParsedCalendarsToCarousel[loadParsedCalendarsToCarousel.length-1][1]" class="rounded-circle"></li>
+              </ol>
             </div>
+            <a class="carousel-control-prev pipeline-settings-nav" href="#carouselPipelineControls" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next pipeline-settings-nav" href="#carouselPipelineControls" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
           </div>
-          <div class="col-12 col-lg-4">
-            <div class="w-100 h-100 d-flex justify-content-center align-items-center add-event">
-                <span class="blue-text cursor-pointer">Add Event</span>
-            </div>
-          </div>
-          <div class="col-12 col-lg-1 m-auto">
-            <span  class="material-icons blue-text"> chevron_right </span>
-          </div>
-          <div class="col-12">
+          <div class="col-12 pipeline_spacing">
             <div class="d-flex justify-content-center align-items-center mt-4">
-              <Calendar v-model="settings_data.event_date" :inline="true" :minDate="new Date()"/>
+              <Calendar v-model="event_date" :inline="true" :minDate="new Date()" @date-select="onChangeDate(event_date)"/>
             </div>
           </div>
         </div>
@@ -132,29 +194,15 @@ import Calendar from 'primevue/calendar'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import FileImportIco from '@/components/Icons/PlusCircleIco.vue'
 import AutoComplete from 'primevue/autocomplete'
+import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
   name: 'PipelinesFormStepSettings',
   data: function () {
     return {
+      event_date: null,
       settings_data: {
-        event_date: null,
-        locations: [
-          {
-            entity: {
-              name: 'candiman.com',
-              entityType: 1,
-              entityId: 1
-            }
-          },
-          {
-            entity: {
-              name: 'pacha.com',
-              entityType: 2,
-              entityId: 2
-            }
-          }
-        ],
-        enabled: false
+        locations: [],
+        calendars: []
       },
       generalLocationType: 1,
       entityNameSearchData: '',
@@ -165,7 +213,11 @@ export default {
     Calendar,
     RocketIco,
     FileImportIco,
-    AutoComplete
+    AutoComplete,
+    MinusCircleIco
+  },
+  emits: {
+    pipelineSettingsDone: null
   },
   methods: {
     addLocation: function (item) {
@@ -177,6 +229,18 @@ export default {
               entityType: -1,
               entityId: -1
             }
+          }
+        )
+      }
+    },
+    addCalendarEvent: function (item) {
+      if (Object.entries(item).length === 0) {
+        this.settings_data.calendars.push(
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date(),
+            repeat: 0
           }
         )
       }
@@ -194,16 +258,63 @@ export default {
       const index = e.currentTarget.getAttribute('data-index')
       if (this.settings_data.locations[index].entity.entityType > -1) {
         this.generalLocationType = this.settings_data.locations[index].entity.entityType
+        // this.sendPipelineSettings()
       }
     },
-    loadEntityData (e) {}
+    onChangeDate: function (e) {
+      if (this.settings_data.calendars[this.settings_data.calendars.length - 1] && this.event_date) {
+        this.settings_data.calendars[this.settings_data.calendars.length - 1].date = this.event_date
+        // this.sendPipelineSettings()
+      }
+    },
+    sendPipelineSettings: function (e) {
+      this.$emit('pipelineSettingsDone', this.settings_data)
+    },
+    removeEvent: function (e) {
+      const closeIconIndex = e.currentTarget.getAttribute('data-index')
+      if (closeIconIndex !== 0) {
+        this.settings_data.calendars.splice(closeIconIndex, 1)
+      }
+    },
+    removeLocation: function (e) {
+      const locationIndex = parseInt(e.currentTarget.getAttribute('data-index'))
+      if (parseInt(locationIndex) > 0) {
+        this.settings_data.locations.splice(locationIndex, 1)
+      }
+    }
   },
   computed: {
-    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName'])
+    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
+    loadParsedCalendarsToCarousel: function () {
+      const carouselItems = []
+      let carouselPairItems = []
+      for (let index = 0; index < this.settings_data.calendars.length; index++) {
+        carouselPairItems.push({
+          enabled: this.settings_data.calendars[index].enabled,
+          time: this.settings_data.calendars[index].time,
+          date: this.settings_data.calendars[index].date
+        })
+        if (this.$isOddNumber(index + 1)) {
+          carouselItems.push(carouselPairItems)
+        } else {
+          carouselPairItems = []
+        }
+      }
+      return carouselItems
+    }
+  },
+  watch: {
+    settings_data: {
+      handler: function () {
+        this.sendPipelineSettings()
+      },
+      deep: true
+    }
   },
   created: function () {
     if (this.settings_data.locations.length === 0) {
       this.addLocation({})
+      this.addCalendarEvent({})
     }
   }
 }
@@ -218,6 +329,7 @@ export default {
     border: 1px solid #F1F3F5;
     padding: 8px;
     border-radius: 12px;
+    height: 246px !important;
   }
   .wizard-setting-switch-label::after{
     background-color: #ffffff !important;
@@ -269,20 +381,18 @@ h1{
     outline: 0;
     width: 44%;
 }
-#pipeline-setting-repeat{
+span.pipeline-setting-repeat{
     bottom: 17px;
     position: absolute;
 }
 #close-icon-pipeline-setting{
-      position: relative;
+    position: relative;
     top: -7px;
     left: 91%;
     color: #00B1FF;
 }
-#input-searcher-container{
-  /* max-height: 168px;
-  overflow-y: scroll; */
-  width: 100%;
+.input-searcher-container{
+  max-height: 168px;
 }
 .dropdown-menu{
   display: inherit !important;
@@ -291,5 +401,55 @@ h1{
 }
 span.p-autocomplete{
   margin-top: 7px;
+}
+a.carousel-control-prev.pipeline-settings-nav, a.carousel-control-next.pipeline-settings-nav{
+  margin: auto;
+  height: fit-content;
+  width: 10% !important;
+  opacity: 1;
+}
+a.pipeline-settings-nav span.carousel-control-prev-icon{
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300a1ff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+a.pipeline-settings-nav span.carousel-control-next-icon{
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2300a1ff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+ ol.carousel-indicators.pipeline-settings-control-nav{
+  position: relative !important;
+  margin-bottom: 0;
+}
+.carousel-indicators li{
+    background-color: #00B1FF;
+}
+.carousel-indicators .active{
+    background-color: #00B1FF;
+}
+.carousel-indicators li {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+}
+span.p-calendar.p-component.p-inputwrapper.p-calendar-timeonly{
+  width: 100% !important;
+}
+span.pipe-circle-minus-properties{
+  position: relative;
+  z-index: 2;
+  display: block;
+  line-height: 2.375rem;
+  text-align: center;
+  top: -41px;
+  right: -89%;
+  width: 25px;
+}
+input.p-autocomplete-input.p-inputtext.p-component {
+  padding-right: 6%;
+}
+span.pipe-circle-minus-properties svg{
+  fill: #ff4545
+}
+.locations-container{
+  max-height: 358px;
+  overflow-y: auto;
 }
 </style>

@@ -31,13 +31,13 @@
                     </div>
                 </div>
                 <div class="col-12" v-show="this.step === 3">
-                  <PipelinesFormStepSettings/>
+                  <PipelinesFormStepSettings @pipelineSettingsDone="updatePipelineSettings"/>
                 </div>
               </div>
             </div>
             <div class="modal-footer" :class="{'border-0' : thirdStep}">
                <button v-if="this.step !== 3 && this.routeName === 'Pipelines'" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
-               <button v-else @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
+               <button v-else @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!pipelineFormIsValid">DONE</button>
                <button @click="cancelAll()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
           </div>
@@ -50,7 +50,7 @@
 
 <script>
 import jQuery from 'jquery'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import PipelinesFormStepSettings from '@/components/Pipelines/PipelinesFormStepSettings.vue'
 import AgentForm from '@/components/AgentForm.vue'
@@ -60,7 +60,8 @@ export default {
     return {
       listAgents: [],
       step: 1,
-      agentStartingPoint: 0
+      agentStartingPoint: 0,
+      settings_data: null
     }
   },
   props: {
@@ -69,13 +70,14 @@ export default {
   computed: {
     ...mapState(['agentListStore']),
     ...mapGetters('pipelines', ['getPipelineById']),
+    ...mapGetters(['getAgentById']),
     iterList () {
       if (this.step === 1) {
         return this.agentListStore
       }
       if (this.step === 2) {
         const list = this.agentListStore.filter(item2 => ((this.listAgents).includes(item2.id)))
-        for (var item of list) {
+        for (const item of list) {
           document.getElementById('agent' + item.id).classList.remove('style-border-item')
         }
         return list
@@ -94,6 +96,13 @@ export default {
     },
     thirdStep () {
       return this.step === 3
+    },
+    pipelineFormIsValid () {
+      if (this.settings_data && ((this.settings_data.locations.length === 1 && this.settings_data.locations[0].entity.name === undefined) ||
+        (this.settings_data.locations.length === 1 && this.$validateIsBlank(this.settings_data.locations[0].entity.name)))) {
+        return false
+      }
+      return true
     }
   },
   components: {
@@ -102,6 +111,7 @@ export default {
     AgentForm
   },
   methods: {
+    ...mapMutations('pipelines', ['addPipeline']),
     selectAndDeselectedItem (itemID) {
       if (this.step === 1) {
         if (this.listAgents.includes(itemID)) {
@@ -127,12 +137,14 @@ export default {
     },
     deSelectedAll () {
       this.listAgents = []
-      for (var item of this.agentListStore) {
-        document.getElementById('agent' + item.id).classList.remove('style-border-item')
+      for (const item of this.agentListStore) {
+        if (document.getElementById('agent' + item.id)) {
+          document.getElementById('agent' + item.id).classList.remove('style-border-item')
+        }
       }
     },
     selectedAll () {
-      for (var item of this.agentListStore) {
+      for (const item of this.agentListStore) {
         document.getElementById('agent' + item.id).classList.add('style-border-item')
         this.listAgents.push(item.id)
       }
@@ -169,10 +181,26 @@ export default {
     save () {
       if (this.routeName === 'PipelineDetail') {
         const Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
-        for (var index of this.listAgents) {
+        for (const index of this.listAgents) {
           Pipeline.agent.push(this.$store.getters.getAgentById(parseInt(index)))
         }
       }
+      const fullDataAgents = []
+      let agentData = null
+      this.listAgents.forEach(idAgent => {
+        agentData = this.getAgentById(parseInt(idAgent))
+        fullDataAgents.push(agentData)
+      })
+      const pipelineEntity = {
+        name: '',
+        date: new Date().toLocaleDateString('es-Es'),
+        statusRun: false,
+        agent: fullDataAgents
+      }
+      this.addPipeline(pipelineEntity)
+
+      jQuery('#pipelinesModalForm').modal('hide')
+
       this.deSelectedAll()
       this.step = 1
     },
@@ -180,6 +208,9 @@ export default {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
       this.$store.commit('setDetailsLinks', true)
+    },
+    updatePipelineSettings (e) {
+      this.settings_data = e
     }
   }
 }

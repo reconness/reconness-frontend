@@ -152,7 +152,8 @@ export default {
     checkDetail: false,
     styleListDetail: '1.25rem',
     pipelinesIdAgentsList: [],
-    colorDeleteDetail: '#000000'
+    colorDeleteDetail: '#000000',
+    autoId: 99
   },
   mutations: {
     removebyIdPipelines (state, id) {
@@ -251,6 +252,10 @@ export default {
         state.styleListDetail = '1.25rem'
         state.colorDeleteDetail = '#000000'
       }
+    },
+    addPipeline (state, data) {
+      data.id = state.autoId++
+      state.pipelinesListStore.push(data)
     }
   },
   getters: {
