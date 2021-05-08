@@ -54,7 +54,7 @@
             <div v-for="(item, index) in settings_data.locations" :key="item.id" class="input-searcher-container">
               <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
               <div style="height: 0;">
-                <span @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
+                <span v-if="index>0" @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
                   <MinusCircleIco/>
                 </span>
               </div>
