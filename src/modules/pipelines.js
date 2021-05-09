@@ -254,7 +254,7 @@ export default {
       }
     },
     addPipeline (state, data) {
-      data.id = state.autoId++
+      data.id = ++state.autoId
       state.pipelinesListStore.push(data)
     }
   },

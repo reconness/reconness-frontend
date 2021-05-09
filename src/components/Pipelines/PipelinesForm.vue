@@ -68,7 +68,8 @@ export default {
     routeName: String
   },
   computed: {
-    ...mapState(['agentListStore']),
+    ...mapState(['agentListStore', 'autoId']),
+    ...mapState('pipelines', ['autoId']),
     ...mapGetters('pipelines', ['getPipelineById']),
     ...mapGetters(['getAgentById']),
     iterList () {
@@ -192,17 +193,17 @@ export default {
         fullDataAgents.push(agentData)
       })
       const pipelineEntity = {
-        name: '',
+        name: 'My pipeline',
         date: new Date().toLocaleDateString('es-Es'),
         statusRun: false,
-        agent: fullDataAgents
+        agent: fullDataAgents,
+        id: -1
       }
       this.addPipeline(pipelineEntity)
-
       jQuery('#pipelinesModalForm').modal('hide')
-
       this.deSelectedAll()
       this.step = 1
+      this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
