@@ -28,6 +28,15 @@
           <a class="nav-link" data-toggle="dropdown" href="#">
             <span class="material-icons">settings</span>
           </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> Notifications
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> Logs
+          </a>
+        </div>
         </li>
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
