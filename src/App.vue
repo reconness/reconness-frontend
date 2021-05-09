@@ -90,13 +90,27 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link" v-on:click="addLocation('Settings')">
                 <span class="material-icons">settings</span>
-                <p>
-                  Settings
-                </p>
+                <p>Settings</p>
+                <span v-show="arrow_down_settings" class="material-icons float-right">arrow_drop_down</span>
+                <span v-show="arrow_up_settings" class="material-icons float-right">arrow_drop_up</span>
               </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item" ><router-link :to="{ name: 'Notifications' }" >
+                  <a href="#" class="nav-link" v-on:click="addLocation('Notifications')" v-bind:class="{'nav2': styleNotificationsState}">
+                    <span class="material-icons">font_download</span>
+                        <p>Notifications</p>
+                  </a></router-link>
+                </li>
+                <li class="nav-item" ><router-link :to="{ name: 'Logs' }" >
+                  <a href="#" class="nav-link" v-on:click="addLocation('Logs')" v-bind:class="{'nav2': styleLogsState}">
+                    <span class="material-icons">font_download</span>
+                        <p>Logs</p>
+                  </a></router-link>
+                </li>
+              </ul>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
@@ -129,6 +143,8 @@ export default {
     return {
       arrow_down: false,
       arrow_up: true,
+      arrow_down_settings: true,
+      arrow_up_settings: false,
       hide_logo: false,
       button_module: false,
       button_vert: true,
@@ -140,7 +156,7 @@ export default {
     BullseyeArrowIco
   },
   computed: {
-    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState'])
+    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState'])
   },
   mounted () {
     this.location = this.viewloc
@@ -164,9 +180,17 @@ export default {
       }
     },
     addLocation: function (loc) {
-      this.arrow_down = !this.arrow_down
-      this.arrow_up = !this.arrow_up
-      this.$store.commit('updateLocView', loc)
+      if (loc === 'Pipelines') {
+        this.arrow_down = !this.arrow_down
+        this.arrow_up = !this.arrow_up
+      }
+      if (loc === 'Settings') {
+        this.arrow_down_settings = !this.arrow_down_settings
+        this.arrow_up_settings = !this.arrow_up_settings
+      }
+      if (loc !== 'Settings') {
+        this.$store.commit('updateLocView', loc)
+      }
     }
   }
 }

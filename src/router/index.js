@@ -52,6 +52,16 @@ const routes = [
     path: '/pipelines/details/:id',
     name: 'PipelineDetail',
     component: () => import('../views/PipelineDetailsView.vue')
+  },
+  {
+    path: '/logs',
+    name: 'Logs',
+    component: () => import('../views/Logs.vue')
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('../views/Logs.vue')
   }
 ]
 const router = createRouter({

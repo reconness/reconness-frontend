@@ -51,6 +51,8 @@ export default createStore({
     styleAgentState: false,
     styleTargetState: false,
     stylePipelinesState: false,
+    styleLogsState: false,
+    styleNotificationsState: false,
     colorDelete: '#000000',
     agentsInstallers: [
       { name: 'Subfinder', description: 'Breve descripcion del agente Subfinder', id: 1, installed: false },
@@ -159,6 +161,8 @@ export default createStore({
       state.styleTargetState = false
       state.styleAgentState = false
       state.stylePipelinesState = false
+      state.styleLogsState = false
+      state.styleNotificationsState = false
       if (namePath === 'Agents') {
         state.styleAgentState = true
       }
@@ -167,6 +171,12 @@ export default createStore({
       }
       if (namePath === 'Pipelines') {
         state.stylePipelinesState = true
+      }
+      if (namePath === 'Logs') {
+        state.styleLogsState = true
+      }
+      if (namePath === 'Notifications') {
+        state.styleNotificationsState = true
       }
       state.viewloc = namePath
     },
