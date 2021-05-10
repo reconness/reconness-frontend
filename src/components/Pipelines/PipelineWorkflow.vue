@@ -1,14 +1,14 @@
 <template>
 <div class="row">
-                  <div v-for="(item2,index) of AgentsPipelineList.slice(0,3)" :key="item2.id" class="col-4 p-0" style="position: relative;">
+                  <div v-for="(item2,index) of associatedAgents" :key="item2.id" class="col-4 p-0" style="position: relative;">
                     <div class="info-box-background  w-85 float-left" style="position: relative; left: 0px; top: -1px;">
                   </div>
-                    <div v-if="index !== 2 && index+1 !== AgentsPipelineList.length" class="mt-3 w-15 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="index !== 2 && index+1 !== AgentsPipelineList.length" class="mt-3 black-circle">  </div>
+                    <div v-if="index+1 !== associatedAgents.length" class="mt-3 w-15 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
+                    <div v-if="index+1 !== associatedAgents.length" class="mt-3 black-circle">  </div>
                     <div class="info-box float-left w-85 abs-center"  :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
                         <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
-                        <small class="small-text">Details</small>
+                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item2.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
                       </div>
                       <span class="number float-right ml-1 abs-center"  :style ="{background:item2.background}" >
                       <div><AccountCogIco/></div>
@@ -25,6 +25,18 @@ export default {
   },
   props: {
     AgentsPipelineList: Object
+  },
+  computed: {
+    associatedAgents () {
+      return this.AgentsPipelineList.slice(0, 3)
+    }
+  },
+  methods: {
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('setDetailsLinks', true)
+    }
   }
 }
 </script>

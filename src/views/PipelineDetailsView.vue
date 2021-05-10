@@ -26,6 +26,7 @@
                 :pipelineBackground="item.background"
               />
             </div>
+            <AgentForm :read-only="true"/>
           </div>
         </div></div>
         <hr class="mb-2 mt-0" />
@@ -45,7 +46,7 @@
                   <div class="col-11 mb-5">
                     <PipelineWorkflow :AgentsPipelineList='this.getPipelineById(parseInt(this.$route.params.id)).agent' class="w-75 p-3 pr-0"/>
                   </div>
-                   <div class="col">
+                   <div class="col-1">
                       <p class="ml-auto mt-3 mr-3 d-flex flex-column text-right">
                     <span class="cursor-pointer material-icons mb-1 clearfix">zoom_in</span>
                     <span class="cursor-pointer  material-icons mb-1 ">zoom_out</span>
@@ -67,6 +68,7 @@ import NavBarTwoDetailPipeline from '@/components/Pipelines/NavBarTwoDetailPipel
 import PipelineAgent from '@/components/Pipelines/PipelineAgent.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 import PipelineWorkflow from '@/components/Pipelines/PipelineWorkflow.vue'
+import AgentForm from '@/components/AgentForm.vue'
 
 export default {
   name: 'PipelineDetailsView',
@@ -78,7 +80,8 @@ export default {
     NavBarTwoDetailPipeline,
     PipelineAgent,
     PipelinesForm,
-    PipelineWorkflow
+    PipelineWorkflow,
+    AgentForm
   },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById']),
@@ -101,6 +104,11 @@ export default {
     },
     collapseUp () {
       document.getElementById('scroll-div').scrollBy({ top: -120, behavior: 'smooth' })
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('setDetailsLinks', true)
     }
   }
 }

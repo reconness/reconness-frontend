@@ -37,7 +37,7 @@
             </div>
             <div class="modal-footer" :class="{'border-0' : thirdStep}">
                <button v-if="this.step !== 3 && this.routeName === 'Pipelines'" @click="nextPage()" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">NEXT</button>
-               <button v-else @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!pipelineFormIsValid">DONE</button>
+               <button v-else @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!pipelineFormIsValid && !isFromPipelineDetails">DONE</button>
                <button @click="cancelAll()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
           </div>
@@ -104,6 +104,9 @@ export default {
         return false
       }
       return true
+    },
+    isFromPipelineDetails () {
+      return this.routeName === 'PipelineDetail'
     }
   },
   components: {
@@ -185,22 +188,23 @@ export default {
         for (const index of this.listAgents) {
           Pipeline.agent.push(this.$store.getters.getAgentById(parseInt(index)))
         }
+      } else {
+        const fullDataAgents = []
+        let agentData = null
+        this.listAgents.forEach(idAgent => {
+          agentData = this.getAgentById(parseInt(idAgent))
+          fullDataAgents.push(agentData)
+        })
+        const pipelineEntity = {
+          name: 'My pipeline',
+          date: new Date().toLocaleDateString('es-Es'),
+          statusRun: false,
+          agent: fullDataAgents,
+          id: -1
+        }
+        this.addPipeline(pipelineEntity)
+        jQuery('#pipelinesModalForm').modal('hide')
       }
-      const fullDataAgents = []
-      let agentData = null
-      this.listAgents.forEach(idAgent => {
-        agentData = this.getAgentById(parseInt(idAgent))
-        fullDataAgents.push(agentData)
-      })
-      const pipelineEntity = {
-        name: 'My pipeline',
-        date: new Date().toLocaleDateString('es-Es'),
-        statusRun: false,
-        agent: fullDataAgents,
-        id: -1
-      }
-      this.addPipeline(pipelineEntity)
-      jQuery('#pipelinesModalForm').modal('hide')
       this.deSelectedAll()
       this.step = 1
       this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
