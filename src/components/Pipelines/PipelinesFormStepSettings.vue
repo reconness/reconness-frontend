@@ -179,7 +179,7 @@
             </a>
           </div>
           <div class="col-12 pipeline_spacing">
-            <div class="d-flex justify-content-center align-items-center mt-4">
+            <div class="d-flex justify-content-center align-items-center mt-1">
               <Calendar v-model="event_date" :inline="true" :minDate="new Date()" @date-select="onChangeDate(event_date)"/>
             </div>
           </div>
@@ -329,7 +329,7 @@ export default {
     border: 1px solid #F1F3F5;
     padding: 8px;
     border-radius: 12px;
-    height: 246px !important;
+    height: 232px !important;
   }
   .wizard-setting-switch-label::after{
     background-color: #ffffff !important;
@@ -382,7 +382,7 @@ h1{
     width: 44%;
 }
 span.pipeline-setting-repeat{
-    bottom: 17px;
+    bottom: 13%;
     position: absolute;
 }
 #close-icon-pipeline-setting{
@@ -451,5 +451,9 @@ span.pipe-circle-minus-properties svg{
 .locations-container{
   max-height: 358px;
   overflow-y: auto;
+}
+div.event-settings hr{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 </style>
