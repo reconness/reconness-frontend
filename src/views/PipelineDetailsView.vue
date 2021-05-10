@@ -1,9 +1,7 @@
 <template>
   <div>
     <!-- Contains navs-bar -->
-    <NavBarTwoDetailPipeline
-      :pipelineName="this.getPipelineById(parseInt(this.$route.params.id)).name"
-    />
+    <NavBarTwoDetailPipeline :pipelineName="this.getPipelineById(parseInt(this.$route.params.id)).name" />
     <div class="content-wrapper">
       <div class="container-fluid pl-0">
         <hr class="mt-1 mb-0" />
@@ -26,6 +24,8 @@
                 :pipelineBackground="item.background"
               />
             </div>
+          </div>
+          <div class="row">
             <AgentForm :read-only="true"/>
           </div>
         </div></div>

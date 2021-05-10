@@ -204,10 +204,10 @@ export default {
         }
         this.addPipeline(pipelineEntity)
         jQuery('#pipelinesModalForm').modal('hide')
+        this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
       }
       this.deSelectedAll()
       this.step = 1
-      this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
