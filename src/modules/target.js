@@ -735,7 +735,7 @@ export default ({
       state.valueDelete = ''
     },
     removeTargets (state) {
-      for (var index1 in state.targetIdList) {
+      for (const index1 in state.targetIdList) {
         const index = state.targetListStore.findIndex(target => target.id === state.targetIdList[index1].id)
         if (index !== -1) {
           state.targetListStore.splice(index, 1)
@@ -747,7 +747,7 @@ export default ({
       state.colorDelete = '#000000'
     },
     removeSubdomainChecked (state) {
-      for (var index1 in state.elementSelectedList) {
+      for (const index1 in state.elementSelectedList) {
         const target = state.targetListStore.find(target => target.id === state.elementSelectedList[index1].idTarget)
         const roots = target.rootDomains.find(roots => roots.id === state.elementSelectedList[index1].idRoot)
         const subdIndex = roots.subdomain.findIndex(subd => subd.id === state.elementSelectedList[index1].idSubdom)
@@ -869,7 +869,7 @@ export default ({
       state.isTargetDeleted = value
     },
     addSubdomain (state, params) {
-      for (var index = 0; index < params.subdomainsItems.length; index++) {
+      for (let index = 0; index < params.subdomainsItems.length; index++) {
         params.subdomainsItems[index].id = state.idSubdomain++
       }
       const target = state.targetListStore.find(item => item.id === params.idTarget)
@@ -931,14 +931,24 @@ export default ({
     },
     getRootDomainMessages: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
-      return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
+      if (target) {
+        return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
+      } else {
+        return []
+      }
     },
     getSubDomainMessages: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
-      const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
-      const subdomain = rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain)
-      if (subdomain) {
-        return subdomain.messages
+      if (target) {
+        const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+        if (rootDomain) {
+          const subdomain = rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain)
+          if (subdomain) {
+            return subdomain.messages
+          } else {
+            return []
+          }
+        }
       } else {
         return []
       }
