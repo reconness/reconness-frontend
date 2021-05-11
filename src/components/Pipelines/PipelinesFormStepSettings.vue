@@ -85,7 +85,7 @@
                   <div class="row">
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][0]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index="index">close</span>
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index-x="index" :data-index-y="0" @click="removeEvent">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][0].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][0].date.getDate() }}</span>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][1]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" @click="removeEvent">close</span>
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index-x="index" :data-index-y="1" @click="removeEvent">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][1].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][1].date.getDate() }}</span>
@@ -258,22 +258,29 @@ export default {
       const index = e.currentTarget.getAttribute('data-index')
       if (this.settings_data.locations[index].entity.entityType > -1) {
         this.generalLocationType = this.settings_data.locations[index].entity.entityType
-        // this.sendPipelineSettings()
       }
     },
     onChangeDate: function (e) {
       if (this.settings_data.calendars[this.settings_data.calendars.length - 1] && this.event_date) {
         this.settings_data.calendars[this.settings_data.calendars.length - 1].date = this.event_date
-        // this.sendPipelineSettings()
       }
     },
     sendPipelineSettings: function (e) {
       this.$emit('pipelineSettingsDone', this.settings_data)
     },
     removeEvent: function (e) {
-      const closeIconIndex = e.currentTarget.getAttribute('data-index')
-      if (closeIconIndex !== 0) {
-        this.settings_data.calendars.splice(closeIconIndex, 1)
+      const closeIconIndexX = parseInt(e.currentTarget.getAttribute('data-index-x'))
+      const closeIconIndexY = parseInt(e.currentTarget.getAttribute('data-index-y'))
+      if (closeIconIndexX > 0) {
+        if (closeIconIndexY === 0) {
+          this.settings_data.calendars.splice(closeIconIndexX * 2, 1)
+        } else {
+          this.settings_data.calendars.splice(closeIconIndexX * 2 + 1, 1)
+        }
+      } else {
+        if (closeIconIndexY === 1) {
+          this.settings_data.calendars.splice(1, 1)
+        }
       }
     },
     removeLocation: function (e) {
