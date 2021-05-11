@@ -44,12 +44,24 @@
             <span class="material-icons">notifications_none</span>
           </a>
         </li>
-        <li class="nav-item">
-          <div class="image">
+        <li class="nav-item dropdown">
+          <div class="image nav-link cursor-pointer" data-toggle="dropdown">
             <span class="loged-user-name">John Doe</span>
             <img src="/adminlte/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
           </div>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-envelope mr-2"></i> My account
+            </a>
+            <div class="dropdown-divider"></div>
+              <!-- <a href="#" class="dropdown-item"> -->
+              <router-link class="dropdown-item" :to="{ name: 'LogIn'}" >
+                <i class="fas fa-users mr-2"></i> Sign out
+              </router-link>
+              <!-- </a> -->
+          </div>
         </li>
+
       </ul>
     </nav>
     <!-- /.navbar -->

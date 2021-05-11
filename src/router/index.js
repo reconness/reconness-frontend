@@ -61,7 +61,12 @@ const routes = [
   {
     path: '/notifications',
     name: 'Notifications',
-    component: () => import('../views/Logs.vue')
+    component: () => import('../views/Notifications.vue')
+  },
+  {
+    path: '/login',
+    name: 'LogIn',
+    component: () => import('../views/LogIn.vue')
   }
 ]
 const router = createRouter({

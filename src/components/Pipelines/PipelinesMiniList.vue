@@ -12,7 +12,7 @@
            </router-link>
             <div class="card-tools mr-0">
                <ul class="nav nav-pills ml-auto">
-                   <li class="nav-item icon-gray mr-1">
+                   <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer">
                       <GearIcon/>
                     </li>
                     <li class="nav-item icon-gray">
@@ -190,5 +190,8 @@ input[type="checkbox"] {
 }
 div.card-header span{
   font-size: 20px;
+}
+li.setting-icon:hover{
+  fill: #00B1FF;
 }
 </style>
