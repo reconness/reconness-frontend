@@ -50,7 +50,7 @@
         </div>
         <div class="col-12">
           <div class="pipeline_spacing locations-container">
-          <p class="float-right blue-text mb-1 cursor-pointer">Search</p>
+          <p class="float-right blue-text mb-1">Search</p>
             <div v-for="(item, index) in settings_data.locations" :key="item.id" class="input-searcher-container">
               <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
               <div style="height: 0;">
