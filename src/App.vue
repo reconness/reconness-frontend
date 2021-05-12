@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <nav v-if="!isLoginPage" class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -55,7 +55,7 @@
             </a>
             <div class="dropdown-divider"></div>
               <!-- <a href="#" class="dropdown-item"> -->
-              <router-link class="dropdown-item" :to="{ name: 'LogIn'}" >
+              <router-link class="dropdown-item" :to="{ name: 'LogOut'}" >
                 <i class="fas fa-users mr-2"></i> Sign out
               </router-link>
               <!-- </a> -->
@@ -66,7 +66,7 @@
     </nav>
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary  left-aside" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <aside v-if="!isLoginPage" class="main-sidebar sidebar-dark-primary  left-aside" @mouseenter="mouseenter" @mouseleave="mouseleave">
       <!-- Brand Logo -->
        <router-link to="/">
       <a href="#" class="brand-link">
@@ -134,12 +134,12 @@
               </ul>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+                <router-link :to="{ name: 'LogOut' }" class="nav-link">
                 <span class="material-icons">exit_to_app</span>
                 <p>
                   Logout
                 </p>
-              </a>
+                </router-link>
             </li>
           </ul>
         </nav>
@@ -177,7 +177,10 @@ export default {
     BullseyeArrowIco
   },
   computed: {
-    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState'])
+    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState']),
+    isLoginPage () {
+      return this.$route.name === 'LogIn'
+    }
   },
   mounted () {
     this.location = this.viewloc
