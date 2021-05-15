@@ -196,7 +196,9 @@ export default {
           this.validators.exist.subDomainName[index] = true
           founded = true
         } else {
-          this.validators.exist.subDomainName[index] = false
+          if (this.validators.exist.subDomainName[index] === false) {
+            this.validators.exist.subDomainName[index] = false
+          }
         }
         index++
       }
