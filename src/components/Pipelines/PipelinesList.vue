@@ -11,7 +11,7 @@
            <router-link :to="{ name: 'PipelineDetail', params: {id: item.id} }">
            <h1 class="domain-names-list">{{item.name}}</h1>
            </router-link>
-           <span class="info-box-icon abs-center icon-gray border-bottom pb-2 setting-icon cursor-pointer" data-toggle="modal" data-target="#targetModalForm" :data-id="item.id"><GearIcon/></span>
+           <span class="info-box-icon abs-center icon-gray border-bottom pb-2 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalForm" :data-id="item.id" @click="openSettings"><GearIcon/></span>
           </div>
            <div class="row pl-2 mt-2">
               <div class="col-10 p-0">
@@ -29,7 +29,11 @@
                  </div>
                </div>
            </div>
-    </div></div></div></div>
+    </div></div></div>
+    <div class="col-12">
+      <PipelinesForm :routeName="this.$route.name"/>
+    </div>
+    </div>
 </template>
 
 <script>
@@ -37,18 +41,21 @@ import { mapState, mapMutations } from 'vuex'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
 import PipelineWorkflow from '@/components/Pipelines/PipelineWorkflow.vue'
+import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 export default {
   name: 'PipelinesList',
   components: {
     RocketIco,
     GearIcon,
-    PipelineWorkflow
+    PipelineWorkflow,
+    PipelinesForm
   },
   data: function () {
     return {
       selectedCard: -1,
       checkSelected: false,
-      checkDeleted: -1
+      checkDeleted: -1,
+      selectedPipeline: { id: -1 }
     }
   },
   computed: {
@@ -97,6 +104,10 @@ export default {
           this.checkDeleted = selectedId
         }
       }
+    },
+    openSettings (e) {
+      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
+      this.$store.commit('pipelines/setIdPipeline', selectedId)
     }
   }
 }

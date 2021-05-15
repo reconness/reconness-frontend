@@ -40,6 +40,50 @@ export default {
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 8
           }
+        ],
+        locations: [
+          {
+            name: 'target11.com',
+            entityType: 1,
+            entityId: 1
+          },
+          {
+            name: 'target12.com',
+            entityType: 2,
+            entityId: 2
+          }
+        ],
+        calendars: [
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('01/08/2020'),
+            repeat: 0
+          },
+          {
+            enabled: true,
+            time: new Date(),
+            date: new Date('09/23/2020'),
+            repeat: 1
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('02/21/2021'),
+            repeat: 3
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('03/15/2021'),
+            repeat: 2
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('04/26/2021'),
+            repeat: 4
+          }
         ]
       },
       {
@@ -64,6 +108,38 @@ export default {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5
+          }
+        ],
+        locations: [
+          {
+            name: 'target21.com',
+            entityType: 1,
+            entityId: 1
+          },
+          {
+            name: 'target22.com',
+            entityType: 2,
+            entityId: 2
+          }
+        ],
+        calendars: [
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('01/08/2020'),
+            repeat: 0
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('03/15/2021'),
+            repeat: 2
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('04/26/2021'),
+            repeat: 4
           }
         ]
       },
@@ -90,6 +166,32 @@ export default {
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5
           }
+        ],
+        locations: [
+          {
+            name: 'target31.com',
+            entityType: 1,
+            entityId: 1
+          },
+          {
+            name: 'target32.com',
+            entityType: 2,
+            entityId: 2
+          }
+        ],
+        calendars: [
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('01/08/2020'),
+            repeat: 0
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('04/26/2021'),
+            repeat: 4
+          }
         ]
       },
       {
@@ -115,6 +217,38 @@ export default {
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5
           }
+        ],
+        locations: [
+          {
+            name: 'target41.com',
+            entityType: 1,
+            entityId: 1
+          },
+          {
+            name: 'target42.com',
+            entityType: 2,
+            entityId: 2
+          }
+        ],
+        calendars: [
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('01/08/2020'),
+            repeat: 0
+          },
+          {
+            enabled: true,
+            time: new Date(),
+            date: new Date('09/23/2020'),
+            repeat: 1
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('02/21/2021'),
+            repeat: 3
+          }
         ]
       },
       {
@@ -139,6 +273,32 @@ export default {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5
+          }
+        ],
+        locations: [
+          {
+            name: 'target51.com',
+            entityType: 1,
+            entityId: 1
+          },
+          {
+            name: 'target52.com',
+            entityType: 2,
+            entityId: 2
+          }
+        ],
+        calendars: [
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('03/15/2021'),
+            repeat: 2
+          },
+          {
+            enabled: false,
+            time: new Date(),
+            date: new Date('04/26/2021'),
+            repeat: 4
           }
         ]
       }
@@ -256,11 +416,21 @@ export default {
     addPipeline (state, data) {
       data.id = ++state.autoId
       state.pipelinesListStore.push(data)
+    },
+    updatePipeline (state, pipeline) {
+      const item = state.pipelinesListStore.find(item => item.id === pipeline.id)
+      Object.assign(item, pipeline)
+    },
+    setIdTarget (state, id) {
+      state.idTarget = id
     }
   },
   getters: {
     getPipelineById: (state) => (id) => {
       return state.pipelinesListStore.find(pipeline => pipeline.id === id)
+    },
+    getIdPipeline (state) {
+      return state.idPipeline
     }
   }
 }

@@ -12,13 +12,13 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-12">
-                  <PipelinesFormStepSettings @pipelineSettingsDone="updatePipelineSettings"/>
+                  <PipelinesFormStepSettings @pipelineSettingsDone="updatePipelineSettings" />
                 </div>
               </div>
             </div>
             <div class="modal-footer border-0">
                <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!pipelineFormIsValid && !isFromPipelineDetails">DONE</button>
-               <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
+               <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
             </div>
           </div>
         </div>
@@ -35,10 +35,16 @@ export default {
   name: 'PipelinesForm',
   data: function () {
     return {
-      listAgents: [],
-      step: 1,
-      agentStartingPoint: 0,
-      settings_data: null
+      settings_data: null,
+      pipeline: {
+        name: 'My pipeline',
+        date: new Date().toLocaleDateString('es-Es'),
+        statusRun: false,
+        agent: [],
+        id: -1,
+        locations: [],
+        calendars: []
+      }
     }
   },
   props: {
@@ -47,7 +53,6 @@ export default {
   computed: {
     ...mapState(['autoId']),
     ...mapState('pipelines', ['autoId']),
-    ...mapGetters('pipelines', ['getPipelineById']),
     ...mapGetters(['getAgentById']),
     pipelineFormIsValid () {
       if (this.settings_data && ((this.settings_data.locations.length === 1 && this.settings_data.locations[0].entity.name === undefined) ||
@@ -64,32 +69,36 @@ export default {
     PipelinesFormStepSettings
   },
   methods: {
-    ...mapMutations('pipelines', ['addPipeline']),
+    ...mapMutations('pipelines', ['addPipeline', 'updatePipeline', 'setIdPipeline']),
     save () {
-      const fullDataAgents = []
-      let agentData = null
-      this.listAgents.forEach(idAgent => {
-        agentData = this.getAgentById(parseInt(idAgent))
-        fullDataAgents.push(agentData)
-      })
-      const pipelineEntity = {
-        name: 'My pipeline',
-        date: new Date().toLocaleDateString('es-Es'),
-        statusRun: false,
-        agent: fullDataAgents,
-        id: -1
+      this.pipeline.calendars = this.settings_data.calendars.slice()
+      this.pipeline.locations = this.transformPipelineLocations(this.settings_data.locations)
+      if (this.settings_data.editable) {
+        this.pipeline.id = this.settings_data.id
+        this.pipeline.name = this.settings_data.name
+        this.pipeline.date = this.settings_data.date
+        this.pipeline.statusRun = this.settings_data.statusRun
+        this.pipeline.agent = this.settings_data.agent
+        this.updatePipeline(this.pipeline)
+        this.setIdPipeline(-1)
+      } else {
+        this.addPipeline(this.pipeline)
+        this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
       }
-      this.addPipeline(pipelineEntity)
       jQuery('#pipelinesModalForm').modal('hide')
-      this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
-    },
-    setDetailsLink (e) {
-      const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
     },
     updatePipelineSettings (e) {
       this.settings_data = e
+    },
+    transformPipelineLocations (locationsWrongStructure) {
+      const newLocations = []
+      locationsWrongStructure.forEach(element => {
+        newLocations.push(element.entity)
+      })
+      return newLocations
+    },
+    close () {
+      this.setIdPipeline(-1)
     }
   }
 }

@@ -51,7 +51,7 @@
         <div class="col-12">
           <div class="pipeline_spacing locations-container">
           <p class="float-right blue-text mb-1">Search</p>
-            <div v-for="(item, index) in settings_data.locations" :key="item.id" class="input-searcher-container">
+            <div v-for="(item, index) in settings_data.locations" :key="item.entity.id" class="input-searcher-container">
               <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
               <div style="height: 0;">
                 <span v-if="index>0" @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
@@ -202,7 +202,13 @@ export default {
       event_date: null,
       settings_data: {
         locations: [],
-        calendars: []
+        calendars: [],
+        editable: false,
+        id: -1,
+        name: '',
+        date: new Date(),
+        statusRun: true,
+        agent: []
       },
       generalLocationType: 1,
       entityNameSearchData: '',
@@ -288,10 +294,17 @@ export default {
       if (parseInt(locationIndex) > 0) {
         this.settings_data.locations.splice(locationIndex, 1)
       }
+    },
+    resetPipelineForm: function (e) {
+      this.settings_data.locations.splice(0)
+      this.addLocation({})
+      this.settings_data.calendars.splice(0)
+      this.addCalendarEvent({})
     }
   },
   computed: {
     ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
+    ...mapGetters('pipelines', ['getPipelineById']),
     loadParsedCalendarsToCarousel: function () {
       const carouselItems = []
       let carouselPairItems = []
@@ -308,6 +321,10 @@ export default {
         }
       }
       return carouselItems
+    },
+    loadSelectedPipeline () {
+      const id = this.$store.getters['pipelines/getIdPipeline']
+      return this.$store.getters['pipelines/getPipelineById'](parseInt(id))
     }
   },
   watch: {
@@ -316,11 +333,40 @@ export default {
         this.sendPipelineSettings()
       },
       deep: true
+    },
+    loadSelectedPipeline: function (value) {
+      if (value !== undefined) {
+        this.settings_data.locations.splice(0)
+        value.locations.forEach(element => {
+          this.settings_data.locations.push({
+            entity: {
+              name: element.name,
+              entityType: element.entityType,
+              entityId: element.entityId
+            }
+          })
+        })
+        this.settings_data.calendars.splice(0)
+        value.calendars.forEach(element => {
+          this.settings_data.calendars.push(element)
+        })
+        this.settings_data.editable = true
+        this.settings_data.id = value.id
+        this.settings_data.name = value.name
+        this.settings_data.date = value.date
+        this.settings_data.statusRun = value.statusRun
+        this.settings_data.agent = value.agent
+      } else {
+        this.settings_data.editable = false
+        this.resetPipelineForm()
+      }
     }
   },
   created: function () {
     if (this.settings_data.locations.length === 0) {
       this.addLocation({})
+    }
+    if (this.settings_data.calendars.length === 0) {
       this.addCalendarEvent({})
     }
   }
