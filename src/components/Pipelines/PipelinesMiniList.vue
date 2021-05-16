@@ -12,7 +12,7 @@
            </router-link>
             <div class="card-tools mr-0">
                <ul class="nav nav-pills ml-auto">
-                   <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer">
+                   <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalForm" :data-id="item.id" @click="openSettings">
                       <GearIcon/>
                     </li>
                     <li class="nav-item icon-gray">
@@ -44,17 +44,22 @@
               <!-- /.card-body -->
         </div>
     </div><!-- /.col -->
+    <div class="col-12">
+      <PipelinesForm :routeName="this.$route.name"/>
+    </div>
 </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
+import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 export default {
   name: 'PipelinesList',
   components: {
     RocketIco,
-    GearIcon
+    GearIcon,
+    PipelinesForm
   },
   data: function () {
     return {
@@ -109,6 +114,10 @@ export default {
           this.checkDeleted = selectedId
         }
       }
+    },
+    openSettings (e) {
+      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
+      this.$store.commit('pipelines/setIdPipeline', selectedId)
     }
   }
 }
