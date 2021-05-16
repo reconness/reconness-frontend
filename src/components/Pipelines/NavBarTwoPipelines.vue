@@ -133,8 +133,8 @@ export default {
       }
     },
     close () {
-      var checkboxes = document.getElementsByName('checkitem')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''

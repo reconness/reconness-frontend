@@ -12,33 +12,39 @@ export default {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
-            id: 1
+            id: 1,
+            agentBranch: {}
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-            id: 2
+            id: 2,
+            agentBranch: {}
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-            id: 5
+            id: 5,
+            agentBranch: {}
           },
           {
             name: 'Agent 6',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-            id: 6
+            id: 6,
+            agentBranch: {}
           },
           {
             name: 'Agent 7',
             background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box',
-            id: 7
+            id: 7,
+            agentBranch: {}
           },
           {
             name: 'Agent 8',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-            id: 8
+            id: 8,
+            agentBranch: {}
           }
         ],
         locations: [
@@ -153,18 +159,21 @@ export default {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
-            id: 1
+            id: 1,
+            agentBranch: {}
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-            id: 2
+            id: 2,
+            agentBranch: {}
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-            id: 5
+            id: 5,
+            agentBranch: {}
           }
         ],
         locations: [
@@ -204,18 +213,21 @@ export default {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
-            id: 1
+            id: 1,
+            agentBranch: {}
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-            id: 2
+            id: 2,
+            agentBranch: {}
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-            id: 5
+            id: 5,
+            agentBranch: {}
           }
         ],
         locations: [
@@ -261,13 +273,19 @@ export default {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
-            id: 1
+            id: 1,
+            agentBranch: {
+              name: 'Agent 5',
+              background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
+              id: 5
+            }
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-            id: 2
+            id: 2,
+            agentBranch: {}
           },
           {
             name: 'Agent 5',
@@ -313,9 +331,19 @@ export default {
     styleListDetail: '1.25rem',
     pipelinesIdAgentsList: [],
     colorDeleteDetail: '#000000',
-    autoId: 99
+    autoId: 99,
+    branchFather: -1,
+    idFather: -1,
+    idSon: -1
   },
   mutations: {
+    changeIsBranchFather (state, value) {
+      state.branchFather = value
+    },
+    changeValueToDelete (state, objectValue) {
+      state.idFather = objectValue.idFather
+      state.idSon = objectValue.idSon
+    },
     removebyIdPipelines (state, id) {
       const index = state.pipelinesIdList.findIndex(pipeline => pipeline.id === id)
       if (index !== -1) {
@@ -323,6 +351,14 @@ export default {
         if (state.pipelinesIdList.length === 0) {
           state.colorDelete = '#000000'
         }
+      }
+    },
+    removeAgentOfPipelineWorkflow (state, idPipeline) {
+      const pipeline = state.pipelinesListStore.find(pipeline => pipeline.id === idPipeline)
+      const indexAgent = pipeline.agent.findIndex(agent => agent.id === state.idFather)
+      if (indexAgent !== -1) {
+        pipeline.agent.splice(indexAgent, 1)
+        state.idFather = -1
       }
     },
     setIdPipeline (state, id) {

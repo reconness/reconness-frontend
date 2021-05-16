@@ -89,7 +89,6 @@ export default {
           services: [],
           directories: []
         })
-        // console.log('subd-form-input-' + (this.subdomains.length - 1))
         const self = this
         setTimeout(
           function () {
