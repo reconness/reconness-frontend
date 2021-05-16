@@ -264,17 +264,6 @@
         width: 90px;
         height: 47px;
     }
-
-    .agent-name-input{
-      font-size: 24px;
-      font-weight: bold;
-      color: #000000;
-      border-left: 4px solid #00B1FF;
-      border-top: none;
-      border-bottom: none;
-      border-right: none;
-    }
-
     .input.invalid input {
         border: 1px solid red;
     }

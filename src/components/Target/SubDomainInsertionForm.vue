@@ -11,7 +11,7 @@
                             <p class="description-text pl-3">Choose an option to add a new subdomain</p>
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container mt-2">
-                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations">
+                                  <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" :id="'subd-form-input-' + index">
                                   <div style="height: 0;">
                                     <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-show="index>0">
                                       <MinusCircleIco/>
@@ -89,6 +89,14 @@ export default {
           services: [],
           directories: []
         })
+        // console.log('subd-form-input-' + (this.subdomains.length - 1))
+        const self = this
+        setTimeout(
+          function () {
+            document.getElementById('subd-form-input-' + (self.subdomains.length - 1)).focus()
+          },
+          100
+        )
       }
     },
     insertSubdomains: function () {

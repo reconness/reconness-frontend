@@ -899,3 +899,12 @@ div.p-datepicker.p-component.p-datepicker-inline.p-datepicker-timeonly{
 div.pipeline_spacing .p-autocomplete-loader{
   display: none !important
 }
+.agent-name-input{
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+  border-left: 4px solid #00B1FF;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+}
