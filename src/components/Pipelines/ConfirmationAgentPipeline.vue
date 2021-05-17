@@ -58,10 +58,14 @@ export default {
   },
   computed: {
     ...mapGetters(['getAgentById']),
-    ...mapState('pipelines', ['idFather']),
+    ...mapState('pipelines', ['idFather', 'idSon']),
     getNamePipeline () {
-      if (this.idFather !== -1) {
-        return this.getAgentById(this.idFather).name
+      if (this.idSon !== -1 && this.idFather !== -1) {
+        return this.getAgentById(this.idSon).name
+      } else {
+        if (this.idFather !== -1) {
+          return this.getAgentById(this.idFather).name
+        }
       }
       return 0
     }

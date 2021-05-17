@@ -102,18 +102,25 @@ export default {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
-            id: 1
+            id: 1,
+            agentBranch: {}
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-            id: 2
+            id: 2,
+            agentBranch: {
+              name: 'Agent 1',
+              background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+              id: 1
+            }
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-            id: 5
+            id: 5,
+            agentBranch: {}
           }
         ],
         locations: [
@@ -356,9 +363,15 @@ export default {
     removeAgentOfPipelineWorkflow (state, idPipeline) {
       const pipeline = state.pipelinesListStore.find(pipeline => pipeline.id === idPipeline)
       const indexAgent = pipeline.agent.findIndex(agent => agent.id === state.idFather)
-      if (indexAgent !== -1) {
-        pipeline.agent.splice(indexAgent, 1)
+      if (state.idSon !== -1 && state.idFather !== -1) {
+        delete pipeline.agent[indexAgent].agentBranch
         state.idFather = -1
+        state.idSon = -1
+      } else {
+        if (indexAgent !== -1) {
+          pipeline.agent.splice(indexAgent, 1)
+          state.idFather = -1
+        }
       }
     },
     setIdPipeline (state, id) {

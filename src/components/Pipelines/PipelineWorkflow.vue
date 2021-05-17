@@ -8,22 +8,22 @@
                   <div v-for="(item2,index) of associatedAgents" :key="item2.id"
                   :class="{'col-4' : this.$route.name === 'Pipelines', 'col-3': this.$route.name === 'PipelineDetail', 'p-0': true}"
                   style="position: relative;">
-                  <div @mouseenter="showAdd( item2.id )" @mouseleave="hideAdd( item2.id)">
+                  <div :class="{'invisible': Object.keys(item2).length === 0}" @mouseenter="showAdd( item2.id )" @mouseleave="hideAdd( item2.id)">
                     <div class="info-box-background float-left"
                     :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
                     style="position: relative; left: 0px; top: -1px;"></div>
                     <div
-                    :class="{'invisible': index+1 === associatedAgents.length,'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
+                    :class="{'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0,'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
                     class="mt-3 margin-center abs-center border-top"
                     style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="index+1 !== associatedAgents.length" class="mt-3 black-circle">  </div>
+                    <div v-if="index+1 !== associatedAgents.length" :class="{'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0}" class="mt-3 black-circle">  </div>
 
                   <div v-if="this.$route.name === 'PipelineDetail'">
                     <div  class="workflow-tools info-box">
                      <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" class="material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})">cancel</span>
+                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})">cancel</span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span data-toggle="modal" data-target="#agentConfiguration" class="material-icons cursor-pointer">settings</span>
+                      <span class="material-icons cursor-pointer" >settings</span>
                     </div>
                     </div>
                       <button   :id="'b' + item2.id"  data-toggle="modal" data-target="#pipelinesModalForm"
@@ -44,6 +44,7 @@
                       </span>
                     </div>
                   </div>
+
                     <div v-if="this.$route.name === 'PipelineDetail'">
                       <div v-if="this.getAgentBranch(index-1) !== undefined">
                     <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
@@ -57,17 +58,22 @@
                       <div><AccountCogIco :class="{'change-font-size': this.$route.name === 'PipelineDetail'}"/></div>
                       </span>
                     </div>
+                    <div  class="workflow-tools info-box" style="top:0px;">
+                     <div class="info-box-content">
+                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: this.getAgentBranch(index-1).id})">cancel</span>
+                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
+                      <span class="material-icons cursor-pointer" >settings</span>
+                    </div>
+                    </div>
                     </div>
                     </div>
                   </div>
                   <ConfirmationAgentPipeline/>
-                  <AgentConfiguration/>
                 </div>
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import ConfirmationAgentPipeline from '@/components/Pipelines/ConfirmationAgentPipeline.vue'
-import AgentConfiguration from '@/components/Pipelines/AgentConfiguration.vue'
 
 export default {
   data: function () {
@@ -76,15 +82,19 @@ export default {
   },
   components: {
     AccountCogIco,
-    ConfirmationAgentPipeline,
-    AgentConfiguration
+    ConfirmationAgentPipeline
   },
   props: {
     AgentsPipelineList: Object
   },
   computed: {
     associatedAgents () {
-      return this.AgentsPipelineList.slice(0, 3)
+      const agentPipelineList = this.AgentsPipelineList.slice(0, 3)
+      const sizeList = agentPipelineList.length
+      if (sizeList >= 1 && agentPipelineList[sizeList - 1].agentBranch !== undefined && Object.keys(agentPipelineList[sizeList - 1].agentBranch).length !== 0) {
+        agentPipelineList.push({})
+      }
+      return agentPipelineList
     }
   },
   methods: {
