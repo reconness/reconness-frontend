@@ -44,7 +44,7 @@
                       </span>
                     </div>
                   </div>
-
+                  <div class="line" v-if="this.getAgentBranch(index) !== undefined"></div>
                     <div v-if="this.$route.name === 'PipelineDetail'">
                       <div v-if="this.getAgentBranch(index-1) !== undefined">
                     <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
@@ -254,5 +254,18 @@ border-radius: 12px;
 padding: 5px 8px;
 margin-top: 5px;
 margin-bottom: 15px;
+}
+div.line
+{
+    position: relative;
+    z-index: 1;
+    left: 70%;
+    width: 35%;
+    height: 1px;
+    top: -5%;
+    background-color: #000;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Safari and Chrome */
 }
 </style>
