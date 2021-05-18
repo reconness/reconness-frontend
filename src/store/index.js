@@ -109,7 +109,7 @@ export default createStore({
       }
     },
     removeAgents (state) {
-      for (var index1 in state.agentIdList) {
+      for (const index1 in state.agentIdList) {
         const index = state.agentListStore.findIndex(agent => agent.id === state.agentIdList[index1].id)
         if (index !== -1) {
           const installerReference = parseInt(state.agentListStore[index].installedFrom)

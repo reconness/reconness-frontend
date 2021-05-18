@@ -17,7 +17,7 @@
         <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-      <div class="row mb-2" v-for="item of this.getLastAgentRootDomain" :key="item.id">
+        <div class="row mb-2" v-for="item of this.listAgents" :key="item.id">
         <div class="col-2  border-left-radius border">
            <p class="m-2"> {{item.name}}</p>
         </div>
@@ -62,7 +62,14 @@ export default {
   },
   computed: {
     ...mapGetters(['getLastAgentRootDomain']),
-    ...mapState('target', ['agentStatus'])
+    ...mapGetters('target', ['listRootDomainsAgents']),
+    ...mapState('target', ['agentStatus', '']),
+    listAgents: function () {
+      return this.listRootDomainsAgents({
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRoot: parseInt(this.$route.params.id)
+      })
+    }
   },
   methods: {
     orderByName: function () {
