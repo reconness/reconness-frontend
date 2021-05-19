@@ -374,7 +374,6 @@ export default ({
                 bounty: true,
                 ignore: false,
                 scope: true,
-                agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
                 isAlive: false,
@@ -389,6 +388,40 @@ export default ({
                     sendDate: '2020-01-01',
                     message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
                   }
+                ],
+                agent: [
+                  {
+                    name: 'Agent 1',
+                    background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                    id: 1,
+                    repository: 'repository1.com',
+                    target: 'target 1',
+                    command: 'command 1',
+                    type: 3,
+                    isAliveTrigger: true,
+                    isHttpOpenTrigger: false,
+                    script: 'run agent 1',
+                    image: '',
+                    date: '21/01/2020',
+                    installedFrom: '',
+                    lastRun: '01/01/2021'
+                  },
+                  {
+                    name: 'Agent 2',
+                    background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                    id: 2,
+                    repository: 'repository2.com',
+                    target: 'target 2',
+                    command: 'command 2',
+                    type: 3,
+                    isAliveTrigger: true,
+                    isHttpOpenTrigger: false,
+                    script: 'run agent  2',
+                    image: '',
+                    date: '21/02/2020',
+                    installedFrom: '',
+                    lastRun: '02/01/2021'
+                  }
                 ]
               }
             ],
@@ -400,7 +433,40 @@ export default ({
                 message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
             ],
-            agent: []
+            agent: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 2',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 2,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              }
+            ]
           },
           {
             id: 2,
@@ -408,7 +474,40 @@ export default ({
             date: '21/08/2018',
             subdomain: [],
             messages: [],
-            agent: []
+            agent: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 2',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 2,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              }
+            ]
           },
           {
             id: 3,
@@ -416,7 +515,40 @@ export default ({
             date: '21/07/2018',
             subdomain: [],
             messages: [],
-            agent: []
+            agent: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 2',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 2,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              }
+            ]
           },
           {
             id: 4,
@@ -437,6 +569,40 @@ export default ({
             sender: 'Michael',
             sendDate: '2020-02-01',
             message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+          }
+        ],
+        agent: [
+          {
+            name: 'Agent 1',
+            background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+            id: 1,
+            repository: 'repository1.com',
+            target: 'target 1',
+            command: 'command 1',
+            type: 3,
+            isAliveTrigger: true,
+            isHttpOpenTrigger: false,
+            script: 'run agent 1',
+            image: '',
+            date: '21/01/2020',
+            installedFrom: '',
+            lastRun: '01/01/2021'
+          },
+          {
+            name: 'Agent 2',
+            background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+            id: 2,
+            repository: 'repository2.com',
+            target: 'target 2',
+            command: 'command 2',
+            type: 3,
+            isAliveTrigger: true,
+            isHttpOpenTrigger: false,
+            script: 'run agent  2',
+            image: '',
+            date: '21/02/2020',
+            installedFrom: '',
+            lastRun: '02/01/2021'
           }
         ]
       },
@@ -1044,10 +1210,14 @@ export default ({
       const target = state.targetListStore.find(item => item.id === params.idTarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
       const agent = roots.agent.find(agentItem => agentItem.id === params.idAgent)
-      if (agent) {
-        console.log(123)
-      }
-      // return roots.agent.slice(-4)
+      agent.status = params.status
+    },
+    updateStatusSubDomainAgent (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const subd = roots.subdomain.find(sub => sub.id === params.idSubDomain)
+      const agent = subd.agent.find(agentItem => agentItem.id === params.idAgent)
+      agent.status = params.status
     }
   },
   actions: {
@@ -1193,6 +1363,15 @@ export default ({
       const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
       const subdomain = roots.subdomain.find(subd => subd.id === params.idSubd)
       return subdomain.agent.slice(-4)
+    },
+    listCurrentRunningRootDomainsAgent: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const runningAgent = roots.agent.find(agent => agent.status === 1)
+      if (runningAgent) {
+        return runningAgent.id
+      }
+      return -1
     }
   }
 })

@@ -30,8 +30,10 @@
         <p class="m-2"> Never</p>
         </div>
         <div class="col-2 border border-right-radius text-center">
-            <button v-if="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) === parseInt(agentStatus.id)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-            <button v-else :disabled="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) !== parseInt(agentStatus.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+            <!-- <button v-if="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) === parseInt(agentStatus.id)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button> -->
+            <button v-if="parseInt(item.status) === parseInt(this.$agentStatus.RUNNING)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
+            <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+            <!-- <button v-else :disabled="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) !== parseInt(agentStatus.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button> -->
         </div>
         <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
       </div>
@@ -62,13 +64,16 @@ export default {
   },
   computed: {
     ...mapGetters(['getLastAgentRootDomain']),
-    ...mapGetters('target', ['listRootDomainsAgents']),
-    ...mapState('target', ['agentStatus', '']),
+    ...mapGetters('target', ['listRootDomainsAgents', 'listCurrentRunningRootDomainsAgent']),
+    ...mapState('target', ['agentStatus']),
     listAgents: function () {
       return this.listRootDomainsAgents({
         idTarget: parseInt(this.$route.params.idTarget),
         idRoot: parseInt(this.$route.params.id)
       })
+    },
+    isRunningAgent: function () {
+      return this.listCurrentRunningRootDomainsAgent({ idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), idAgent: parseInt(this.selectedAgentId) })
     }
   },
   methods: {
@@ -82,6 +87,12 @@ export default {
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
       this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.updateStatusRootDomainAgent({
+        status: this.$agentStatus.RUNNING,
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRoot: parseInt(this.$route.params.id),
+        idAgent: parseInt(this.selectedAgentId)
+      })
       this.setAgentStatus({ status: this.$agentStatus.RUNNING, id: parseInt(this.selectedAgentId) })
     },
     orderByNameAsc: function () {
@@ -118,7 +129,7 @@ export default {
         )
       }
     },
-    ...mapMutations('target', ['setAgentStatus'])
+    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent'])
   }
 }
 </script>
