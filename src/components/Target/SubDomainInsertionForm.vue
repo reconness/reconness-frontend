@@ -117,7 +117,7 @@ export default {
     resetForm: function () {
       this.subdomains = [{
         name: '',
-        added: new Date().toLocaleDateString('es-Es'),
+        added: new Date(),
         checking: false,
         interesting: false,
         vulnerable: false,

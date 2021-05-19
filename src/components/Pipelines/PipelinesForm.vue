@@ -38,7 +38,7 @@ export default {
       settings_data: null,
       pipeline: {
         name: 'My pipeline',
-        date: new Date().toLocaleDateString('es-Es'),
+        date: new Date(),
         statusRun: false,
         agent: [],
         id: -1,

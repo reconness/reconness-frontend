@@ -200,7 +200,7 @@ export default createStore({
         isHttpOpenTrigger: false,
         script: '',
         image: '',
-        date: new Date().toLocaleDateString('es-Es'),
+        date: new Date(),
         installedFrom: idInstaller
       }
       state.agentListStore.push(transformedAgent)
