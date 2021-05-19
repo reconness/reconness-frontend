@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <AgentForm/>
+    <AgentForm :readOnly="true"/>
   </div>
 </template>
 

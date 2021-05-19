@@ -32,6 +32,7 @@
     </div></div></div>
     <div class="col-12">
       <PipelinesForm :routeName="this.$route.name"/>
+      <AgentForm :readOnly="true"/>
     </div>
     </div>
 </template>
@@ -42,13 +43,15 @@ import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
 import PipelineWorkflow from '@/components/Pipelines/PipelineWorkflow.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
+import AgentForm from '@/components/AgentForm.vue'
 export default {
   name: 'PipelinesList',
   components: {
     RocketIco,
     GearIcon,
     PipelineWorkflow,
-    PipelinesForm
+    PipelinesForm,
+    AgentForm
   },
   data: function () {
     return {
