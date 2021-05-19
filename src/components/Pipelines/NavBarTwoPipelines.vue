@@ -5,7 +5,7 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex">
-           <a href="#" class="color-blue" data-toggle="modal" data-target="#pipelinesModalForm">
+           <a href="#" class="color-blue" data-toggle="modal" data-target="#pipelinesModalFormSettings">
             <span class="material-icons">control_point</span>
             <p class="float-right">New Pipeline</p>
           </a>

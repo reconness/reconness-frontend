@@ -11,7 +11,7 @@
            <router-link :to="{ name: 'PipelineDetail', params: {id: item.id} }">
            <h1 class="domain-names-list">{{item.name}}</h1>
            </router-link>
-           <span class="info-box-icon abs-center icon-gray border-bottom pb-2 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalForm" :data-id="item.id" @click="openSettings"><GearIcon/></span>
+           <span class="info-box-icon abs-center icon-gray border-bottom pb-2 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="item.id" @click="openSettings"><GearIcon/></span>
           </div>
            <div class="row pl-2 mt-2">
               <div class="col-10 p-0">

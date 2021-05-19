@@ -12,7 +12,7 @@
            </router-link>
             <div class="card-tools mr-0">
                <ul class="nav nav-pills ml-auto">
-                   <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalForm" :data-id="item.id" @click="openSettings">
+                   <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="item.id" @click="openSettings">
                       <GearIcon/>
                     </li>
                     <li class="nav-item icon-gray">

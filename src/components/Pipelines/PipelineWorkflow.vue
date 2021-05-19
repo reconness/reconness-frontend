@@ -23,7 +23,7 @@
                      <div class="info-box-content">
                       <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})">cancel</span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span class="material-icons cursor-pointer" >settings</span>
+                      <span class="material-icons cursor-pointer" data-toggle="modal" data-target="#agentConfiguration">settings</span>
                     </div>
                     </div>
                       <button   :id="'b' + item2.id"  data-toggle="modal" data-target="#pipelinesModalForm"
@@ -62,18 +62,20 @@
                      <div class="info-box-content">
                       <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: this.getAgentBranch(index-1).id})">cancel</span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span class="material-icons cursor-pointer" >settings</span>
+                      <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration">settings</span>
                     </div>
                     </div>
                     </div>
                     </div>
                   </div>
                   <ConfirmationAgentPipeline/>
+                  <AgentConfiguration />
                 </div>
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import ConfirmationAgentPipeline from '@/components/Pipelines/ConfirmationAgentPipeline.vue'
+import AgentConfiguration from '@/components/Pipelines/AgentConfiguration'
 
 export default {
   data: function () {
@@ -82,7 +84,8 @@ export default {
   },
   components: {
     AccountCogIco,
-    ConfirmationAgentPipeline
+    ConfirmationAgentPipeline,
+    AgentConfiguration
   },
   props: {
     AgentsPipelineList: Object

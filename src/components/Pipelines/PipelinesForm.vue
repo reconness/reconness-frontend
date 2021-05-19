@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <div class="modal fade" id="pipelinesModalForm"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal fade" id="pipelinesModalFormSettings"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg modal-dialog-top modal-dialog-centered modal-xl" role="document">
           <div class="modal-content agent-containers">
             <div class="modal-header border-0">
@@ -85,7 +85,7 @@ export default {
         this.addPipeline(this.pipeline)
         this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
       }
-      jQuery('#pipelinesModalForm').modal('hide')
+      jQuery('#pipelinesModalFormSettings').modal('hide')
     },
     updatePipelineSettings (e) {
       this.settings_data = e
