@@ -5,14 +5,14 @@ import pipelines from '../modules/pipelines'
 export default createStore({
   state: {
     agentListStore: [
-      { name: 'Agent 1', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 1, repository: 'repository1.com', target: 'target 1', command: 'command 1', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 1', image: '', date: '21/01/2020', installedFrom: '', lastRun: '01/01/2021' },
-      { name: 'Agent 2', background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box', id: 2, repository: 'repository2.com', target: 'target 2', command: 'command 2', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent  2', image: '', date: '21/02/2020', installedFrom: '', lastRun: '02/01/2021' },
-      { name: 'Agent 3', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 3, repository: 'repository3.com', target: 'target 3', command: 'command 3', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 3', image: '', date: '21/03/2020', installedFrom: '', lastRun: '99/99/9999' },
-      { name: 'Agent 4', background: '#ff8650 0% 0% no-repeat padding-box', id: 4, repository: 'repository4.com', target: 'target 4', command: 'command 4', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 4', image: '', date: '21/04/2020', installedFrom: '', lastRun: '01/03/2021' },
-      { name: 'Agent 5', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 5, repository: 'repository5.com', target: 'target 5', command: 'command 5', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 5', image: '', date: '21/05/2020', installedFrom: '', lastRun: '03/03/2021' },
-      { name: 'Agent 6', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020', installedFrom: '', lastRun: '12/02/2021' },
-      { name: 'Agent 7', background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020', installedFrom: '', lastRun: '24/02/2021' },
-      { name: 'Agent 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '', lastRun: '01/01/2021' }
+      { name: 'Agent 1', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 1, repository: 'repository1.com', target: 'target 1', command: 'command 1', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 1', image: '', date: '21/01/2020', installedFrom: '', lastRun: '01/01/2021', agentBranch: {} },
+      { name: 'Agent 2', background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box', id: 2, repository: 'repository2.com', target: 'target 2', command: 'command 2', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent  2', image: '', date: '21/02/2020', installedFrom: '', lastRun: '02/01/2021', agentBranch: {} },
+      { name: 'Agent 3', background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box', id: 3, repository: 'repository3.com', target: 'target 3', command: 'command 3', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 3', image: '', date: '21/03/2020', installedFrom: '', lastRun: '99/99/9999', agentBranch: {} },
+      { name: 'Agent 4', background: '#ff8650 0% 0% no-repeat padding-box', id: 4, repository: 'repository4.com', target: 'target 4', command: 'command 4', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 4', image: '', date: '21/04/2020', installedFrom: '', lastRun: '01/03/2021', agentBranch: {} },
+      { name: 'Agent 5', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 5, repository: 'repository5.com', target: 'target 5', command: 'command 5', type: 3, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 5', image: '', date: '21/05/2020', installedFrom: '', lastRun: '03/03/2021', agentBranch: {} },
+      { name: 'Agent 6', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020', installedFrom: '', lastRun: '12/02/2021', agentBranch: {} },
+      { name: 'Agent 7', background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020', installedFrom: '', lastRun: '24/02/2021', agentBranch: {} },
+      { name: 'Agent 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '', lastRun: '01/01/2021', agentBranch: {} }
     ],
     resources: [
       { url: 'http://google.com', categories: ['searcher', 'docs'], id: 1 },
@@ -51,6 +51,8 @@ export default createStore({
     styleAgentState: false,
     styleTargetState: false,
     stylePipelinesState: false,
+    styleLogsState: false,
+    styleNotificationsState: false,
     colorDelete: '#000000',
     agentsInstallers: [
       { name: 'Subfinder', description: 'Breve descripcion del agente Subfinder', id: 1, installed: false },
@@ -107,7 +109,7 @@ export default createStore({
       }
     },
     removeAgents (state) {
-      for (var index1 in state.agentIdList) {
+      for (const index1 in state.agentIdList) {
         const index = state.agentListStore.findIndex(agent => agent.id === state.agentIdList[index1].id)
         if (index !== -1) {
           const installerReference = parseInt(state.agentListStore[index].installedFrom)
@@ -159,6 +161,8 @@ export default createStore({
       state.styleTargetState = false
       state.styleAgentState = false
       state.stylePipelinesState = false
+      state.styleLogsState = false
+      state.styleNotificationsState = false
       if (namePath === 'Agents') {
         state.styleAgentState = true
       }
@@ -167,6 +171,12 @@ export default createStore({
       }
       if (namePath === 'Pipelines') {
         state.stylePipelinesState = true
+      }
+      if (namePath === 'Logs') {
+        state.styleLogsState = true
+      }
+      if (namePath === 'Notifications') {
+        state.styleNotificationsState = true
       }
       state.viewloc = namePath
     },
@@ -190,7 +200,7 @@ export default createStore({
         isHttpOpenTrigger: false,
         script: '',
         image: '',
-        date: new Date().toLocaleDateString('es-Es'),
+        date: new Date(),
         installedFrom: idInstaller
       }
       state.agentListStore.push(transformedAgent)

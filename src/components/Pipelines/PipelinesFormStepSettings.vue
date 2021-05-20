@@ -50,8 +50,8 @@
         </div>
         <div class="col-12">
           <div class="pipeline_spacing locations-container">
-          <p class="float-right blue-text mb-1 cursor-pointer">Search</p>
-            <div v-for="(item, index) in settings_data.locations" :key="item.id" class="input-searcher-container">
+          <p class="float-right blue-text mb-1">Search</p>
+            <div v-for="(item, index) in settings_data.locations" :key="item.entity.id" class="input-searcher-container">
               <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
               <div style="height: 0;">
                 <span v-if="index>0" @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
@@ -85,7 +85,7 @@
                   <div class="row">
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][0]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index="index">close</span>
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index-x="index" :data-index-y="0" @click="removeEvent">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][0].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][0].date.getDate() }}</span>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][1]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" @click="removeEvent">close</span>
+                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index-x="index" :data-index-y="1" @click="removeEvent">close</span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][1].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][1].date.getDate() }}</span>
@@ -179,7 +179,7 @@
             </a>
           </div>
           <div class="col-12 pipeline_spacing">
-            <div class="d-flex justify-content-center align-items-center mt-4">
+            <div class="d-flex justify-content-center align-items-center mt-1">
               <Calendar v-model="event_date" :inline="true" :minDate="new Date()" @date-select="onChangeDate(event_date)"/>
             </div>
           </div>
@@ -202,7 +202,13 @@ export default {
       event_date: null,
       settings_data: {
         locations: [],
-        calendars: []
+        calendars: [],
+        editable: false,
+        id: -1,
+        name: '',
+        date: new Date(),
+        statusRun: true,
+        agent: []
       },
       generalLocationType: 1,
       entityNameSearchData: '',
@@ -258,22 +264,29 @@ export default {
       const index = e.currentTarget.getAttribute('data-index')
       if (this.settings_data.locations[index].entity.entityType > -1) {
         this.generalLocationType = this.settings_data.locations[index].entity.entityType
-        // this.sendPipelineSettings()
       }
     },
     onChangeDate: function (e) {
       if (this.settings_data.calendars[this.settings_data.calendars.length - 1] && this.event_date) {
         this.settings_data.calendars[this.settings_data.calendars.length - 1].date = this.event_date
-        // this.sendPipelineSettings()
       }
     },
     sendPipelineSettings: function (e) {
       this.$emit('pipelineSettingsDone', this.settings_data)
     },
     removeEvent: function (e) {
-      const closeIconIndex = e.currentTarget.getAttribute('data-index')
-      if (closeIconIndex !== 0) {
-        this.settings_data.calendars.splice(closeIconIndex, 1)
+      const closeIconIndexX = parseInt(e.currentTarget.getAttribute('data-index-x'))
+      const closeIconIndexY = parseInt(e.currentTarget.getAttribute('data-index-y'))
+      if (closeIconIndexX > 0) {
+        if (closeIconIndexY === 0) {
+          this.settings_data.calendars.splice(closeIconIndexX * 2, 1)
+        } else {
+          this.settings_data.calendars.splice(closeIconIndexX * 2 + 1, 1)
+        }
+      } else {
+        if (closeIconIndexY === 1) {
+          this.settings_data.calendars.splice(1, 1)
+        }
       }
     },
     removeLocation: function (e) {
@@ -281,10 +294,17 @@ export default {
       if (parseInt(locationIndex) > 0) {
         this.settings_data.locations.splice(locationIndex, 1)
       }
+    },
+    resetPipelineForm: function (e) {
+      this.settings_data.locations.splice(0)
+      this.addLocation({})
+      this.settings_data.calendars.splice(0)
+      this.addCalendarEvent({})
     }
   },
   computed: {
     ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
+    ...mapGetters('pipelines', ['getPipelineById']),
     loadParsedCalendarsToCarousel: function () {
       const carouselItems = []
       let carouselPairItems = []
@@ -301,6 +321,10 @@ export default {
         }
       }
       return carouselItems
+    },
+    loadSelectedPipeline () {
+      const id = this.$store.getters['pipelines/getIdPipeline']
+      return this.$store.getters['pipelines/getPipelineById'](parseInt(id))
     }
   },
   watch: {
@@ -309,11 +333,40 @@ export default {
         this.sendPipelineSettings()
       },
       deep: true
+    },
+    loadSelectedPipeline: function (value) {
+      if (value !== undefined) {
+        this.settings_data.locations.splice(0)
+        value.locations.forEach(element => {
+          this.settings_data.locations.push({
+            entity: {
+              name: element.name,
+              entityType: element.entityType,
+              entityId: element.entityId
+            }
+          })
+        })
+        this.settings_data.calendars.splice(0)
+        value.calendars.forEach(element => {
+          this.settings_data.calendars.push(element)
+        })
+        this.settings_data.editable = true
+        this.settings_data.id = value.id
+        this.settings_data.name = value.name
+        this.settings_data.date = value.date
+        this.settings_data.statusRun = value.statusRun
+        this.settings_data.agent = value.agent
+      } else {
+        this.settings_data.editable = false
+        this.resetPipelineForm()
+      }
     }
   },
   created: function () {
     if (this.settings_data.locations.length === 0) {
       this.addLocation({})
+    }
+    if (this.settings_data.calendars.length === 0) {
       this.addCalendarEvent({})
     }
   }
@@ -329,7 +382,7 @@ export default {
     border: 1px solid #F1F3F5;
     padding: 8px;
     border-radius: 12px;
-    height: 246px !important;
+    height: 232px !important;
   }
   .wizard-setting-switch-label::after{
     background-color: #ffffff !important;
@@ -382,7 +435,7 @@ h1{
     width: 44%;
 }
 span.pipeline-setting-repeat{
-    bottom: 17px;
+    bottom: 13%;
     position: absolute;
 }
 #close-icon-pipeline-setting{
@@ -451,5 +504,9 @@ span.pipe-circle-minus-properties svg{
 .locations-container{
   max-height: 358px;
   overflow-y: auto;
+}
+div.event-settings hr{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 </style>

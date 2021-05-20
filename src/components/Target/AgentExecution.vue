@@ -105,13 +105,29 @@ export default {
     ...mapState('target', ['agentStatus'])
   },
   methods: {
-    ...mapMutations('target', ['setAgentStatus']),
+    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
     switchAgentStatus (event) {
       if (event === this.$agentStatus.PAUSED) {
         this.pauseClock()
+      }
+      if (this.$route.name === 'RootDomainDetails') {
+        this.updateStatusRootDomainAgent({
+          status: event,
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRoot: parseInt(this.$route.params.id),
+          idAgent: parseInt(this.idAgent)
+        })
+      } else {
+        this.updateStatusSubDomainAgent({
+          status: event,
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRoot: parseInt(this.$route.params.id),
+          idAgent: parseInt(this.idAgent),
+          idSubDomain: parseInt(this.$route.params.idsubdomain)
+        })
       }
       this.setAgentStatus({ status: event, id: parseInt(this.idAgent) })
     },
@@ -153,6 +169,16 @@ export default {
     },
     closeWindow () {
       this.setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })
+      if (this.$route.name === 'RootDomainDetails') {
+        this.updateStatusRootDomainAgent({
+          status: this.$agentStatus.FINISHED,
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRoot: parseInt(this.$route.params.id),
+          idAgent: parseInt(this.idAgent)
+        })
+      } else {
+        console.log(123)
+      }
       this.stopClock()
     },
     executeProgressBar () {

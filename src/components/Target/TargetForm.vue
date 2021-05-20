@@ -425,7 +425,7 @@ export default {
           {
             root: urlElem,
             id: this.target.rootDomains.length,
-            date: new Date().toLocaleDateString('es-Es'),
+            date: new Date(),
             subdomain: []
           }
         )

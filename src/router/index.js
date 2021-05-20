@@ -1,12 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import AgentsListMiniView from '../views/AgentsListMiniView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/about',
@@ -16,7 +14,7 @@ const routes = [
   {
     path: '/agent/list',
     name: 'Agents',
-    component: AgentsListMiniView
+    component: () => import('../views/AgentsListMiniView.vue')
   },
   {
     path: '/agents/list',
@@ -52,6 +50,26 @@ const routes = [
     path: '/pipelines/details/:id',
     name: 'PipelineDetail',
     component: () => import('../views/PipelineDetailsView.vue')
+  },
+  {
+    path: '/logs',
+    name: 'Logs',
+    component: () => import('../views/Logs.vue')
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('../views/Notifications.vue')
+  },
+  {
+    path: '/login',
+    name: 'LogIn',
+    component: () => import('../views/LogIn.vue')
+  },
+  {
+    path: '/logout',
+    name: 'LogOut',
+    redirect: { name: 'LogIn' }
   }
 ]
 const router = createRouter({

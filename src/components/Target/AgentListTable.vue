@@ -17,7 +17,7 @@
         <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-      <div class="row mb-2" v-for="item of this.getLastAgentRootDomain" :key="item.id">
+        <div class="row mb-2" v-for="item of this.listAgents" :key="item.id">
         <div class="col-2  border-left-radius border">
            <p class="m-2"> {{item.name}}</p>
         </div>
@@ -30,8 +30,10 @@
         <p class="m-2"> Never</p>
         </div>
         <div class="col-2 border border-right-radius text-center">
-            <button v-if="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) === parseInt(agentStatus.id)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-            <button v-else :disabled="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) !== parseInt(agentStatus.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+            <!-- <button v-if="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) === parseInt(agentStatus.id)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button> -->
+            <button v-if="parseInt(item.status) === parseInt(this.$agentStatus.RUNNING)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
+            <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+            <!-- <button v-else :disabled="parseInt(agentStatus.status) === parseInt(this.$agentStatus.RUNNING) && parseInt(item.id) !== parseInt(agentStatus.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button> -->
         </div>
         <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
       </div>
@@ -62,7 +64,17 @@ export default {
   },
   computed: {
     ...mapGetters(['getLastAgentRootDomain']),
-    ...mapState('target', ['agentStatus'])
+    ...mapGetters('target', ['listRootDomainsAgents', 'listCurrentRunningRootDomainsAgent']),
+    ...mapState('target', ['agentStatus']),
+    listAgents: function () {
+      return this.listRootDomainsAgents({
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRoot: parseInt(this.$route.params.id)
+      })
+    },
+    isRunningAgent: function () {
+      return this.listCurrentRunningRootDomainsAgent({ idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), idAgent: parseInt(this.selectedAgentId) })
+    }
   },
   methods: {
     orderByName: function () {
@@ -75,6 +87,12 @@ export default {
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
       this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.updateStatusRootDomainAgent({
+        status: this.$agentStatus.RUNNING,
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRoot: parseInt(this.$route.params.id),
+        idAgent: parseInt(this.selectedAgentId)
+      })
       this.setAgentStatus({ status: this.$agentStatus.RUNNING, id: parseInt(this.selectedAgentId) })
     },
     orderByNameAsc: function () {
@@ -111,7 +129,7 @@ export default {
         )
       }
     },
-    ...mapMutations('target', ['setAgentStatus'])
+    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent'])
   }
 }
 </script>

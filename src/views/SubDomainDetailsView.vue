@@ -13,7 +13,7 @@
               Dashboard
             </button>
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.AGENTS}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="setActiveTabButton(activeTab.AGENTS)">
-              Agents ({{this.getLastAgentSubdom.length}})
+              Agents ({{this.listSubdDomainsAgents({ idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), idSubd: parseInt(this.$route.params.idsubdomain)}).length}})
             </button>
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.SERVICES}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.SERVICES">
               Services ({{this.getSubdomainSize[1]}})
@@ -88,6 +88,7 @@ export default {
   computed: {
     ...mapGetters('target', ['getTargetById', 'getSubDomain']),
     ...mapGetters(['getLastAgentSubdom']),
+    ...mapGetters('target', ['listSubdDomainsAgents']),
     getSubdomainSize () {
       const loadedSubdomain = this.getSubDomain({
         idtarget: parseInt(this.$route.params.idTarget),

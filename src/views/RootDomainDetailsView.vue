@@ -13,7 +13,7 @@
             <span  class="text-muted-b3"> ({{  countSubdomainList /*this.getSubdomainSize(this.routeParams) */}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
-            Agents <span class="text-muted-b3">({{getLastAgentRootDomain.length}})</span>
+            Agents <span class="text-muted-b3">({{listRootDomainsAgents({ idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id) }).length}})</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' />
           <AgentListTable v-else :color = "secondaryColor"/>
@@ -59,7 +59,8 @@ export default {
   computed: {
     ...mapState('target', ['countSubdomainList']),
     ...mapGetters('target', ['getTargetById', 'getSubdomainSize']),
-    ...mapGetters(['getLastAgentRootDomain'])
+    ...mapGetters(['getLastAgentRootDomain']),
+    ...mapGetters('target', ['listRootDomainsAgents'])
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)

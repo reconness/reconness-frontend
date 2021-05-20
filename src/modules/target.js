@@ -146,6 +146,88 @@ export default ({
                 sendDate: '2020-08-01',
                 message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
+            ],
+            agent: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 2',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 2,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              },
+              {
+                name: 'Agent 3',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 3,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 4',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 4,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              },
+              {
+                name: 'Agent 5',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 5,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              }
             ]
           },
           {
@@ -214,6 +296,40 @@ export default ({
                 sendDate: '2020-12-01',
                 message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
+            ],
+            agent: [
+              {
+                name: 'Agent 3',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 3,
+                repository: 'repository3.com',
+                target: 'target 3',
+                command: 'command 3',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 3',
+                image: '',
+                date: '21/03/2020',
+                installedFrom: '',
+                lastRun: ''
+              },
+              {
+                name: 'Agent 4',
+                background: '#ff8650 0% 0% no-repeat padding-box',
+                id: 4,
+                repository: 'repository4.com',
+                target: 'target 4',
+                command: 'command 4',
+                type: 1,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 4',
+                image: '',
+                date: '21/04/2020',
+                installedFrom: '',
+                lastRun: '01/03/2021'
+              }
             ]
           }
         ],
@@ -258,7 +374,6 @@ export default ({
                 bounty: true,
                 ignore: false,
                 scope: true,
-                agent: [],
                 ipAddress: '34.234.345.34',
                 http: true,
                 isAlive: false,
@@ -273,6 +388,40 @@ export default ({
                     sendDate: '2020-01-01',
                     message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
                   }
+                ],
+                agent: [
+                  {
+                    name: 'Agent 1',
+                    background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                    id: 1,
+                    repository: 'repository1.com',
+                    target: 'target 1',
+                    command: 'command 1',
+                    type: 3,
+                    isAliveTrigger: true,
+                    isHttpOpenTrigger: false,
+                    script: 'run agent 1',
+                    image: '',
+                    date: '21/01/2020',
+                    installedFrom: '',
+                    lastRun: '01/01/2021'
+                  },
+                  {
+                    name: 'Agent 2',
+                    background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                    id: 2,
+                    repository: 'repository2.com',
+                    target: 'target 2',
+                    command: 'command 2',
+                    type: 3,
+                    isAliveTrigger: true,
+                    isHttpOpenTrigger: false,
+                    script: 'run agent  2',
+                    image: '',
+                    date: '21/02/2020',
+                    installedFrom: '',
+                    lastRun: '02/01/2021'
+                  }
                 ]
               }
             ],
@@ -283,6 +432,40 @@ export default ({
                 sendDate: '2020-01-01',
                 message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
+            ],
+            agent: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 2',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 2,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              }
             ]
           },
           {
@@ -290,21 +473,90 @@ export default ({
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 2',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 2,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              }
+            ]
           },
           {
             id: 3,
             root: 'anothertest1.com',
             date: '21/07/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1,
+                repository: 'repository1.com',
+                target: 'target 1',
+                command: 'command 1',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent 1',
+                image: '',
+                date: '21/01/2020',
+                installedFrom: '',
+                lastRun: '01/01/2021'
+              },
+              {
+                name: 'Agent 2',
+                background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+                id: 2,
+                repository: 'repository2.com',
+                target: 'target 2',
+                command: 'command 2',
+                type: 3,
+                isAliveTrigger: true,
+                isHttpOpenTrigger: false,
+                script: 'run agent  2',
+                image: '',
+                date: '21/02/2020',
+                installedFrom: '',
+                lastRun: '02/01/2021'
+              }
+            ]
           },
           {
             id: 4,
             root: 'anothertest2.com',
             date: '21/06/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/f',
@@ -317,6 +569,40 @@ export default ({
             sender: 'Michael',
             sendDate: '2020-02-01',
             message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
+          }
+        ],
+        agent: [
+          {
+            name: 'Agent 1',
+            background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+            id: 1,
+            repository: 'repository1.com',
+            target: 'target 1',
+            command: 'command 1',
+            type: 3,
+            isAliveTrigger: true,
+            isHttpOpenTrigger: false,
+            script: 'run agent 1',
+            image: '',
+            date: '21/01/2020',
+            installedFrom: '',
+            lastRun: '01/01/2021'
+          },
+          {
+            name: 'Agent 2',
+            background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+            id: 2,
+            repository: 'repository2.com',
+            target: 'target 2',
+            command: 'command 2',
+            type: 3,
+            isAliveTrigger: true,
+            isHttpOpenTrigger: false,
+            script: 'run agent  2',
+            image: '',
+            date: '21/02/2020',
+            installedFrom: '',
+            lastRun: '02/01/2021'
           }
         ]
       },
@@ -360,14 +646,16 @@ export default ({
                 sendDate: '2020-03-01',
                 message: 'The point of using Lorem Ipsum is that it hrs a morer-less normal distribution of letters, as opposed to using..., making it look like readable English.'
               }
-            ]
+            ],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/b',
@@ -395,14 +683,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/c',
@@ -430,14 +720,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/d',
@@ -466,14 +758,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         messages: [
@@ -498,14 +792,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         bugBountyUrl: 'http://hackerone.com/a',
@@ -534,14 +830,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         isPrivateProgram: true,
@@ -568,14 +866,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         isPrivateProgram: true,
@@ -602,14 +902,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         isPrivateProgram: true,
@@ -636,14 +938,16 @@ export default ({
             root: 'reconnes.com',
             date: '21/09/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           },
           {
             id: 2,
             root: 'anotherness.com',
             date: '21/08/2018',
             subdomain: [],
-            messages: []
+            messages: [],
+            agent: []
           }
         ],
         isPrivateProgram: true,
@@ -735,7 +1039,7 @@ export default ({
       state.valueDelete = ''
     },
     removeTargets (state) {
-      for (var index1 in state.targetIdList) {
+      for (const index1 in state.targetIdList) {
         const index = state.targetListStore.findIndex(target => target.id === state.targetIdList[index1].id)
         if (index !== -1) {
           state.targetListStore.splice(index, 1)
@@ -747,7 +1051,7 @@ export default ({
       state.colorDelete = '#000000'
     },
     removeSubdomainChecked (state) {
-      for (var index1 in state.elementSelectedList) {
+      for (const index1 in state.elementSelectedList) {
         const target = state.targetListStore.find(target => target.id === state.elementSelectedList[index1].idTarget)
         const roots = target.rootDomains.find(roots => roots.id === state.elementSelectedList[index1].idRoot)
         const subdIndex = roots.subdomain.findIndex(subd => subd.id === state.elementSelectedList[index1].idSubdom)
@@ -869,7 +1173,7 @@ export default ({
       state.isTargetDeleted = value
     },
     addSubdomain (state, params) {
-      for (var index = 0; index < params.subdomainsItems.length; index++) {
+      for (let index = 0; index < params.subdomainsItems.length; index++) {
         params.subdomainsItems[index].id = state.idSubdomain++
       }
       const target = state.targetListStore.find(item => item.id === params.idTarget)
@@ -901,6 +1205,19 @@ export default ({
     },
     setCurrentView (state, viewName) {
       state.currentView = viewName
+    },
+    updateStatusRootDomainAgent (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const agent = roots.agent.find(agentItem => agentItem.id === params.idAgent)
+      agent.status = params.status
+    },
+    updateStatusSubDomainAgent (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const subd = roots.subdomain.find(sub => sub.id === params.idSubDomain)
+      const agent = subd.agent.find(agentItem => agentItem.id === params.idAgent)
+      agent.status = params.status
     }
   },
   actions: {
@@ -931,14 +1248,24 @@ export default ({
     },
     getRootDomainMessages: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
-      return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
+      if (target) {
+        return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
+      } else {
+        return []
+      }
     },
     getSubDomainMessages: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
-      const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
-      const subdomain = rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain)
-      if (subdomain) {
-        return subdomain.messages
+      if (target) {
+        const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+        if (rootDomain) {
+          const subdomain = rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain)
+          if (subdomain) {
+            return subdomain.messages
+          } else {
+            return []
+          }
+        }
       } else {
         return []
       }
@@ -1025,6 +1352,26 @@ export default ({
         )
       })
       return entities
+    },
+    listRootDomainsAgents: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      return roots.agent.slice(-4)
+    },
+    listSubdDomainsAgents: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const subdomain = roots.subdomain.find(subd => subd.id === params.idSubd)
+      return subdomain.agent.slice(-4)
+    },
+    listCurrentRunningRootDomainsAgent: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const runningAgent = roots.agent.find(agent => agent.status === 1)
+      if (runningAgent) {
+        return runningAgent.id
+      }
+      return -1
     }
   }
 })

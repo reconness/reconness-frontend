@@ -5,7 +5,7 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex">
-           <a href="#" class="color-blue" data-toggle="modal" data-target="#pipelinesModalForm">
+           <a href="#" class="color-blue" data-toggle="modal" data-target="#pipelinesModalFormSettings">
             <span class="material-icons">control_point</span>
             <p class="float-right">New Pipeline</p>
           </a>
@@ -133,8 +133,8 @@ export default {
       }
     },
     close () {
-      var checkboxes = document.getElementsByName('checkitem')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''

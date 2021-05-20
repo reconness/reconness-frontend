@@ -7,7 +7,7 @@
      <div class="col-7 border-right">
         <div class=" mt-2 mb-2">
           <span class="info-box-text text-custom agent-mini-agent-name clearfix">{{pipelineName }}</span>
-          <small class="small-text">Details</small>
+          <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="pipelineID" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
         </div>
      </div>
      <div class="col-5 abs-center">
@@ -43,6 +43,11 @@ export default {
       } else {
         this.removebyIdAgentPipelinesDetail(selectedId)
       }
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('setDetailsLinks', true)
     }
   }
 }
