@@ -34,15 +34,15 @@
             <p>Set an option to set where you are going to run your pipeline</p>
             <div class="form-group">
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="generalLocationType">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="settings_data.type">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
                 </div>
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="generalLocationType">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="settings_data.type">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
                 </div>
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="generalLocationType">
+                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="settings_data.type">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
                 </div>
             </div>
@@ -208,9 +208,9 @@ export default {
         name: '',
         date: new Date(),
         statusRun: true,
-        agent: []
+        agent: [],
+        type: this.$agentType.TARGET
       },
-      generalLocationType: 1,
       entityNameSearchData: '',
       filteredEntities: []
     }
@@ -252,9 +252,9 @@ export default {
       }
     },
     filterEntities: function (e) {
-      if (this.generalLocationType === this.$agentType.TARGET) {
+      if (this.settings_data.type === this.$agentType.TARGET) {
         this.filteredEntities = this.filterTargetsByName(e.target.value)
-      } else if (this.generalLocationType === this.$agentType.ROOTDOMAIN) {
+      } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
         this.filteredEntities = this.filterRootDomainsByName(e.target.value)
       } else {
         this.filteredEntities = this.filterSubDomainsByName(e.target.value)
@@ -263,7 +263,7 @@ export default {
     updateType: function (e) {
       const index = e.currentTarget.getAttribute('data-index')
       if (this.settings_data.locations[index].entity.entityType > -1) {
-        this.generalLocationType = this.settings_data.locations[index].entity.entityType
+        this.settings_data.type = this.settings_data.locations[index].entity.entityType
       }
     },
     onChangeDate: function (e) {

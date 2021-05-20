@@ -7,44 +7,46 @@ export default {
         name: 'My Pipeline 1',
         date: '02/04/2021',
         statusRun: true,
+        startingAgent: 1,
+        type: 1,
         agent: [
           {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 6',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 6,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 7',
             background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box',
             id: 7,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 8',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 8,
-            agentBranch: {}
+            agentBranch: []
           }
         ],
         locations: [
@@ -97,13 +99,15 @@ export default {
         name: 'My Pipeline 2',
         date: '02/03/2021',
         statusRun: true,
+        startingAgent: 1,
+        type: 1,
         agent: [
           {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 2',
@@ -120,7 +124,7 @@ export default {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
-            agentBranch: {}
+            agentBranch: []
           }
         ],
         locations: [
@@ -161,26 +165,28 @@ export default {
         name: 'My Pipeline 3',
         date: '02/04/2020',
         statusRun: false,
+        startingAgent: 1,
+        type: 2,
         agent: [
           {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
-            agentBranch: {}
+            agentBranch: []
           }
         ],
         locations: [
@@ -215,26 +221,28 @@ export default {
         name: 'My Pipeline 4',
         date: '01/04/2020',
         statusRun: true,
+        startingAgent: 1,
+        type: 2,
         agent: [
           {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
-            agentBranch: {}
+            agentBranch: []
           }
         ],
         locations: [
@@ -275,29 +283,32 @@ export default {
         name: 'My Pipeline 5',
         date: '01/03/2020',
         statusRun: true,
+        startingAgent: 1,
+        type: 3,
         agent: [
           {
             name: 'Agent 1',
             background:
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
-            agentBranch: {
+            agentBranch: [{
               name: 'Agent 5',
               background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
               id: 5
-            }
+            }, { name: 'Agent 2', background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box', id: 2 }]
           },
           {
             name: 'Agent 2',
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
-            agentBranch: {}
+            agentBranch: []
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
-            id: 5
+            id: 5,
+            agentBranch: []
           }
         ],
         locations: [
@@ -341,7 +352,8 @@ export default {
     autoId: 99,
     branchFather: -1,
     idFather: -1,
-    idSon: -1
+    idSon: -1,
+    addStartingAgent: false
   },
   mutations: {
     changeIsBranchFather (state, value) {
@@ -350,6 +362,9 @@ export default {
     changeValueToDelete (state, objectValue) {
       state.idFather = objectValue.idFather
       state.idSon = objectValue.idSon
+    },
+    changeValueStartPoint (state, value) {
+      state.addStartingAgent = value
     },
     removebyIdPipelines (state, id) {
       const index = state.pipelinesIdList.findIndex(pipeline => pipeline.id === id)
@@ -364,14 +379,19 @@ export default {
       const pipeline = state.pipelinesListStore.find(pipeline => pipeline.id === idPipeline)
       const indexAgent = pipeline.agent.findIndex(agent => agent.id === state.idFather)
       if (state.idSon !== -1 && state.idFather !== -1) {
-        delete pipeline.agent[indexAgent].agentBranch
-        state.idFather = -1
+        const branch = pipeline.agent[indexAgent].agentBranch
+        const indexBranch = branch.findIndex(agentBranch => agentBranch.id === state.idSon)
+        branch.splice(indexBranch, 1)
         state.idSon = -1
       } else {
         if (indexAgent !== -1) {
+          if (pipeline.startingAgent === state.idFather) {
+            pipeline.startingAgent = -1
+          }
           pipeline.agent.splice(indexAgent, 1)
-          state.idFather = -1
         }
+        state.idFather = -1
+        state.branchFather = -1
       }
     },
     setIdPipeline (state, id) {
