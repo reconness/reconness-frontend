@@ -43,7 +43,9 @@ export default {
         agent: [],
         id: -1,
         locations: [],
-        calendars: []
+        calendars: [],
+        startingAgent: -1,
+        type: this.$agentType.TARGET
       }
     }
   },
@@ -79,6 +81,7 @@ export default {
         this.pipeline.date = this.settings_data.date
         this.pipeline.statusRun = this.settings_data.statusRun
         this.pipeline.agent = this.settings_data.agent
+        this.pipeline.type = this.settings_data.type
         this.updatePipeline(this.pipeline)
         this.setIdPipeline(-1)
       } else {

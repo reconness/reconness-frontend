@@ -1,14 +1,21 @@
 <template>
+<div>
 <div class="row">
-                  <div v-if="this.$route.name === 'PipelineDetail' && associatedAgents.length === 0" class="col-3 p-0">
+    <div v-if="this.$route.name === 'PipelineDetail' &&
+    (Object.keys(this.AgentsPipelineList).length === 0 ||  this.AgentsPipelineList[0].id !== this.startingAgentId)" class="col-3 p-0">
                   <div class="info-box-background w-85 float-left abs-center" style="position: relative; left: 0px; top: -1px;">
-                    <span data-toggle="modal" data-target="#pipelinesModalForm" class="cursor-pointer">Add starting agent</span>
+                    <span data-toggle="modal" data-target="#pipelinesModalForm"
+                    @click="this.$store.commit('pipelines/changeValueStartPoint', true)"
+                    class="cursor-pointer"> Add starting agent</span>
                   </div>
-                  </div>
-                  <div v-for="(item2,index) of associatedAgents" :key="item2.id"
+                  <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}"  class="mt-3 margin-center abs-center border-top w-15"  style="color:black!important;border: 1px solid; float:left"> </div>
+                  <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}" class="mt-3 black-circle">  </div>
+    </div>
+
+    <div v-for="(item2,index) of associatedAgents" :key="item2.id"
                   :class="{'col-4' : this.$route.name === 'Pipelines', 'col-3': this.$route.name === 'PipelineDetail', 'p-0': true}"
                   style="position: relative;">
-                  <div :class="{'invisible': Object.keys(item2).length === 0}" @mouseenter="showAdd( item2.id )" @mouseleave="hideAdd( item2.id)">
+                  <div :class="{'invisible': Object.keys(item2).length === 0}" @mouseenter="showAdd( index )" @mouseleave="hideAdd(index)">
                     <div class="info-box-background float-left"
                     :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
                     style="position: relative; left: 0px; top: -1px;"></div>
@@ -21,19 +28,18 @@
                   <div v-if="this.$route.name === 'PipelineDetail'">
                     <div  class="workflow-tools info-box">
                      <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})">cancel</span>
+                      <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})"><a>cancel</a></span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
                       <span class="material-icons cursor-pointer" data-toggle="modal" data-target="#agentConfiguration">settings</span>
                     </div>
                     </div>
-                      <button   :id="'b' + item2.id"  data-toggle="modal" data-target="#pipelinesModalForm"
+                      <button :id="'b' + index"  data-toggle="modal" data-target="#pipelinesModalForm"
                       style="color: #00B1FF;" class="invisible  add-border btn create-agent-buttons-main-action"
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
                   </div>
 
-                    <div class="info-box float-left abs-center"
-                    :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
+                    <div class="info-box float-left abs-center" :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
                     :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
                         <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
@@ -44,30 +50,34 @@
                       </span>
                     </div>
                   </div>
-                  <div class="line" v-if="this.getAgentBranch(index) !== undefined"></div>
-                    <div v-if="this.$route.name === 'PipelineDetail'">
-                      <div v-if="this.getAgentBranch(index-1) !== undefined">
-                    <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
-                    <div class="info-box float-left abs-center w-75"
-                    :style ="{background:this.getAgentBranch(index-1).background}" style="position: relative; left: 7px; top: -89px;">
+
+            <div v-if="this.$route.name === 'PipelineDetail'">
+              <div class="line" v-if="this.getAgentBranch(index).length !== 0"></div>
+                <div  v-for="(item3, index1) of this.getAgentBranch(index-1)"  :id="'branch' + index1" :key="item3.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
+                  <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
+                     <div :class="{'invisible': index1+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
+                    <div v-if="index1+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
+
+                    <div class="info-box float-left abs-center w-75" :style ="{background:item3.background}" style="position: relative; left: 7px; top: -89px;">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
-                        <span class="info-box-text  text-custom agent-mini-agent-name">{{this.getAgentBranch(index-1).name }}</span>
-                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="this.getAgentBranch(index-1).id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
+                        <span class="info-box-text  text-custom agent-mini-agent-name">{{item3.name }}</span>
+                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item3.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
                       </div>
-                      <span class="number float-right ml-1 abs-center"  :style ="{background:this.getAgentBranch(index-1).background}" >
+                      <span class="number float-right ml-1 abs-center"  :style ="{background:item3.background}" >
                       <div><AccountCogIco :class="{'change-font-size': this.$route.name === 'PipelineDetail'}"/></div>
                       </span>
                     </div>
-                    <div  class="workflow-tools info-box" style="top:0px;">
+                    <div  class="workflow-tools info-box">
                      <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: this.getAgentBranch(index-1).id})">cancel</span>
-                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
+                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: item3.id})">cancel</span>
+                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', index-1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
                       <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration">settings</span>
                     </div>
                     </div>
                     </div>
                     </div>
                   </div>
+</div>
                   <ConfirmationAgentPipeline/>
                   <AgentConfiguration />
                 </div>
@@ -80,6 +90,7 @@ import AgentConfiguration from '@/components/Pipelines/AgentConfiguration'
 export default {
   data: function () {
     return {
+      classResize: ''
     }
   },
   components: {
@@ -88,13 +99,19 @@ export default {
     AgentConfiguration
   },
   props: {
-    AgentsPipelineList: Object
+    AgentsPipelineList: Object,
+    startingAgentId: Number
   },
   computed: {
     associatedAgents () {
-      const agentPipelineList = this.AgentsPipelineList.slice(0, 3)
+      var agentPipelineList = []
+      if (this.startingAgentId === -1) {
+        agentPipelineList = this.AgentsPipelineList.slice(0, 2)
+      } else {
+        agentPipelineList = this.AgentsPipelineList.slice(0, 3)
+      }
       const sizeList = agentPipelineList.length
-      if (sizeList >= 1 && agentPipelineList[sizeList - 1].agentBranch !== undefined && Object.keys(agentPipelineList[sizeList - 1].agentBranch).length !== 0) {
+      if (sizeList >= 1 && this.$route.name === 'PipelineDetail') {
         agentPipelineList.push({})
       }
       return agentPipelineList
@@ -118,16 +135,36 @@ export default {
       this.$store.commit('setIdAgent', selectedAgentId)
       this.$store.commit('setDetailsLinks', true)
     },
+    resize () {
+      window.onresize = function () {
+        alert(window.screen.width)
+      }
+    },
     getAgentBranch (indexValue) {
-      if (indexValue !== -1) {
-        const branch = this.AgentsPipelineList[indexValue].agentBranch
-        if (branch !== undefined && Object.keys(branch).length !== 0) {
-          return branch
+      var windowReziseWidth = window.outerWidth
+      // window.onresize = function () {
+      //   windowReziseWidth = window.outerWidth
+      //   if (windowReziseWidth < 1200) {
+      //     alert('entreee' + windowReziseWidth)
+      //     return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
+      //   } else {
+      //     if (windowReziseWidth >= 1200) {
+      //       alert('entreeeahy' + windowReziseWidth)
+      //       console.log(this.AgentsPipelineList)
+      //       // return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
+      //     }
+      //   }
+      // }
+      if (indexValue !== -1 && Object.keys(this.associatedAgents[indexValue]).length !== 0) {
+        if (windowReziseWidth < 1200) {
+          return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
         } else {
-          return undefined
+          if (windowReziseWidth >= 1200) {
+            return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
+          }
         }
       }
-      return undefined
+      return []
     }
   }
 }
@@ -258,17 +295,69 @@ padding: 5px 8px;
 margin-top: 5px;
 margin-bottom: 15px;
 }
-div.line
-{
+
+div.line {
+    position: relative;
+    z-index: 1;
+    left: 60%;
+    width: 54%;
+    height: 1px;
+    top: -2em;
+    background-color: #000;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+@media (min-width: 768px) {
+div.line {
+    position: relative;
+    z-index: 1;
+    left: 65%;
+    width: 42%;
+    height: 1px;
+    top: -2em;
+    background-color: #000;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+}
+
+@media (min-width: 1261px) and (max-width: 1440px) {
+div.line {
     position: relative;
     z-index: 1;
     left: 70%;
-    width: 35%;
+    width: 40%;
     height: 1px;
-    top: -5%;
+    top: -2em;
     background-color: #000;
     transform: rotate(45deg);
     -ms-transform: rotate(45deg); /* IE 9 */
-    -webkit-transform: rotate(45deg); /* Safari and Chrome */
+    -webkit-transform: rotate(45deg);  /* Safari and Chrome */
+}
+}
+
+@media (min-width: 1440px) {
+div.line {
+    position: relative;
+    z-index: 1;
+    left: 67%;
+    width: 40%;
+    height: 1px;
+    top: -2.3em;
+    background-color: #000;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+}
+
+.disabled{
+   color: currentColor;
+   pointer-events: none;
+   opacity: 0.5 !important;
+   cursor: not-allowed;
 }
 </style>

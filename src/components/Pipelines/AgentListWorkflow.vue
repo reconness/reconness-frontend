@@ -46,7 +46,13 @@ export default {
     return {
       step: 1,
       agentStartingPoint: 0,
-      settings_data: null
+      settings_data: null,
+      AgentStarting: {
+        name: '',
+        background: '',
+        id: -1,
+        agentBranch: []
+      }
     }
   },
   props: {
@@ -54,11 +60,15 @@ export default {
   },
   computed: {
     ...mapState(['agentListStore', 'autoId']),
-    ...mapState('pipelines', ['autoId', 'branchFather']),
+    ...mapState('pipelines', ['autoId', 'branchFather', 'addStartingAgent']),
     ...mapGetters('pipelines', ['getPipelineById']),
     ...mapGetters(['getAgentById']),
     iterList () {
-      return this.agentListStore
+      if (this.addStartingAgent) {
+        return this.agentListStore.filter(item => item.type === this.getPipelineById(parseInt(this.$route.params.id)).type)
+      } else {
+        return this.agentListStore
+      }
     },
     statusButton () {
       if (this.agentStartingPoint === 0) {
@@ -91,12 +101,20 @@ export default {
       }
     },
     save () {
-      const Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
+      var Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
+      var Agent = this.$store.getters.getAgentById(this.agentStartingPoint)
       if (this.branchFather === -1) {
-        Pipeline.agent.push(this.$store.getters.getAgentById(this.agentStartingPoint))
+        if (Pipeline.startingAgent === -1 && this.addStartingAgent) {
+          Pipeline.startingAgent = Agent.id
+          Pipeline.agent.unshift({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [] })
+          this.$store.commit('pipelines/changeValueStartPoint', false)
+        } else {
+          Pipeline.agent.push({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [] })
+        }
       } else {
-        Pipeline.agent[this.branchFather].agentBranch = this.$store.getters.getAgentById(this.agentStartingPoint)
+        Pipeline.agent[this.branchFather].agentBranch.push({ name: Agent.name, background: Agent.background, id: Agent.id })
       }
+      this.$store.commit('pipelines/changeIsBranchFather', -1)
       document.getElementById('agent' + this.agentStartingPoint).classList.remove('style-border-item')
       this.agentStartingPoint = 0
     },
