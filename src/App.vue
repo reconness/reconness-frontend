@@ -30,11 +30,11 @@
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> Notifications
+            Notifications
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> Logs
+            Logs
           </a>
         </div>
         </li>
@@ -51,12 +51,12 @@
           </div>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <a href="#" class="dropdown-item">
-              <i class="fas fa-envelope mr-2"></i> My account
+              My account
             </a>
             <div class="dropdown-divider"></div>
               <!-- <a href="#" class="dropdown-item"> -->
               <router-link class="dropdown-item" :to="{ name: 'LogOut'}" >
-                <i class="fas fa-users mr-2"></i> Sign out
+                Sign out
               </router-link>
               <!-- </a> -->
           </div>
