@@ -176,8 +176,6 @@ export default {
           idRoot: parseInt(this.$route.params.id),
           idAgent: parseInt(this.idAgent)
         })
-      } else {
-        console.log(123)
       }
       this.stopClock()
     },

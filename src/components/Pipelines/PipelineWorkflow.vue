@@ -30,7 +30,7 @@
                      <div class="info-box-content">
                       <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})"><a>cancel</a></span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span class="material-icons cursor-pointer" data-toggle="modal" data-target="#agentConfiguration">settings</span>
+                      <span class="material-icons cursor-pointer" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="item2.id">settings</span>
                     </div>
                     </div>
                       <button :id="'b' + index"  data-toggle="modal" data-target="#pipelinesModalForm"
@@ -71,7 +71,7 @@
                      <div class="info-box-content">
                       <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: item3.id})">cancel</span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', index-1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration">settings</span>
+                      <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration" :data-id="item3.id" @click="onEdit">settings</span>
                     </div>
                     </div>
                     </div>
@@ -104,7 +104,7 @@ export default {
   },
   computed: {
     associatedAgents () {
-      var agentPipelineList = []
+      let agentPipelineList = []
       if (this.startingAgentId === -1) {
         agentPipelineList = this.AgentsPipelineList.slice(0, 2)
       } else {
@@ -141,7 +141,7 @@ export default {
       }
     },
     getAgentBranch (indexValue) {
-      var windowReziseWidth = window.outerWidth
+      const windowReziseWidth = window.outerWidth
       // window.onresize = function () {
       //   windowReziseWidth = window.outerWidth
       //   if (windowReziseWidth < 1200) {
@@ -165,6 +165,10 @@ export default {
         }
       }
       return []
+    },
+    onEdit (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('setIdAgent', selectedAgentId)
     }
   }
 }
