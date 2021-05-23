@@ -9,7 +9,8 @@
               <div class="card card-custom-pipeline w-auto mb-3">
                 <div class="p-2">
                   <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
-                    <h1 class="domain-names-list">My Pipeline</h1>
+                    <h1 v-if="this.settings_data.name === ''" class="domain-names-list">My Pipeline</h1>
+                    <h1 v-else class="domain-names-list">{{ settings_data.name }}</h1>
                   </div>
                   <div class="row pl-2 mt-2">
                     <div class="col-9 p-0">
@@ -300,6 +301,7 @@ export default {
       this.addLocation({})
       this.settings_data.calendars.splice(0)
       this.addCalendarEvent({})
+      this.settings_data.name = ''
     }
   },
   computed: {

@@ -4,11 +4,11 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content root-domain-window custom-border-radius ">
                         <div class="modal-body">
-                             <button type="button" @click="resetForm" class="close" data-dismiss="modal" aria-label="Close">
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <div class="d-flex justify-content-between">
-                              <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2">My Agent</p>
+                              <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2">{{ agentName }}</p>
                               <p style="margin-top: 4%;" class="agent-mini-color-gray">Configuration</p>
                             </div>
                             <div class="row">
@@ -34,6 +34,29 @@
             </div>
     </div>
 </template>
+<script>
+export default {
+  name: 'PipelineDetailsView',
+  data () {
+    return {
+      agentName: ''
+    }
+  },
+  computed: {
+    loadSelectedAgent () {
+      const id = this.$store.getters.idAgent
+      return this.$store.getters.getAgentById(parseInt(id))
+    }
+  },
+  watch: {
+    loadSelectedAgent: function (value) {
+      if (value !== undefined) {
+        this.agentName = value.name
+      }
+    }
+  }
+}
+</script>
 <style scoped>
 .root-domain-window {
   height: 434px;

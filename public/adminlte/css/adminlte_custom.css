@@ -908,3 +908,6 @@ div.pipeline_spacing .p-autocomplete-loader{
   border-bottom: none;
   border-right: none;
 }
+.navbar {
+  position: initial;
+}
