@@ -8,9 +8,18 @@
               <span  class="material-icons main_reconnes_text-color mt-1 float-left chevron_right"> chevron_right </span>
               <div class="card card-custom-pipeline w-auto mb-3">
                 <div class="p-2">
-                  <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
-                    <h1 v-if="this.settings_data.name === ''" class="domain-names-list">My Pipeline</h1>
-                    <h1 v-else class="domain-names-list">{{ settings_data.name }}</h1>
+                  <div v-if="showInputPipelineName" class="d-flex ml-3 mt-2 mr-2">
+                    <h1 v-if="this.settings_data.name === ''" class="domain-names-list" @click="showInputPipelineName = false;">My Pipeline</h1>
+                    <h1 v-else class="domain-names-list" @click="showInputPipelineName = false;">{{ settings_data.name }}</h1>
+                    <span style="font-size: 18px;" class="material-icons float-right cursor-pointer" @click="showInputPipelineName = false;"> open_in_new</span>
+                  </div>
+                  <div v-else class="d-flex ml-3 mt-2 mr-2">
+                    <input style="font-size: 18px; width: 75%;" v-model="settings_data.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}"
+                      class="form-control agent-placeholder agent-name-input" placeholder="My Pipeline"
+                      @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true"
+                      @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true"
+                      @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false; editPipeline()" />
+                    <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main mt-2">edit</span>
                   </div>
                   <div class="row pl-2 mt-2">
                     <div class="col-9 p-0">
@@ -201,6 +210,7 @@ export default {
   data: function () {
     return {
       event_date: null,
+      showInputPipelineName: true,
       settings_data: {
         locations: [],
         calendars: [],
@@ -213,7 +223,9 @@ export default {
         type: this.$agentType.TARGET
       },
       entityNameSearchData: '',
-      filteredEntities: []
+      filteredEntities: [],
+      isPencilVisibleAndClick: false,
+      isPencilVisible: false
     }
   },
   components: {
@@ -302,6 +314,21 @@ export default {
       this.settings_data.calendars.splice(0)
       this.addCalendarEvent({})
       this.settings_data.name = ''
+    },
+    onBlurExecute () {
+      this.isPencilVisible = false
+      this.isPencilVisibleAndClick = false
+      this.showInputPipelineName = true
+    },
+    verifyPencilStatus () {
+      if (this.isPencilVisibleAndClick) {
+        this.isPencilVisible = true
+      } else {
+        this.isPencilVisible = false
+      }
+    },
+    editPipeline () {
+      this.showInputPipelineName = true
     }
   },
   computed: {
@@ -510,5 +537,13 @@ span.pipe-circle-minus-properties svg{
 div.event-settings hr{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+.bordered-input-name-withfocus{
+  border-top: 2px solid #00B1FF;
+  border-right: 2px solid #00B1FF;
+  border-bottom: 2px solid #00B1FF;
+}
+.pencil-align-main{
+  font-size: 18px;
 }
 </style>
