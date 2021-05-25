@@ -101,8 +101,9 @@ export default {
       }
     },
     save () {
-      var Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
-      var Agent = this.$store.getters.getAgentById(this.agentStartingPoint)
+      const Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
+      const Agent = this.$store.getters.getAgentById(this.agentStartingPoint)
+      Pipeline.agent.splice(Pipeline.agent.length - 1, 1)
       if (this.branchFather === -1) {
         if (Pipeline.startingAgent === -1 && this.addStartingAgent) {
           Pipeline.startingAgent = Agent.id

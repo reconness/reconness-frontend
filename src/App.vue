@@ -95,7 +95,7 @@
             </router-link>
             </li>
             <li class="nav-item has-treeview menu-open cursor-pointer">
-                <a class="nav-link" v-on:click="addLocation('Pipelines')">
+                <a class="nav-link" v-on:click="switchArrowsPipeline">
                 <span class="material-icons badge badge-dark float-left">code</span>
                 <p>Pipelines</p>
                 <span v-show="arrow_down" class="material-icons float-right">arrow_drop_down</span>
@@ -207,11 +207,11 @@ export default {
         this.hide_logo = !this.hide_logo
       }
     },
+    switchArrowsPipeline: function () {
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
+    },
     addLocation: function (loc) {
-      if (loc === 'Pipelines') {
-        this.arrow_down = !this.arrow_down
-        this.arrow_up = !this.arrow_up
-      }
       if (loc === 'Settings') {
         this.arrow_down_settings = !this.arrow_down_settings
         this.arrow_up_settings = !this.arrow_up_settings

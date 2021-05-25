@@ -470,7 +470,7 @@ export default {
       state.colorDeleteDetail = '#000000'
     },
     cancelElementSelected (state, nameRoute) {
-      if (nameRoute === 'pipelines') {
+      if (nameRoute === 'Pipelines') {
         state.pipelinesIdList = []
         state.check = !state.check
         state.styleList = '1.25rem'

@@ -1,6 +1,6 @@
 <template>
 <div>
-<div class="row">
+<div class="row" :class="{'force-scroll': this.$route.name === 'PipelineDetail'}">
     <div v-if="this.$route.name === 'PipelineDetail' &&
     (Object.keys(this.AgentsPipelineList).length === 0 ||  this.AgentsPipelineList[0].id !== this.startingAgentId)" class="col-3 p-0">
                   <div class="info-box-background w-85 float-left abs-center" style="position: relative; left: 0px; top: -1px;">
@@ -20,10 +20,10 @@
                     :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
                     style="position: relative; left: 0px; top: -1px;"></div>
                     <div
-                    :class="{'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0,'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
+                    :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0, 'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
                     class="mt-3 margin-center abs-center border-top"
                     style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="index+1 !== associatedAgents.length" :class="{'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0}" class="mt-3 black-circle">  </div>
+                    <div v-if="index+1 !== associatedAgents.length" :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0 }" class="mt-3 black-circle">  </div>
 
                   <div v-if="this.$route.name === 'PipelineDetail'">
                     <div  class="workflow-tools info-box">
@@ -105,14 +105,19 @@ export default {
   computed: {
     associatedAgents () {
       let agentPipelineList = []
-      if (this.startingAgentId === -1) {
-        agentPipelineList = this.AgentsPipelineList.slice(0, 2)
+      if (this.$route.name === 'PipelineDetail') {
+        /* if (this.startingAgentId === -1) {
+          agentPipelineList = this.AgentsPipelineList.slice(0, 2)
+        } else {
+          agentPipelineList = this.AgentsPipelineList
+        } */
+        agentPipelineList = this.AgentsPipelineList
+        const sizeList = agentPipelineList.length
+        if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {
+          agentPipelineList.push({})
+        }
       } else {
         agentPipelineList = this.AgentsPipelineList.slice(0, 3)
-      }
-      const sizeList = agentPipelineList.length
-      if (sizeList >= 1 && this.$route.name === 'PipelineDetail') {
-        agentPipelineList.push({})
       }
       return agentPipelineList
     }
@@ -363,5 +368,11 @@ div.line {
    pointer-events: none;
    opacity: 0.5 !important;
    cursor: not-allowed;
+}
+.force-scroll{
+  overflow-x: scroll!important;
+  flex-wrap: inherit;
+  padding-bottom: 5em;
+  padding-top: 2em;
 }
 </style>
