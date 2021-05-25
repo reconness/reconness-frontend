@@ -102,8 +102,8 @@
                           </div>
                           <div class="form-group">
                             <div class="custom-control custom-switch wizard-setting-switch">
-                              <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="settings_data.calendars[index].enabled">
-                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                              <input type="checkbox" class="custom-control-input" :id="'customSwitch'+index+0" v-model="settings_data.calendars[index].enabled">
+                              <label class="custom-control-label wizard-setting-switch-label" :for="'customSwitch'+index+0"></label>
                             </div>
                           </div>
                         </div>
@@ -134,8 +134,8 @@
                           </div>
                           <div class="form-group">
                             <div class="custom-control custom-switch wizard-setting-switch">
-                              <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                              <input type="checkbox" class="custom-control-input" :id="'customSwitch'+index+1">
+                              <label class="custom-control-label wizard-setting-switch-label" :for="'customSwitch'+index+1"></label>
                             </div>
                           </div>
                         </div>
