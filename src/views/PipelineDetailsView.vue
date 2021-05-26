@@ -66,6 +66,9 @@ export default {
       this.$store.commit('setIdAgent', selectedAgentId)
       this.$store.commit('setDetailsLinks', true)
     }
+  },
+  mounted () {
+    this.$store.commit('updateLocView', 'Pipelines', true)
   }
 }
 </script>
