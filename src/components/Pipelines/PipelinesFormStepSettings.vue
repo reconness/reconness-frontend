@@ -89,7 +89,7 @@
             <h5>Schedule</h5>
           </div>
           <div class="col-12 pipeline_spacing">
-            <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="carousel" data-interval="false" data-wrap="false">
+            <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="false" data-interval="false" data-pause="true" data-keyboard="false" data-wrap="false">
               <div class="carousel-inner">
                 <div class="carousel-item" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item">
                   <div class="row">
@@ -464,7 +464,7 @@ h1{
     width: 44%;
 }
 span.pipeline-setting-repeat{
-    bottom: 13%;
+    bottom: 20px;
     position: absolute;
 }
 #close-icon-pipeline-setting{
