@@ -1300,7 +1300,7 @@ export default ({
       return false
     },
     filterTargetsByName: (state) => (name) => {
-      const temporal = state.targetListStore.filter(item => item.name.includes(name))
+      const temporal = state.targetListStore.filter(item => item.name.toLowerCase().replace(/\s+/g, '').includes(name.toLowerCase().replace(/\s+/g, '')))
       const entities = []
       temporal.forEach(element => {
         entities.push(
