@@ -26,8 +26,8 @@
                             </div>
                         </div>
                         <div style="border-top: none;" class="modal-footer">
-                          <button type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action mt-5" data-dismiss="modal">Done</button>
-                          <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action mt-5 " data-dismiss="modal">Cancel</button>
+                          <button type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Done</button>
+                          <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>

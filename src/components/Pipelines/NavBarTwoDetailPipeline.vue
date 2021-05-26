@@ -25,13 +25,7 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#">Pipeline Settings</a>
-        </li>
-        <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#" v-show= "!checkDetail" v-on:click="editListDetail()">Edit Agent List</a>
-          <span :class="{'isLinkDisabled' : pipelinesIdAgentsList.length <= 0}">
-            <a class="nav-link pos" v-show= "checkDetail" href="#" v-bind:style ="{color:colorDeleteDetail}" @click="onBashRemoveAgentsPipeline">Remove Agents</a>
-          </span>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="parseInt(this.$route.params.id)" @click="openSettings">Pipeline Settings</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" v-show= "checkDetail" href="#" @click="close()">Cancel Remove</a>
@@ -39,18 +33,17 @@
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#">Run</a>
         </li>
-         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos" href="#" >Cancel</a>
-        </li>
       </ul>
     </nav>
     <ConfirmationPipelinesList :nameRoute= 'this.$route.name'></ConfirmationPipelinesList>
+    <PipelinesForm :routeName="this.$route.name"/>
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
 import jQuery from 'jquery'
 import ConfirmationPipelinesList from '@/components/Pipelines/ConfirmationPipelinesList.vue'
+import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 export default {
   name: 'NavBarTwoDetailPipeline',
   data: function () {
@@ -62,7 +55,8 @@ export default {
     }
   },
   components: {
-    ConfirmationPipelinesList
+    ConfirmationPipelinesList,
+    PipelinesForm
   },
   computed: {
     ...mapState('pipelines', ['checkDetail', 'colorDeleteDetail', 'pipelinesIdAgentsList'])
@@ -89,8 +83,8 @@ export default {
       this.$store.commit('pipelines/updatePipelineName', { id: parseInt(this.$route.params.id), name: this.name })
     },
     close () {
-      var checkboxes = document.getElementsByName('checkitem')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''
@@ -102,6 +96,10 @@ export default {
       } else {
         return false
       }
+    },
+    openSettings (e) {
+      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
+      this.$store.commit('pipelines/setIdPipeline', selectedId)
     }
   }
 }

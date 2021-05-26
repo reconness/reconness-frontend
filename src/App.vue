@@ -94,15 +94,19 @@
               </a>
             </router-link>
             </li>
-            <li class="nav-item has-treeview menu-open">
-              <router-link to="/pipelines/list"   >
-                <a class="nav-link" v-on:click="addLocation('Pipelines'), this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)" >
-                <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
+            <li class="nav-item has-treeview menu-open cursor-pointer">
+                <a class="nav-link" v-on:click="switchArrowsPipeline">
+                <span class="material-icons badge badge-dark float-left">code</span>
                 <p>Pipelines</p>
                 <span v-show="arrow_down" class="material-icons float-right">arrow_drop_down</span>
                 <span v-show="arrow_up" class="material-icons float-right">arrow_drop_up</span></a>
-              </router-link>
               <ul class="nav nav-treeview">
+                <li class="nav-item" ><router-link to="/pipelines/list">
+                  <a class="nav-link" id ='pipelineNav' v-on:click="this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)" v-bind:class="{'nav2': stylePipelinesState}">
+                    <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
+                        <p>Pipelines</p>
+                  </a></router-link>
+                </li>
                 <li class="nav-item" ><router-link to="/agents/list">
                   <a href="#" class="nav-link" id ='agentNav'  v-on:click="addLocation('Agents')" v-bind:class="{'nav2': styleAgentState}" >
                     <span class="material-icons">font_download</span>
@@ -203,11 +207,11 @@ export default {
         this.hide_logo = !this.hide_logo
       }
     },
+    switchArrowsPipeline: function () {
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
+    },
     addLocation: function (loc) {
-      if (loc === 'Pipelines') {
-        this.arrow_down = !this.arrow_down
-        this.arrow_up = !this.arrow_up
-      }
       if (loc === 'Settings') {
         this.arrow_down_settings = !this.arrow_down_settings
         this.arrow_up_settings = !this.arrow_up_settings

@@ -17,7 +17,7 @@
               </div>
             </div>
             <div class="modal-footer border-0">
-               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!pipelineFormIsValid && !isFromPipelineDetails">DONE</button>
+               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!enableDoneBtn">DONE</button>
                <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
             </div>
           </div>
@@ -46,7 +46,8 @@ export default {
         calendars: [],
         startingAgent: -1,
         type: this.$agentType.TARGET
-      }
+      },
+      enableDoneBtn: false
     }
   },
   props: {
@@ -65,6 +66,14 @@ export default {
     },
     isFromPipelineDetails () {
       return this.routeName === 'PipelineDetail'
+    }
+  },
+  watch: {
+    settings_data: {
+      handler: function () {
+        this.enableDoneBtn = this.isDoneButtonEnabled()
+      },
+      deep: true
     }
   },
   components: {
@@ -102,6 +111,27 @@ export default {
     },
     close () {
       this.setIdPipeline(-1)
+    },
+    areEventsActivated () {
+      if (!this.settings_data || this.settings_data.calendars.length === 0) {
+        return false
+      }
+      const founded = this.settings_data.calendars.findIndex(item => item.enabled === true)
+      if (founded !== -1) {
+        return true
+      }
+      return false
+    },
+    isDoneButtonEnabled: function () {
+      if (this.areEventsActivated()) {
+        if (Object.entries(this.settings_data.locations[0].entity).length !== 0) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
     }
   }
 }

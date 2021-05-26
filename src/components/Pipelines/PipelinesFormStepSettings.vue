@@ -8,9 +8,18 @@
               <span  class="material-icons main_reconnes_text-color mt-1 float-left chevron_right"> chevron_right </span>
               <div class="card card-custom-pipeline w-auto mb-3">
                 <div class="p-2">
-                  <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
-                    <h1 v-if="this.settings_data.name === ''" class="domain-names-list">My Pipeline</h1>
-                    <h1 v-else class="domain-names-list">{{ settings_data.name }}</h1>
+                  <div v-if="showInputPipelineName" class="d-flex ml-3 mt-2 mr-2">
+                    <h1 v-if="this.settings_data.name === ''" class="domain-names-list" @click="showInputPipelineName = false;">My Pipeline</h1>
+                    <h1 v-else class="domain-names-list" @click="showInputPipelineName = false;">{{ settings_data.name }}</h1>
+                    <span style="font-size: 18px;" class="material-icons float-right cursor-pointer" @click="showInputPipelineName = false;"> open_in_new</span>
+                  </div>
+                  <div v-else class="d-flex ml-3 mt-2 mr-2">
+                    <input style="font-size: 18px; width: 75%;" v-model="settings_data.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}"
+                      class="form-control agent-placeholder agent-name-input" placeholder="My Pipeline"
+                      @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true"
+                      @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true"
+                      @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false; editPipeline()" />
+                    <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main mt-2">edit</span>
                   </div>
                   <div class="row pl-2 mt-2">
                     <div class="col-9 p-0">
@@ -80,7 +89,7 @@
             <h5>Schedule</h5>
           </div>
           <div class="col-12 pipeline_spacing">
-            <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="carousel" data-interval="false" data-wrap="false">
+            <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="false" data-interval="false" data-pause="true" data-keyboard="false" data-wrap="false">
               <div class="carousel-inner">
                 <div class="carousel-item" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item">
                   <div class="row">
@@ -93,8 +102,8 @@
                           </div>
                           <div class="form-group">
                             <div class="custom-control custom-switch wizard-setting-switch">
-                              <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="settings_data.calendars[index].enabled">
-                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                              <input type="checkbox" class="custom-control-input" :id="'customSwitch'+index+0" v-model="settings_data.calendars[index].enabled">
+                              <label class="custom-control-label wizard-setting-switch-label" :for="'customSwitch'+index+0"></label>
                             </div>
                           </div>
                         </div>
@@ -125,8 +134,8 @@
                           </div>
                           <div class="form-group">
                             <div class="custom-control custom-switch wizard-setting-switch">
-                              <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                              <label class="custom-control-label wizard-setting-switch-label" for="customSwitch1"></label>
+                              <input type="checkbox" class="custom-control-input" :id="'customSwitch'+index+1">
+                              <label class="custom-control-label wizard-setting-switch-label" :for="'customSwitch'+index+1"></label>
                             </div>
                           </div>
                         </div>
@@ -201,6 +210,7 @@ export default {
   data: function () {
     return {
       event_date: null,
+      showInputPipelineName: true,
       settings_data: {
         locations: [],
         calendars: [],
@@ -213,7 +223,9 @@ export default {
         type: this.$agentType.TARGET
       },
       entityNameSearchData: '',
-      filteredEntities: []
+      filteredEntities: [],
+      isPencilVisibleAndClick: false,
+      isPencilVisible: false
     }
   },
   components: {
@@ -302,6 +314,21 @@ export default {
       this.settings_data.calendars.splice(0)
       this.addCalendarEvent({})
       this.settings_data.name = ''
+    },
+    onBlurExecute () {
+      this.isPencilVisible = false
+      this.isPencilVisibleAndClick = false
+      this.showInputPipelineName = true
+    },
+    verifyPencilStatus () {
+      if (this.isPencilVisibleAndClick) {
+        this.isPencilVisible = true
+      } else {
+        this.isPencilVisible = false
+      }
+    },
+    editPipeline () {
+      this.showInputPipelineName = true
     }
   },
   computed: {
@@ -437,7 +464,7 @@ h1{
     width: 44%;
 }
 span.pipeline-setting-repeat{
-    bottom: 13%;
+    bottom: 20px;
     position: absolute;
 }
 #close-icon-pipeline-setting{
@@ -510,5 +537,13 @@ span.pipe-circle-minus-properties svg{
 div.event-settings hr{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+.bordered-input-name-withfocus{
+  border-top: 2px solid #00B1FF;
+  border-right: 2px solid #00B1FF;
+  border-bottom: 2px solid #00B1FF;
+}
+.pencil-align-main{
+  font-size: 18px;
 }
 </style>
