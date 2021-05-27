@@ -91,7 +91,7 @@
           <div class="col-12 pipeline_spacing">
             <div id="carouselPipelineControls" class="carousel slide w-100" data-ride="false" data-interval="false" data-pause="true" data-keyboard="false" data-wrap="false">
               <div class="carousel-inner">
-                <div class="carousel-item" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item">
+                <div class="carousel-item" :class="{active:index==carouselIndexComputed}" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item">
                   <div class="row">
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][0]">
                       <div class="event-settings d-flex flex-column">
@@ -175,7 +175,7 @@
                 </div>
               </div>
               <ol class="carousel-indicators pipeline-settings-control-nav mt-3">
-                <li data-target="#carouselPipelineControls" :data-slide-to="index" :class="{active:index==loadParsedCalendarsToCarousel.length-1}" class="rounded-circle" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item"></li>
+                <li data-target="#carouselPipelineControls" :data-slide-to="index" :class="{active:index==carouselIndexComputed}" class="rounded-circle" v-for="(item, index) in loadParsedCalendarsToCarousel" :key="item"></li>
                 <li data-target="#carouselPipelineControls" :data-slide-to="loadParsedCalendarsToCarousel.length" v-if="loadParsedCalendarsToCarousel[loadParsedCalendarsToCarousel.length-1][1]" class="rounded-circle"></li>
               </ol>
             </div>
@@ -205,6 +205,7 @@ import RocketIco from '@/components/Icons/RocketIco.vue'
 import FileImportIco from '@/components/Icons/PlusCircleIco.vue'
 import AutoComplete from 'primevue/autocomplete'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
+import jQuery from 'jquery'
 export default {
   name: 'PipelinesFormStepSettings',
   data: function () {
@@ -225,7 +226,8 @@ export default {
       entityNameSearchData: '',
       filteredEntities: [],
       isPencilVisibleAndClick: false,
-      isPencilVisible: false
+      isPencilVisible: false,
+      carouselIndex: -1
     }
   },
   components: {
@@ -314,6 +316,7 @@ export default {
       this.settings_data.calendars.splice(0)
       this.addCalendarEvent({})
       this.settings_data.name = ''
+      this.carouselIndex = -1
     },
     onBlurExecute () {
       this.isPencilVisible = false
@@ -354,6 +357,12 @@ export default {
     loadSelectedPipeline () {
       const id = this.$store.getters['pipelines/getIdPipeline']
       return this.$store.getters['pipelines/getPipelineById'](parseInt(id))
+    },
+    carouselIndexComputed () {
+      if (this.carouselIndex !== -1) {
+        return this.carouselIndex
+      }
+      return this.loadParsedCalendarsToCarousel.length - 1
     }
   },
   watch: {
@@ -398,6 +407,12 @@ export default {
     if (this.settings_data.calendars.length === 0) {
       this.addCalendarEvent({})
     }
+  },
+  mounted: function () {
+    const self = this
+    jQuery('#carouselPipelineControls').on('slide.bs.carousel', function (slide) {
+      self.carouselIndex = slide.to
+    })
   }
 }
 </script>
