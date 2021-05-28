@@ -105,7 +105,9 @@ export default {
     transformPipelineLocations (locationsWrongStructure) {
       const newLocations = []
       locationsWrongStructure.forEach(element => {
-        newLocations.push(element.entity)
+        if (element.entity.entityId) {
+          newLocations.push(element.entity)
+        }
       })
       return newLocations
     },
