@@ -108,13 +108,13 @@
                           </div>
                         </div>
                         <div class="d-inline-flex">
-                          <Calendar v-model="settings_data.calendars[index].time" :inline="true" hourFormat="12" :timeOnly="true"/>
+                          <Calendar v-model="settings_data.calendars[index*2].time" :inline="true" hourFormat="12" :timeOnly="true"/>
                         </div>
                         <div>
                           <hr style="border: 0.5px solid #F1F3F5;"/>
                           <span class="float-left pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
-                            <select class="form-control float-right" v-model="settings_data.calendars[index].repeat">
+                            <select class="form-control float-right" v-model="settings_data.calendars[index*2].repeat">
                               <option value="0">None</option>
                               <option value="1">Hourly</option>
                               <option value="2">Daily</option>
@@ -140,13 +140,13 @@
                           </div>
                         </div>
                         <div class="d-inline-flex">
-                          <Calendar v-model="settings_data.calendars[index+1].time" :inline="true" hourFormat="12" :timeOnly="true"/>
+                          <Calendar v-model="settings_data.calendars[index*2+1].time" :inline="true" hourFormat="12" :timeOnly="true"/>
                         </div>
                         <div>
                           <hr style="border: 0.5px solid #F1F3F5;"/>
                           <span class="float-left pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
-                            <select class="form-control float-right" v-model="settings_data.calendars[index].repeat">
+                            <select class="form-control float-right" v-model="settings_data.calendars[index*2+1].repeat">
                              <option value="0">None</option>
                               <option value="1">Hourly</option>
                               <option value="2">Daily</option>

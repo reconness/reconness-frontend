@@ -66,12 +66,23 @@ export default {
     },
     isFromPipelineDetails () {
       return this.routeName === 'PipelineDetail'
+    },
+    isDoneButtonEnabled: function () {
+      if (this.areEventsActivated()) {
+        if (this.settings_data.locations[0].entity.entityId) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
     }
   },
   watch: {
     settings_data: {
       handler: function () {
-        this.enableDoneBtn = this.isDoneButtonEnabled()
+        this.enableDoneBtn = this.isDoneButtonEnabled
       },
       deep: true
     }
@@ -123,17 +134,6 @@ export default {
         return true
       }
       return false
-    },
-    isDoneButtonEnabled: function () {
-      if (this.areEventsActivated()) {
-        if (Object.entries(this.settings_data.locations[0].entity).length !== 0) {
-          return true
-        } else {
-          return false
-        }
-      } else {
-        return true
-      }
     }
   }
 }
