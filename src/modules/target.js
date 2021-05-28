@@ -1372,6 +1372,16 @@ export default ({
         return runningAgent.id
       }
       return -1
+    },
+    listCurrentRunningSubDomainsAgent: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const subdomain = roots.subdomain.find(subd => subd.id === params.idSubd)
+      const runningAgent = subdomain.agent.find(agent => agent.status === 1)
+      if (runningAgent) {
+        return runningAgent.id
+      }
+      return -1
     }
   }
 })

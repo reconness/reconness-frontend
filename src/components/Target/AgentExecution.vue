@@ -122,7 +122,7 @@ export default {
         })
       } else {
         this.updateStatusSubDomainAgent({
-          status: event,
+          status: this.$agentStatus.RUNNING,
           idTarget: parseInt(this.$route.params.idTarget),
           idRoot: parseInt(this.$route.params.id),
           idAgent: parseInt(this.idAgent),
@@ -175,6 +175,14 @@ export default {
           idTarget: parseInt(this.$route.params.idTarget),
           idRoot: parseInt(this.$route.params.id),
           idAgent: parseInt(this.idAgent)
+        })
+      } else {
+        this.updateStatusSubDomainAgent({
+          status: this.$agentStatus.FINISHED,
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRoot: parseInt(this.$route.params.id),
+          idAgent: parseInt(this.idAgent),
+          idSubDomain: parseInt(this.$route.params.idsubdomain)
         })
       }
       this.stopClock()
