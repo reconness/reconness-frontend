@@ -114,11 +114,13 @@ export default {
             background:
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
-            agentBranch: {
-              name: 'Agent 1',
-              background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
-              id: 1
-            }
+            agentBranch: [
+              {
+                name: 'Agent 1',
+                background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+                id: 1
+              }
+            ]
           },
           {
             name: 'Agent 5',
