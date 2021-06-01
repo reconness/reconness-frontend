@@ -62,7 +62,7 @@
           <div class="pipeline_spacing locations-container">
           <p class="float-right blue-text mb-1">Search</p>
             <div v-for="(item, index) in settings_data.locations" :key="item.entity.id" class="input-searcher-container">
-              <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="filterEntities" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
+              <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="setTypedLocation" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
               <div style="height: 0;">
                 <span v-if="index>0" @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
                   <MinusCircleIco/>
@@ -224,7 +224,7 @@ export default {
         type: this.$agentType.TARGET
       },
       entityNameSearchData: '',
-      filteredEntities: [],
+      typedLocation: '',
       isPencilVisibleAndClick: false,
       isPencilVisible: false,
       carouselIndex: -1
@@ -332,6 +332,9 @@ export default {
     },
     editPipeline () {
       this.showInputPipelineName = true
+    },
+    setTypedLocation (e) {
+      this.typedLocation = e.target.value
     }
   },
   computed: {
@@ -363,6 +366,15 @@ export default {
         return this.carouselIndex
       }
       return this.loadParsedCalendarsToCarousel.length - 1
+    },
+    filteredEntities () {
+      if (this.settings_data.type === this.$agentType.TARGET) {
+        return this.filterTargetsByName(this.typedLocation)
+      } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
+        return this.filterRootDomainsByName(this.typedLocation)
+      } else {
+        return this.filterSubDomainsByName(this.typedLocation)
+      }
     }
   },
   watch: {
@@ -488,9 +500,6 @@ span.pipeline-setting-repeat{
     left: 91%;
     color: #00B1FF;
 }
-.input-searcher-container{
-  max-height: 168px;
-}
 .dropdown-menu{
   display: inherit !important;
   width: 100%;
@@ -546,7 +555,7 @@ span.pipe-circle-minus-properties svg{
   fill: #ff4545
 }
 .locations-container{
-  max-height: 358px;
+  max-height: 243px;
   overflow-y: auto;
 }
 div.event-settings hr{
