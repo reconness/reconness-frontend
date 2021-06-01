@@ -1311,7 +1311,7 @@ export default ({
           }
         )
       })
-      return entities
+      return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
     },
     filterRootDomainsByName: (state) => (name) => {
       let temporal = []
@@ -1330,7 +1330,7 @@ export default ({
           }
         )
       })
-      return entities
+      return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
     },
     filterSubDomainsByName: (state) => (name) => {
       let temporal = []
@@ -1351,7 +1351,7 @@ export default ({
           }
         )
       })
-      return entities
+      return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
     },
     listRootDomainsAgents: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
