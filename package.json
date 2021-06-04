@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@types/typography": "0.16.3",
-    "@vuelidate/core": "2.0.0-alpha.8",
+    "@vuelidate/core": "2.0.0-alpha.19",
     "@vuelidate/validators": "2.0.0-alpha.5",
     "apexcharts": "3.25.0",
     "bootstrap": "^4.6.0",
