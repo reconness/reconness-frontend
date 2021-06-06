@@ -8,11 +8,11 @@
           <router-link :to="{ name: 'Pipelines' }">
             <p class="float-left mb-0">{{pipelineName}}</p>
           </router-link>
-          <span class="material-icons float-right cursor-pointer" @click="showInputPipelineName = false; name = this.pipelineName"> open_in_new</span>
+          <span class="material-icons float-right cursor-pointer" @click="editPipelineName"> open_in_new</span>
         </li>
         <li class="nav-item d-flex" v-if="!showInputPipelineName">
           <div class="d-flex flex-row float-left w-75" v-bind:class="{ 'justify-content-end': isPencilVisible}" >
-              <input  v-model="name"
+              <input  v-model="name" ref="pipeline_name"
                 v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}"
                 class="form-control agent-placeholder agent-name-input" placeholder="My Pipeline"
                 @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true"
@@ -100,6 +100,17 @@ export default {
     openSettings (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       this.$store.commit('pipelines/setIdPipeline', selectedId)
+    },
+    editPipelineName () {
+      this.showInputPipelineName = false
+      this.name = this.pipelineName
+      const self = this
+      setTimeout(
+        function () {
+          self.$refs.pipeline_name.focus()
+        },
+        10
+      )
     }
   }
 }
