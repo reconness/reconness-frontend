@@ -5,9 +5,10 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex color-blue" v-if="showInputPipelineName">
-          <router-link :to="{ name: 'Pipelines' }">
-            <p class="float-left mb-0">{{pipelineName}}</p>
-          </router-link>
+            <router-link :to="{ name: 'Pipelines' }" class="color-blue">
+              <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
+            </router-link>
+            <p class="float-left mb-0 ml-2">{{pipelineName}}</p>
           <span class="material-icons float-right cursor-pointer" @click="editPipelineName"> open_in_new</span>
         </li>
         <li class="nav-item d-flex" v-if="!showInputPipelineName">
@@ -37,6 +38,9 @@
     </nav>
     <ConfirmationPipelinesList :nameRoute= 'this.$route.name'></ConfirmationPipelinesList>
     <PipelinesForm :routeName="this.$route.name"/>
+    <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
+      <small class="font-weight-bold">Back to main</small>
+    </OverlayPanel>
   </div>
 </template>
 <script>
@@ -44,6 +48,7 @@ import { mapState, mapMutations } from 'vuex'
 import jQuery from 'jquery'
 import ConfirmationPipelinesList from '@/components/Pipelines/ConfirmationPipelinesList.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
+import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwoDetailPipeline',
   data: function () {
@@ -56,7 +61,8 @@ export default {
   },
   components: {
     ConfirmationPipelinesList,
-    PipelinesForm
+    PipelinesForm,
+    OverlayPanel
   },
   computed: {
     ...mapState('pipelines', ['checkDetail', 'colorDeleteDetail', 'pipelinesIdAgentsList'])
@@ -111,6 +117,9 @@ export default {
         },
         10
       )
+    },
+    toggle (event) {
+      this.$refs.op.toggle(event)
     }
   }
 }
