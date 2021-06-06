@@ -1300,18 +1300,22 @@ export default ({
       return false
     },
     filterTargetsByName: (state) => (name) => {
-      const temporal = state.targetListStore.filter(item => item.name.toLowerCase().replace(/\s+/g, '').includes(name.toLowerCase().replace(/\s+/g, '')))
-      const entities = []
-      temporal.forEach(element => {
-        entities.push(
-          {
-            name: element.name,
-            entityType: 1,
-            entityId: element.id
-          }
-        )
-      })
-      return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
+      if (name !== '') {
+        const temporal = state.targetListStore.filter(item => item.name.toLowerCase().replace(/\s+/g, '').includes(name.toLowerCase().replace(/\s+/g, '')))
+        const entities = []
+        temporal.forEach(element => {
+          entities.push(
+            {
+              name: element.name,
+              entityType: 1,
+              entityId: element.id
+            }
+          )
+        })
+        return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
+      } else {
+        return []
+      }
     },
     filterRootDomainsByName: (state) => (name) => {
       let temporal = []

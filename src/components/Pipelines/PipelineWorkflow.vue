@@ -147,19 +147,6 @@ export default {
     },
     getAgentBranch (indexValue) {
       const windowReziseWidth = window.outerWidth
-      // window.onresize = function () {
-      //   windowReziseWidth = window.outerWidth
-      //   if (windowReziseWidth < 1200) {
-      //     alert('entreee' + windowReziseWidth)
-      //     return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
-      //   } else {
-      //     if (windowReziseWidth >= 1200) {
-      //       alert('entreeeahy' + windowReziseWidth)
-      //       console.log(this.AgentsPipelineList)
-      //       // return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
-      //     }
-      //   }
-      // }
       if (indexValue !== -1 && Object.keys(this.associatedAgents[indexValue]).length !== 0) {
         if (windowReziseWidth < 1200) {
           return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)

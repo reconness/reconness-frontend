@@ -62,7 +62,7 @@
           <div class="pipeline_spacing locations-container">
           <p class="float-right blue-text mb-1">Search</p>
             <div v-for="(item, index) in settings_data.locations" :key="item.entity.id" class="input-searcher-container">
-              <AutoComplete v-model="item.entity" :suggestions="this.filteredEntities" @keyup="setTypedLocation" field="name" :data-index="index" @focus="updateType" @blur="sendPipelineSettings"/>
+              <AutoCompleteLocations :selectedType="settings_data.type" v-model="item.entity.name"/>
               <div style="height: 0;">
                 <span v-if="index>0" @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
                   <MinusCircleIco/>
@@ -203,7 +203,7 @@ import { mapGetters } from 'vuex'
 import Calendar from 'primevue/calendar'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import FileImportIco from '@/components/Icons/PlusCircleIco.vue'
-import AutoComplete from 'primevue/autocomplete'
+import AutoCompleteLocations from '@/components/AutoCompleteLocations'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 import jQuery from 'jquery'
 export default {
@@ -227,14 +227,15 @@ export default {
       typedLocation: '',
       isPencilVisibleAndClick: false,
       isPencilVisible: false,
-      carouselIndex: -1
+      carouselIndex: -1,
+      locationOnFocusPos: 0
     }
   },
   components: {
     Calendar,
     RocketIco,
     FileImportIco,
-    AutoComplete,
+    AutoCompleteLocations,
     MinusCircleIco
   },
   emits: {
@@ -266,20 +267,12 @@ export default {
         )
       }
     },
-    filterEntities: function (e) {
-      if (this.settings_data.type === this.$agentType.TARGET) {
-        this.filteredEntities = this.filterTargetsByName(e.target.value)
-      } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
-        this.filteredEntities = this.filterRootDomainsByName(e.target.value)
-      } else {
-        this.filteredEntities = this.filterSubDomainsByName(e.target.value)
-      }
-    },
     updateType: function (e) {
       const index = e.currentTarget.getAttribute('data-index')
       if (this.settings_data.locations[index].entity.entityType > -1) {
         this.settings_data.type = this.settings_data.locations[index].entity.entityType
       }
+      this.locationOnFocusPos = index
     },
     onChangeDate: function (e) {
       if (this.settings_data.calendars[this.settings_data.calendars.length - 1] && this.event_date) {
@@ -335,6 +328,9 @@ export default {
     },
     setTypedLocation (e) {
       this.typedLocation = e.target.value
+    },
+    setLocationIndex (e) {
+      this.locationOnFocusPos = parseInt(e.currentTarget.getAttribute('data-index'))
     }
   },
   computed: {
@@ -406,6 +402,7 @@ export default {
         this.settings_data.date = value.date
         this.settings_data.statusRun = value.statusRun
         this.settings_data.agent = value.agent
+        this.settings_data.type = value.type
       } else {
         this.settings_data.editable = false
         this.resetPipelineForm()
@@ -500,11 +497,6 @@ span.pipeline-setting-repeat{
     left: 91%;
     color: #00B1FF;
 }
-.dropdown-menu{
-  display: inherit !important;
-  width: 100%;
-  position: relative;
-}
 span.p-autocomplete{
   margin-top: 7px;
 }
@@ -544,8 +536,8 @@ span.pipe-circle-minus-properties{
   display: block;
   line-height: 2.375rem;
   text-align: center;
-  top: -41px;
-  right: -89%;
+  top: -46px;
+  right: -92%;
   width: 25px;
 }
 input.p-autocomplete-input.p-inputtext.p-component {
