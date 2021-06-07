@@ -31,11 +31,11 @@ export default {
   methods: {
     filteredEntities (event) {
       if (this.selectedType === this.$agentType.TARGET) {
-        this.filteredLocations = this.filterTargetsByName(this.modelValue)
+        this.filteredLocations = this.filterTargetsByName({ name: event.target.value, strict: false })
       } else if (this.selectedType === this.$agentType.ROOTDOMAIN) {
-        this.filteredLocations = this.filterRootDomainsByName(this.modelValue)
+        this.filteredLocations = this.filterRootDomainsByName({ name: event.target.value, strict: false })
       } else {
-        this.filteredLocations = this.filterSubDomainsByName(this.modelValue)
+        this.filteredLocations = this.filterSubDomainsByName({ name: event.target.value, strict: false })
       }
       this.isWriting = true
       this.closedMenu = false

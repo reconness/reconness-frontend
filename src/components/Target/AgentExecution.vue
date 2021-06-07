@@ -134,6 +134,7 @@ export default {
     minimizeWindow () {
       jQuery('#agentExecutionModalForm').modal('hide')
       this.minimized = true
+      this.$refs.op.hide()
     },
     tick () {
       this.now++

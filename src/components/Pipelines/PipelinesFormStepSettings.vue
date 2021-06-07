@@ -362,15 +362,6 @@ export default {
         return this.carouselIndex
       }
       return this.loadParsedCalendarsToCarousel.length - 1
-    },
-    filteredEntities () {
-      if (this.settings_data.type === this.$agentType.TARGET) {
-        return this.filterTargetsByName(this.typedLocation)
-      } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
-        return this.filterRootDomainsByName(this.typedLocation)
-      } else {
-        return this.filterSubDomainsByName(this.typedLocation)
-      }
     }
   },
   watch: {
@@ -547,7 +538,7 @@ span.pipe-circle-minus-properties svg{
   fill: #ff4545
 }
 .locations-container{
-  max-height: 243px;
+  max-height: 192px;
   overflow-y: auto;
 }
 div.event-settings hr{

@@ -1299,9 +1299,14 @@ export default ({
       }
       return false
     },
-    filterTargetsByName: (state) => (name) => {
-      if (name !== '') {
-        const temporal = state.targetListStore.filter(item => item.name.toLowerCase().replace(/\s+/g, '').includes(name.toLowerCase().replace(/\s+/g, '')))
+    filterTargetsByName: (state) => (data) => {
+      if (data.name !== '') {
+        let temporal = []
+        if (!data.strict) {
+          temporal = state.targetListStore.filter(item => item.name.toLowerCase().replace(/\s+/g, '').includes(data.name.toLowerCase().replace(/\s+/g, '')))
+        } else {
+          temporal = state.targetListStore.filter(item => item.name.toLowerCase().replace(/\s+/g, '') === data.name.toLowerCase().replace(/\s+/g, ''))
+        }
         const entities = []
         temporal.forEach(element => {
           entities.push(
@@ -1317,12 +1322,18 @@ export default ({
         return []
       }
     },
-    filterRootDomainsByName: (state) => (name) => {
+    filterRootDomainsByName: (state) => (data) => {
       let temporal = []
       state.targetListStore.forEach(element => {
-        temporal = temporal.concat(
-          element.rootDomains.filter(item => item.root.includes(name))
-        )
+        if (!data.strict) {
+          temporal = temporal.concat(
+            element.rootDomains.filter(item => item.root.includes(data.name))
+          )
+        } else {
+          temporal = temporal.concat(
+            element.rootDomains.filter(item => item.root === data.name)
+          )
+        }
       })
       const entities = []
       temporal.forEach(element => {
@@ -1336,13 +1347,19 @@ export default ({
       })
       return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
     },
-    filterSubDomainsByName: (state) => (name) => {
+    filterSubDomainsByName: (state) => (data) => {
       let temporal = []
       state.targetListStore.forEach(target => {
         target.rootDomains.forEach(rootDomain => {
-          temporal = temporal.concat(
-            rootDomain.subdomain.filter(item => item.name.includes(name))
-          )
+          if (!data.strict) {
+            temporal = temporal.concat(
+              rootDomain.subdomain.filter(item => item.name.includes(data.name))
+            )
+          } else {
+            temporal = temporal.concat(
+              rootDomain.subdomain.filter(item => item.name === data.name)
+            )
+          }
         })
       })
       const entities = []
