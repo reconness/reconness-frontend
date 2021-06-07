@@ -18,12 +18,12 @@
             </div>
             <div class="modal-footer border-0 d-flex justify-content-between flex-row-reverse">
               <div>
-               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action mr-2" :disabled="locationsContainNonExist() || locationsContainBlank()">DONE</button>
+               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action mr-2" :disabled="locationsContainNonExist()">DONE</button>
                <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
               </div>
               <div>
-                <p v-if="validators.blank.locations" :class="{invalid: validators.blank.locations}" class="ml-5">You must not leave any text field blank</p>
-                <p  v-if="validators.exist.locations && !validators.blank.locations" :class="{invalid: validators.exist.locations}" class="ml-5">You must select a location from the list</p>
+                <!-- <p v-if="validators.blank.locations" :class="{invalid: validators.blank.locations}" class="ml-5">You must not leave any text field blank</p> -->
+                <p  v-if="validators.exist.locations" :class="{invalid: validators.exist.locations}" class="ml-5">You must select a location from the list</p>
               </div>
             </div>
           </div>
@@ -68,7 +68,6 @@ export default {
     routeName: String
   },
   computed: {
-    ...mapState(['autoId']),
     ...mapState('pipelines', ['autoId']),
     ...mapGetters(['getAgentById']),
     ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
@@ -107,19 +106,22 @@ export default {
       this.pipeline.calendars = this.settings_data.calendars.slice()
       this.pipeline.locations = this.transformPipelineLocations(this.settings_data.locations)
       if (this.settings_data.editable) {
-        if (!this.locationsContainBlank() && !this.locationsContainNonExist()) {
+        if (!this.locationsContainNonExist()) {
           this.pipeline.id = this.settings_data.id
           this.pipeline.name = this.settings_data.name
           this.pipeline.date = this.settings_data.date
           this.pipeline.statusRun = this.settings_data.statusRun
           this.pipeline.agent = this.settings_data.agent
           this.pipeline.type = this.settings_data.type
+          this.removeBlankLocations()
           this.updatePipeline(this.pipeline)
           this.setIdPipeline(-1)
           jQuery('#pipelinesModalFormSettings').modal('hide')
         }
       } else {
-        if (!this.locationsContainBlank() && !this.locationsContainNonExist()) {
+        if (!this.locationsContainNonExist()) {
+          this.resetPipeline()
+          this.removeBlankLocations()
           this.addPipeline(this.pipeline)
           this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
           jQuery('#pipelinesModalFormSettings').modal('hide')
@@ -167,7 +169,7 @@ export default {
         const entityName = this.pipeline.locations[index].name
         if (this.settings_data.type === this.$agentType.TARGET) {
           result = this.filterTargetsByName({ name: entityName, strict: true }).length > 0
-          if (!result) {
+          if (!result && !this.locationsContainBlank()) {
             founded = true
           }
         } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
@@ -185,6 +187,20 @@ export default {
       }
       this.validators.exist.locations = founded
       return founded
+    },
+    removeBlankLocations () {
+      for (let index = 1; index < this.pipeline.locations.length; index++) {
+        if (this.$validateIsBlank(this.pipeline.locations[index].name)) {
+          this.pipeline.locations.splice(index, 1)
+          index = index - 1
+        }
+      }
+    },
+    resetPipeline () {
+      this.pipeline.name = 'My pipeline'
+      this.pipeline.agent = []
+      this.pipeline.startingAgent = -1
+      this.pipeline.id = -1
     }
   }
 }
