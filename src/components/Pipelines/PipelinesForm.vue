@@ -16,9 +16,15 @@
                 </div>
               </div>
             </div>
-            <div class="modal-footer border-0">
-               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" :disabled="!enableDoneBtn">DONE</button>
+            <div class="modal-footer border-0 d-flex justify-content-between flex-row-reverse">
+              <div>
+               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action mr-2" :disabled="locationsContainNonExist() || locationsContainBlank()">DONE</button>
                <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
+              </div>
+              <div>
+                <p v-if="validators.blank.locations" :class="{invalid: validators.blank.locations}" class="ml-5">You must not leave any text field blank</p>
+                <p  v-if="validators.exist.locations && !validators.blank.locations" :class="{invalid: validators.exist.locations}" class="ml-5">You must select a location from the list</p>
+              </div>
             </div>
           </div>
         </div>
@@ -47,7 +53,15 @@ export default {
         startingAgent: -1,
         type: this.$agentType.TARGET
       },
-      enableDoneBtn: false
+      enableDoneBtn: false,
+      validators: {
+        blank: {
+          locations: false
+        },
+        exist: {
+          locations: false
+        }
+      }
     }
   },
   props: {
@@ -57,13 +71,7 @@ export default {
     ...mapState(['autoId']),
     ...mapState('pipelines', ['autoId']),
     ...mapGetters(['getAgentById']),
-    pipelineFormIsValid () {
-      if (this.settings_data && ((this.settings_data.locations.length === 1 && this.settings_data.locations[0].entity.name === undefined) ||
-        (this.settings_data.locations.length === 1 && this.$validateIsBlank(this.settings_data.locations[0].entity.name)))) {
-        return false
-      }
-      return true
-    },
+    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
     isFromPipelineDetails () {
       return this.routeName === 'PipelineDetail'
     },
@@ -83,6 +91,9 @@ export default {
     settings_data: {
       handler: function () {
         this.enableDoneBtn = this.isDoneButtonEnabled
+        this.pipeline.locations = this.transformPipelineLocations(this.settings_data.locations)
+        this.locationsContainBlank()
+        this.locationsContainNonExist()
       },
       deep: true
     }
@@ -96,19 +107,24 @@ export default {
       this.pipeline.calendars = this.settings_data.calendars.slice()
       this.pipeline.locations = this.transformPipelineLocations(this.settings_data.locations)
       if (this.settings_data.editable) {
-        this.pipeline.id = this.settings_data.id
-        this.pipeline.name = this.settings_data.name
-        this.pipeline.date = this.settings_data.date
-        this.pipeline.statusRun = this.settings_data.statusRun
-        this.pipeline.agent = this.settings_data.agent
-        this.pipeline.type = this.settings_data.type
-        this.updatePipeline(this.pipeline)
-        this.setIdPipeline(-1)
+        if (!this.locationsContainBlank() && !this.locationsContainNonExist()) {
+          this.pipeline.id = this.settings_data.id
+          this.pipeline.name = this.settings_data.name
+          this.pipeline.date = this.settings_data.date
+          this.pipeline.statusRun = this.settings_data.statusRun
+          this.pipeline.agent = this.settings_data.agent
+          this.pipeline.type = this.settings_data.type
+          this.updatePipeline(this.pipeline)
+          this.setIdPipeline(-1)
+          jQuery('#pipelinesModalFormSettings').modal('hide')
+        }
       } else {
-        this.addPipeline(this.pipeline)
-        this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
+        if (!this.locationsContainBlank() && !this.locationsContainNonExist()) {
+          this.addPipeline(this.pipeline)
+          this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
+          jQuery('#pipelinesModalFormSettings').modal('hide')
+        }
       }
-      jQuery('#pipelinesModalFormSettings').modal('hide')
     },
     updatePipelineSettings (e) {
       this.settings_data = e
@@ -134,6 +150,41 @@ export default {
         return true
       }
       return false
+    },
+    locationsContainBlank () {
+      const resultFilter = this.pipeline.locations.filter(
+        item => this.$validateIsBlank(item.name) === true
+      )
+      const result = resultFilter.length > 0
+      this.validators.blank.locations = result
+      return result
+    },
+    locationsContainNonExist () {
+      let founded = false
+      let index = 0
+      let result = -1
+      while (index < this.pipeline.locations.length && !founded) {
+        const entityName = this.pipeline.locations[index].name
+        if (this.settings_data.type === this.$agentType.TARGET) {
+          result = this.filterTargetsByName({ name: entityName, strict: true }).length > 0
+          if (!result) {
+            founded = true
+          }
+        } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
+          result = this.filterRootDomainsByName({ name: entityName, strict: true }).length > 0
+          if (!result) {
+            founded = true
+          }
+        } else {
+          result = this.filterSubDomainsByName({ name: entityName, strict: true }).length > 0
+          if (!result) {
+            founded = true
+          }
+        }
+        index++
+      }
+      this.validators.exist.locations = founded
+      return founded
     }
   }
 }
