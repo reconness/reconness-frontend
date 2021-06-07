@@ -83,6 +83,7 @@ export default {
       this.isPencilVisible = false
       this.isPencilVisibleAndClick = false
       this.showInputPipelineName = true
+      this.editPipeline()
     },
     editPipeline () {
       this.showInputPipelineName = true

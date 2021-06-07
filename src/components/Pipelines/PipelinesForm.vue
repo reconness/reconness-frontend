@@ -18,12 +18,12 @@
             </div>
             <div class="modal-footer border-0 d-flex justify-content-between flex-row-reverse">
               <div>
-               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action mr-2" :disabled="locationsContainNonExist()">DONE</button>
+               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action mr-2" :disabled="locationsContainNonExist() && !validators.blank.locations">DONE</button>
                <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
               </div>
               <div>
                 <!-- <p v-if="validators.blank.locations" :class="{invalid: validators.blank.locations}" class="ml-5">You must not leave any text field blank</p> -->
-                <p  v-if="validators.exist.locations" :class="{invalid: validators.exist.locations}" class="ml-5">You must select a location from the list</p>
+                <p  v-if="validators.exist.locations && !validators.blank.locations" :class="{invalid: validators.exist.locations}" class="ml-5">You must select a location from the list</p>
               </div>
             </div>
           </div>
@@ -91,8 +91,10 @@ export default {
       handler: function () {
         this.enableDoneBtn = this.isDoneButtonEnabled
         this.pipeline.locations = this.transformPipelineLocations(this.settings_data.locations)
-        this.locationsContainBlank()
+        // this.locationsContainBlank()
         this.locationsContainNonExist()
+        this.pipeline.type = this.settings_data.type
+        this.pipeline.date = this.settings_data.date
       },
       deep: true
     }
@@ -106,7 +108,7 @@ export default {
       this.pipeline.calendars = this.settings_data.calendars.slice()
       this.pipeline.locations = this.transformPipelineLocations(this.settings_data.locations)
       if (this.settings_data.editable) {
-        if (!this.locationsContainNonExist()) {
+        if (!this.locationsContainNonExist() && !this.validators.blank.locations) {
           this.pipeline.id = this.settings_data.id
           this.pipeline.name = this.settings_data.name
           this.pipeline.date = this.settings_data.date
@@ -119,12 +121,13 @@ export default {
           jQuery('#pipelinesModalFormSettings').modal('hide')
         }
       } else {
-        if (!this.locationsContainNonExist()) {
-          this.resetPipeline()
+        if (!this.locationsContainNonExist() && !this.validators.blank.locations) {
           this.removeBlankLocations()
           this.addPipeline(this.pipeline)
           this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
           jQuery('#pipelinesModalFormSettings').modal('hide')
+          this.pipeline.agent = []
+          this.pipeline.name = 'My pipeline'
         }
       }
     },
@@ -142,6 +145,7 @@ export default {
     },
     close () {
       this.setIdPipeline(-1)
+      this.resetPipeline()
     },
     areEventsActivated () {
       if (!this.settings_data || this.settings_data.calendars.length === 0) {
@@ -169,17 +173,17 @@ export default {
         const entityName = this.pipeline.locations[index].name
         if (this.settings_data.type === this.$agentType.TARGET) {
           result = this.filterTargetsByName({ name: entityName, strict: true }).length > 0
-          if (!result && !this.locationsContainBlank()) {
+          if (!result && !this.validators.blank) {
             founded = true
           }
         } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
           result = this.filterRootDomainsByName({ name: entityName, strict: true }).length > 0
-          if (!result) {
+          if (!result && !this.validators.blank) {
             founded = true
           }
         } else {
           result = this.filterSubDomainsByName({ name: entityName, strict: true }).length > 0
-          if (!result) {
+          if (!result && !this.validators.blank) {
             founded = true
           }
         }
@@ -197,10 +201,11 @@ export default {
       }
     },
     resetPipeline () {
-      this.pipeline.name = 'My pipeline'
-      this.pipeline.agent = []
-      this.pipeline.startingAgent = -1
-      this.pipeline.id = -1
+      this.settings_data.name = 'My pipeline'
+      this.settings_data.agent = []
+      this.settings_data.startingAgent = -1
+      this.settings_data.id = -1
+      this.settings_data.statusRun = false
     }
   }
 }
