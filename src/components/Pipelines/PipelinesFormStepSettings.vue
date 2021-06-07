@@ -310,6 +310,7 @@ export default {
       this.addCalendarEvent({})
       this.settings_data.name = ''
       this.carouselIndex = -1
+      this.settings_data.agent = []
     },
     onBlurExecute () {
       this.isPencilVisible = false
