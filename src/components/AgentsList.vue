@@ -6,7 +6,7 @@
         <input type="checkbox" :id="item.id+1" :checked="isChecked(item.id)" name="checkitem" ><label :for="item.id+1" v-show= check @click="addListAgentId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
           <div class="d-flex justify-content-between">
-            <h3 class="card-title">{{item.name}}</h3>
+            <h3 class="card-title cursor-pointer" @click="setDetailsLink" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">{{item.name}}</h3>
             <a href="#">
               <AccountCogIco/>
             </a>

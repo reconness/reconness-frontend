@@ -144,9 +144,10 @@ input[type="checkbox"] {
   opacity: 1;
 }
 div.agent-mini-main-container svg {
-    fill: #B3B3B3;
+    fill: #ffffff;
     width: 28px;
     height: 28px;
+    opacity: 0.2;
 }
 </style>
 <script>
