@@ -6,7 +6,7 @@
         <div class="info-box ">
           <span class="info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
             <div class="info-box-content">
-                <span class="info-box-text agent-mini-agent-name">{{ name }}</span>
+                <span class="info-box-text agent-mini-agent-name cursor-pointer" @click="setDetailsLink" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">{{ name }}</span>
                 <nav class="nav">
                     <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setAgentId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Delete</a>
                     <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setDetailsLink" href="#" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Details</a>
