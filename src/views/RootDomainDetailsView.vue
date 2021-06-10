@@ -57,7 +57,7 @@ export default {
     AgentListTable
   },
   computed: {
-    ...mapState('target', ['countSubdomainList']),
+    ...mapState('target', ['countSubdomainList', 'isTableList']),
     ...mapGetters('target', ['getTargetById', 'getSubdomainSize']),
     ...mapGetters(['getLastAgentRootDomain']),
     ...mapGetters('target', ['listRootDomainsAgents'])
@@ -87,6 +87,11 @@ export default {
         this.shadowSubd = ''
         this.shadowAg = '13px 19px 41px #d6d6d6'
       }
+    }
+  },
+  watch: {
+    $route (to, from) {
+      this.setIsDefaultTabButton(true)
     }
   }
 }
