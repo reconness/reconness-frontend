@@ -15,7 +15,7 @@
     "bootstrap": "^4.6.0",
     "core-js": "^3.8.3",
     "jquery": "^3.5.1",
-    "material-icons": "0.6.0",
+    "material-icons": "0.7.2",
     "mdbvue": "^6.7.2",
     "mitt": "^2.1.0",
     "primeflex": "^2.0.0",
