@@ -5,31 +5,25 @@
       <div class="card text-white card-style  mb-3" v-bind:style ="{background:item.background}">
         <input type="checkbox" :id="item.id+1" :checked="isChecked(item.id)" name="checkitem" ><label :for="item.id+1" v-show= check @click="addListAgentId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between mb-2">
             <h3 class="card-title cursor-pointer" @click="setDetailsLink" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">{{item.name}}</h3>
             <a href="#">
               <AccountCogIco/>
             </a>
           </div>
-          <hr />
           <div class="direct-chat-infos clearfix">
-            <em>
-              <a href="#" class="float-left">Category</a>
-            </em>
-            <em>
-              <a href="#" class="float-right under-line" @click="setDetailsLink" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">Details</a>
-            </em>
-          </div>
-          <div class="card-body-inside">
             <ul class="list-unstyled">
               <li>
-                <a href="#">Agents Subdomain</a>
+                <span class="material-icons mt-1"> chevron_right</span><a href="#">{{item.repository}}</a>
               </li>
               <li>
-                <a href="#">Enum</a>
+                <span class="material-icons mt-1"> chevron_right</span><a href="#">{{item.target}}</a>
               </li>
               <li>
-                <a href="#">Agents Scan</a>
+                <span class="material-icons mt-1"> chevron_right</span><a href="#">{{item.command}}</a>
+              </li>
+              <li>
+                <span class="material-icons mt-1"> chevron_right</span><a href="#">Type: {{this.$getEntityTypeById(parseInt(item.type)).description}}</a>
               </li>
             </ul>
           </div>
@@ -239,5 +233,11 @@ input[type="checkbox"]:checked + label:after {
 
 input[type="checkbox"] {
   display: none;
+}
+.direct-chat-infos .material-icons{
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #fff;
 }
 </style>

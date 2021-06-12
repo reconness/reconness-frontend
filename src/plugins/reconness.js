@@ -104,5 +104,26 @@ export default {
       }
       return weekday[0]
     }
+
+    app.config.globalProperties.$entityTypeData = Object.freeze(
+      {
+        TARGET: { id: 1, description: 'Target' },
+        ROOTDOMAIN: { id: 1, description: 'Root Domain' },
+        SUBDOMAIN: { id: 1, description: 'Sub Domain' }
+      }
+    )
+
+    app.config.globalProperties.$getEntityTypeById = function (idEntity) {
+      switch (idEntity) {
+        case 1:
+          return this.$entityTypeData.TARGET
+        case 2:
+          return this.$entityTypeData.ROOTDOMAIN
+        case 3:
+          return this.$entityTypeData.SUBDOMAIN
+        default:
+          return null
+      }
+    }
   }
 }
