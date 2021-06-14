@@ -17,7 +17,7 @@
         <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-        <div class="row mb-2" v-for="item of this.listAgents" :key="item.id">
+        <div class="row mb-2" v-for="item of this.agentsList" :key="item.id">
         <div class="col-2  border-left-radius border">
            <p class="m-2"> {{item.name}}</p>
         </div>
@@ -61,9 +61,10 @@ export default {
     AgentExecution
   },
   computed: {
-    ...mapGetters(['getLastAgentRootDomain']),
+    ...mapGetters(['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents', 'listCurrentRunningRootDomainsAgent']),
     ...mapState('target', ['agentStatus']),
+    ...mapState(['agentListStore']),
     listAgents: function () {
       return this.listRootDomainsAgents({
         idTarget: parseInt(this.$route.params.idTarget),
@@ -72,6 +73,21 @@ export default {
     },
     isRunningAgent: function () {
       return this.listCurrentRunningRootDomainsAgent({ idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), idAgent: parseInt(this.selectedAgentId) })
+    },
+    agentsList: function () {
+      const rootDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(2)))
+      const rootDoaminsAgentsCurentView = this.listRootDomainsAgents({
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRoot: parseInt(this.$route.params.id)
+      })
+      let searchedAgent = null
+      rootDomainAgentsType.forEach(element => {
+        searchedAgent = rootDoaminsAgentsCurentView.find(item => item.id === element.id)
+        if (searchedAgent) {
+          element.status = searchedAgent.status
+        }
+      })
+      return rootDomainAgentsType
     }
   },
   methods: {
@@ -85,6 +101,13 @@ export default {
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
       this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.insertAgentIfNotExistInRootDomain(
+        {
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRoot: parseInt(this.$route.params.id),
+          agentData: this.agentListStore.find(item => item.id === this.selectedAgentId)
+        }
+      )
       this.updateStatusRootDomainAgent({
         status: this.$agentStatus.RUNNING,
         idTarget: parseInt(this.$route.params.idTarget),
@@ -127,7 +150,7 @@ export default {
         )
       }
     },
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent'])
+    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'insertAgentIfNotExistInRootDomain'])
   }
 }
 </script>

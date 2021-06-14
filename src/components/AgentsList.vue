@@ -12,7 +12,7 @@
             </a>
           </div>
           <div class="direct-chat-infos clearfix">
-            <ul class="list-unstyled">
+            <ul class="list-unstyled agent-item-list">
               <li>
                 <span class="material-icons mt-1"> chevron_right</span><a href="#">{{item.repository}}</a>
               </li>
@@ -234,7 +234,7 @@ input[type="checkbox"]:checked + label:after {
 input[type="checkbox"] {
   display: none;
 }
-.direct-chat-infos .material-icons{
+.agent-item-list .material-icons{
   font-size: .875rem;
   font-weight: 400;
   line-height: 1.5;

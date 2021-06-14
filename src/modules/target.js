@@ -1218,6 +1218,16 @@ export default ({
       const subd = roots.subdomain.find(sub => sub.id === params.idSubDomain)
       const agent = subd.agent.find(agentItem => agentItem.id === params.idAgent)
       agent.status = params.status
+    },
+    insertAgentIfNotExistInRootDomain (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const agent = roots.agent.find(agentItem => agentItem.id === params.agentData.id)
+      if (!agent) {
+        roots.agent.push(
+          JSON.parse(JSON.stringify(params.agentData))
+        )
+      }
     }
   },
   actions: {
