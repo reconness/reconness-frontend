@@ -27,7 +27,7 @@
                        <div class="card-tools">
                   <ul class="nav nav-pills ml-auto">
                     <li class="nav-item border-right mr-1 pr-1">
-                      <small class="text-muted">Last run {{ item.date }}</small>
+                      <small class="text-muted">Last run {{ new Date(item.date).toLocaleDateString('en-US') }}</small>
                     </li>
                     <li class="nav-item">
                     <small class="main_reconnes_text-color font-weight-bold" v-if ="item.statusRun">Success
@@ -38,7 +38,9 @@
                 </div>
                </div>
                 <!-- /.d-flex -->
+                <div v-if="item.agent.length > 0">
                   <div v-for="item2 of item.agent.slice(0,3)" :key="item2.id" class="circle-color float-left mr-1" :style ="{background:item2.background}">
+                </div>
                </div>
               </div>
               <!-- /.card-body -->
