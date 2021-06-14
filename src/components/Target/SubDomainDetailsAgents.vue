@@ -18,7 +18,7 @@
           <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-      <div class="row mb-2" v-for="item of this.listAgents" :key="item.id">
+      <div class="row mb-2" v-for="item of this.agentsList" :key="item.id">
         <div class="col-2  border-left-radius border">
            <p class="m-2"> {{item.name}}</p>
         </div>
@@ -60,9 +60,10 @@ export default {
     color: String
   },
   computed: {
-    ...mapGetters(['getLastAgentSubdom']),
+    ...mapGetters(['getLastAgentSubdom', 'getAgentsByType']),
     ...mapGetters('target', ['listSubdDomainsAgents', 'listCurrentRunningSubDomainsAgent']),
     ...mapState('target', ['agentStatus']),
+    ...mapState(['agentListStore']),
     listAgents () {
       return this.listSubdDomainsAgents({
         idTarget: parseInt(this.$route.params.idTarget),
@@ -77,6 +78,22 @@ export default {
         idSubd: parseInt(this.$route.params.idsubdomain),
         idAgent: parseInt(this.selectedAgentId)
       })
+    },
+    agentsList: function () {
+      const subDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(3)))
+      const subDoaminsAgentsCurentView = this.listSubdDomainsAgents({
+        idTarget: parseInt(this.$route.params.idTarget),
+        idRoot: parseInt(this.$route.params.id),
+        idSubd: parseInt(this.$route.params.idsubdomain)
+      })
+      let searchedAgent = null
+      subDomainAgentsType.forEach(element => {
+        searchedAgent = subDoaminsAgentsCurentView.find(item => item.id === element.id)
+        if (searchedAgent) {
+          element.status = searchedAgent.status
+        }
+      })
+      return subDomainAgentsType
     }
   },
   methods: {
@@ -123,6 +140,14 @@ export default {
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
       this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.insertAgentIfNotExistInSubDomain(
+        {
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRoot: parseInt(this.$route.params.id),
+          idSubDomain: parseInt(this.$route.params.idsubdomain),
+          agentData: this.agentListStore.find(item => item.id === this.selectedAgentId)
+        }
+      )
       this.updateStatusSubDomainAgent({
         status: this.$agentStatus.RUNNING,
         idTarget: parseInt(this.$route.params.idTarget),
@@ -132,7 +157,7 @@ export default {
       })
       this.setAgentStatus({ status: this.$agentStatus.RUNNING, id: parseInt(this.selectedAgentId) })
     },
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusSubDomainAgent'])
+    ...mapMutations('target', ['setAgentStatus', 'updateStatusSubDomainAgent', 'insertAgentIfNotExistInSubDomain'])
   },
   components: {
     AgentExecution
