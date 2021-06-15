@@ -295,14 +295,6 @@
       overflow: hidden;
     }
 
-    /* .p-colorpicker-panel .p-colorpicker-color {
-      background: transparent url("/primevue-colorpicker/color.png") no-repeat left top;
-    }
-
-    .p-colorpicker-panel .p-colorpicker-hue {
-      background: transparent url("/primevue-colorpicker/hue.png") no-repeat left top;
-    } */
-
     .p-colorpicker-preview {
         width: 30px;
         height: 30px;
@@ -339,7 +331,7 @@
 
 </style>
 <script>
-import { required } from '@vuelidate/validators'
+// import { required } from '@vuelidate/validators'
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
@@ -572,18 +564,6 @@ export default {
         }
       },
       nextAgentSequence: 30
-    }
-  },
-  validations: {
-    agent: {
-      name: { required },
-      background: { required },
-      repository: { required },
-      target: { required },
-      command: { required },
-      isAliveTrigger: { required },
-      isHttpOpenTrigger: { required },
-      category: { required }
     }
   },
   components: {
