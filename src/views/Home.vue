@@ -54,9 +54,9 @@
                             <div class="col-lg-6">
                               <div class="form-group has-search">
                                 <span class="material-icons search-icon form-control-feddback">search</span>
-                                <input class="form-control" type="search" placeholder="URL" v-model="$v.resource.url.$model">
+                                <input class="form-control" type="search" placeholder="URL" v-model="resource.url">
                               </div>
-                              <p v-if="$v.$invalid" :class="{invalid: $v.resource.url.url.$invalid}" styl>The text is not a valid URL address</p>
+                              <p v-if="validators.url.name && !validators.blank.name" :class="{invalid: validators.url.name}">The text is not a valid URL address</p>
                             </div>
                             <div class="col-lg-6">
                               <div class="row">
@@ -112,7 +112,6 @@ import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vu
 import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
 import SimpleConfirmation from '@/components/SimpleConfirmation.vue'
 import { mapState } from 'vuex'
-import { url } from '@vuelidate/validators'
 import Chips from 'primevue/chips'
 export default {
   name: 'Home',
@@ -141,16 +140,24 @@ export default {
   computed: {
     ...mapState(['resources'])
   },
+  watch: {
+    resource: {
+      handler: function (value) {
+        this.validators.url.name = !this.$validateUrl(value.url)
+        this.validators.blank.name = this.$validateIsBlank(value.url)
+      },
+      deep: true
+    }
+  },
   methods: {
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setSelectedResource', selectedId)
     },
     addReference () {
-      this.$v.$touch()
-      if (!this.$v.$error && this.$v.resource.url.$model !== '') {
+      if (!this.validators.url.name && !this.validators.blank.name) {
         this.$store.commit('addResource', {
-          url: this.$v.resource.url.$model,
+          url: this.resource.url,
           categories: this.resource.categories,
           id: this.resources.length + 1
         })
@@ -163,8 +170,6 @@ export default {
         categories: [],
         id: -1
       }
-      this.$v.resource.url.$model = ''
-      this.$v.$reset()
     },
     getData: function () {
       const filterItem = document.getElementById('category_item').value
@@ -204,12 +209,15 @@ export default {
         id: -1
       },
       selectedResource: -1,
-      isCategoriesMenuClosed: false
-    }
-  },
-  validations: {
-    resource: {
-      url: { url }
+      isCategoriesMenuClosed: false,
+      validators: {
+        url: {
+          name: false
+        },
+        blank: {
+          name: true
+        }
+      }
     }
   }
 }
