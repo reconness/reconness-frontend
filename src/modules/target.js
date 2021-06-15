@@ -39,7 +39,8 @@ export default ({
                     image: '',
                     date: '21/01/2020',
                     installedFrom: '',
-                    lastRun: '01/01/2021'
+                    lastRun: '01/01/2021',
+                    status: 2
                   },
                   {
                     name: 'Agent 2',
@@ -55,7 +56,8 @@ export default ({
                     image: '',
                     date: '21/02/2020',
                     installedFrom: '',
-                    lastRun: '02/01/2021'
+                    lastRun: '02/01/2021',
+                    status: 2
                   }
                 ],
                 ipAddress: '34.234.345.37',
@@ -105,7 +107,8 @@ export default ({
                     image: '',
                     date: '21/03/2020',
                     installedFrom: '',
-                    lastRun: ''
+                    lastRun: '',
+                    status: 2
                   },
                   {
                     name: 'Agent 4',
@@ -121,7 +124,8 @@ export default ({
                     image: '',
                     date: '21/04/2020',
                     installedFrom: '',
-                    lastRun: '01/03/2021'
+                    lastRun: '01/03/2021',
+                    status: 2
                   }
                 ],
                 ipAddress: '34.234.345.34',
@@ -162,7 +166,8 @@ export default ({
                 image: '',
                 date: '21/01/2020',
                 installedFrom: '',
-                lastRun: '01/01/2021'
+                lastRun: '01/01/2021',
+                status: 2
               },
               {
                 name: 'Agent 2',
@@ -178,7 +183,8 @@ export default ({
                 image: '',
                 date: '21/02/2020',
                 installedFrom: '',
-                lastRun: '02/01/2021'
+                lastRun: '02/01/2021',
+                status: 2
               },
               {
                 name: 'Agent 3',
@@ -194,7 +200,8 @@ export default ({
                 image: '',
                 date: '21/01/2020',
                 installedFrom: '',
-                lastRun: '01/01/2021'
+                lastRun: '01/01/2021',
+                status: 2
               },
               {
                 name: 'Agent 4',
@@ -210,7 +217,8 @@ export default ({
                 image: '',
                 date: '21/02/2020',
                 installedFrom: '',
-                lastRun: '02/01/2021'
+                lastRun: '02/01/2021',
+                status: 2
               },
               {
                 name: 'Agent 5',
@@ -226,7 +234,8 @@ export default ({
                 image: '',
                 date: '21/02/2020',
                 installedFrom: '',
-                lastRun: '02/01/2021'
+                lastRun: '02/01/2021',
+                status: 2
               }
             ]
           },
@@ -312,7 +321,8 @@ export default ({
                 image: '',
                 date: '21/03/2020',
                 installedFrom: '',
-                lastRun: ''
+                lastRun: '',
+                status: 2
               },
               {
                 name: 'Agent 4',
@@ -328,7 +338,8 @@ export default ({
                 image: '',
                 date: '21/04/2020',
                 installedFrom: '',
-                lastRun: '01/03/2021'
+                lastRun: '01/03/2021',
+                status: 2
               }
             ]
           }
@@ -404,7 +415,8 @@ export default ({
                     image: '',
                     date: '21/01/2020',
                     installedFrom: '',
-                    lastRun: '01/01/2021'
+                    lastRun: '01/01/2021',
+                    status: 2
                   },
                   {
                     name: 'Agent 2',
@@ -420,7 +432,8 @@ export default ({
                     image: '',
                     date: '21/02/2020',
                     installedFrom: '',
-                    lastRun: '02/01/2021'
+                    lastRun: '02/01/2021',
+                    status: 2
                   }
                 ]
               }
@@ -448,7 +461,8 @@ export default ({
                 image: '',
                 date: '21/01/2020',
                 installedFrom: '',
-                lastRun: '01/01/2021'
+                lastRun: '01/01/2021',
+                status: 2
               },
               {
                 name: 'Agent 2',
@@ -464,7 +478,8 @@ export default ({
                 image: '',
                 date: '21/02/2020',
                 installedFrom: '',
-                lastRun: '02/01/2021'
+                lastRun: '02/01/2021',
+                status: 2
               }
             ]
           },
@@ -489,7 +504,8 @@ export default ({
                 image: '',
                 date: '21/01/2020',
                 installedFrom: '',
-                lastRun: '01/01/2021'
+                lastRun: '01/01/2021',
+                status: 2
               },
               {
                 name: 'Agent 2',
@@ -505,7 +521,8 @@ export default ({
                 image: '',
                 date: '21/02/2020',
                 installedFrom: '',
-                lastRun: '02/01/2021'
+                lastRun: '02/01/2021',
+                status: 2
               }
             ]
           },
@@ -530,7 +547,8 @@ export default ({
                 image: '',
                 date: '21/01/2020',
                 installedFrom: '',
-                lastRun: '01/01/2021'
+                lastRun: '01/01/2021',
+                status: 2
               },
               {
                 name: 'Agent 2',
@@ -546,7 +564,8 @@ export default ({
                 image: '',
                 date: '21/02/2020',
                 installedFrom: '',
-                lastRun: '02/01/2021'
+                lastRun: '02/01/2021',
+                status: 2
               }
             ]
           },
@@ -586,7 +605,8 @@ export default ({
             image: '',
             date: '21/01/2020',
             installedFrom: '',
-            lastRun: '01/01/2021'
+            lastRun: '01/01/2021',
+            status: 2
           },
           {
             name: 'Agent 2',
@@ -602,7 +622,8 @@ export default ({
             image: '',
             date: '21/02/2020',
             installedFrom: '',
-            lastRun: '02/01/2021'
+            lastRun: '02/01/2021',
+            status: 2
           }
         ]
       },
@@ -1218,6 +1239,27 @@ export default ({
       const subd = roots.subdomain.find(sub => sub.id === params.idSubDomain)
       const agent = subd.agent.find(agentItem => agentItem.id === params.idAgent)
       agent.status = params.status
+    },
+    insertAgentIfNotExistInRootDomain (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const agent = roots.agent.find(agentItem => agentItem.id === params.agentData.id)
+      if (!agent) {
+        roots.agent.push(
+          JSON.parse(JSON.stringify(params.agentData))
+        )
+      }
+    },
+    insertAgentIfNotExistInSubDomain (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const subd = roots.subdomain.find(sub => sub.id === params.idSubDomain)
+      const agent = subd.agent.find(agentItem => agentItem.id === params.agentData.id)
+      if (!agent) {
+        subd.agent.push(
+          JSON.parse(JSON.stringify(params.agentData))
+        )
+      }
     }
   },
   actions: {

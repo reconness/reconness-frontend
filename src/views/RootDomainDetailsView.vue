@@ -13,7 +13,7 @@
             <span  class="text-muted-b3"> ({{  countSubdomainList /*this.getSubdomainSize(this.routeParams) */}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
-            Agents <span class="text-muted-b3">({{listRootDomainsAgents({ idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id) }).length}})</span>
+            Agents <span class="text-muted-b3">({{getAgentsByType(2).length}})</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' />
           <AgentListTable v-else :color = "secondaryColor"/>
@@ -57,9 +57,9 @@ export default {
     AgentListTable
   },
   computed: {
-    ...mapState('target', ['countSubdomainList']),
+    ...mapState('target', ['countSubdomainList', 'isTableList']),
     ...mapGetters('target', ['getTargetById', 'getSubdomainSize']),
-    ...mapGetters(['getLastAgentRootDomain']),
+    ...mapGetters(['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents'])
   },
   mounted () {
@@ -87,6 +87,11 @@ export default {
         this.shadowSubd = ''
         this.shadowAg = '13px 19px 41px #d6d6d6'
       }
+    }
+  },
+  watch: {
+    $route (to, from) {
+      this.setIsDefaultTabButton(true)
     }
   }
 }

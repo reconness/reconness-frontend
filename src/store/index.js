@@ -247,6 +247,9 @@ export default createStore({
     },
     getLastAgentRootDomain (state) {
       return state.agentListStore.filter(item => item.type === 2).slice(-4)
+    },
+    getAgentsByType: (state) => (type) => {
+      return state.agentListStore.filter(item => item.type === type)
     }
   }
 })
