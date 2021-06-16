@@ -16,7 +16,7 @@
         </div>
         </div>
         <div v-for="item of getLasTenTargets" :key="item.id" class="info-box homerigthsidebar-infobox rounded-corners  homerigthsidebar-targets-spaces">
-          <span v-bind:style ="{background: 'linear-gradient(135deg,'+item.primaryColor+' '+ '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"  class="info-box-icon">
+          <span v-bind:style ="{background: 'linear-gradient(135deg,'+item.primaryColor+' '+ '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"  class="info-box-icon icons-color">
             <BullseyeArrowIco/>
           </span>
           <div class="info-box-content">
@@ -30,9 +30,8 @@
           </div>
           </span>
             <span class="domain-names-list text-truncate">
-              <span  class="material-icons float-left mt-1"> chevron_right </span>
-             <small v-for="item2 of item.rootDomains" :key="item2.id">
-              {{item2.root}}, </small>
+              <span  class="material-icons float-left mt-1" style="font-size: 15px;"> chevron_right </span>
+             <small>Root domains: {{item.rootDomains.length}}</small>
             </span>
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->

@@ -44,7 +44,6 @@ export default {
   methods: {
     ...mapMutations('target', ['removeTargets']),
     removeTarget: function () {
-    //   if (this.$randomBooleanResult()) {
       this.removeTargets(this.nameTyped)
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
       this.close()
