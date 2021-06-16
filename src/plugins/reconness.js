@@ -107,7 +107,7 @@ export default {
 
     app.config.globalProperties.$entityTypeData = Object.freeze(
       {
-        TARGET: { id: 1, description: 'Target'},
+        TARGET: { id: 1, description: 'Target' },
         ROOTDOMAIN: { id: 1, description: 'RootDomain' },
         SUBDOMAIN: { id: 1, description: 'SubDomain' }
       }
