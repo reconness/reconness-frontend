@@ -24,7 +24,7 @@
         </div>
         <div class="col border-top border-bottom">
         </div>
-        <div class="col-3 border-left border-top border-bottom text-center" v-if="item.lastRun !== '99/99/9999'">
+        <div class="col-3 border-left border-top border-bottom text-center" v-if="item.lastRun !== null">
           <p class="m-2">{{new Date(item.lastRun).toLocaleDateString('en-ZA')}}</p>
         </div>
         <div v-else  class="col-3 border-left border-top border-bottom text-center">
@@ -80,7 +80,7 @@ export default {
       })
     },
     agentsList: function () {
-      const subDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(3)))
+      const subDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(this.$agentType.SUBDOMAIN)))
       const subDoaminsAgentsCurentView = this.listSubdDomainsAgents({
         idTarget: parseInt(this.$route.params.idTarget),
         idRoot: parseInt(this.$route.params.id),
