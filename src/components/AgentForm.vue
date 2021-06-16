@@ -404,7 +404,8 @@ export default {
         script: '',
         id: -1,
         creationDate: new Date().toString(),
-        image: ''
+        image: '',
+        lastRun: null
       }
       this.validators = {
         blank: {
