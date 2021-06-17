@@ -14,11 +14,14 @@
           </div>
           <div class="card-body-inside">
             <ul class="list-unstyled min-height" >
-              <li v-for="item2 of item.rootDomains.slice(- 4) " :key="item2.id">
+              <li v-for="item2 of item.rootDomains.slice(- 3) " :key="item2.id">
               <span  class="material-icons float-left mt-1"> chevron_right </span>
               <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item2.id} }">
                {{item2.root}}
               </router-link>
+              </li>
+              <li v-if="item.rootDomains.length > 3">
+                <span class="target-item-text-style">... and {{item.rootDomains.length - 3}} rootdomains more</span>
               </li>
             </ul>
           </div>
@@ -28,7 +31,8 @@
                <small class="font-italic font-color">| RootDomains: {{item.rootDomains.length}}</small>
                   </div>
               <div class="float-right">
-               <a href="#" class="btn btn-sm btn-info  btn-style " @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#targetModalForm">Edit Target</a>
+               <a href="#" class="btn btn-sm btn-info  btn-style ml-1" @click="setTargetId" data-toggle="modal" :data-id="item.id" data-target="#confirmation-modal">Delete</a>
+               <a href="#" class="btn btn-sm btn-info  btn-style ml-1" @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#targetModalForm">Edit</a>
               </div>
             </div>
           </div>
@@ -254,5 +258,9 @@ input[type="checkbox"]:checked + label:after {
 
 input[type="checkbox"] {
   display: none;
+}
+.target-item-text-style{
+  font-size: 14px;
+  opacity: 1;
 }
 </style>
