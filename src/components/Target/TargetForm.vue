@@ -426,7 +426,8 @@ export default {
             root: urlElem,
             id: this.target.rootDomains.length,
             date: new Date(),
-            subdomain: []
+            subdomain: [],
+            agent: []
           }
         )
       }
