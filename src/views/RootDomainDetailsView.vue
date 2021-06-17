@@ -10,7 +10,7 @@
         <div class="content">
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
             Subdomains
-            <span  class="text-muted-b3"> ({{  countSubdomainList /*this.getSubdomainSize(this.routeParams) */}})</span>
+            <span  class="text-muted-b3"> ({{  this.getSubdomainSize(this.routeParams)}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
             Agents <span class="text-muted-b3">({{getAgentsByType(this.$agentType.ROOTDOMAIN).length}})</span>
