@@ -21,7 +21,7 @@
     <div class="col-lg-8">
     <div class="mb-3 has-search" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
       <span class="material-icons search-icon form-control-feddback">search</span>
-      <input  id="input-search" class="form-control form-style" type="search" placeholder="Find"  v-model= "searchModel"  v-on:keyup.enter="this.searchCriteria = this.searchModel" @mouseup="searchEvent(this.searchModel)">
+      <input  id="input-search" class="form-control form-style" type="search" placeholder="Find"  v-model= "searchModel"  v-on:keyup.enter="enableSearchFilter" @mouseup="searchEvent(this.searchModel)">
     </div>
     </div>
        <div class="col-lg-4" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
@@ -39,7 +39,7 @@
        </div>
       </div></div>
 <div class="card card-style">
-  <div class="card-body">
+<div v-if="!isFilterResultEmpty" class="card-body">
 <div class="card card-table" v-if=" this.getSubdomainSize(this.routeParams) > 0">
   <div class=" row mb-2"  v-if="this.showHeader">
    <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0"> Subdomain</p> </div>
@@ -154,6 +154,11 @@ There are no subdomains associated with this root domain. <br>
  Please, click <strong> Add Subdomain </strong> button to insert some subdomains.</p>
 </div>
 </div>
+  <div v-else>
+    <p class="lead text-center mt-3">
+      <strong> There is no subdomain  matching with your query. Please, change your query and search again.</strong>
+    </p>
+  </div>
 </div>
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Delete</small>
@@ -189,7 +194,8 @@ export default {
       elementSelected: 'Subdomain',
       searchModel: '',
       searchCriteria: '',
-      dropdownCriteria: 1
+      dropdownCriteria: 1,
+      isFilterResultEmpty: false
     }
   },
   props: {
@@ -264,7 +270,7 @@ export default {
     },
     searchEvent (oldValue) {
       setTimeout(function () {
-        var newValue = document.getElementById('input-search').value
+        const newValue = document.getElementById('input-search').value
         if (newValue === '' && oldValue !== '') {
           this.searchCriteria = ''
         }
@@ -273,7 +279,7 @@ export default {
     search () {
       if (this.searchCriteria === '' || this.searchCriteria === undefined) {
         if (this.dropdownCriteria === 1) {
-          var countElementList = this.getSubdomainSize(this.routeParams)
+          const countElementList = this.getSubdomainSize(this.routeParams)
           this.$store.commit('target/changeCounterSubdom', countElementList)
           return this.rootDomain.subdomain
         }
@@ -325,11 +331,23 @@ export default {
       return listSubdomain
     },
     printAgent (agents) {
-      var listAgent = []
-      for (var index1 of agents) {
+      const listAgent = []
+      for (const index1 of agents) {
         listAgent.push(index1.name)
       }
       return listAgent.join(', ')
+    },
+    enableSearchFilter () {
+      this.searchCriteria = this.searchModel
+      if (this.searchModel !== '') {
+        if (this.search().length === 0) {
+          this.isFilterResultEmpty = true
+        } else {
+          this.isFilterResultEmpty = false
+        }
+      } else {
+        this.isFilterResultEmpty = false
+      }
     },
     ...mapMutations(['setIsElementDeleted'])
   },
