@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { VuelidatePlugin } from '@vuelidate/core'
 import PrimeVue from 'primevue/config'
 import VueApexCharts from 'vue3-apexcharts'
 import ToastService from 'primevue/toastservice'
@@ -13,4 +12,4 @@ import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.min.css'
 import Reconness from './plugins/reconness'
 
-createApp(App).use(store).use(router).use(VuelidatePlugin).use(PrimeVue).use(VueApexCharts).use(ToastService).use(Reconness).mount('#app')
+createApp(App).use(store).use(router).use(PrimeVue).use(VueApexCharts).use(ToastService).use(Reconness).mount('#app')

@@ -13,7 +13,7 @@
             <span  class="text-muted-b3"> ({{  countSubdomainList /*this.getSubdomainSize(this.routeParams) */}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
-            Agents <span class="text-muted-b3">({{getAgentsByType(2).length}})</span>
+            Agents <span class="text-muted-b3">({{getAgentsByType(this.$agentType.ROOTDOMAIN).length}})</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' />
           <AgentListTable v-else :color = "secondaryColor"/>

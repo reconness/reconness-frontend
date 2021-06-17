@@ -13,7 +13,7 @@
             <div class="col-7">
               <h5>Comments List</h5>
             </div>
-            <div class="col-5">
+            <div v-if="getMessages.length !== 0" class="col-5">
               <a class="float-right sortby-lnk" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"  aria-expanded="false" >
                 <p class="float-left">Sort by</p>
                 <button type="button" class="btn btn-light sortby-comments">
@@ -52,6 +52,9 @@
                   <hr style="width: 84%;">
                 </div>
               </div>
+            </div>
+            <div v-if="getMessages.length === 0" class="col-12">
+              <span class="comment-font-style">There are no comments. Please, add a comment</span>
             </div>
           </dl>
         </div>
@@ -328,9 +331,9 @@ button.sortby-comments {
 }
 div.sidebar-list.comments-list p{
   color: #000000;
-    font-size: 14px;
-    font-weight: normal ;
-    padding: 5px;
+  font-size: 14px;
+  font-weight: normal ;
+  padding: 5px;
 }
 
 div.sidebar-list.comments-list a.sortby-lnk{
@@ -364,8 +367,11 @@ aside.control-sidebar-dark.main-messages-container {
   top: 24px;
   right: 9%;
 }
-
 .control-sidebar-content-target-details input.target-input-borders {
   padding-right: 13%;
+}
+.comment-font-style {
+  font-size: 14px;
+  font-weight: normal ;
 }
 </style>
