@@ -72,7 +72,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12" style="height: 54px">
-                                        <span class="float-right text-white targetform-action">Creating Target...</span>
+                                        <span v-if="editable" class="float-right text-white targetform-action">Editing Target...</span>
+                                        <span v-else class="float-right text-white targetform-action">Creating Target...</span>
                                     </div>
                                 </div>
                                 </div>
