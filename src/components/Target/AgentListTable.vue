@@ -3,7 +3,7 @@
     <h6 class="text-center mt-2">List of Agents</h6>
   <div class="card card-style">
     <div class="card-body">
-      <div class="card card-table">
+      <div v-if="agentsList.length > 0" class="card card-table">
         <div class=" row mb-2"  >
           <div class="col-2 border-left-radius border-right text-light-white domain-names-list p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0" v-on:click="orderByName()"> Name
            <i class="material-icons right float-right" v-show="active_arrow_down">keyboard_arrow_down</i>
@@ -18,23 +18,28 @@
            Actions</div>
         </div>
         <div class="row mb-2" v-for="item of this.agentsList" :key="item.id">
-        <div class="col-2  border-left-radius border">
-           <p class="m-2"> {{item.name}}</p>
+          <div class="col-2  border-left-radius border">
+            <p class="m-2"> {{item.name}}</p>
+          </div>
+          <div class="col border-top border-bottom">
+          </div>
+          <div class="col-3 border-left border-top border-bottom text-center" v-if="item.lastRun !== null">
+            <p class="m-2">{{new Date(item.lastRun).toLocaleDateString('en-ZA')}}</p>
+          </div>
+          <div v-else  class="col-3 border-left border-top border-bottom text-center">
+          <p class="m-2"> Never</p>
+          </div>
+          <div class="col-2 border border-right-radius text-center">
+              <button v-if="parseInt(item.status) === parseInt(this.$agentStatus.RUNNING)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
+              <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+          </div>
+          <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
         </div>
-        <div class="col border-top border-bottom">
-        </div>
-        <div class="col-3 border-left border-top border-bottom text-center" v-if="item.lastRun !== null">
-          <p class="m-2">{{new Date(item.lastRun).toLocaleDateString('en-ZA')}}</p>
-        </div>
-        <div v-else  class="col-3 border-left border-top border-bottom text-center">
-        <p class="m-2"> Never</p>
-        </div>
-        <div class="col-2 border border-right-radius text-center">
-            <button v-if="parseInt(item.status) === parseInt(this.$agentStatus.RUNNING)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-            <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
-        </div>
-        <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
       </div>
+      <div v-else>
+        <p class="lead text-center">
+          There are no agents associated with this rootdomain.
+        </p>
       </div>
     </div>
   </div></div>

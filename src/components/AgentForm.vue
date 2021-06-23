@@ -62,7 +62,7 @@
                         </div><!-- /.col-12 -->
                     </div>
                     <div class="col-12 col-sm-4">
-                        <div v-bind:style="{background: agent.background}" class="card text-white card-style  mb-3 agentform-default-color-box">
+                        <div v-bind:style="{background: agent.background}" class="card text-white card-style  mb-3 agentform-default-color-box" style="height: 200px;">
                                 <div class="card-body link-color">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title postal-title">{{agent.name}}</h3>
@@ -70,21 +70,18 @@
                                     <img v-if="agent.image" class="logo-image" :src="agent.image">
                                 </div>
                                 <hr />
-                                <div class="direct-chat-infos clearfix">
-                                    <em>
-                                        <a href="#" class="float-left">Category</a>
-                                    </em>
-                                </div>
                                 <div class="card-body-inside">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a href="#">...</a>
+                                            <a href="#">>...</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12" style="height: 54px">
-                                        <span class="float-right text-white agentform-action">Creating Agent...</span>
+                                    <div
+                                     class="col-12" style="height: 54px">
+                                        <span v-if="editable" class="float-right text-white agentform-action">Editing Agent...</span>
+                                        <span v-else class="float-right text-white agentform-action">Creating Agent...</span>
                                     </div>
                                 </div>
                                 </div>
@@ -231,9 +228,9 @@
 </template>
 <style>
     .agentform-action{
-        bottom: 0px;
+        bottom: -28%;
         position: absolute;
-        right: 0;
+        right: 8%;
         font-size: .875rem;
     }
 

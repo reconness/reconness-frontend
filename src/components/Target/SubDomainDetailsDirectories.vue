@@ -3,7 +3,7 @@
     <h6 class="text-center mt-2">List of Directories</h6>
   <div class="card card-style">
     <div class="card-body">
-      <div class="card card-table">
+      <div v-if="listDirectories.length > 0" class="card card-table">
         <div class=" row mb-2"  >
           <div class="col-6 border-left-radius border-right text-light-white domain-names-list p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0" v-on:click="orderByPath()"> Directories
            <i class="material-icons right float-right" v-show="active_arrow_down">keyboard_arrow_down</i>
@@ -22,12 +22,17 @@
            <i class="material-icons right float-right" v-show="active_arrow_size_up">keyboard_arrow_up</i>
           </div>
         </div>
-      <div class="row mb-2" v-for="item of listDirectories" :key="item.id">
-        <div class="col-6  border-left-radius border p-2">{{item.path}}</div>
-        <div class="col border-top border-bottom text-center p-2">{{item.method}}</div>
-        <div class="col border-left border-top border-bottom text-center p-2" >{{item.status}}</div>
-        <div class="col border border-right-radius text-center p-2">{{item.size}}</div>
+        <div class="row mb-2" v-for="item of listDirectories" :key="item.id">
+          <div class="col-6  border-left-radius border p-2">{{item.path}}</div>
+          <div class="col border-top border-bottom text-center p-2">{{item.method}}</div>
+          <div class="col border-left border-top border-bottom text-center p-2" >{{item.status}}</div>
+          <div class="col border border-right-radius text-center p-2">{{item.size}}</div>
+        </div>
       </div>
+      <div v-else>
+        <p class="lead text-center">
+          There are no directories associated with this subdomain.
+        </p>
       </div>
     </div>
   </div></div>
