@@ -402,7 +402,7 @@ export default {
         creationDate: new Date().toString(),
         image: '',
         lastRun: null,
-        status: this.$agentStatus.PAUSED
+        status: this.$agentStatus.FINISHED
       }
       this.validators = {
         blank: {
@@ -542,7 +542,7 @@ export default {
         id: -1,
         creationDate: new Date().toString(),
         image: '',
-        status: this.$agentStatus.PAUSED,
+        status: this.$agentStatus.FINISHED,
         lastRun: null
       },
       colorpickerData: '',

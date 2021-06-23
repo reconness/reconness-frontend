@@ -80,8 +80,7 @@ export default {
     app.config.globalProperties.$agentStatus = Object.freeze(
       {
         RUNNING: 1,
-        PAUSED: 2,
-        FINISHED: 3
+        FINISHED: 2
       }
     )
 

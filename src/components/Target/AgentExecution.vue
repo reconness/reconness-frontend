@@ -12,8 +12,7 @@
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold overflow-visible">{{ nameAgent }}</span>
                                         <span class="mr-4">{{ time }}</span>
-                                        <MotionPauseOutlineIco v-if="this.agentStatus.status == 1" @click="switchAgentStatus(this.$agentStatus.PAUSED)"/>
-                                        <MotionPlayOutlineIco v-else @click="switchAgentStatus(this.$agentStatus.RUNNING)"/>
+                                        <MotionPlayOutlineIco />
                                         <div class="mt-2 output-selector">
                                           <span @click="is_terminal_open = true" class="mr-2 cursor-pointer">Terminal</span><span @click="is_terminal_open = false" class="pl-2 border-left cursor-pointer">Logs</span>
                                         </div>
@@ -41,7 +40,6 @@
                                             </div>
                                             <div class="d-flex align_left-ordered_columns">
                                             <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
-                                            <span v-else class="processbar-text">paused</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
                                               <span class="font-weight-bold" v-if="is_terminal_open">Terminal</span>
                                               <span class="font-weight-bold" v-else>Logs</span>
@@ -74,7 +72,6 @@
 </template>
 <script>
 import { VAceEditor } from 'vue3-ace-editor'
-import MotionPauseOutlineIco from '@/components/Icons/MotionPauseOutlineIco.vue'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import CircleProgress from 'vue3-circle-progress'
@@ -96,7 +93,6 @@ export default {
   },
   components: {
     VAceEditor,
-    MotionPauseOutlineIco,
     MotionPlayOutlineIco,
     OverlayPanel,
     CircleProgress
@@ -110,9 +106,6 @@ export default {
       this.$refs.op.toggle(event)
     },
     switchAgentStatus (event) {
-      if (event === this.$agentStatus.PAUSED) {
-        this.pauseClock()
-      }
       if (this.$route.name === 'RootDomainDetails') {
         this.updateStatusRootDomainAgent({
           status: event,
