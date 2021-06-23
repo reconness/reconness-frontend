@@ -915,3 +915,20 @@ div.pipeline_spacing .p-autocomplete-loader{
   fill: #ffffff;
   fill-opacity: 0.2;
 }
+
+.agent-mini-agent-details{
+  font-size: 12px;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  padding-right: 5px;
+  border-right: 1px solid #F1F3F5;
+  margin-right: 6px;
+  padding-left: 0px;
+}
+.agent-mini-agent-edit{
+  font-size: 12px;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  padding-left: 0px;
+  padding-right: 0px;
+}

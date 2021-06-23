@@ -422,7 +422,7 @@ font-size: 16px;
 .icons-size div span{
   font-size: 25px;
 }
-.icons-size div svg{
+.icons-size div.abs-center.mx-auto.mb-1{
   fill: #FF4545;
   width: 25px;
   height: 25px;
@@ -455,7 +455,7 @@ font-size: 16px;
  opacity: 1;
  border-radius: 4px;
 }
-div.inactive-ico svg {
+div.inactive-ico {
   fill: #B3B3B3 !important;
 }
 .inactive-gradient{

@@ -6,28 +6,16 @@
         <div class="p-2">
         <div class="info-box">
           <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco/></span>
-          <div class="info-box-content pr-1">
+          <div class="info-box-content">
           <span class="info-box-text domain-names-target">
            <router-link :to="{ name: 'TargetDetail', params: {id:id} }" class="text-body" >
             {{name}}</router-link>
-          <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-              <button class="dropdown-item" :data-id="id" type="button" @click="onEdit" data-toggle="modal" data-target="#targetModalForm">Edit</button>
-              <router-link :to="{ name: 'TargetDetail', params: {id:id} }" >
-              <button class="dropdown-item" :data-id="id" type="button">
-               Details
-              </button></router-link>
-              <button class="dropdown-item" data-toggle="modal" data-target="#confirmation-modal" @click="setTargetId" :data-id="id" type="button">Delete</button>
-          </div>
           </span>
-          <div class="domain-names-list">
-            <span  class="material-icons float-left mt-2"> chevron_right </span>
-            <div class="text-truncate">
-              <div class="marquee_content">
-             <small class="list-inline " v-for="item2 of rootDom.slice(- 4)" :key="item2.id">
-               <router-link class="text-dark"  :to="{ name: 'RootDomainDetails', params: {idTarget: id, id: item2.id} }">
-              {{item2.root}}, </router-link>  </small>
-            </div></div></div>
+          <nav class="nav">
+            <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Delete</a>
+            <router-link :to="{ name: 'TargetDetail', params: {id:id} }" class="nav-link active agent-mini-agent-details agent-mini-color-gray">Details </router-link>
+            <a class="nav-link agent-mini-agent-edit agent-mini-color-gray" href="#" @click="onEdit" data-toggle="modal" :data-id="id" data-target="#targetModalForm">Edit</a>
+          </nav>
           </div>
           <!-- /.info-box-content -->
             </div></div>
