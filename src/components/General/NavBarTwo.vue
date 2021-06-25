@@ -221,13 +221,13 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import AgentForm from '@/components/AgentForm.vue'
-import Debug from '@/components/Debug.vue'
-import InstallOnDebug from '@/components/InstallOnDebug'
-import UninstallOnDebug from '@/components/UninstallOnDebug'
+import AgentForm from '@/components/Agent/AgentForm.vue'
+import Debug from '@/components/General/Debug.vue'
+import InstallOnDebug from '@/components/General/InstallOnDebug'
+import UninstallOnDebug from '@/components/General/UninstallOnDebug'
 import Toast from 'primevue/toast'
 import OverlayPanel from 'primevue/overlaypanel'
-import ConfirmDeleteList from '@/components/ConfirmDeleteList.vue'
+import ConfirmDeleteList from '@/components/General/ConfirmDeleteList.vue'
 import jQuery from 'jquery'
 import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
 export default {

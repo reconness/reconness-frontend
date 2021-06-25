@@ -107,10 +107,10 @@
 
 <script>
 // @ is an alias to /src
-import HomeRigthSidebar from '@/components/HomeRigthSidebar.vue'
-import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vue'
-import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
-import SimpleConfirmation from '@/components/SimpleConfirmation.vue'
+import HomeRigthSidebar from '@/components/General/HomeRigthSidebar.vue'
+import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
+import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
+import SimpleConfirmation from '@/components/General/SimpleConfirmation.vue'
 import { mapState } from 'vuex'
 import Chips from 'primevue/chips'
 export default {

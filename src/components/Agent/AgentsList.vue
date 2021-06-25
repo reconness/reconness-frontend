@@ -46,8 +46,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import AgentForm from '@/components/AgentForm.vue'
-import AgentConfirmation from '@/components/AgentConfirmation.vue'
+import AgentForm from '@/components/Agent/AgentForm.vue'
+import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 
 export default {

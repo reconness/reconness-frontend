@@ -17,11 +17,11 @@
   </div>
 </template>
 <script>
-import AgentMiniView from '@/components/AgentMiniView.vue'
-import NavBarTwo from '@/components/NavBarTwo.vue'
+import AgentMiniView from '@/components/Agent/AgentMiniView.vue'
+import NavBarTwo from '@/components/General/NavBarTwo.vue'
 import { mapState, mapGetters } from 'vuex'
-import AgentForm from '@/components/AgentForm.vue'
-import AgentConfirmation from '@/components/AgentConfirmation.vue'
+import AgentForm from '@/components/Agent/AgentForm.vue'
+import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 
 export default {
   name: 'AgentListMiniView',

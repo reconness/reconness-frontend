@@ -203,7 +203,7 @@ import { mapGetters } from 'vuex'
 import Calendar from 'primevue/calendar'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import FileImportIco from '@/components/Icons/PlusCircleIco.vue'
-import AutoCompleteLocations from '@/components/AutoCompleteLocations'
+import AutoCompleteLocations from '@/components/General/AutoCompleteLocations'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 import jQuery from 'jquery'
 export default {

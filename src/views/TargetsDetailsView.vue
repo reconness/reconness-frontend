@@ -151,8 +151,8 @@
 
 <script>
 import { mapGetters, mapMutations, mapState } from 'vuex'
-import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
-import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vue'
+import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
+import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 export default {
   name: 'TargetsDetailsView',

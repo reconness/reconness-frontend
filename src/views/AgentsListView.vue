@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import AgentsList from '@/components/AgentsList.vue'
-import NavBarTwo from '@/components/NavBarTwo.vue'
-import AgentConfirmation from '@/components/AgentConfirmation.vue'
+import AgentsList from '@/components/Agent/AgentsList.vue'
+import NavBarTwo from '@/components/General/NavBarTwo.vue'
+import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 
 export default {
   name: 'AgentListView',

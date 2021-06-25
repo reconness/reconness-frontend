@@ -145,8 +145,8 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
-import MessagesBtn from '@/components/MessagesBtn.vue'
-import MessagesSection from '@/components/MessagesSection.vue'
+import MessagesBtn from '@/components/General/MessagesBtn.vue'
+import MessagesSection from '@/components/General/MessagesSection.vue'
 import Confirmation from '@/components/Target/Confirmation.vue'
 import MessageConfirmation from '@/components/Target/MessageConfirmation.vue'
 export default {
