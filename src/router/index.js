@@ -32,12 +32,12 @@ const routes = [
     component: () => import('../views/TargetsDetailsView.vue')
   },
   {
-    path: '/targets/details/:idTarget/rootDomainDetails/:id',
+    path: '/targets/details/:idTarget/rootdomain-details/:id',
     name: 'RootDomainDetails',
     component: () => import('../views/RootDomainDetailsView.vue')
   },
   {
-    path: '/targets/details/:idTarget/rootDomainDetails/:id/subDomainDetails/:idsubdomain',
+    path: '/targets/details/:idTarget/rootdomain-details/:id/subdomain-details/:idsubdomain',
     name: 'SubDomainDetails',
     component: () => import('../views/SubDomainDetailsView.vue')
   },
