@@ -141,12 +141,6 @@
           >delete</span>
         </div>
     </div>
-    <!-- <div class="col-2 border-right-radius abs-center border p-0" v-else>
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" :id="'customCheckbox' + item.id" class="custom-control-input" name="checkbox-dinamic" @click="selectRow(item.id, item.name)">
-        <label class="custom-control-label" :for="'customCheckbox' + item.id" ></label>
-      </div>
-    </div> -->
     <div class="col-2 border-right-radius abs-center border p-0 custom-control-container-rounded" v-else>
       <div class="roundedOne" :class="'check-color-' + color.substring(1)">
         <input type="checkbox" class="custom-control-input-rounded" :id="'customCheckbox' + item.id" name="checkbox-dinamic" @click="selectRow(item.id, item.name)">
@@ -468,31 +462,23 @@ div.inactive-ico {
   background: linear-gradient(160deg, rgb(177, 177, 177) 0%, rgb(177, 177, 177) 100%) !important;
 }
 
-/* ROUNDED ONE */
-
 .roundedOne {
   width: 28px;
   height: 28px;
   position: relative;
   margin: 20px auto;
   background: #fcfff4;
-  /* background: linear-gradient(to bottom, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%); */
   border-radius: 50px;
   box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
-  /* border: 3px solid red; */
 }
 .roundedOne label {
   width: 20px;
   height: 20px;
   cursor: pointer;
   position: absolute;
-  /* left: 4px;
-  top: 4px; */
   left: 1px;
   top: 1px;
-  /* background: linear-gradient(to bottom, #222222 0%, #45484d 100%); */
   border-radius: 50px;
-  /* box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px white; */
 }
 .roundedOne label:after {
   content: "";
@@ -501,12 +487,8 @@ div.inactive-ico {
   position: absolute;
   top: 2px;
   left: 2px;
-  /* background: #27ae60; */
-  /* background: red; */
-  /* background: linear-gradient(to bottom, #27ae60 0%, #145b32 100%); */
   opacity: 0;
   border-radius: 50px;
-  /* box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5); */
 }
 .roundedOne label:hover::after {
   opacity: 0.3;
