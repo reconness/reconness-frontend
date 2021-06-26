@@ -85,28 +85,33 @@ export default {
     SubDomainDetailsDirectories,
     SubDomainDetailsServices
   },
+  props: {
+    idTarget: String,
+    id: String,
+    idsubdomain: String
+  },
   computed: {
     ...mapGetters(['getLastAgentSubdom', 'getAgentsByType']),
     ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain']),
     getSubdomainSize () {
       const loadedSubdomain = this.getSubDomain({
-        idtarget: parseInt(this.$route.params.idTarget),
-        idrootdomain: parseInt(this.$route.params.id),
-        idsubdomain: parseInt(this.$route.params.idsubdomain)
+        idtarget: parseInt(this.idTarget),
+        idrootdomain: parseInt(this.id),
+        idsubdomain: parseInt(this.idsubdomain)
       })
       return [loadedSubdomain.agent.length, loadedSubdomain.services.length, loadedSubdomain.directories.length]
     }
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
-    this.Target = this.getTargetById(parseInt(this.$route.params.idTarget))
-    this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.$route.params.id))
+    this.Target = this.getTargetById(parseInt(this.idTarget))
+    this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor
     this.gradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
-    if (this.$route.params.idsubdomain) {
-      this.Subdomain = this.RootDomains.subdomain.find(item => item.id === parseInt(this.$route.params.idsubdomain))
+    if (this.idsubdomain) {
+      this.Subdomain = this.RootDomains.subdomain.find(item => item.id === parseInt(this.idsubdomain))
       this.subdomainName = this.Subdomain.name
     }
     this.setCurrentView(this.$route.name)

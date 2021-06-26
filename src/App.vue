@@ -68,7 +68,7 @@
     <!-- Main Sidebar Container -->
     <aside v-if="!isLoginPage" class="main-sidebar sidebar-dark-primary  left-aside" @mouseenter="mouseenter" @mouseleave="mouseleave">
       <!-- Brand Logo -->
-       <router-link to="/">
+       <router-link :to="{name: 'Home'}">
       <a href="#" class="brand-link">
         <img src="/adminlte/img/reconnes/logo2x.png" v-show="hide_logo" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <div class="text-center">
@@ -80,14 +80,14 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-               <router-link to="/" >
+               <router-link :to="{name: 'Home'}" >
               <a href="#" class="nav-link" v-on:click="addLocation('Home')" >
                <span class="material-icons">home</span>
                 <p>Home</p>
               </a></router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/targets/list" >
+              <router-link :to="{name: 'Targets'}" >
               <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation('Targets'), this.$store.commit('target/setIsDefaultViewOnTarget', true)" v-bind:class="{'nav2': styleTargetState}">
                 <BullseyeArrowIco/>
                 <p style="vertical-align: 0px;">Targets </p>
@@ -101,13 +101,13 @@
                 <span v-show="arrow_down" class="material-icons float-right">arrow_drop_down</span>
                 <span v-show="arrow_up" class="material-icons float-right">arrow_drop_up</span></a>
               <ul class="nav nav-treeview">
-                <li class="nav-item" ><router-link to="/pipelines/list">
+                <li class="nav-item" ><router-link :to="{ name: 'Pipelines'}">
                   <a class="nav-link" id ='pipelineNav' v-on:click="this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)" v-bind:class="{'nav2': stylePipelinesState}">
                     <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
                         <p>Pipelines</p>
                   </a></router-link>
                 </li>
-                <li class="nav-item" ><router-link to="/agents/list">
+                <li class="nav-item" ><router-link :to="{name: 'Agent'}">
                   <a href="#" class="nav-link" id ='agentNav'  v-on:click="addLocation('Agents')" v-bind:class="{'nav2': styleAgentState}" >
                     <span class="material-icons">font_download</span>
                         <p>Agents</p>

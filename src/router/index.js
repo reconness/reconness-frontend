@@ -22,34 +22,38 @@ const routes = [
     component: () => import('../views/AgentsListView.vue')
   },
   {
-    path: '/targets/list',
+    path: '/targets',
     name: 'Targets',
     component: () => import('../views/TargetsListView.vue')
   },
   {
-    path: '/targets/details/:id',
+    path: '/target',
     name: 'TargetDetail',
-    component: () => import('../views/TargetsDetailsView.vue')
+    component: () => import('../views/TargetsDetailsView.vue'),
+    props: true
   },
   {
-    path: '/targets/details/:idTarget/rootdomain-details/:id',
+    path: '/target/rootdomain',
     name: 'RootDomainDetails',
-    component: () => import('../views/RootDomainDetailsView.vue')
+    component: () => import('../views/RootDomainDetailsView.vue'),
+    props: true
   },
   {
-    path: '/targets/details/:idTarget/rootdomain-details/:id/subdomain-details/:idsubdomain',
+    path: '/target/rootdomain/subdomain',
     name: 'SubDomainDetails',
-    component: () => import('../views/SubDomainDetailsView.vue')
+    component: () => import('../views/SubDomainDetailsView.vue'),
+    props: true
   },
   {
-    path: '/pipelines/list',
+    path: '/pipelines',
     name: 'Pipelines',
     component: () => import('../views/PipelinesListView.vue')
   },
   {
-    path: '/pipelines/details/:id',
+    path: '/pipeline',
     name: 'PipelineDetail',
-    component: () => import('../views/PipelineDetailsView.vue')
+    component: () => import('../views/PipelineDetailsView.vue'),
+    props: true
   },
   {
     path: '/logs',

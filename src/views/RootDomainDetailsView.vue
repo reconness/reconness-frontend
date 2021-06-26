@@ -46,8 +46,8 @@ export default {
       shadowAg: '',
       secondaryColor: '',
       routeParams: {
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRootDomain: parseInt(this.$route.params.id)
+        idTarget: parseInt(this.idTarget),
+        idRootDomain: parseInt(this.id)
       }
     }
   },
@@ -64,12 +64,16 @@ export default {
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
-    this.Target = this.getTargetById(parseInt(this.$route.params.idTarget))
-    this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.$route.params.id))
+    this.Target = this.getTargetById(parseInt(this.idTarget))
+    this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor
     this.setCurrentView(this.$route.name)
+  },
+  props: {
+    id: String,
+    idTarget: String
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),
