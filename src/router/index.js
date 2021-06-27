@@ -12,12 +12,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/agent/list',
-    name: 'Agents',
-    component: () => import('../views/AgentsListMiniView.vue')
-  },
-  {
-    path: '/agents/list',
+    path: '/agents',
     name: 'Agent',
     component: () => import('../views/AgentsListView.vue')
   },

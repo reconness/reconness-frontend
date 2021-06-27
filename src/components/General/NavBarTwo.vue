@@ -69,14 +69,18 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block  ">
             <a class="nav-link">
-            <p class="float-left">View Mode</p> <router-link to="/agent/list">
-            <button type="button" class="btn btn-light margin-right">
+            <p class="float-left">View Mode</p>
+            <a v-bind:class="{ 'router-link-exact-active': isMiniView} " v-on:click="activeNavButton('isMiniView')">
+            <button type="button" class="btn btn-light margin-right" @click="this.$store.commit('setIsDefaultViewOnAgent', false)">
                 <i class="material-icons">format_list_bulleted</i>
-            </button> </router-link>
-             <router-link to="/agents/list">
-            <button type="button" class="btn btn-light">
+            </button>
+            </a>
+             <a v-bind:class="{ 'router-link-exact-active': isListView} " v-on:click="activeNavButton('isListView')">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('setIsDefaultViewOnAgent', true)">
               <i class="material-icons">grid_view</i>
-            </button></router-link></a>
+            </button>
+            </a>
+            </a>
         </li>
         <li class="nav-item border-right d-none d-sm-block">
           <a
@@ -106,14 +110,13 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav d-sm-none ml-auto">
         <li class="nav-item float-left border-right">
-          <a class="nav-link" href="#"><router-link to="/agent/list">
+          <a class="nav-link" href="#"><router-link :to="{name: 'Agent'}">
             <button type="button" class="btn btn-sm" id="dropdownMenuButton">
               <i class="material-icons">format_list_bulleted</i>
             </button></router-link>
-            <router-link to="/agents/list">
-            <button type="button" class="btn btn-light">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('setIsDefaultViewOnAgent', true)">
               <i class="material-icons">grid_view</i>
-            </button></router-link>
+            </button>
           </a>
         </li>
         <li class="nav-item dropdown border-right">
@@ -239,7 +242,9 @@ export default {
       active_arrow_up: false,
       optionNumber: -1,
       optionName: '',
-      selectedAgentDescription: ''
+      selectedAgentDescription: '',
+      isMiniView: false,
+      isListView: true
     }
   },
   computed: {
@@ -308,6 +313,23 @@ export default {
       }
       this.nameTyped = ''
       this.$store.commit('cancelIdAgent')
+    },
+    activeNavButton: function (valueIn) {
+      if (valueIn === 'isMiniView') {
+        this.isMiniView = true
+        this.isListView = false
+      } else {
+        if (valueIn === 'isListView') {
+          this.isListView = true
+          this.isMiniView = false
+        }
+      }
+    }
+  },
+  mounted () {
+    if (!this.$store.state.isDefaultViewOnAgent) {
+      this.isMiniView = true
+      this.isListView = false
     }
   }
 }
@@ -354,5 +376,10 @@ margin-right: 20px;
 
 li.nav-item.border-right.d-none.d-sm-block svg.local-mall-ico {
   fill: #000000 !important
+}
+
+.router-link-exact-active  button{
+  background-color:#00B1FF;
+  color: #fff;
 }
 </style>

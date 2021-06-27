@@ -102,7 +102,6 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav d-sm-none ml-auto">
         <li class="nav-item float-left border-right">
-              <!-- <router-link to="/agent/list"> -->
               <a v-bind:class="{ 'router-link-exact-active': isMiniView} " v-on:click="activeNavButton('isMiniView')">
             <button type="button"  class="btn btn-light margin-right" @click="this.$store.commit('target/setIsDefaultViewOnTarget', false)">
                 <i class="material-icons">format_list_bulleted</i>
