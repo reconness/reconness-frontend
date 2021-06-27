@@ -39,7 +39,7 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import AgentForm from '@/components/AgentForm.vue'
+import AgentForm from '@/components/Agent/AgentForm.vue'
 export default {
   name: 'AgentListWorkflow',
   data: function () {

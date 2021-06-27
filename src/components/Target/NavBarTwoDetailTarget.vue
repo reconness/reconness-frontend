@@ -5,7 +5,7 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex float-left">
-            <router-link to="/targets/list" class="color-blue">
+            <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
             <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget} }" v-if = showRootDomains>
@@ -82,7 +82,7 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-sm-none">
         <li class="nav-item d-none d-sm-inline-block d-flex">
-            <router-link to="/targets/list" class="color-blue">
+            <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
             <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget} }" v-if = showRootDomains>
@@ -145,8 +145,8 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
-import MessagesBtn from '@/components/MessagesBtn.vue'
-import MessagesSection from '@/components/MessagesSection.vue'
+import MessagesBtn from '@/components/General/MessagesBtn.vue'
+import MessagesSection from '@/components/General/MessagesSection.vue'
 import Confirmation from '@/components/Target/Confirmation.vue'
 import MessageConfirmation from '@/components/Target/MessageConfirmation.vue'
 export default {

@@ -141,10 +141,10 @@
           >delete</span>
         </div>
     </div>
-    <div class="col-2 border-right-radius abs-center border p-0" v-else>
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" :id="'customCheckbox' + item.id" class="custom-control-input" name="checkbox-dinamic" @click="selectRow(item.id, item.name)">
-        <label class="custom-control-label" :for="'customCheckbox' + item.id" ></label>
+    <div class="col-2 border-right-radius abs-center border p-0 custom-control-container-rounded" v-else>
+      <div class="roundedOne" :class="'check-color-' + color.substring(1)">
+        <input type="checkbox" class="custom-control-input-rounded" :id="'customCheckbox' + item.id" name="checkbox-dinamic" @click="selectRow(item.id, item.name)">
+        <label class="custom-control-label-rounded" :for="'customCheckbox' + item.id" ></label>
       </div>
     </div>
 </div></div>
@@ -461,4 +461,78 @@ div.inactive-ico {
 .inactive-gradient{
   background: linear-gradient(160deg, rgb(177, 177, 177) 0%, rgb(177, 177, 177) 100%) !important;
 }
+
+.roundedOne {
+  width: 28px;
+  height: 28px;
+  position: relative;
+  margin: 20px auto;
+  background: #fcfff4;
+  border-radius: 50px;
+  box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.roundedOne label {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  border-radius: 50px;
+}
+.roundedOne label:after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  opacity: 0;
+  border-radius: 50px;
+}
+.roundedOne label:hover::after {
+  opacity: 0.3;
+}
+.roundedOne input[type="checkbox"] {
+  visibility: hidden;
+}
+.roundedOne input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+}
+
+.roundedOne.check-color-0cb8e0 {
+  border: 3px solid #0cb8e0;
+}
+.roundedOne.check-color-0cb8e0 label:after {
+   background:  #0cb8e0;
+}
+
+.roundedOne.check-color-FF4343 {
+  border: 3px solid #FF4343;
+}
+.roundedOne.check-color-FF4343 label:after {
+   background:  #FF4343;
+}
+
+.roundedOne.check-color-16c465 {
+  border: 3px solid #16c465;
+}
+.roundedOne.check-color-16c465 label:after {
+   background:  #16c465;
+}
+
+.roundedOne.check-color-f36a33 {
+  border: 3px solid #f36a33;
+}
+.roundedOne.check-color-f36a33 label:after {
+   background:  #f36a33;
+}
+
+.roundedOne.check-color-7159d3 {
+  border: 3px solid #7159d3;
+}
+.roundedOne.check-color-7159d3 label:after {
+   background:  #7159d3;
+}
+
 </style>

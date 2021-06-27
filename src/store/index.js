@@ -65,7 +65,8 @@ export default createStore({
     isDeletetFromForm: false,
     isElementDeleted: false,
     nameRoute: '',
-    valueDelete: ''
+    valueDelete: '',
+    isDefaultViewOnAgent: true
   },
   mutations: {
     confirm (state, valueIN) {
@@ -219,6 +220,9 @@ export default createStore({
     },
     setIsElementDeleted (state, value) {
       state.isElementDeleted = value
+    },
+    setIsDefaultViewOnAgent (state, value) {
+      state.isDefaultViewOnAgent = value
     }
   },
   actions: {

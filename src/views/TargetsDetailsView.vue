@@ -151,8 +151,8 @@
 
 <script>
 import { mapGetters, mapMutations, mapState } from 'vuex'
-import DaysHighestInteraction from '@/components/DaysHighestInteraction.vue'
-import TargetsHighestInteraction from '@/components/TargetsHighestInteraction.vue'
+import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
+import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 export default {
   name: 'TargetsDetailsView',
@@ -270,6 +270,9 @@ export default {
     TargetsHighestInteraction,
     NavBarTwoDetailTarget
   },
+  props: {
+    id: String
+  },
   computed: {
     ...mapGetters('target', ['getTargetById']),
     ...mapState(['isElementDeleted'])
@@ -280,7 +283,7 @@ export default {
   },
   mounted () {
     this.$store.commit('updateLocView', 'Targets', true)
-    this.Target = this.getTargetById(parseInt(this.$route.params.id))
+    this.Target = this.getTargetById(parseInt(this.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
     this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor

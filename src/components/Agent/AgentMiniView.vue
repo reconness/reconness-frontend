@@ -151,7 +151,7 @@ div.agent-mini-main-container svg {
 }
 </style>
 <script>
-import AgentConfirmation from '@/components/AgentConfirmation.vue'
+import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import { mapState } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 export default {
