@@ -5,7 +5,7 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex float-left">
-            <router-link to="/targets/list" class="color-blue">
+            <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
             <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget} }" v-if = showRootDomains>
@@ -82,7 +82,7 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-sm-none">
         <li class="nav-item d-none d-sm-inline-block d-flex">
-            <router-link to="/targets/list" class="color-blue">
+            <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
             <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget} }" v-if = showRootDomains>

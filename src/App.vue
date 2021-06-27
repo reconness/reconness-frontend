@@ -186,6 +186,9 @@ export default {
       return this.$route.name === 'LogIn'
     }
   },
+  created () {
+    window.addEventListener('beforeunload', this.redirectToHomePage())
+  },
   mounted () {
     this.location = this.viewloc
   },
@@ -219,6 +222,9 @@ export default {
       if (loc !== 'Settings') {
         this.$store.commit('updateLocView', loc)
       }
+    },
+    redirectToHomePage: function () {
+      this.$router.push('/')
     }
   }
 }
