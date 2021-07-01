@@ -356,6 +356,7 @@ aside.control-sidebar-dark.main-messages-container {
   /* width: 48%; */
   /*width: 23%;usar media queries*/
   width: 350px;
+  height: 100%
 }
 .control-sidebar-content-target-details svg {
   position: absolute;
