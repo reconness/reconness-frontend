@@ -10,7 +10,7 @@
   "dependencies": {
     "@types/typography": "0.16.3",
     "apexcharts": "3.25.0",
-    "bootstrap": "4.6.0",
+    "bootstrap": "5.0.2",
     "core-js": "3.8.3",
     "jquery": "3.5.1",
     "material-icons": "0.7.2",
