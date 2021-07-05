@@ -1,5 +1,5 @@
 <template>
-  <div class="row force-scroll">
+  <div class="row force-scroll mt-4">
     <!-- <div v-if="(Object.keys(this.AgentsPipelineList).length === 0 ||  this.AgentsPipelineList[0].id !== this.startingAgentId)" class="col-3 p-0">
       <div class="info-box-background w-85 float-left abs-center" style="position: relative; left: 0px; top: -1px;">
         <span data-toggle="modal" data-target="#pipelinesModalForm"
@@ -13,11 +13,11 @@
       :class="{'p-0': true}"
       style="position: relative;">
       <div :class="{'invisible': Object.keys(item2).length === 0}">
-        <div class="info-box-background float-left w-75"
+        <div class="info-box-background float-left w-65"
           style="position: relative; left: 0px; top: -1px;">
         </div>
         <div :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0}"
-          class="mt-3 margin-center abs-center border-top w-25"
+          class="mt-3 margin-center abs-center border-top w-35"
           style="color:black!important;border: 1px solid; float:left"> </div>
           <div v-if="index+1 !== associatedAgents.length" :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0 }" class="mt-3 black-circle">  </div>
           <div>
@@ -33,15 +33,36 @@
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
         </div>
-        <div class="info-box float-left abs-center w-75"
+        <div class="info-box float-left abs-center w-65"
           :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
-          <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
+          <div class="row w-100">
+          <!-- <div class="col-6"> -->
+            <div class="info-box-content border-right">
+            <span class="white-text">{{item2.name }}</span>
+            <div class="pipeline-run-play-container">
+              <span class="mr-2 white-text">00:00:00</span>
+              <MotionPlayOutlineIco />
+            </div>
+            <div class="output-container">
+              <span class="mr-2 cursor-pointer white-text">Terminal</span><span class="pl-2 border-left cursor-pointer white-text">Logs</span>
+            </div>
+          </div>
+          <!-- <div class="col-6 m-auto"> -->
+            <span class="info-box-icon process_status_panel container-container-circular-bar">
+            <span class="border container-circular-bar">
+              <div class="circular-bar-container border pipeline-run-execution">
+                <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+              </div>
+            </span>
+          </span>
+          </div>
+          <!-- <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
             <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
             <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item2.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
-          </div>
-          <span class="number float-right ml-1 abs-center"  :style ="{background:item2.background}" >
+          </div> -->
+          <!-- <span class="number float-right ml-1 abs-center"  :style ="{background:item2.background}" >
             <div><AccountCogIco class="change-font-size"/></div>
-          </span>
+          </span> -->
         </div>
         <div>
           <div>
@@ -75,19 +96,22 @@
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
+import CircleProgress from 'vue3-circle-progress'
 export default {
   props: {
     AgentsPipelineList: Object,
     startingAgentId: Number
   },
   components: {
-    AccountCogIco
+    AccountCogIco,
+    MotionPlayOutlineIco,
+    CircleProgress
   },
   computed: {
     associatedAgents () {
       let agentPipelineList = []
       // agentPipelineList = this.AgentsPipelineList
-      // console.log(agentPipelineList)
       // const sizeList = agentPipelineList.length
       // if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {
       //   agentPipelineList.push({})
@@ -105,14 +129,9 @@ export default {
       const windowReziseWidth = window.outerWidth
       if (indexValue !== -1 && Object.keys(this.associatedAgents[indexValue]).length !== 0) {
         if (windowReziseWidth < 1200) {
-          console.log(this.AgentsPipelineList)
-          console.log(indexValue)
           return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
         } else {
           if (windowReziseWidth >= 1200) {
-            // console.log(this.startingAgentId)
-            console.log(this.AgentsPipelineList)
-            console.log(this.AgentsPipelineList[indexValue])
             return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
           }
         }
@@ -327,5 +346,34 @@ div.line {
   flex-wrap: inherit;
   padding-bottom: 5em;
   padding-top: 2em;
+}
+.w-65{
+  width: 65% !important;
+}
+.w-35{
+  width: 35% !important;
+}
+.container-circular-bar{
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid #dee2e6 !important;
+  border-radius: 10px;
+}
+.circular-bar-container{
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.3);
+}
+.vue3-circular-progressbar{
+  margin-left: 10%;
+}
+/* .vue3-circular-progressbar svg{
+  margin-bottom: 27%;
+} */
+.output-container{
+  font-size: 13px;
 }
 </style>

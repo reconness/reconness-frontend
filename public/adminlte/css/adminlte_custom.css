@@ -40,6 +40,14 @@ a.brand-link{
 .blue-text{
   color: #00B1FF;
 }
+.white-text{
+  color: #ffffff !important;
+}
+.pipeline-run-play-container svg{
+  width: 15px;
+  height: 15px;
+  fill: #ffffff;
+}
 
 
 /*
@@ -934,4 +942,8 @@ div.pipeline_spacing .p-autocomplete-loader{
 }
 .red-font-color {
   color: #FF4545 !important;
+}
+.pipeline-run-execution svg{
+  position: relative;
+  bottom: 26%;
 }

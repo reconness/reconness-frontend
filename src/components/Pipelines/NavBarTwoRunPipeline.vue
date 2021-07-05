@@ -9,7 +9,6 @@
               <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
             <p class="float-left mb-0 ml-2">{{pipelineName}}</p>
-          <!-- <span class="material-icons float-right cursor-pointer" @click="editPipelineName"> open_in_new</span> -->
         </li>
       </ul>
       <!-- Right navbar links -->
@@ -30,9 +29,9 @@
     </nav>
     <!-- <ConfirmationPipelinesList :nameRoute= 'this.$route.name'></ConfirmationPipelinesList> -->
     <!-- <PipelinesForm :routeName="this.$route.name"/> -->
-    <!-- <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
+    <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
       <small class="font-weight-bold">Back to main</small>
-    </OverlayPanel> -->
+    </OverlayPanel>
   </div>
 </template>
 <script>
@@ -40,7 +39,7 @@
 // import jQuery from 'jquery'
 // import ConfirmationPipelinesList from '@/components/Pipelines/ConfirmationPipelinesList.vue'
 // import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
-// import OverlayPanel from 'primevue/overlaypanel'
+import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwoRunPipeline',
   data: function () {
@@ -51,11 +50,11 @@ export default {
       // showInputPipelineName: true
     }
   },
-  // components: {
+  components: {
   //   ConfirmationPipelinesList,
   //   PipelinesForm,
-  //   OverlayPanel
-  // },
+    OverlayPanel
+  },
   // computed: {
   //   ...mapState('pipelines', ['checkDetail', 'colorDeleteDetail', 'pipelinesIdAgentsList'])
   // },
@@ -99,7 +98,7 @@ export default {
     openSettings (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       this.$store.commit('pipelines/setIdPipeline', selectedId)
-    }
+    },
     // editPipelineName () {
     //   this.showInputPipelineName = false
     //   this.name = this.pipelineName
@@ -111,9 +110,9 @@ export default {
     //     10
     //   )
     // },
-    // toggle (event) {
-    //   this.$refs.op.toggle(event)
-    // }
+    toggle (event) {
+      this.$refs.op.toggle(event)
+    }
   }
 }
 </script>
