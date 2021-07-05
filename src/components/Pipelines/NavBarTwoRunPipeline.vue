@@ -5,9 +5,9 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex color-blue">
-            <!-- <router-link :to="{ name: 'Pipelines' }" class="color-blue"> -->
-              <!-- <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span> -->
-            <!-- </router-link> -->
+            <router-link :to="{ name: 'Pipelines' }" class="color-blue">
+              <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
+            </router-link>
             <p class="float-left mb-0 ml-2">{{pipelineName}}</p>
           <!-- <span class="material-icons float-right cursor-pointer" @click="editPipelineName"> open_in_new</span> -->
         </li>

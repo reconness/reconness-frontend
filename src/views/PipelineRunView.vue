@@ -3,10 +3,9 @@
     <!-- Contains navs-bar -->
     <NavBarTwoRunPipeline :pipelineName="this.getPipelineById(parseInt(this.id)).name" />
     <div class="content-wrapper">
-        <div class="container-fluid">
+        <div class="container-fluid pl-0">
+        <hr class="mt-1 mb-0" />
         <div class="content">
-        <!-- <hr class="mt-1 mb-0" /> -->
-          <!-- <div class="row border-container ml-3 mr-3 mt-2"> -->
           <div class="row ml-3 mr-3 mt-4">
             <div class="col-11 m-auto">
               <div class="d-flex justify-content-between">
@@ -19,18 +18,22 @@
               <span class="float-right agent-mini-color-gray">waiting</span>
             </div>
             <div class="col-1 action-panel">
-              <div class="action-panel-container d-flex flex-column">
-                <span class="cursor-pointer material-icons red-font-color m-auto">stop</span>
+              <div v-if="!showRunContainer" class="action-panel-container action-panel-container-stop d-flex flex-column">
+                <span class="cursor-pointer material-icons red-font-color m-auto" @click="executePipeline">stop</span>
                 <span class="pb-2 m-auto red-font-color">STOP</span>
+              </div>
+              <div v-else class="action-panel-container action-panel-container-run d-flex flex-column start-btn">
+                <div class="m-auto">
+                <span class="cursor-pointer" @click="executePipeline"><RocketIco /></span>
+                </div>
+                <span class="pb-2 m-auto white-font-color">RUN</span>
               </div>
             </div>
           </div> <!-- .row -->
-          <!-- CREATE COMPONENT INSTEAD -->
           <ExecutionAreaAgent :AgentsPipelineList="getPipelineById(parseInt(this.id)).agent" :startingAgentId="startingAgentId" />
         </div>
       </div>
     </div>
-    <!-- <AgentListWorkflow :routeName= 'this.$route.name'></AgentListWorkflow> -->
   </div>
 </template>
 <script>
@@ -38,20 +41,20 @@
 import { mapGetters } from 'vuex'
 import NavBarTwoRunPipeline from '@/components/Pipelines/NavBarTwoRunPipeline.vue'
 import ExecutionAreaAgent from '@/components/Pipelines/ExecutionAreaAgent.vue'
-// import PipelineWorkflow from '@/components/Pipelines/PipelineWorkflow.vue'
+import RocketIco from '@/components/Icons/RocketIco.vue'
 
 export default {
   name: 'PipelineRunView',
   data: function () {
     return {
-      progressValue: 0
+      progressValue: 0,
+      showRunContainer: true
     }
   },
   components: {
     NavBarTwoRunPipeline,
-    ExecutionAreaAgent
-  //   AgentListWorkflow,
-  //   PipelineWorkflow
+    ExecutionAreaAgent,
+    RocketIco
   },
   props: {
     id: String,
@@ -60,33 +63,12 @@ export default {
   },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById'])
-  //   ...mapState('pipelines', ['checkDetail']),
-  //   changePading () {
-  //     let padding
-  //     if (this.checkDetail) {
-  //       padding = '.5rem'
-  //     } else {
-  //       padding = '1rem'
-  //     }
-  //     return padding
-  //   }
+  },
+  methods: {
+    executePipeline () {
+      this.showRunContainer = !this.showRunContainer
+    }
   }
-  // methods: {
-  //   collapseDown () {
-  //     document.getElementById('scroll-div').scrollBy({ top: 120, behavior: 'smooth' })
-  //   },
-  //   collapseUp () {
-  //     document.getElementById('scroll-div').scrollBy({ top: -120, behavior: 'smooth' })
-  //   },
-  //   setDetailsLink (e) {
-  //     const selectedAgentId = e.currentTarget.getAttribute('data-id')
-  //     this.$store.commit('setIdAgent', selectedAgentId)
-  //     this.$store.commit('setDetailsLinks', true)
-  //   }
-  // },
-  // mounted () {
-  //   this.$store.commit('updateLocView', 'Pipelines', true)
-  // }
 }
 </script>
 <style scoped>
@@ -110,16 +92,33 @@ export default {
 div small{
   color: #b3b3b3;
 }
-.action-panel span:first-child{
-  font-size: 3rem
+.action-panel span.material-icons.red-font-color{
+  font-size: 2.5rem
 }
 .pipeline-run-progress{
   height: 5px;
 }
 .action-panel-container{
   border-radius: 17px;
-  background-color: #ffffff;
   width: 76%;
   height: 96%;
+}
+.action-panel-container-stop{
+  background-color: #ffffff;
+}
+
+.action-panel-container-run{
+  background-color: #007bff;
+}
+div.action-panel-container-run.start-btn svg{
+  margin: auto;
+  width: 30px;
+  height: 35px;
+  margin-top: 9px;
+  fill: #ffffff;
+}
+
+.white-font-color{
+  color: #ffffff;
 }
 </style>
