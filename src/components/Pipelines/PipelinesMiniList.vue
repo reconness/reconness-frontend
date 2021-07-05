@@ -15,7 +15,7 @@
                    <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="item.id" @click="openSettings">
                       <GearIcon/>
                     </li>
-                    <li class="nav-item icon-gray">
+                    <li class="nav-item icon-gray rocket-icon cursor-pointer">
                      <RocketIco/>
                     </li>
                   </ul>
@@ -202,7 +202,7 @@ input[type="checkbox"] {
 div.card-header span{
   font-size: 20px;
 }
-li.setting-icon:hover{
+li.setting-icon:hover, li.rocket-icon:hover{
   fill: #00B1FF;
 }
 </style>

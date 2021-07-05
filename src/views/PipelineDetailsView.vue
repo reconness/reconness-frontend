@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Contains navs-bar -->
-    <NavBarTwoDetailPipeline :pipelineName="this.getPipelineById(parseInt(this.id)).name" />
+    <NavBarTwoDetailPipeline :id="this.id" :pipelineName="this.getPipelineById(parseInt(this.id)).name" />
     <div class="content-wrapper">
         <div class="container-fluid pl-0">
         <hr class="mt-1 mb-0" />

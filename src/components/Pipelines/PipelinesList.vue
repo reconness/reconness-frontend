@@ -22,7 +22,7 @@
                  <div class="row p-2">
                    <div class="col-12">
                    <router-link  :to="{ name: 'PipelineRunView', params: {id: item.id}  }">
-                     <span class="info-box-icon abs-center"><RocketIco/></span>
+                     <span class="info-box-icon abs-center listing-run-pipeline-ico"><RocketIco/></span>
                     </router-link>
                    </div>
                    <div class="col-12 border-top mt-1 mb-1">
@@ -198,7 +198,7 @@ input[type="checkbox"]:checked + label:after {
 input[type="checkbox"] {
   display: none;
 }
-span.info-box-icon.setting-icon:hover{
+span.info-box-icon.setting-icon:hover, span.listing-run-pipeline-ico:hover{
   fill: #00B1FF;
 }
 </style>

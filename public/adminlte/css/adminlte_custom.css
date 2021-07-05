@@ -38,7 +38,7 @@ a.brand-link{
 }
 
 .blue-text{
-  color: #00B1FF;
+  color: #00B1FF !important;
 }
 .white-text{
   color: #ffffff !important;

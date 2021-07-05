@@ -20,7 +20,7 @@
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="parseInt(this.$route.params.id)" @click="openSettings">Pipeline Settings</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <a class="nav-link pos red-font-color" href="#">Close</a>
+          <router-link class="nav-link pos red-font-color" :to="{ name: 'PipelineDetail', params: {id: id} }">Close</router-link>
         </li>
         <!-- <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" v-show= "checkDetail" href="#" @click="close()">Cancel Remove</a>
@@ -28,7 +28,7 @@
       </ul>
     </nav>
     <!-- <ConfirmationPipelinesList :nameRoute= 'this.$route.name'></ConfirmationPipelinesList> -->
-    <!-- <PipelinesForm :routeName="this.$route.name"/> -->
+    <PipelinesForm :routeName="this.$route.name"/>
     <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
       <small class="font-weight-bold">Back to main</small>
     </OverlayPanel>
@@ -38,7 +38,7 @@
 // import { mapState, mapMutations } from 'vuex'
 // import jQuery from 'jquery'
 // import ConfirmationPipelinesList from '@/components/Pipelines/ConfirmationPipelinesList.vue'
-// import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
+import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwoRunPipeline',
@@ -52,14 +52,15 @@ export default {
   },
   components: {
   //   ConfirmationPipelinesList,
-  //   PipelinesForm,
+    PipelinesForm,
     OverlayPanel
   },
   // computed: {
   //   ...mapState('pipelines', ['checkDetail', 'colorDeleteDetail', 'pipelinesIdAgentsList'])
   // },
   props: {
-    pipelineName: String
+    pipelineName: String,
+    id: String
   },
   methods: {
     // ...mapMutations('pipelines', ['editListDetail', 'cancelIdAgentPipelinesDetail']),
