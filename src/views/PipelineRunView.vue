@@ -7,7 +7,7 @@
         <hr class="mt-1 mb-0" />
         <div class="content">
           <div class="row ml-3 mr-3 mt-4">
-            <div class="col-11 m-auto">
+            <div class="col-9 col-sm-10 col-lg-11 m-auto">
               <div class="d-flex justify-content-between">
                 <span class="info-box-text agent-mini-color-gray">Process status</span>
                 <span class="info-box-text agent-mini-color-gray">00:06:00</span>
@@ -17,7 +17,7 @@
               </div>
               <span class="float-right agent-mini-color-gray">waiting</span>
             </div>
-            <div class="col-1 action-panel">
+            <div class="col-3 col-sm-2 col-lg-1 action-panel">
               <div v-if="!showRunContainer" class="action-panel-container action-panel-container-stop d-flex flex-column">
                 <span class="cursor-pointer material-icons red-font-color m-auto" @click="executePipeline">stop</span>
                 <span class="pb-2 m-auto red-font-color">STOP</span>

@@ -9,7 +9,7 @@
       <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}"  class="mt-3 margin-center abs-center border-top w-15"  style="color:black!important;border: 1px solid; float:left"> </div>
       <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}" class="mt-3 black-circle">  </div>
     </div> -->
-    <div v-for="(item2,index) of associatedAgents" :key="item2.id" class="col-3"
+    <div v-for="(item2,index) of associatedAgents" :key="item2.id" class="col-5"
       :class="{'p-0': true}"
       style="position: relative;">
       <div :class="{'invisible': Object.keys(item2).length === 0}">
@@ -37,7 +37,7 @@
           :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
           <div class="row w-100">
           <!-- <div class="col-6"> -->
-            <div class="info-box-content border-right">
+            <div class="info-box-content border-right w-50">
             <span class="white-text">{{item2.name }}</span>
             <div class="pipeline-run-play-container">
               <span class="mr-2 white-text">00:00:00</span>
@@ -48,14 +48,14 @@
             </div>
           </div>
           <!-- <div class="col-6 m-auto"> -->
-            <span class="info-box-icon process_status_panel container-container-circular-bar">
+          <span class="info-box-icon process_status_panel container-container-circular-bar">
             <span class="border container-circular-bar">
               <div class="circular-bar-container border pipeline-run-execution">
                 <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
               </div>
             </span>
           </span>
-          </div>
+        </div>
           <!-- <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
             <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
             <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item2.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
@@ -68,18 +68,41 @@
           <div>
           <div class="line" v-if="this.getAgentBranch(index).length !== 0"></div>
             <div  v-for="(item3, index1) of this.getAgentBranch(index-1)"  :id="'branch' + index1" :key="item3.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
-              <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
+              <div class="info-box-background float-left w-131" style="position: relative; left: 0px; top: -1px;"></div>
                 <div :class="{'invisible': index1+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
                   <div v-if="index1+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
-                    <div class="info-box float-left abs-center w-75" :style ="{background:item3.background}" style="position: relative; left: 7px; top: -89px;">
-                      <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
-                        <span class="info-box-text  text-custom agent-mini-agent-name">{{item3.name }}</span>
-                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item3.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
-                      </div>
-                      <span class="number float-right ml-1 abs-center"  :style ="{background:item3.background}" >
-                      <div><AccountCogIco class="change-font-size"/></div>
-                      </span>
-                    </div>
+                    <!-- <div class="info-box float-left abs-center w-65" :style ="{background:item3.background}" style="position: relative; left: 7px; top: -89px;"> -->
+                      <!-- <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right"> -->
+                        <!-- <span class="info-box-text  text-custom agent-mini-agent-name">{{item3.name }}</span> -->
+                        <!-- <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item3.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a> -->
+                      <!-- </div> -->
+                      <!-- <span class="number float-right ml-1 abs-center"  :style ="{background:item3.background}" > -->
+                      <!-- <div><AccountCogIco class="change-font-size"/></div> -->
+                      <!-- </span> -->
+                    <!-- </div> -->
+
+                    <div class="info-box float-left abs-center w-131"
+                      :style ="{background:item3.background}" style="position: absolute; left: 7px; top: -4px;">
+                      <div class="row w-100">
+                        <div class="info-box-content border-right">
+                          <span class="white-text">{{item3.name }}</span>
+                          <div class="pipeline-run-play-container">
+                            <span class="mr-2 white-text">00:00:00</span>
+                            <MotionPlayOutlineIco />
+                          </div>
+                          <div class="output-container">
+                            <span class="mr-2 cursor-pointer white-text">Terminal</span><span class="pl-2 border-left cursor-pointer white-text">Logs</span>
+                          </div>
+                        </div>
+                        <span class="info-box-icon process_status_panel container-container-circular-bar">
+                          <span class="border container-circular-bar">
+                            <div class="circular-bar-container border pipeline-run-execution">
+                              <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                            </div>
+                          </span>
+                        </span>
+                      <div>
+
                     <!-- <div  class="workflow-tools info-box">
                      <div class="info-box-content">
                       <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: item3.id})">cancel</span>
@@ -89,13 +112,15 @@
                     </div> -->
                     </div>
                     </div>
+                    </div>
+                    </div></div>
         </div>
                   </div>
 </div>
       </div>
 </template>
 <script>
-import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+// import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import CircleProgress from 'vue3-circle-progress'
 export default {
@@ -104,7 +129,7 @@ export default {
     startingAgentId: Number
   },
   components: {
-    AccountCogIco,
+    // AccountCogIco,
     MotionPlayOutlineIco,
     CircleProgress
   },
@@ -294,18 +319,17 @@ div.line {
 div.line {
     position: relative;
     z-index: 1;
-    left: 65%;
-    width: 42%;
+    left: 59%;
+    width: 47%;
     height: 1px;
-    top: -2em;
+    top: -1em;
     background-color: #000;
     transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
 }
-
-@media (min-width: 1261px) and (max-width: 1440px) {
+@media (min-width: 1261px) and (max-width: 1263px) {
 div.line {
     position: relative;
     z-index: 1;
@@ -319,19 +343,47 @@ div.line {
     -webkit-transform: rotate(45deg);  /* Safari and Chrome */
 }
 }
-
-@media (min-width: 1440px) {
+@media (min-width: 1263px) and (max-width: 1440px) {
 div.line {
     position: relative;
     z-index: 1;
-    left: 67%;
-    width: 40%;
+    left:61%;
+    width: 43%;
     height: 1px;
-    top: -2.3em;
+    top: -1em;
+    background-color: #000;
+    transform: rotate(36deg);
+    -ms-transform: rotate(36deg); /* IE 9 */
+    -webkit-transform: rotate(36deg);  /* Safari and Chrome */
+}
+}
+
+@media (min-width: 1440px) and (max-width: 2560px) {
+div.line {
+    position: relative;
+    z-index: 1;
+    left: 59%;
+    width: 48%;
+    height: 1px;
+    top: -1.3em;
     background-color: #000;
     transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
+}
+}
+@media (min-width: 2560px) {
+div.line {
+    position: relative;
+    z-index: 1;
+    left: 62%;
+    width: 39%;
+    height: 1px;
+    top: -1.3em;
+    background-color: #000;
+    transform: rotate(45deg);
+    -ms-transform: rotate(15deg);
+    -webkit-transform: rotate(15deg);
 }
 }
 
@@ -352,6 +404,9 @@ div.line {
 }
 .w-35{
   width: 35% !important;
+}
+.w-131{
+  width: 131% !important;
 }
 .container-circular-bar{
   width: 3rem;
