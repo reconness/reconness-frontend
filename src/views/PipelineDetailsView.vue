@@ -8,7 +8,7 @@
           <div class="row border-container ml-3 mr-3 mt-2">
           <div class="col-11 mb-5">
             <PipelineWorkflow :AgentsPipelineList='this.getPipelineById(parseInt(this.id)).agent'
-            :startingAgentId= 'this.getPipelineById(parseInt(this.id)).startingAgent' class="p-3 pr-0"/>
+              :startingAgentId= 'this.getPipelineById(parseInt(this.id)).startingAgent' class="p-3 pr-0"/>
           </div>
            <div class="col-1">
               <p class="ml-auto mt-3 mr-3 d-flex flex-column text-right">

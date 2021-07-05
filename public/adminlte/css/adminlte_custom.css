@@ -932,3 +932,6 @@ div.pipeline_spacing .p-autocomplete-loader{
   padding-left: 0px;
   padding-right: 0px;
 }
+.red-font-color {
+  color: #FF4545 !important;
+}
