@@ -77,7 +77,7 @@ export default {
       }
     )
 
-    app.config.globalProperties.$agentStatus = Object.freeze(
+    app.config.globalProperties.$entityStatus = Object.freeze(
       {
         RUNNING: 1,
         FINISHED: 2

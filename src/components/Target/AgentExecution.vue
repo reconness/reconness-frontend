@@ -115,7 +115,7 @@ export default {
         })
       } else {
         this.updateStatusSubDomainAgent({
-          status: this.$agentStatus.RUNNING,
+          status: this.$entityStatus.RUNNING,
           idTarget: parseInt(this.$route.params.idTarget),
           idRoot: parseInt(this.$route.params.id),
           idAgent: parseInt(this.idAgent),
@@ -162,17 +162,17 @@ export default {
       this.timer = null
     },
     closeWindow () {
-      this.setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })
+      this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: parseInt(-1) })
       if (this.$route.name === 'RootDomainDetails') {
         this.updateStatusRootDomainAgent({
-          status: this.$agentStatus.FINISHED,
+          status: this.$entityStatus.FINISHED,
           idTarget: parseInt(this.$route.params.idTarget),
           idRoot: parseInt(this.$route.params.id),
           idAgent: parseInt(this.idAgent)
         })
       } else {
         this.updateStatusSubDomainAgent({
-          status: this.$agentStatus.FINISHED,
+          status: this.$entityStatus.FINISHED,
           idTarget: parseInt(this.$route.params.idTarget),
           idRoot: parseInt(this.$route.params.id),
           idAgent: parseInt(this.idAgent),
@@ -195,7 +195,7 @@ export default {
   },
   watch: {
     agentStatus (value) {
-      if (value.status === this.$agentStatus.RUNNING && !this.minimized) {
+      if (value.status === this.$entityStatus.RUNNING && !this.minimized) {
         this.playClock()
       }
     }

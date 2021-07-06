@@ -30,7 +30,7 @@
                       <small class="text-muted">Last run {{ new Date(item.date).toLocaleDateString('en-US') }}</small>
                     </li>
                     <li class="nav-item">
-                    <small class="main_reconnes_text-color font-weight-bold" v-if ="item.statusRun">Success
+                    <small class="main_reconnes_text-color font-weight-bold" v-if ="item.statusRun === this.$entityStatus.RUNNING">Success
                     </small>
                     <small v-else class="color-delete font-weight-bold">Failed</small>
                     </li>

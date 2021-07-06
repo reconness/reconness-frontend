@@ -1,36 +1,13 @@
 <template>
   <div>
     <!-- Contains navs-bar -->
-    <NavBarTwoRunPipeline :id="id" :pipelineName="this.getPipelineById(parseInt(this.id)).name" />
+    <NavBarTwoRunPipeline :id="id" :pipelineName="referencedPipeline.name" />
     <div class="content-wrapper">
         <div class="container-fluid pl-0">
         <hr class="mt-1 mb-0" />
         <div class="content">
-          <div class="row ml-3 mr-3 mt-4">
-            <div class="col-9 col-sm-10 col-lg-11 m-auto">
-              <div class="d-flex justify-content-between">
-                <span class="info-box-text agent-mini-color-gray">Process status</span>
-                <span class="info-box-text agent-mini-color-gray">00:06:00</span>
-              </div>
-              <div class="progress pipeline-run-progress">
-                <div :style="{ width: progressValue+'10%' }" class="progress-bar agent_exec_progress_bar main_reconnes_bg-color"></div>
-              </div>
-              <span class="float-right agent-mini-color-gray">waiting</span>
-            </div>
-            <div class="col-3 col-sm-2 col-lg-1 action-panel">
-              <div v-if="!showRunContainer" class="action-panel-container action-panel-container-stop d-flex flex-column">
-                <span class="cursor-pointer material-icons red-font-color m-auto" @click="executePipeline">stop</span>
-                <span class="pb-2 m-auto red-font-color">STOP</span>
-              </div>
-              <div v-else class="action-panel-container action-panel-container-run d-flex flex-column start-btn">
-                <div class="m-auto">
-                <span class="cursor-pointer" @click="executePipeline"><RocketIco /></span>
-                </div>
-                <span class="pb-2 m-auto white-font-color">RUN</span>
-              </div>
-            </div>
-          </div> <!-- .row -->
-          <ExecutionAreaAgent :AgentsPipelineList="getPipelineById(parseInt(this.id)).agent" :startingAgentId="startingAgentId" />
+          <GeneralProgressBar :pipeline="referencedPipeline"/>
+          <ExecutionAreaPipelineAgent :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
         </div>
       </div>
     </div>
@@ -40,21 +17,25 @@
 
 import { mapGetters } from 'vuex'
 import NavBarTwoRunPipeline from '@/components/Pipelines/NavBarTwoRunPipeline.vue'
-import ExecutionAreaAgent from '@/components/Pipelines/ExecutionAreaAgent.vue'
-import RocketIco from '@/components/Icons/RocketIco.vue'
+import ExecutionAreaPipelineAgent from '@/components/Pipelines/ExecutionAreaPipelineAgent.vue'
+import GeneralProgressBar from '@/components/Pipelines/GeneralProgressBar.vue'
 
 export default {
   name: 'PipelineRunView',
   data: function () {
     return {
       progressValue: 0,
-      showRunContainer: true
+      showRunContainer: true,
+      referencedPipeline: null
     }
+  },
+  created: function () {
+    this.referencedPipeline = this.getPipelineById(parseInt(this.id))
   },
   components: {
     NavBarTwoRunPipeline,
-    ExecutionAreaAgent,
-    RocketIco
+    ExecutionAreaPipelineAgent,
+    GeneralProgressBar
   },
   props: {
     id: String,
@@ -63,11 +44,6 @@ export default {
   },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById'])
-  },
-  methods: {
-    executePipeline () {
-      this.showRunContainer = !this.showRunContainer
-    }
   }
 }
 </script>
@@ -91,34 +67,5 @@ export default {
 }
 div small{
   color: #b3b3b3;
-}
-.action-panel span.material-icons.red-font-color{
-  font-size: 2.5rem
-}
-.pipeline-run-progress{
-  height: 5px;
-}
-.action-panel-container{
-  border-radius: 17px;
-  width: 76%;
-  height: 96%;
-}
-.action-panel-container-stop{
-  background-color: #ffffff;
-}
-
-.action-panel-container-run{
-  background-color: #007bff;
-}
-div.action-panel-container-run.start-btn svg{
-  margin: auto;
-  width: 30px;
-  height: 35px;
-  margin-top: 9px;
-  fill: #ffffff;
-}
-
-.white-font-color{
-  color: #ffffff;
 }
 </style>

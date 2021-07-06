@@ -30,7 +30,7 @@
           <p class="m-2"> Never</p>
           </div>
           <div class="col-2 border border-right-radius text-center">
-              <button v-if="parseInt(item.status) === parseInt(this.$agentStatus.RUNNING)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
+              <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
               <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
           </div>
           <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
@@ -114,12 +114,12 @@ export default {
         }
       )
       this.updateStatusRootDomainAgent({
-        status: this.$agentStatus.RUNNING,
+        status: this.$entityStatus.RUNNING,
         idTarget: parseInt(this.$route.params.idTarget),
         idRoot: parseInt(this.$route.params.id),
         idAgent: parseInt(this.selectedAgentId)
       })
-      this.setAgentStatus({ status: this.$agentStatus.RUNNING, id: parseInt(this.selectedAgentId) })
+      this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: parseInt(this.selectedAgentId) })
     },
     orderByNameAsc: function () {
       this.active_arrow_down = true

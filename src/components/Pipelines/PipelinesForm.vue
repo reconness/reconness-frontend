@@ -45,7 +45,7 @@ export default {
       pipeline: {
         name: 'My pipeline',
         date: new Date(),
-        statusRun: false,
+        statusRun: this.$entityStatus.FINISHED,
         agent: [],
         id: -1,
         locations: [],
@@ -205,7 +205,7 @@ export default {
       this.settings_data.agent = []
       this.settings_data.startingAgent = -1
       this.settings_data.id = -1
-      this.settings_data.statusRun = false
+      this.settings_data.statusRun = this.$entityStatus.FINISHED
     }
   }
 }

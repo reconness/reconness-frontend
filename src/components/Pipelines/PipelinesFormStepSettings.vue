@@ -219,7 +219,7 @@ export default {
         id: -1,
         name: '',
         date: new Date(),
-        statusRun: true,
+        statusRun: this.$entityStatus.RUNNING,
         agent: [],
         type: this.$agentType.TARGET
       },
