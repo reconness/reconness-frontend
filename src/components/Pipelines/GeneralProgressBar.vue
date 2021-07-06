@@ -3,10 +3,10 @@
             <div class="col-9 col-sm-10 col-lg-11 m-auto">
               <div class="d-flex justify-content-between">
                 <span class="info-box-text agent-mini-color-gray">Process status</span>
-                <span class="info-box-text agent-mini-color-gray">00:06:00</span>
+                <span class="info-box-text agent-mini-color-gray">{{ time }}</span>
               </div>
               <div class="progress pipeline-run-progress">
-                <div :style="{ width: progressValue+'10%' }" class="progress-bar agent_exec_progress_bar main_reconnes_bg-color"></div>
+                <div :style="{ width: progressValue+'%' }" class="progress-bar agent_exec_progress_bar main_reconnes_bg-color"></div>
               </div>
               <span class="float-right agent-mini-color-gray">waiting</span>
             </div><!-- /.col-9 col-sm-10 col-lg-11 m-auto -->
@@ -24,6 +24,88 @@
             </div> <!-- /.col-3 col-sm-2 col-lg-1 action-panel -->
           </div> <!-- /.row -->
 </template>
+<script>
+import RocketIco from '@/components/Icons/RocketIco.vue'
+import { mapMutations } from 'vuex'
+export default {
+  name: 'GeneralProgressBar',
+  data: function () {
+    return {
+      progressValue: 0,
+      time: '00:00:00',
+      now: 0,
+      timer: null
+    }
+  },
+  components: {
+    RocketIco
+  },
+  emits: ['isrunning'],
+  props: {
+    pipeline: Object
+  },
+  methods: {
+    ...mapMutations('pipelines', ['setPipelineStatus']),
+    executePipeline () {
+      if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
+        this.setPipelineStatus({
+          idPipeline: this.pipeline.id,
+          status: this.$entityStatus.FINISHED
+        })
+        this.stopClock()
+        this.$emit('isrunning', false)
+      } else {
+        this.setPipelineStatus({
+          idPipeline: this.pipeline.id,
+          status: this.$entityStatus.RUNNING
+        })
+        this.playClock()
+        this.$emit('isrunning', true)
+      }
+    },
+    tick () {
+      this.now++
+      let remain = this.now
+      let hours = Math.floor(remain / 3600)
+      let mins = Math.floor(remain / 60)
+      remain -= mins * 60
+      let secs = remain
+
+      if (hours < 10) {
+        hours = '0' + hours
+      }
+      if (mins < 10) {
+        mins = '0' + mins
+      }
+      if (secs < 10) {
+        secs = '0' + secs
+      }
+      this.time = hours + ':' + mins + ':' + secs
+      this.executeProgressBar()
+    },
+    playClock () {
+      this.timer = setInterval(this.tick, 1000)
+    },
+    stopClock () {
+      clearInterval(this.timer)
+      this.now = -1
+      this.progressValue = 0
+      this.time = '00:00:00'
+    },
+    pauseClock () {
+      clearInterval(this.timer)
+      this.timer = null
+    },
+    executeProgressBar () {
+      if (this.progressValue <= 100) {
+        this.progressValue += 5
+      } else {
+        this.progressValue = 0
+      }
+    }
+  }
+}
+</script>
 <style scoped>
 .action-panel span.material-icons.red-font-color{
   font-size: 2.5rem
@@ -55,42 +137,3 @@ div.action-panel-container-run.start-btn svg{
   color: #ffffff;
 }
 </style>
-<script>
-import RocketIco from '@/components/Icons/RocketIco.vue'
-import { mapMutations } from 'vuex'
-export default {
-  name: 'GeneralProgressBar',
-  data: function () {
-    return {
-      progressValue: 0,
-      showStopBtn: false,
-      time: '00:00:00',
-      now: 0,
-      timer: null
-    }
-  },
-  components: {
-    RocketIco
-  },
-  props: {
-    // id: String
-    pipeline: Object
-  },
-  methods: {
-    ...mapMutations('pipelines', ['setPipelineStatus']),
-    executePipeline () {
-      if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
-        this.setPipelineStatus({
-          idPipeline: this.pipeline.id,
-          status: this.$entityStatus.FINISHED
-        })
-      } else {
-        this.setPipelineStatus({
-          idPipeline: this.pipeline.id,
-          status: this.$entityStatus.RUNNING
-        })
-      }
-    }
-  }
-}
-</script>

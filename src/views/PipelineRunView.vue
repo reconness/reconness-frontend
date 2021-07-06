@@ -6,8 +6,8 @@
         <div class="container-fluid pl-0">
         <hr class="mt-1 mb-0" />
         <div class="content">
-          <GeneralProgressBar :pipeline="referencedPipeline"/>
-          <ExecutionAreaPipelineAgent :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
+          <GeneralProgressBar @isrunning="managePipelineRun" :pipeline="referencedPipeline"/>
+          <ExecutionAreaPipelineAgent :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
         </div>
       </div>
     </div>
@@ -26,7 +26,8 @@ export default {
     return {
       progressValue: 0,
       showRunContainer: true,
-      referencedPipeline: null
+      referencedPipeline: null,
+      startRunning: false
     }
   },
   created: function () {
@@ -44,6 +45,11 @@ export default {
   },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById'])
+  },
+  methods: {
+    managePipelineRun (isRunning) {
+      this.startRunning = isRunning
+    }
   }
 }
 </script>

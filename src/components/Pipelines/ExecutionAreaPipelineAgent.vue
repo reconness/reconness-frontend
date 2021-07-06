@@ -33,37 +33,7 @@
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
         </div>
-        <div class="info-box float-left abs-center w-65"
-          :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
-          <div class="row w-100">
-          <!-- <div class="col-6"> -->
-            <div class="info-box-content border-right w-50">
-            <span class="white-text">{{item2.name }}</span>
-            <div class="pipeline-run-play-container">
-              <span class="mr-2 white-text">00:00:00</span>
-              <MotionPlayOutlineIco />
-            </div>
-            <div class="output-container">
-              <span class="mr-2 cursor-pointer white-text">Terminal</span><span class="pl-2 border-left cursor-pointer white-text">Logs</span>
-            </div>
-          </div>
-          <!-- <div class="col-6 m-auto"> -->
-          <span class="info-box-icon process_status_panel container-container-circular-bar">
-            <span class="border container-circular-bar">
-              <div class="circular-bar-container border pipeline-run-execution">
-                <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
-              </div>
-            </span>
-          </span>
-        </div>
-          <!-- <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
-            <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
-            <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item2.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
-          </div> -->
-          <!-- <span class="number float-right ml-1 abs-center"  :style ="{background:item2.background}" >
-            <div><AccountCogIco class="change-font-size"/></div>
-          </span> -->
-        </div>
+        <PipelineAgentMainFront @pipelineAgentDone="processAgentsExecution" :totalItems="AgentsPipelineList.length" :index="index" :indexRunningAgent="indexRunningAgent" :startMainProcess="startMainProcess" :item2="item2"/>
         <div>
           <div>
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
@@ -80,58 +50,38 @@
                       <!-- <div><AccountCogIco class="change-font-size"/></div> -->
                       <!-- </span> -->
                     <!-- </div> -->
-
-                    <div class="info-box float-left abs-center w-131"
-                      :style ="{background:item3.background}" style="position: absolute; left: 7px; top: -4px;">
-                      <div class="row w-100">
-                        <div class="info-box-content border-right">
-                          <span class="white-text">{{item3.name }}</span>
-                          <div class="pipeline-run-play-container">
-                            <span class="mr-2 white-text">00:00:00</span>
-                            <MotionPlayOutlineIco />
-                          </div>
-                          <div class="output-container">
-                            <span class="mr-2 cursor-pointer white-text">Terminal</span><span class="pl-2 border-left cursor-pointer white-text">Logs</span>
-                          </div>
-                        </div>
-                        <span class="info-box-icon process_status_panel container-container-circular-bar">
-                          <span class="border container-circular-bar">
-                            <div class="circular-bar-container border pipeline-run-execution">
-                              <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
-                            </div>
-                          </span>
-                        </span>
-                      <div>
-
-                    <!-- <div  class="workflow-tools info-box">
-                     <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: item3.id})">cancel</span>
-                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', index-1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration" :data-id="item3.id" @click="onEdit">settings</span>
-                    </div>
-                    </div> -->
-                    </div>
-                    </div>
-                    </div>
-                    </div></div>
-        </div>
+                      <PipelineAgentSecondaryFront :item3="item3"/>
                   </div>
-</div>
-      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+                  </div>
+<!-- </div> -->
+      <!-- </div> -->
 </template>
 <script>
 // import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
-import CircleProgress from 'vue3-circle-progress'
+// import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
+// import CircleProgress from 'vue3-circle-progress'
+import PipelineAgentMainFront from '@/components/Pipelines/PipelineAgentMainFront.vue'
+import PipelineAgentSecondaryFront from '@/components/Pipelines/PipelineAgentSecondaryFront.vue'
 export default {
+  data: function () {
+    return {
+      indexRunningAgent: 0
+    }
+  },
   props: {
     AgentsPipelineList: Object,
-    startingAgentId: Number
+    startingAgentId: Number,
+    startMainProcess: Boolean
   },
   components: {
-    // AccountCogIco,
-    MotionPlayOutlineIco,
-    CircleProgress
+    // MotionPlayOutlineIco,
+    // CircleProgress,
+    PipelineAgentMainFront,
+    PipelineAgentSecondaryFront
   },
   computed: {
     associatedAgents () {
@@ -162,17 +112,10 @@ export default {
         }
       }
       return []
+    },
+    processAgentsExecution () {
+      this.indexRunningAgent++
     }
-    // showAdd (selectedIndex) {
-    //   document.getElementById('b' + selectedIndex).classList.remove('invisible')
-    //   document.getElementById('b' + selectedIndex).classList.add('visible')
-    // },
-    // hideAdd (selectedIndex) {
-    //   if (this.$route.name === 'PipelineDetail') {
-    //     document.getElementById('b' + selectedIndex).classList.remove('visible')
-    //     document.getElementById('b' + selectedIndex).classList.add('invisible')
-    //   }
-    // }
   }
 }
 </script>
