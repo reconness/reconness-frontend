@@ -5,9 +5,10 @@
     <div class="content-wrapper">
         <div class="container-fluid pl-0">
         <hr class="mt-1 mb-0" />
-        <div class="content">
-          <GeneralProgressBar @isrunning="managePipelineRun" :pipeline="referencedPipeline" :stopRunnin="stopProcess"/>
-          <ExecutionAreaPipelineAgent @mainFlowExecutionIsDone="stopFlow" :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
+        <div :class="{content: !showTerminal}">
+          <GeneralProgressBar v-if="!showTerminal" @isrunning="managePipelineRun" :pipeline="referencedPipeline" :stopRunnin="stopProcess"/>
+          <TerminalSection v-if="showTerminal" :pipeline="referencedPipeline"/>
+          <ExecutionAreaPipelineAgent v-else @mainFlowExecutionIsDone="stopFlow" :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
         </div>
       </div>
     </div>
@@ -19,6 +20,7 @@ import { mapGetters } from 'vuex'
 import NavBarTwoRunPipeline from '@/components/Pipelines/NavBarTwoRunPipeline.vue'
 import ExecutionAreaPipelineAgent from '@/components/Pipelines/ExecutionAreaPipelineAgent.vue'
 import GeneralProgressBar from '@/components/Pipelines/GeneralProgressBar.vue'
+import TerminalSection from '@/components/Pipelines/TerminalSection.vue'
 
 export default {
   name: 'PipelineRunView',
@@ -28,7 +30,8 @@ export default {
       showRunContainer: true,
       referencedPipeline: null,
       startRunning: false,
-      stopProcess: false
+      stopProcess: false,
+      showTerminal: true
     }
   },
   created: function () {
@@ -37,7 +40,8 @@ export default {
   components: {
     NavBarTwoRunPipeline,
     ExecutionAreaPipelineAgent,
-    GeneralProgressBar
+    GeneralProgressBar,
+    TerminalSection
   },
   props: {
     id: String,

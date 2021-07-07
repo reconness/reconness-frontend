@@ -525,7 +525,6 @@ export default {
       pipelineStored.statusRun = pipeline.status
     },
     setPipelineAgentStatus (state, agent) {
-      console.log(agent)
       const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
       const storedAgent = pipeline.agent.find(item => item.id === agent.idAgent)
       storedAgent.status = agent.status
@@ -537,6 +536,11 @@ export default {
     },
     getIdPipeline (state) {
       return state.idPipeline
+    },
+    getAgentsFromIdPipeline: (state) => (idPipeline) => {
+      const pipeline = state.pipelinesListStore.find(item => item.id === idPipeline)
+      console.log(idPipeline)
+      return pipeline.agent
     }
   }
 }

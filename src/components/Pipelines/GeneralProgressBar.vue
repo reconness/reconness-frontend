@@ -1,6 +1,7 @@
 <template>
     <div class="row ml-3 mr-3 mt-4">
-            <div class="col-9 col-sm-10 col-lg-11 m-auto">
+            <!-- <div class="col-9 col-sm-10 col-lg-11 m-auto"> -->
+            <div class="col-10">
               <div class="d-flex justify-content-between">
                 <span class="info-box-text agent-mini-color-gray">Process status</span>
                 <span class="info-box-text agent-mini-color-gray">{{ time }}</span>
@@ -10,12 +11,13 @@
               </div>
               <span class="float-right agent-mini-color-gray">waiting</span>
             </div><!-- /.col-9 col-sm-10 col-lg-11 m-auto -->
-            <div class="col-3 col-sm-2 col-lg-1 action-panel">
-              <div v-if="this.pipeline.statusRun === $entityStatus.RUNNING" class="action-panel-container action-panel-container-stop d-flex flex-column">
+            <div class="col-2 action-panel">
+            <!-- <div class="col-3 col-sm-2 col-lg-1 action-panel"> -->
+              <div v-if="this.pipeline.statusRun === $entityStatus.RUNNING" class="action-panel-container action-panel-container-stop d-flex w-100 flex-column">
                 <span class="cursor-pointer material-icons red-font-color m-auto" @click="executePipeline">stop</span>
                 <span class="pb-2 m-auto red-font-color">STOP</span>
               </div>
-              <div v-else class="action-panel-container action-panel-container-run d-flex flex-column start-btn">
+              <div v-else class="action-panel-container action-panel-container-run d-flex w-100 flex-column start-btn">
                 <div class="m-auto">
                 <span class="cursor-pointer" @click="executePipeline"><RocketIco /></span>
                 </div>

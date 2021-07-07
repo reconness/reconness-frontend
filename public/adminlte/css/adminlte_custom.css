@@ -947,3 +947,10 @@ div.pipeline_spacing .p-autocomplete-loader{
   position: relative;
   bottom: 26%;
 }
+.pipeline-run-terminal .vue3-circular-progressbar{
+  margin-left: 10%;
+  top: -10%
+}
+.pipeline-run-terminal .vue3-circular-progressbar svg{
+  margin-bottom: 27%;
+}
