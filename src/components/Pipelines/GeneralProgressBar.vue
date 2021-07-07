@@ -40,9 +40,21 @@ export default {
   components: {
     RocketIco
   },
+  watch: {
+    stopRunnin: function (value) {
+      console.log('lester')
+      if (value) {
+        this.stopClock()
+      }
+    }
+  },
   emits: ['isrunning'],
   props: {
-    pipeline: Object
+    pipeline: Object,
+    stopRunnin: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineStatus']),

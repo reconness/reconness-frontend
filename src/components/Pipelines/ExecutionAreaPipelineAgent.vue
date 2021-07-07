@@ -33,7 +33,7 @@
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
         </div>
-        <PipelineAgentMainFront @pipelineAgentDone="processAgentsExecution" :totalItems="AgentsPipelineList.length" :index="index" :indexRunningAgent="indexRunningAgent" :startMainProcess="startMainProcess" :item2="item2"/>
+        <PipelineAgentMainFront @startRunningSons="secondaryProcessAgentsExecution" @pipelineAgentDone="processAgentsExecution" :totalItems="AgentsPipelineList.length" :index="index" :indexRunningAgent="indexRunningAgent" :startMainProcess="startMainProcess" :item2="item2"/>
         <div>
           <div>
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
@@ -50,7 +50,7 @@
                       <!-- <div><AccountCogIco class="change-font-size"/></div> -->
                       <!-- </span> -->
                     <!-- </div> -->
-                      <PipelineAgentSecondaryFront :item3="item3"/>
+                      <PipelineAgentSecondaryFront :index="index1" :item3="item3" :indexParent="index-1" :totalItems="this.getAgentBranch(index-1).length" :indexRunningAgent="indexRunningSecondaryAgent" @pipelineSecondaryAgentDone="processSecondaryAgentExecution" :startSecondaryProcess="isRunningSecondaryProcess"/>
                   </div>
                 </div>
               </div>
@@ -69,11 +69,14 @@ import PipelineAgentSecondaryFront from '@/components/Pipelines/PipelineAgentSec
 export default {
   data: function () {
     return {
-      indexRunningAgent: 0
+      indexRunningAgent: 0,
+      indexRunningSecondaryAgent: 0,
+      isRunningSecondaryProcess: false
     }
   },
+  emits: ['mainFlowExecutionIsDone'],
   props: {
-    AgentsPipelineList: Object,
+    AgentsPipelineList: Array,
     startingAgentId: Number,
     startMainProcess: Boolean
   },
@@ -82,6 +85,14 @@ export default {
     // CircleProgress,
     PipelineAgentMainFront,
     PipelineAgentSecondaryFront
+  },
+  watch: {
+    startMainProcess: function (value) {
+      if (value) {
+        this.indexRunningSecondaryAgent = 0
+        this.indexRunningAgent = 0
+      }
+    }
   },
   computed: {
     associatedAgents () {
@@ -115,6 +126,18 @@ export default {
     },
     processAgentsExecution () {
       this.indexRunningAgent++
+      if (this.indexRunningAgent >= this.AgentsPipelineList.length) {
+        this.$emit('mainFlowExecutionIsDone', true)
+      }
+    },
+    processSecondaryAgentExecution () {
+      this.indexRunningSecondaryAgent++
+      if (this.indexRunningSecondaryAgent >= this.getAgentBranch(this.indexRunningAgent).length) {
+        this.indexRunningSecondaryAgent = 0
+      }
+    },
+    secondaryProcessAgentsExecution (result) {
+      this.isRunningSecondaryProcess = result
     }
   }
 }

@@ -6,7 +6,7 @@ export default {
         id: 1,
         name: 'My Pipeline 1',
         date: '02/04/2021',
-        statusRun: 1,
+        statusRun: 2,
         startingAgent: 1,
         type: 1,
         agent: [
@@ -104,7 +104,7 @@ export default {
         id: 2,
         name: 'My Pipeline 2',
         date: '02/03/2021',
-        statusRun: 1,
+        statusRun: 2,
         startingAgent: 1,
         type: 1,
         agent: [

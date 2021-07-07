@@ -38,11 +38,14 @@ export default {
   props: {
     item2: Object,
     index: Number,
-    startMainProcess: Boolean,
+    startMainProcess: {
+      type: Boolean,
+      default: false
+    },
     indexRunningAgent: Number,
     totalItems: Number
   },
-  emits: ['pipelineAgentDone'],
+  emits: ['pipelineAgentDone', 'startRunningSons'],
   components: {
     MotionPlayOutlineIco,
     CircleProgress
@@ -91,7 +94,7 @@ export default {
   },
   watch: {
     startMainProcess: function (isProcessStarted) {
-      console.log(this.totalItems > this.index)
+      console.log(isProcessStarted)
       if (isProcessStarted && this.index === 0 && this.totalItems > this.index) {
         this.playClock()
         const self = this
@@ -102,7 +105,9 @@ export default {
           },
           5000
         )
+        console.log('ok')
       } else {
+        console.log('stop')
         this.stopClock()
       }
     },
@@ -110,14 +115,25 @@ export default {
       if (this.totalItems > this.index) {
         if (this.index === indexRunning) {
           this.playClock()
-          const self = this
           setTimeout(
             function () {
               self.$emit('pipelineAgentDone', this.index)
               self.stopClock()
             },
-            5000
+            7000
           )
+          const self = this
+          if (this.item2.agentBranch && this.item2.agentBranch.length > 0) {
+            self.$emit('startRunningSons', true)
+          } else {
+            setTimeout(
+              function () {
+                self.$emit('pipelineAgentDone', this.index)
+                self.stopClock()
+              },
+              5000
+            )
+          }
         } else {
           // this.stopClock()
         }

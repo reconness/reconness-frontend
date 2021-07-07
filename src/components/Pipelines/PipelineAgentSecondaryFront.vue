@@ -5,7 +5,7 @@
         <div class="info-box-content border-right w-50">
             <span class="white-text">{{item3.name }}</span>
             <div class="pipeline-run-play-container">
-            <span class="mr-2 white-text">00:00:00</span>
+            <span class="mr-2 white-text">{{time}}</span>
             <MotionPlayOutlineIco />
             </div>
             <div class="output-container">
@@ -15,7 +15,7 @@
         <span class="info-box-icon process_status_panel container-container-circular-bar">
             <span class="border container-circular-bar">
             <div class="circular-bar-container border pipeline-run-execution">
-                <CircleProgress :percent="0" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
             </div>
             </span>
         </span> <!-- /.info-box-icon process_status_panel container-container-circular-bar -->
@@ -31,9 +31,101 @@ export default {
     MotionPlayOutlineIco,
     CircleProgress
   },
+  data: function () {
+    return {
+      progressValue: 0,
+      time: '00:00:00',
+      now: 0,
+      timer: null
+    }
+  },
   props: {
     item3: Object,
-    index3: Number
+    indexParent: Number,
+    totalItems: Number,
+    indexRunningAgent: Number,
+    startSecondaryProcess: Boolean,
+    index: Number
+  },
+  emits: ['pipelineSecondaryAgentDone'],
+  watch: {
+    startSecondaryProcess: function (isRunning) {
+      if (isRunning) {
+        this.playClock()
+        const self = this
+        setTimeout(
+          function () {
+            self.stopClock()
+            self.$emit('pipelineSecondaryAgentDone', true)
+          },
+          5000
+        )
+      } else {
+        this.stopClock()
+      }
+    },
+    indexRunningAgent: function (indexRunning) {
+      if (this.totalItems > indexRunning) {
+        if (this.index === indexRunning) {
+          this.playClock()
+          const self = this
+          setTimeout(
+            function () {
+              self.stopClock()
+              self.$emit('pipelineSecondaryAgentDone', true)
+              console.log('yeahh')
+            },
+            5000
+          )
+        }
+      } else {
+        this.stopClock()
+        this.$emit('pipelineSecondaryAgentDone', true)
+      }
+      console.log('indexRunning')
+    }
+  },
+  methods: {
+    tick () {
+      this.now++
+      let remain = this.now
+      let hours = Math.floor(remain / 3600)
+      let mins = Math.floor(remain / 60)
+      remain -= mins * 60
+      let secs = remain
+
+      if (hours < 10) {
+        hours = '0' + hours
+      }
+      if (mins < 10) {
+        mins = '0' + mins
+      }
+      if (secs < 10) {
+        secs = '0' + secs
+      }
+      this.time = hours + ':' + mins + ':' + secs
+      this.executeProgressBar()
+    },
+    playClock () {
+      this.timer = setInterval(this.tick, 1000)
+    },
+    stopClock () {
+      clearInterval(this.timer)
+      this.now = -1
+      this.progressValue = 0
+      this.time = '00:00:00'
+    },
+    pauseClock () {
+      clearInterval(this.timer)
+      this.timer = null
+    },
+    executeProgressBar () {
+      if (this.progressValue <= 100) {
+        this.progressValue += 5
+      } else {
+        this.progressValue = 0
+      }
+    }
   }
 }
 </script>
