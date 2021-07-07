@@ -15,7 +15,7 @@
             <span class="info-box-icon process_status_panel container-container-circular-bar">
               <span class="border container-circular-bar">
                 <div class="circular-bar-container border pipeline-run-execution">
-                  <CircleProgress v-if="indexRunning < this.index" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                  <CircleProgress v-if="item2.status === this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
                   <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
                 </div>
               </span>
@@ -26,6 +26,7 @@
 <script>
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import CircleProgress from 'vue3-circle-progress'
+import { mapMutations } from 'vuex'
 export default {
   name: 'PipelineAgentMainFront',
   data: function () {
@@ -52,6 +53,7 @@ export default {
     CircleProgress
   },
   methods: {
+    ...mapMutations('pipelines', ['setPipelineAgentStatus']),
     tick () {
       this.now++
       let remain = this.now
@@ -102,6 +104,11 @@ export default {
         setTimeout(
           function () {
             self.$emit('pipelineAgentDone', this.index)
+            self.setPipelineAgentStatus({
+              idAgent: self.item2.id,
+              idPipeline: parseInt(self.$route.params.id),
+              status: self.$entityStatus.RUNNING
+            })
             self.stopClock()
           },
           5000

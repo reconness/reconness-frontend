@@ -523,6 +523,12 @@ export default {
     setPipelineStatus (state, pipeline) {
       const pipelineStored = state.pipelinesListStore.find(item => item.id === pipeline.idPipeline)
       pipelineStored.statusRun = pipeline.status
+    },
+    setPipelineAgentStatus (state, agent) {
+      console.log(agent)
+      const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
+      const storedAgent = pipeline.agent.find(item => item.id === agent.idAgent)
+      storedAgent.status = agent.status
     }
   },
   getters: {
