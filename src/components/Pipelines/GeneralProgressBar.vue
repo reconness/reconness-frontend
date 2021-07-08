@@ -28,7 +28,7 @@
 </template>
 <script>
 import RocketIco from '@/components/Icons/RocketIco.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'GeneralProgressBar',
   data: function () {
@@ -42,24 +42,27 @@ export default {
   components: {
     RocketIco
   },
+  computed: {
+    ...mapState('pipelines', ['agentParentRunningIndex'])
+  },
   watch: {
-    stopRunnin: function (value) {
-      console.log('lester')
-      if (value) {
+    agentParentRunningIndex: function (parentIndex) {
+      if (this.agentParentRunningIndex >= this.pipeline.agent.length) {
         this.stopClock()
+        this.setPipelineAgentParentIndex(-1)
       }
     }
   },
-  emits: ['isrunning'],
+  // emits: ['isrunning'],
   props: {
-    pipeline: Object,
-    stopRunnin: {
-      type: Boolean,
-      default: false
-    }
+    pipeline: Object
+    // stopRunnin: {
+    //   type: Boolean,
+    //   default: false
+    // }
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineStatus']),
+    ...mapMutations('pipelines', ['setPipelineStatus', 'setPipelineAgentParentIndex']),
     executePipeline () {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
         this.setPipelineStatus({
@@ -67,14 +70,19 @@ export default {
           status: this.$entityStatus.FINISHED
         })
         this.stopClock()
-        this.$emit('isrunning', false)
+        this.setPipelineAgentParentIndex(-1)
+        // this.$emit('isrunning', false)
+        console.log(this.agentParentRunningIndex)
       } else {
         this.setPipelineStatus({
           idPipeline: this.pipeline.id,
           status: this.$entityStatus.RUNNING
         })
         this.playClock()
-        this.$emit('isrunning', true)
+        console.log(this.agentParentRunningIndex)
+        this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)
+        console.log(this.agentParentRunningIndex)
+        // this.$emit('isrunning', true)
       }
     },
     tick () {

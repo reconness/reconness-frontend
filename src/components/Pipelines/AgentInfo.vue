@@ -3,7 +3,7 @@
         <div class="info-box-content">
         <div class="border-right">
             <span class="info-box-text mb-2 font-weight-bold overflow-visible white-text">{{agent.name}}</span>
-            <span class="mr-1 white-text">00:00:00</span>
+            <span class="mr-1 white-text">{{time}}</span>
             <MotionPlayOutlineIco />
             <div class="mt-2 output-selector pr-2">
             <span @click="is_terminal_open = true" class="mr-2 cursor-pointer white-text">Terminal</span><span @click="is_terminal_open = false" class="pl-2 border-left cursor-pointer white-text">Logs</span>
@@ -22,6 +22,7 @@
 </template>
 <script>
 import CircleProgress from 'vue3-circle-progress'
+import { mapState, mapMutations } from 'vuex'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 export default {
   name: 'AgentInfo',
@@ -29,8 +30,105 @@ export default {
     CircleProgress,
     MotionPlayOutlineIco
   },
+  data: function () {
+    return {
+      progressValue: 0,
+      time: '00:00:00',
+      now: 0,
+      timer: null
+    }
+  },
+  watch: {
+    agentParentRunningIndex: function (indexParentAgent) {
+      console.log('yeahh!!')
+      if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
+        console.log('pipeline')
+        if (this.index === this.agentParentRunningIndex) {
+          this.setPipelineAgentParentStatusByIndex({
+            idPipeline: this.pipeline.id,
+            index: this.index,
+            status: this.$entityStatus.RUNNING
+          })
+          this.playClock()
+          console.log('agent index')
+          if (this.agent.agentBranch.length > 0) {
+            console.log('hijos+')
+            this.setPipelineAgentChildIndex(this.agentChildRunningIndex + 1)
+            // this.agent.status = this.$entityStatus.RUNNING
+          } else {
+            const self = this
+            setTimeout(
+              function () {
+                self.setPipelineAgentParentStatusByIndex({
+                  idPipeline: self.pipeline.id,
+                  index: self.index,
+                  status: self.$entityStatus.FINISHED
+                })
+                if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
+                  self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
+                }
+                self.stopClock()
+              },
+              5000
+            )
+          }
+        }
+      }
+    }
+  },
   props: {
-    agent: Object
+    agent: Object,
+    pipeline: Object,
+    index: {
+      type: Number,
+      default: -1
+    }
+  },
+  computed: {
+    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex'])
+  },
+  methods: {
+    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex']),
+    tick () {
+      this.now++
+      let remain = this.now
+      let hours = Math.floor(remain / 3600)
+      let mins = Math.floor(remain / 60)
+      remain -= mins * 60
+      let secs = remain
+
+      if (hours < 10) {
+        hours = '0' + hours
+      }
+      if (mins < 10) {
+        mins = '0' + mins
+      }
+      if (secs < 10) {
+        secs = '0' + secs
+      }
+      this.time = hours + ':' + mins + ':' + secs
+      this.executeProgressBar()
+    },
+    playClock () {
+      this.timer = setInterval(this.tick, 1000)
+    },
+    stopClock () {
+      clearInterval(this.timer)
+      this.now = -1
+      this.progressValue = 0
+      this.time = '00:00:00'
+    },
+    pauseClock () {
+      clearInterval(this.timer)
+      this.timer = null
+    },
+    executeProgressBar () {
+      if (this.progressValue <= 100) {
+        this.progressValue += 5
+      } else {
+        this.progressValue = 0
+      }
+    }
   }
 }
 </script>

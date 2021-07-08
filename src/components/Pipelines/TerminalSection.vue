@@ -19,7 +19,7 @@
         </div>
         <div class="col-4">
           <div class="terminal-run-agents-container pl-2 pr-2 pt-3 pb-3 h-100">
-            <AgentInfo v-for="agent of getAgentsFromIdPipeline(this.pipeline.id)" :key="agent.id" :agent="agent"/>
+            <AgentInfo v-for="(agent, index) of getAgentsFromIdPipeline(this.pipeline.id)" :key="agent.id" :index="index" :agent="agent" :pipeline="pipeline"/>
           </div>
       </div>
     </div>

@@ -80,7 +80,8 @@ export default {
     app.config.globalProperties.$entityStatus = Object.freeze(
       {
         RUNNING: 1,
-        FINISHED: 2
+        FINISHED: 2,
+        WAITING: 3
       }
     )
 

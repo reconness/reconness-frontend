@@ -6,7 +6,7 @@
         <div class="container-fluid pl-0">
         <hr class="mt-1 mb-0" />
         <div :class="{content: !showTerminal}">
-          <GeneralProgressBar v-if="!showTerminal" @isrunning="managePipelineRun" :pipeline="referencedPipeline" :stopRunnin="stopProcess"/>
+          <GeneralProgressBar v-if="!showTerminal" :pipeline="referencedPipeline"/>
           <TerminalSection v-if="showTerminal" :pipeline="referencedPipeline"/>
           <ExecutionAreaPipelineAgent v-else @mainFlowExecutionIsDone="stopFlow" :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
         </div>

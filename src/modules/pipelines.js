@@ -380,7 +380,9 @@ export default {
     branchFather: -1,
     idFather: -1,
     idSon: -1,
-    addStartingAgent: false
+    addStartingAgent: false,
+    agentParentRunningIndex: -1,
+    agentChildRunningIndex: -1
   },
   mutations: {
     changeIsBranchFather (state, value) {
@@ -528,6 +530,17 @@ export default {
       const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
       const storedAgent = pipeline.agent.find(item => item.id === agent.idAgent)
       storedAgent.status = agent.status
+    },
+    setPipelineAgentParentStatusByIndex (state, agent) {
+      const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
+      const storedAgent = pipeline.agent[agent.index]
+      storedAgent.status = agent.status
+    },
+    setPipelineAgentParentIndex (state, index) {
+      state.agentParentRunningIndex = index
+    },
+    setPipelineAgentChildIndex (state, index) {
+      state.agentChildRunningIndex = index
     }
   },
   getters: {
@@ -539,7 +552,6 @@ export default {
     },
     getAgentsFromIdPipeline: (state) => (idPipeline) => {
       const pipeline = state.pipelinesListStore.find(item => item.id === idPipeline)
-      console.log(idPipeline)
       return pipeline.agent
     }
   }
