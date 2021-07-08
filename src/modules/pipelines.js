@@ -552,7 +552,14 @@ export default {
     },
     getAgentsFromIdPipeline: (state) => (idPipeline) => {
       const pipeline = state.pipelinesListStore.find(item => item.id === idPipeline)
-      return pipeline.agent
+      const mergedAgents = []
+      pipeline.agent.forEach(agent => {
+        mergedAgents.push(agent)
+        if (agent.agentBranch.length > 0) {
+          mergedAgents.push.apply(mergedAgents, agent.agentBranch)
+        }
+      })
+      return mergedAgents
     }
   }
 }
