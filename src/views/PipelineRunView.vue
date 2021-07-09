@@ -5,9 +5,9 @@
     <div class="content-wrapper">
         <div class="container-fluid pl-0">
         <hr class="mt-1 mb-0" />
-        <div :class="{content: !showTerminal}">
-          <GeneralProgressBar v-if="!showTerminal" :pipeline="referencedPipeline"/>
-          <TerminalSection v-if="showTerminal" :pipeline="referencedPipeline"/>
+        <div :class="{content: isTerminalHided}">
+          <GeneralProgressBar v-if="isTerminalHided" :pipeline="referencedPipeline"/>
+          <TerminalSection v-if="!isTerminalHided" :pipeline="referencedPipeline"/>
           <ExecutionAreaPipelineAgent v-else @mainFlowExecutionIsDone="stopFlow" :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
         </div>
       </div>
@@ -16,7 +16,7 @@
 </template>
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import NavBarTwoRunPipeline from '@/components/Pipelines/NavBarTwoRunPipeline.vue'
 import ExecutionAreaPipelineAgent from '@/components/Pipelines/ExecutionAreaPipelineAgent.vue'
 import GeneralProgressBar from '@/components/Pipelines/GeneralProgressBar.vue'
@@ -30,8 +30,7 @@ export default {
       showRunContainer: true,
       referencedPipeline: null,
       startRunning: false,
-      stopProcess: false,
-      showTerminal: true
+      stopProcess: false
     }
   },
   created: function () {
@@ -49,7 +48,8 @@ export default {
     startingAgentId: Number
   },
   computed: {
-    ...mapGetters('pipelines', ['getPipelineById'])
+    ...mapGetters('pipelines', ['getPipelineById']),
+    ...mapState('pipelines', ['isTerminalHided'])
   },
   methods: {
     managePipelineRun (isRunning) {

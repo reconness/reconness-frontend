@@ -14,6 +14,7 @@
         <span class="border container-circular-bar">
         <div class="circular-bar-container border pipeline-run-terminal">
         <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+        <!-- <span style="opacity:0.2" v-else class="material-icons white-text">done</span> -->
         </div>
     </span>
     </span>
@@ -22,7 +23,7 @@
 </template>
 <script>
 import CircleProgress from 'vue3-circle-progress'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 export default {
   name: 'AgentInfo',
@@ -40,9 +41,7 @@ export default {
   },
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
-      console.log('yeahh!!')
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
-        console.log('pipeline')
         if (this.index === this.agentParentRunningIndex) {
           this.setPipelineAgentParentStatusByIndex({
             idPipeline: this.pipeline.id,
@@ -50,11 +49,8 @@ export default {
             status: this.$entityStatus.RUNNING
           })
           this.playClock()
-          console.log('agent index')
           if (this.agent.agentBranch.length > 0) {
-            console.log('hijos+')
             this.setPipelineAgentChildIndex(this.agentChildRunningIndex + 1)
-            // this.agent.status = this.$entityStatus.RUNNING
           } else {
             const self = this
             setTimeout(
@@ -74,6 +70,38 @@ export default {
           }
         }
       }
+    },
+    agentChildRunningIndex: function (indexChildAgent) {
+      if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
+        console.log(this.index)
+        // console.log(this.indexChildAgent === this.calculateOriginalIndexAgent(this.index))
+        if (this.agentChildRunningIndex === this.calculateOriginalIndexAgent(this.index)) {
+          this.setPipelineAgentChildStatusByIndex({
+            idPipeline: this.pipeline.id,
+            indexParent: this.agentParentRunningIndex,
+            indexChild: this.agentChildRunningIndex,
+            status: this.$entityStatus.RUNNING
+          })
+          console.log(this.agent)
+          this.playClock()
+          const self = this
+          setTimeout(
+            function () {
+              self.setPipelineAgentChildStatusByIndex({
+                idPipeline: self.pipeline.id,
+                indexParent: self.agentParentRunningIndex,
+                indexChild: self.agentChildRunningIndex,
+                status: self.$entityStatus.FINISHED
+              })
+              // if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
+              //   self.setPipelineAgentChildIndex(self.agentChildRunningIndex + 1)
+              // }
+              self.stopClock()
+            },
+            5000
+          )
+        }
+      }
     }
   },
   props: {
@@ -85,10 +113,11 @@ export default {
     }
   },
   computed: {
-    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex'])
+    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex']),
+    ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex']),
+    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex']),
     tick () {
       this.now++
       let remain = this.now
@@ -127,6 +156,32 @@ export default {
         this.progressValue += 5
       } else {
         this.progressValue = 0
+      }
+    },
+    calculateOriginalIndexAgent (currentIndex) {
+      console.log(currentIndex)
+      let counter = -1
+      let i = 0
+      let j
+      const agents = this.getPipelineById(this.pipeline.id).agent
+      while (i < agents.length && counter !== currentIndex) {
+        counter++
+        if (agents[i].agentBranch.length > 0) {
+          j = 0
+          while (j < agents[i].agentBranch.length && counter !== currentIndex) {
+            j++
+            counter++
+          }
+          if (j < agents[i].agentBranch.length) {
+            return j
+          }
+        }
+        i++
+      }
+      if (i < agents.length) {
+        return i
+      } else {
+        return -1
       }
     }
   }

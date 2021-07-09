@@ -53,13 +53,8 @@ export default {
       }
     }
   },
-  // emits: ['isrunning'],
   props: {
     pipeline: Object
-    // stopRunnin: {
-    //   type: Boolean,
-    //   default: false
-    // }
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineStatus', 'setPipelineAgentParentIndex']),
@@ -71,7 +66,6 @@ export default {
         })
         this.stopClock()
         this.setPipelineAgentParentIndex(-1)
-        // this.$emit('isrunning', false)
         console.log(this.agentParentRunningIndex)
       } else {
         this.setPipelineStatus({
@@ -82,7 +76,6 @@ export default {
         console.log(this.agentParentRunningIndex)
         this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)
         console.log(this.agentParentRunningIndex)
-        // this.$emit('isrunning', true)
       }
     },
     tick () {
