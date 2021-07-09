@@ -9,7 +9,8 @@
               <div class="progress pipeline-run-progress">
                 <div :style="{ width: progressValue+'%' }" class="progress-bar agent_exec_progress_bar main_reconnes_bg-color"></div>
               </div>
-              <span class="float-right agent-mini-color-gray">waiting</span>
+              <span v-if="pipeline.statusRun === $entityStatus.RUNNING" class="float-right agent-mini-color-gray">running</span>
+              <span v-else class="float-right agent-mini-color-gray">waiting</span>
             </div><!-- /.col-9 col-sm-10 col-lg-11 m-auto -->
             <div class="col-2 action-panel">
             <!-- <div class="col-3 col-sm-2 col-lg-1 action-panel"> -->
@@ -19,9 +20,11 @@
               </div>
               <div v-else class="action-panel-container action-panel-container-run d-flex w-100 flex-column start-btn">
                 <div class="m-auto">
-                <span class="cursor-pointer" @click="executePipeline"><RocketIco /></span>
+                <span :class="{isLinkDisabled: !areLocationsAssigned, 'cursor-pointer': areLocationsAssigned }" @click="executePipeline"><RocketIco /></span>
                 </div>
-                <span class="pb-2 m-auto white-font-color">RUN</span>
+                <div :class="{isLinkDisabled: !areLocationsAssigned, 'cursor-pointer': areLocationsAssigned }" class="m-auto pb-2">
+                <span class="white-font-color">RUN</span>
+                </div>
               </div>
             </div> <!-- /.col-3 col-sm-2 col-lg-1 action-panel -->
           </div> <!-- /.row -->
@@ -43,7 +46,10 @@ export default {
     RocketIco
   },
   computed: {
-    ...mapState('pipelines', ['agentParentRunningIndex'])
+    ...mapState('pipelines', ['agentParentRunningIndex']),
+    areLocationsAssigned () {
+      return (this.pipeline.locations.length > 1 || !this.$validateIsBlank(this.pipeline.locations[0].name))
+    }
   },
   watch: {
     agentParentRunningIndex: function (parentIndex) {
