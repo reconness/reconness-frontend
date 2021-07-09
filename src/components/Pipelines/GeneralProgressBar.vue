@@ -18,7 +18,7 @@
                 <span class="cursor-pointer material-icons red-font-color m-auto" @click="executePipeline">stop</span>
                 <span class="pb-2 m-auto red-font-color">STOP</span>
               </div>
-              <div v-else class="action-panel-container action-panel-container-run d-flex w-100 flex-column start-btn">
+              <div v-else @mouseover="toggle" class="action-panel-container action-panel-container-run d-flex w-100 flex-column start-btn">
                 <div class="m-auto">
                 <span :class="{isLinkDisabled: !areLocationsAssigned, 'cursor-pointer': areLocationsAssigned }" @click="executePipeline"><RocketIco /></span>
                 </div>
@@ -27,10 +27,14 @@
                 </div>
               </div>
             </div> <!-- /.col-3 col-sm-2 col-lg-1 action-panel -->
+            <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel_disabled"  >
+              <small class="font-weight-bold">You need to define a location before execute the pipeline</small>
+            </OverlayPanel>
           </div> <!-- /.row -->
 </template>
 <script>
 import RocketIco from '@/components/Icons/RocketIco.vue'
+import OverlayPanel from 'primevue/overlaypanel'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'GeneralProgressBar',
@@ -43,7 +47,8 @@ export default {
     }
   },
   components: {
-    RocketIco
+    RocketIco,
+    OverlayPanel
   },
   computed: {
     ...mapState('pipelines', ['agentParentRunningIndex']),
@@ -72,16 +77,13 @@ export default {
         })
         this.stopClock()
         this.setPipelineAgentParentIndex(-1)
-        console.log(this.agentParentRunningIndex)
       } else {
         this.setPipelineStatus({
           idPipeline: this.pipeline.id,
           status: this.$entityStatus.RUNNING
         })
         this.playClock()
-        console.log(this.agentParentRunningIndex)
         this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)
-        console.log(this.agentParentRunningIndex)
       }
     },
     tick () {
@@ -123,6 +125,11 @@ export default {
       } else {
         this.progressValue = 0
       }
+    },
+    toggle (event) {
+      if (!this.areLocationsAssigned) {
+        this.$refs.op.toggle(event)
+      }
     }
   }
 }
@@ -155,6 +162,6 @@ div.action-panel-container-run.start-btn svg{
 }
 
 .white-font-color{
-  color: #ffffff;
+  color: #ffffff !important;
 }
 </style>
