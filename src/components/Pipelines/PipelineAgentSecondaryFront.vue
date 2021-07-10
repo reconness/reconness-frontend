@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="info-box float-left abs-center w-131"
         :style ="{background:item3.background}" style="position: absolute; left: 7px; top: -4px;">
         <div class="row w-100">
@@ -9,7 +10,7 @@
             <MotionPlayOutlineIco />
             </div>
             <div class="output-container">
-            <span class="mr-2 cursor-pointer white-text">Terminal</span><span class="pl-2 border-left cursor-pointer white-text">Logs</span>
+            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name">Logs</span>
             </div>
         </div><!-- /.info-box-content border-right w-50 -->
         <span class="info-box-icon process_status_panel container-container-circular-bar">
@@ -21,15 +22,19 @@
         </span> <!-- /.info-box-icon process_status_panel container-container-circular-bar -->
         <div><!-- /.row w-100 -->
     </div></div></div> <!-- /.info-box float-left abs-center w-131 -->
+    <AgentExecution :id-agent="item3.id" :name-agent="item3.name" :status="item3.status"/>
+    </div>
 </template>
 <script>
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import CircleProgress from 'vue3-circle-progress'
+import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'PipelineAgentSecondaryFront',
   components: {
     MotionPlayOutlineIco,
-    CircleProgress
+    CircleProgress,
+    AgentExecution
   },
   data: function () {
     return {
