@@ -6,7 +6,7 @@
             <span class="mr-1 white-text">{{time}}</span>
             <MotionPlayOutlineIco />
             <div class="mt-2 output-selector pr-2">
-            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm">Logs</span>
+            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" @click="setAgent(agent)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" @click="setAgent(agent)">Logs</span>
             </div>
         </div>
         </div>
@@ -19,20 +19,18 @@
     </span>
     </span>
     <!-- /.info-box-content -->
-    <AgentExecution :id-agent="agent.id" :name-agent="agent.name" :status="agent.status"/>
 </div>
 </template>
 <script>
 import CircleProgress from 'vue3-circle-progress'
 import { mapState, mapMutations, mapGetters } from 'vuex'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
-import AgentExecution from '@/components/Target/AgentExecution.vue'
+
 export default {
   name: 'AgentInfo',
   components: {
     CircleProgress,
-    MotionPlayOutlineIco,
-    AgentExecution
+    MotionPlayOutlineIco
   },
   data: function () {
     return {
@@ -76,8 +74,6 @@ export default {
     },
     agentChildRunningIndex: function (indexChildAgent) {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
-        console.log(this.index)
-        // console.log(this.indexChildAgent === this.calculateOriginalIndexAgent(this.index))
         if (this.agentChildRunningIndex === this.calculateOriginalIndexAgent(this.index)) {
           this.setPipelineAgentChildStatusByIndex({
             idPipeline: this.pipeline.id,
@@ -85,7 +81,6 @@ export default {
             indexChild: this.agentChildRunningIndex,
             status: this.$entityStatus.RUNNING
           })
-          console.log(this.agent)
           this.playClock()
           const self = this
           setTimeout(
@@ -120,7 +115,7 @@ export default {
     ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex']),
+    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent']),
     tick () {
       this.now++
       let remain = this.now
@@ -162,7 +157,6 @@ export default {
       }
     },
     calculateOriginalIndexAgent (currentIndex) {
-      console.log(currentIndex)
       let counter = -1
       let i = 0
       let j

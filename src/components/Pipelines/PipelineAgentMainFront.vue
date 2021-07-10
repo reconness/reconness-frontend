@@ -1,5 +1,5 @@
 <template>
-<div>
+<!-- <div> -->
     <div class="info-box float-left abs-center w-65"
           :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
           <div class="row w-100">
@@ -10,7 +10,7 @@
                 <MotionPlayOutlineIco />
               </div> <!-- /.pipeline-run-play-container -->
               <div class="output-container">
-                <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name">Logs</span>
+                <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgent(item2)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgent(item2)">Logs</span>
               </div>
             </div> <!-- /.info-box-content border-right w-50 -->
             <span class="info-box-icon process_status_panel container-container-circular-bar">
@@ -23,14 +23,13 @@
             </span> <!-- ./ info-box-icon process_status_panel container-container-circular-bar -->
           </div> <!-- ./ row w-100 -->
         </div> <!-- ./info-box float-left abs-center w-65 -->
-        <AgentExecution :id-agent="item2.id" :name-agent="item2.name" :status="item2.status"/>
-        </div>
+        <!-- <AgentExecution :id-agent="item2.id" :name-agent="item2.name" :status="item2.status" :color="item2.background"/>
+        </div> -->
 </template>
 <script>
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import CircleProgress from 'vue3-circle-progress'
 import { mapMutations } from 'vuex'
-import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'PipelineAgentMainFront',
   data: function () {
@@ -54,11 +53,10 @@ export default {
   emits: ['pipelineAgentDone', 'startRunningSons'],
   components: {
     MotionPlayOutlineIco,
-    CircleProgress,
-    AgentExecution
+    CircleProgress
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentStatus']),
+    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent']),
     tick () {
       this.now++
       let remain = this.now
@@ -102,7 +100,6 @@ export default {
   },
   watch: {
     startMainProcess: function (isProcessStarted) {
-      console.log(isProcessStarted)
       if (isProcessStarted && this.index === 0 && this.totalItems > this.index) {
         this.playClock()
         const self = this
@@ -118,9 +115,7 @@ export default {
           },
           5000
         )
-        console.log('ok')
       } else {
-        console.log('stop')
         this.stopClock()
       }
     },

@@ -7,7 +7,7 @@
                    <div class="modal-body">
                           <div class="row">
                             <div class="col-12 col-sm-5 col-md-6 col-lg-4">
-                                <div class="info-box agent_info_panel">
+                                <div class="info-box agent_info_panel" v-bind:style ="{background: color}">
                                     <div class="info-box-content">
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold overflow-visible">{{ nameAgent }}</span>
@@ -198,6 +198,10 @@ export default {
     status: {
       type: Number,
       default: 2
+    },
+    color: {
+      type: String,
+      default: ''
     }
   },
   watch: {

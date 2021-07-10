@@ -12,6 +12,7 @@
         </div>
       </div>
     </div>
+    <AgentExecution :id-agent="agent.id" :name-agent="agent.name" :status="agent.status" :color="agent.background"/>
   </div>
 </template>
 <script>
@@ -21,6 +22,7 @@ import NavBarTwoRunPipeline from '@/components/Pipelines/NavBarTwoRunPipeline.vu
 import ExecutionAreaPipelineAgent from '@/components/Pipelines/ExecutionAreaPipelineAgent.vue'
 import GeneralProgressBar from '@/components/Pipelines/GeneralProgressBar.vue'
 import TerminalSection from '@/components/Pipelines/TerminalSection.vue'
+import AgentExecution from '@/components/Target/AgentExecution.vue'
 
 export default {
   name: 'PipelineRunView',
@@ -40,7 +42,8 @@ export default {
     NavBarTwoRunPipeline,
     ExecutionAreaPipelineAgent,
     GeneralProgressBar,
-    TerminalSection
+    TerminalSection,
+    AgentExecution
   },
   props: {
     id: String,
@@ -49,7 +52,7 @@ export default {
   },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById']),
-    ...mapState('pipelines', ['isTerminalHided'])
+    ...mapState('pipelines', ['isTerminalHided', 'agent'])
   },
   methods: {
     managePipelineRun (isRunning) {

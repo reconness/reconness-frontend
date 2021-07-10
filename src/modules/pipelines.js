@@ -383,7 +383,8 @@ export default {
     addStartingAgent: false,
     agentParentRunningIndex: -1,
     agentChildRunningIndex: -1,
-    isTerminalHided: true
+    isTerminalHided: true,
+    agent: Object
   },
   mutations: {
     changeIsBranchFather (state, value) {
@@ -540,8 +541,6 @@ export default {
     setPipelineAgentChildStatusByIndex (state, agent) {
       const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
       const storedAgentInBranch = pipeline.agent[agent.indexParent].agentBranch[agent.indexChild]
-      console.log(pipeline.agent[agent.indexParent])
-      console.log(agent.indexChild)
       storedAgentInBranch.status = agent.status
     },
     setPipelineAgentParentIndex (state, index) {
@@ -552,6 +551,9 @@ export default {
     },
     hideTerminal (state, hide) {
       state.isTerminalHided = hide
+    },
+    setAgent (state, agent) {
+      state.agent = agent
     }
   },
   getters: {
@@ -570,7 +572,6 @@ export default {
           mergedAgents.push.apply(mergedAgents, agent.agentBranch)
         }
       })
-      console.log(mergedAgents)
       return mergedAgents
     }
   }
