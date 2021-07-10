@@ -6,7 +6,7 @@
             <span class="mr-1 white-text">{{time}}</span>
             <MotionPlayOutlineIco />
             <div class="mt-2 output-selector pr-2">
-            <span @click="is_terminal_open = true" class="mr-2 cursor-pointer white-text">Terminal</span><span @click="is_terminal_open = false" class="pl-2 border-left cursor-pointer white-text">Logs</span>
+            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm">Logs</span>
             </div>
         </div>
         </div>
@@ -19,17 +19,20 @@
     </span>
     </span>
     <!-- /.info-box-content -->
+    <AgentExecution :id-agent="agent.id" :name-agent="agent.name" :status="agent.status"/>
 </div>
 </template>
 <script>
 import CircleProgress from 'vue3-circle-progress'
 import { mapState, mapMutations, mapGetters } from 'vuex'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
+import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'AgentInfo',
   components: {
     CircleProgress,
-    MotionPlayOutlineIco
+    MotionPlayOutlineIco,
+    AgentExecution
   },
   data: function () {
     return {

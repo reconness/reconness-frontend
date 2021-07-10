@@ -539,8 +539,6 @@ export default {
     },
     setPipelineAgentChildStatusByIndex (state, agent) {
       const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
-      // console.log(agent)
-      // console.log(pipeline.agent[agent.indexParent].agentBranch[agent.indexChild])
       const storedAgentInBranch = pipeline.agent[agent.indexParent].agentBranch[agent.indexChild]
       console.log(pipeline.agent[agent.indexParent])
       console.log(agent.indexChild)
@@ -572,6 +570,7 @@ export default {
           mergedAgents.push.apply(mergedAgents, agent.agentBranch)
         }
       })
+      console.log(mergedAgents)
       return mergedAgents
     }
   }

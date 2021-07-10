@@ -1,14 +1,5 @@
 <template>
   <div class="row force-scroll mt-4">
-    <!-- <div v-if="(Object.keys(this.AgentsPipelineList).length === 0 ||  this.AgentsPipelineList[0].id !== this.startingAgentId)" class="col-3 p-0">
-      <div class="info-box-background w-85 float-left abs-center" style="position: relative; left: 0px; top: -1px;">
-        <span data-toggle="modal" data-target="#pipelinesModalForm"
-          @click="this.$store.commit('pipelines/changeValueStartPoint', true)"
-          class="cursor-pointer"> Add starting agent</span>
-      </div>
-      <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}"  class="mt-3 margin-center abs-center border-top w-15"  style="color:black!important;border: 1px solid; float:left"> </div>
-      <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}" class="mt-3 black-circle">  </div>
-    </div> -->
     <div v-for="(item2,index) of associatedAgents" :key="item2.id" class="col-5"
       :class="{'p-0': true}"
       style="position: relative;">
@@ -41,15 +32,6 @@
               <div class="info-box-background float-left w-131" style="position: relative; left: 0px; top: -1px;"></div>
                 <div :class="{'invisible': index1+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
                   <div v-if="index1+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
-                    <!-- <div class="info-box float-left abs-center w-65" :style ="{background:item3.background}" style="position: relative; left: 7px; top: -89px;"> -->
-                      <!-- <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right"> -->
-                        <!-- <span class="info-box-text  text-custom agent-mini-agent-name">{{item3.name }}</span> -->
-                        <!-- <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item3.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a> -->
-                      <!-- </div> -->
-                      <!-- <span class="number float-right ml-1 abs-center"  :style ="{background:item3.background}" > -->
-                      <!-- <div><AccountCogIco class="change-font-size"/></div> -->
-                      <!-- </span> -->
-                    <!-- </div> -->
                       <PipelineAgentSecondaryFront :index="index1" :item3="item3" :indexParent="index-1" :totalItems="this.getAgentBranch(index-1).length" :indexRunningAgent="indexRunningSecondaryAgent" @pipelineSecondaryAgentDone="processSecondaryAgentExecution" :startSecondaryProcess="isRunningSecondaryProcess"/>
                   </div>
                 </div>
@@ -57,13 +39,8 @@
             </div>
           </div>
                   </div>
-<!-- </div> -->
-      <!-- </div> -->
 </template>
 <script>
-// import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-// import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
-// import CircleProgress from 'vue3-circle-progress'
 import PipelineAgentMainFront from '@/components/Pipelines/PipelineAgentMainFront.vue'
 import PipelineAgentSecondaryFront from '@/components/Pipelines/PipelineAgentSecondaryFront.vue'
 export default {
@@ -81,8 +58,6 @@ export default {
     startMainProcess: Boolean
   },
   components: {
-    // MotionPlayOutlineIco,
-    // CircleProgress,
     PipelineAgentMainFront,
     PipelineAgentSecondaryFront
   },
@@ -97,11 +72,6 @@ export default {
   computed: {
     associatedAgents () {
       let agentPipelineList = []
-      // agentPipelineList = this.AgentsPipelineList
-      // const sizeList = agentPipelineList.length
-      // if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {
-      //   agentPipelineList.push({})
-      // }
       agentPipelineList = this.AgentsPipelineList
       const sizeList = agentPipelineList.length
       if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {

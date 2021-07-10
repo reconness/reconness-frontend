@@ -43,6 +43,9 @@ a.brand-link{
 .white-text{
   color: #ffffff !important;
 }
+.black-text{
+  color: #000000 !important;
+}
 .pipeline-run-play-container svg{
   width: 15px;
   height: 15px;
@@ -953,4 +956,7 @@ div.pipeline_spacing .p-autocomplete-loader{
 }
 .pipeline-run-terminal .vue3-circular-progressbar svg{
   margin-bottom: 27%;
+}
+.pipeline-run-execution .vue3-circular-progressbar svg{
+  margin-bottom: 0;
 }

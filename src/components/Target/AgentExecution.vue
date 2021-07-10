@@ -41,8 +41,8 @@
                                             <div class="d-flex align_left-ordered_columns">
                                             <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
-                                              <span class="font-weight-bold" v-if="is_terminal_open">Terminal</span>
-                                              <span class="font-weight-bold" v-else>Logs</span>
+                                              <span class="font-weight-bold black-text" v-if="is_terminal_open">Terminal</span>
+                                              <span class="font-weight-bold black-text" v-else>Logs</span>
                                               <span @click="is_terminal_open = !is_terminal_open" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
                                             </div>
                                             </div>
@@ -53,7 +53,8 @@
                             <div class="col-12">
                                 <v-ace-editor v-model:value="terminal_ouput" lang="csharp" :readonly="true" style="height:300px" theme="monokai"/>
                                 <div class="d-flex flex-row-reverse mt-3">
-                                  <button @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
+                                  <button v-if="this.$route.name !== 'PipelineRunView'" @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
+                                  <button v-else @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
                                 </div>
                                 <div class="text-center">
                                   <span class="material-icons cursor-pointer" @click="minimizeWindow" @mouseover="toggle">keyboard_arrow_down</span>
@@ -162,24 +163,26 @@ export default {
       this.timer = null
     },
     closeWindow () {
-      this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: parseInt(-1) })
-      if (this.$route.name === 'RootDomainDetails') {
-        this.updateStatusRootDomainAgent({
-          status: this.$entityStatus.FINISHED,
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
-          idAgent: parseInt(this.idAgent)
-        })
-      } else {
-        this.updateStatusSubDomainAgent({
-          status: this.$entityStatus.FINISHED,
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
-          idAgent: parseInt(this.idAgent),
-          idSubDomain: parseInt(this.$route.params.idsubdomain)
-        })
+      if (this.$route.name !== 'PipelineRunView') {
+        this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: parseInt(-1) })
+        if (this.$route.name === 'RootDomainDetails') {
+          this.updateStatusRootDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idTarget: parseInt(this.$route.params.idTarget),
+            idRoot: parseInt(this.$route.params.id),
+            idAgent: parseInt(this.idAgent)
+          })
+        } else {
+          this.updateStatusSubDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idTarget: parseInt(this.$route.params.idTarget),
+            idRoot: parseInt(this.$route.params.id),
+            idAgent: parseInt(this.idAgent),
+            idSubDomain: parseInt(this.$route.params.idsubdomain)
+          })
+        }
+        this.stopClock()
       }
-      this.stopClock()
     },
     executeProgressBar () {
       if (this.progressValue <= 100) {
@@ -191,12 +194,27 @@ export default {
   },
   props: {
     idAgent: Number,
-    nameAgent: String
+    nameAgent: String,
+    status: {
+      type: Number,
+      default: 2
+    }
   },
   watch: {
     agentStatus (value) {
-      if (value.status === this.$entityStatus.RUNNING && !this.minimized) {
-        this.playClock()
+      if (this.$route.name !== 'PipelineRunView') {
+        if (value.status === this.$entityStatus.RUNNING && !this.minimized) {
+          this.playClock()
+        }
+      }
+    },
+    status (value) {
+      if (this.$route.name === 'PipelineRunView') {
+        if (value === this.$entityStatus.RUNNING) {
+          this.playClock()
+        } else {
+          this.stopClock()
+        }
       }
     }
   }
