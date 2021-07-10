@@ -65,6 +65,12 @@ export default {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
                 }
                 self.stopClock()
+                if (self.pipeline.agent.length - 2 === self.index) {
+                  self.setPipelineStatus({
+                    idPipeline: self.pipeline.id,
+                    status: self.$entityStatus.FINISHED
+                  })
+                }
               },
               5000
             )
@@ -115,7 +121,7 @@ export default {
     ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent']),
+    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent', 'setPipelineStatus']),
     tick () {
       this.now++
       let remain = this.now

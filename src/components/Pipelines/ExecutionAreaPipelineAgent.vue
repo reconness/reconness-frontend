@@ -24,7 +24,8 @@
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
         </div>
-        <PipelineAgentMainFront @startRunningSons="secondaryProcessAgentsExecution" @pipelineAgentDone="processAgentsExecution" :totalItems="AgentsPipelineList.length" :index="index" :indexRunningAgent="indexRunningAgent" :startMainProcess="startMainProcess" :item2="item2"/>
+        <!-- <PipelineAgentMainFront @startRunningSons="secondaryProcessAgentsExecution" @pipelineAgentDone="processAgentsExecution" :totalItems="AgentsPipelineList.length" :index="index" :indexRunningAgent="indexRunningAgent" :startMainProcess="startMainProcess" :item2="item2"/> -->
+        <PipelineAgentMainFront :index="index" :item2="item2" :pipeline="pipeline"/>
         <div>
           <div>
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
@@ -32,7 +33,8 @@
               <div class="info-box-background float-left w-131" style="position: relative; left: 0px; top: -1px;"></div>
                 <div :class="{'invisible': index1+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
                   <div v-if="index1+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
-                      <PipelineAgentSecondaryFront :index="index1" :item3="item3" :indexParent="index-1" :totalItems="this.getAgentBranch(index-1).length" :indexRunningAgent="indexRunningSecondaryAgent" @pipelineSecondaryAgentDone="processSecondaryAgentExecution" :startSecondaryProcess="isRunningSecondaryProcess"/>
+                      <PipelineAgentSecondaryFront :index="index1" :item3="item3" />
+                      <!-- <PipelineAgentSecondaryFront :index="index1" :item3="item3" :indexParent="index-1" :totalItems="this.getAgentBranch(index-1).length" :indexRunningAgent="indexRunningSecondaryAgent" @pipelineSecondaryAgentDone="processSecondaryAgentExecution" :startSecondaryProcess="isRunningSecondaryProcess"/> -->
                   </div>
                 </div>
               </div>
@@ -51,11 +53,12 @@ export default {
       isRunningSecondaryProcess: false
     }
   },
-  emits: ['mainFlowExecutionIsDone'],
+  // emits: ['mainFlowExecutionIsDone'],
   props: {
     AgentsPipelineList: Array,
     startingAgentId: Number,
-    startMainProcess: Boolean
+    startMainProcess: Boolean,
+    pipeline: Object
   },
   components: {
     PipelineAgentMainFront,
@@ -97,7 +100,7 @@ export default {
     processAgentsExecution () {
       this.indexRunningAgent++
       if (this.indexRunningAgent >= this.AgentsPipelineList.length) {
-        this.$emit('mainFlowExecutionIsDone', true)
+        // this.$emit('mainFlowExecutionIsDone', true)
       }
     },
     processSecondaryAgentExecution () {

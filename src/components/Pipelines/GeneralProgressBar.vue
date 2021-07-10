@@ -62,6 +62,14 @@ export default {
         this.stopClock()
         this.setPipelineAgentParentIndex(-1)
       }
+    },
+    pipeline: {
+      handler: function (data) {
+        if (data.statusRun === this.$entityStatus.FINISHED) {
+          this.stopClock()
+        }
+      },
+      deep: true
     }
   },
   props: {

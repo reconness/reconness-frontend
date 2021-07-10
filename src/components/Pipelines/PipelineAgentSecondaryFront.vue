@@ -48,7 +48,7 @@ export default {
     startSecondaryProcess: Boolean,
     index: Number
   },
-  emits: ['pipelineSecondaryAgentDone'],
+  // emits: ['pipelineSecondaryAgentDone'],
   watch: {
     startSecondaryProcess: function (isRunning) {
       if (isRunning) {
@@ -57,7 +57,7 @@ export default {
         setTimeout(
           function () {
             self.stopClock()
-            self.$emit('pipelineSecondaryAgentDone', true)
+            // self.$emit('pipelineSecondaryAgentDone', true)
           },
           5000
         )
@@ -73,14 +73,14 @@ export default {
           setTimeout(
             function () {
               self.stopClock()
-              self.$emit('pipelineSecondaryAgentDone', true)
+              // self.$emit('pipelineSecondaryAgentDone', true)
             },
             5000
           )
         }
       } else {
         this.stopClock()
-        this.$emit('pipelineSecondaryAgentDone', true)
+        // this.$emit('pipelineSecondaryAgentDone', true)
       }
     }
   },

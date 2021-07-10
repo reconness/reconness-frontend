@@ -572,7 +572,7 @@ export default {
           mergedAgents.push.apply(mergedAgents, agent.agentBranch)
         }
       })
-      return mergedAgents
+      return mergedAgents.slice(0, mergedAgents.length - 1)
     }
   }
 }

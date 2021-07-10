@@ -16,8 +16,9 @@
             <span class="info-box-icon process_status_panel container-container-circular-bar">
               <span class="border container-circular-bar">
                 <div class="circular-bar-container border pipeline-run-execution">
-                  <CircleProgress v-if="item2.status === this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
-                  <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
+                  <!-- <CircleProgress v-if="item2.status === this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/> -->
+                  <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                  <!-- <span style="opacity:0.2" v-else class="material-icons white-text">done</span> -->
                 </div>
               </span>
             </span> <!-- ./ info-box-icon process_status_panel container-container-circular-bar -->
@@ -29,7 +30,7 @@
 <script>
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import CircleProgress from 'vue3-circle-progress'
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
   name: 'PipelineAgentMainFront',
   data: function () {
@@ -42,21 +43,29 @@ export default {
   },
   props: {
     item2: Object,
-    index: Number,
-    startMainProcess: {
-      type: Boolean,
-      default: false
+    index: {
+      type: Number,
+      default: -1
     },
-    indexRunningAgent: Number,
-    totalItems: Number
+    pipeline: Object
+    // startMainProcess: {
+    //   type: Boolean,
+    //   default: false
+    // },
+    // indexRunningAgent: Number,
+    // totalItems: Number
   },
-  emits: ['pipelineAgentDone', 'startRunningSons'],
+  // emits: ['pipelineAgentDone', 'startRunningSons'],
   components: {
     MotionPlayOutlineIco,
     CircleProgress
   },
+  computed: {
+    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex']),
+    ...mapGetters('pipelines', ['getPipelineById'])
+  },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent']),
+    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex']),
     tick () {
       this.now++
       let remain = this.now
@@ -99,56 +108,67 @@ export default {
     }
   },
   watch: {
-    startMainProcess: function (isProcessStarted) {
-      if (isProcessStarted && this.index === 0 && this.totalItems > this.index) {
-        this.playClock()
-        const self = this
-        setTimeout(
-          function () {
-            self.$emit('pipelineAgentDone', this.index)
-            self.setPipelineAgentStatus({
-              idAgent: self.item2.id,
-              idPipeline: parseInt(self.$route.params.id),
-              status: self.$entityStatus.RUNNING
-            })
-            self.stopClock()
-          },
-          5000
-        )
-      } else {
-        this.stopClock()
-      }
-    },
-    indexRunningAgent: function (indexRunning) {
-      if (this.totalItems > this.index) {
-        if (this.index === indexRunning) {
+    agentParentRunningIndex: function (indexParentAgent) {
+      if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
+        if (this.index === this.agentParentRunningIndex) {
+          this.setPipelineAgentParentStatusByIndex({
+            idPipeline: this.pipeline.id,
+            index: this.index,
+            status: this.$entityStatus.RUNNING
+          })
           this.playClock()
-          setTimeout(
-            function () {
-              self.$emit('pipelineAgentDone', this.index)
-              self.stopClock()
-            },
-            7000
-          )
-          const self = this
           if (this.item2.agentBranch && this.item2.agentBranch.length > 0) {
-            self.$emit('startRunningSons', true)
+            this.setPipelineAgentChildIndex(this.agentChildRunningIndex + 1)
           } else {
+            const self = this
             setTimeout(
               function () {
-                self.$emit('pipelineAgentDone', this.index)
+                self.setPipelineAgentParentStatusByIndex({
+                  idPipeline: self.pipeline.id,
+                  index: self.index,
+                  status: self.$entityStatus.FINISHED
+                })
+                if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
+                  self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
+                }
                 self.stopClock()
               },
               5000
             )
           }
-        } else {
-          // this.stopClock()
         }
-      } else {
-        this.stopClock()
       }
     }
+    // indexRunningAgent: function (indexRunning) {
+    //   if (this.totalItems > this.index) {
+    //     if (this.index === indexRunning) {
+    //       this.playClock()
+    //       setTimeout(
+    //         function () {
+    //           // self.$emit('pipelineAgentDone', this.index)
+    //           self.stopClock()
+    //         },
+    //         7000
+    //       )
+    //       const self = this
+    //       if (this.item2.agentBranch && this.item2.agentBranch.length > 0) {
+    //         self.$emit('startRunningSons', true)
+    //       } else {
+    //         setTimeout(
+    //           function () {
+    //             // self.$emit('pipelineAgentDone', this.index)
+    //             self.stopClock()
+    //           },
+    //           5000
+    //         )
+    //       }
+    //     } else {
+    //       // this.stopClock()
+    //     }
+    //   } else {
+    //     this.stopClock()
+    //   }
+    // }
   }
 }
 </script>

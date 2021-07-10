@@ -8,7 +8,7 @@
         <div :class="{content: isTerminalHided}">
           <GeneralProgressBar v-if="isTerminalHided" :pipeline="referencedPipeline"/>
           <TerminalSection v-if="!isTerminalHided" :pipeline="referencedPipeline"/>
-          <ExecutionAreaPipelineAgent v-else @mainFlowExecutionIsDone="stopFlow" :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
+          <ExecutionAreaPipelineAgent v-else @mainFlowExecutionIsDone="stopFlow" :pipeline="referencedPipeline" :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
         </div>
       </div>
     </div>
