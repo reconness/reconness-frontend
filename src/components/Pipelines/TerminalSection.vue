@@ -71,7 +71,7 @@ export default {
     box-shadow: 3px 12px 23px #00000017
 }
 .terminal-run-agents-container div.info-box.agent_info_panel{
-    width: 75%;
+    width: 68%;
     margin: auto;
     margin-bottom: 12px
 }

@@ -15,8 +15,10 @@
                    <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="item.id" @click="openSettings">
                       <GearIcon/>
                     </li>
-                    <li class="nav-item icon-gray rocket-icon cursor-pointer">
+                    <li class="nav-item">
+                     <router-link class="icon-gray rocket-icon cursor-pointer"  :to="{ name: 'PipelineRunView', params: {id: item.id}  }">
                      <RocketIco/>
+                     </router-link>
                     </li>
                   </ul>
             </div>
@@ -202,7 +204,7 @@ input[type="checkbox"] {
 div.card-header span{
   font-size: 20px;
 }
-li.setting-icon:hover, li.rocket-icon:hover{
+a.setting-icon:hover, a.rocket-icon:hover, li.setting-icon:hover, li.rocket-icon:hover{
   fill: #00B1FF;
 }
 </style>
