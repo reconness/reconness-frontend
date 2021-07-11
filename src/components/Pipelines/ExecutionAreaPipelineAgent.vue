@@ -30,7 +30,7 @@
           <div>
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
             <div  v-for="(item3, index1) of this.getAgentBranch(index-1)"  :id="'branch' + index1" :key="item3.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
-              <div class="info-box-background float-left w-131" style="position: relative; left: 0px; top: -1px;"></div>
+              <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
                 <div :class="{'invisible': index1+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
                   <div v-if="index1+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
                       <PipelineAgentSecondaryFront :index="index1" :item3="item3" />

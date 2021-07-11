@@ -16,16 +16,13 @@
             <span class="info-box-icon process_status_panel container-container-circular-bar">
               <span class="border container-circular-bar">
                 <div class="circular-bar-container border pipeline-run-execution">
-                  <!-- <CircleProgress v-if="item2.status === this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/> -->
-                  <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
-                  <!-- <span style="opacity:0.2" v-else class="material-icons white-text">done</span> -->
+                  <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                  <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
                 </div>
               </span>
             </span> <!-- ./ info-box-icon process_status_panel container-container-circular-bar -->
           </div> <!-- ./ row w-100 -->
         </div> <!-- ./info-box float-left abs-center w-65 -->
-        <!-- <AgentExecution :id-agent="item2.id" :name-agent="item2.name" :status="item2.status" :color="item2.background"/>
-        </div> -->
 </template>
 <script>
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
@@ -38,7 +35,8 @@ export default {
       progressValue: 0,
       time: '00:00:00',
       now: 0,
-      timer: null
+      timer: null,
+      isDone: false
     }
   },
   props: {
@@ -48,14 +46,7 @@ export default {
       default: -1
     },
     pipeline: Object
-    // startMainProcess: {
-    //   type: Boolean,
-    //   default: false
-    // },
-    // indexRunningAgent: Number,
-    // totalItems: Number
   },
-  // emits: ['pipelineAgentDone', 'startRunningSons'],
   components: {
     MotionPlayOutlineIco,
     CircleProgress
@@ -140,6 +131,7 @@ export default {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
                 }
                 self.stopClock()
+                self.isDone = true
                 if (self.index === (self.pipeline.agent.length - 2)) {
                   self.setPipelineStatus({
                     idPipeline: self.pipeline.id,

@@ -13,8 +13,8 @@
         <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
         <span class="border container-circular-bar">
         <div class="circular-bar-container border pipeline-run-terminal">
-        <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
-        <!-- <span style="opacity:0.2" v-else class="material-icons white-text">done</span> -->
+        <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+        <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
         </div>
     </span>
     </span>
@@ -37,7 +37,8 @@ export default {
       progressValue: 0,
       time: '00:00:00',
       now: 0,
-      timer: null
+      timer: null,
+      isDone: false
     }
   },
   watch: {
@@ -65,6 +66,7 @@ export default {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
                 }
                 self.stopClock()
+                self.isDone = true
                 if (self.pipeline.agent.length - 2 === self.index) {
                   self.setPipelineStatus({
                     idPipeline: self.pipeline.id,

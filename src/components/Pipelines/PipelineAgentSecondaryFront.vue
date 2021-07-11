@@ -1,5 +1,5 @@
 <template>
-  <div class="info-box float-left abs-center w-131"
+  <div class="info-box float-left abs-center w-75"
         :style ="{background:item3.background}" style="position: absolute; left: 7px; top: -4px;">
         <div class="row w-100">
         <div class="info-box-content border-right w-50">
