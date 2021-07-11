@@ -384,7 +384,8 @@ export default {
     agentParentRunningIndex: -1,
     agentChildRunningIndex: -1,
     isTerminalHided: true,
-    agent: Object
+    agent: Object,
+    isAgentInfoOpenedForTerminal: true
   },
   mutations: {
     changeIsBranchFather (state, value) {
@@ -554,6 +555,9 @@ export default {
     },
     setAgent (state, agent) {
       state.agent = agent
+    },
+    setIsAgentInfoOpenedForTerminal (state, isOpenFromTerminal) {
+      state.isAgentInfoOpenedForTerminal = isOpenFromTerminal
     }
   },
   getters: {

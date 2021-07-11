@@ -9,7 +9,7 @@
             <MotionPlayOutlineIco />
             </div>
             <div class="output-container">
-            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name" @click="setAgent(item3)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name" @click="setAgent(item3)">Logs</span>
+            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name" @click="setAgentFromTerminal(item3)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name" @click="setAgentFromLogs(item3)">Logs</span>
             </div>
         </div><!-- /.info-box-content border-right w-50 -->
         <span class="info-box-icon process_status_panel container-container-circular-bar">
@@ -48,7 +48,6 @@ export default {
     startSecondaryProcess: Boolean,
     index: Number
   },
-  // emits: ['pipelineSecondaryAgentDone'],
   watch: {
     startSecondaryProcess: function (isRunning) {
       if (isRunning) {
@@ -57,7 +56,6 @@ export default {
         setTimeout(
           function () {
             self.stopClock()
-            // self.$emit('pipelineSecondaryAgentDone', true)
           },
           5000
         )
@@ -73,19 +71,17 @@ export default {
           setTimeout(
             function () {
               self.stopClock()
-              // self.$emit('pipelineSecondaryAgentDone', true)
             },
             5000
           )
         }
       } else {
         this.stopClock()
-        // this.$emit('pipelineSecondaryAgentDone', true)
       }
     }
   },
   methods: {
-    ...mapMutations('pipelines', ['setAgent']),
+    ...mapMutations('pipelines', ['setAgent', 'setIsAgentInfoOpenedForTerminal']),
     tick () {
       this.now++
       let remain = this.now
@@ -125,6 +121,14 @@ export default {
       } else {
         this.progressValue = 0
       }
+    },
+    setAgentFromTerminal (agent) {
+      this.setAgent(agent)
+      this.setIsAgentInfoOpenedForTerminal(true)
+    },
+    setAgentFromLogs (agent) {
+      this.setAgent(agent)
+      this.setIsAgentInfoOpenedForTerminal(false)
     }
   }
 }

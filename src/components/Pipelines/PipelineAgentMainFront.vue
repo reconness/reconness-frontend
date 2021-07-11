@@ -10,7 +10,7 @@
                 <MotionPlayOutlineIco />
               </div> <!-- /.pipeline-run-play-container -->
               <div class="output-container">
-                <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgent(item2)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgent(item2)">Logs</span>
+                <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgentFromTerminal(item2)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgentFromLogs(item2)">Logs</span>
               </div>
             </div> <!-- /.info-box-content border-right w-50 -->
             <span class="info-box-icon process_status_panel container-container-circular-bar">
@@ -65,7 +65,7 @@ export default {
     ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex']),
+    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal']),
     tick () {
       this.now++
       let remain = this.now
@@ -105,12 +105,20 @@ export default {
       } else {
         this.progressValue = 0
       }
+    },
+    setAgentFromTerminal (agent) {
+      this.setAgent(agent)
+      this.setIsAgentInfoOpenedForTerminal(true)
+    },
+    setAgentFromLogs (agent) {
+      this.setAgent(agent)
+      this.setIsAgentInfoOpenedForTerminal(false)
     }
   },
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
-        if (this.index === this.agentParentRunningIndex) {
+        if (this.index === this.agentParentRunningIndex && this.index < (this.pipeline.agent.length - 1)) {
           this.setPipelineAgentParentStatusByIndex({
             idPipeline: this.pipeline.id,
             index: this.index,
@@ -132,6 +140,12 @@ export default {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
                 }
                 self.stopClock()
+                if (self.index === (self.pipeline.agent.length - 2)) {
+                  self.setPipelineStatus({
+                    idPipeline: self.pipeline.id,
+                    status: self.$entityStatus.FINISHED
+                  })
+                }
               },
               5000
             )
@@ -139,36 +153,6 @@ export default {
         }
       }
     }
-    // indexRunningAgent: function (indexRunning) {
-    //   if (this.totalItems > this.index) {
-    //     if (this.index === indexRunning) {
-    //       this.playClock()
-    //       setTimeout(
-    //         function () {
-    //           // self.$emit('pipelineAgentDone', this.index)
-    //           self.stopClock()
-    //         },
-    //         7000
-    //       )
-    //       const self = this
-    //       if (this.item2.agentBranch && this.item2.agentBranch.length > 0) {
-    //         self.$emit('startRunningSons', true)
-    //       } else {
-    //         setTimeout(
-    //           function () {
-    //             // self.$emit('pipelineAgentDone', this.index)
-    //             self.stopClock()
-    //           },
-    //           5000
-    //         )
-    //       }
-    //     } else {
-    //       // this.stopClock()
-    //     }
-    //   } else {
-    //     this.stopClock()
-    //   }
-    // }
   }
 }
 </script>

@@ -14,7 +14,7 @@
                                         <span class="mr-4">{{ time }}</span>
                                         <MotionPlayOutlineIco />
                                         <div class="mt-2 output-selector">
-                                          <span @click="is_terminal_open = true" class="mr-2 cursor-pointer">Terminal</span><span @click="is_terminal_open = false" class="pl-2 border-left cursor-pointer">Logs</span>
+                                          <span @click="setIsAgentInfoOpenedForTerminal(true)" class="mr-2 cursor-pointer">Terminal</span><span @click="setIsAgentInfoOpenedForTerminal(false)" class="pl-2 border-left cursor-pointer">Logs</span>
                                         </div>
                                       </div>
                                     </div>
@@ -41,9 +41,10 @@
                                             <div class="d-flex align_left-ordered_columns">
                                             <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
-                                              <span class="font-weight-bold black-text" v-if="is_terminal_open">Terminal</span>
+                                              <!-- <span class="font-weight-bold black-text" v-if="is_terminal_open">Terminal</span> -->
+                                              <span class="font-weight-bold black-text" v-if="isAgentInfoOpenedForTerminal">Terminal</span>
                                               <span class="font-weight-bold black-text" v-else>Logs</span>
-                                              <span @click="is_terminal_open = !is_terminal_open" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
+                                              <span @click="setIsAgentInfoOpenedForTerminal(!isAgentInfoOpenedForTerminal)" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
                                             </div>
                                             </div>
                                         </div>
@@ -99,10 +100,12 @@ export default {
     CircleProgress
   },
   computed: {
-    ...mapState('target', ['agentStatus'])
+    ...mapState('target', ['agentStatus']),
+    ...mapState('pipelines', ['isAgentInfoOpenedForTerminal'])
   },
   methods: {
     ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
+    ...mapMutations('pipelines', ['setIsAgentInfoOpenedForTerminal']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },

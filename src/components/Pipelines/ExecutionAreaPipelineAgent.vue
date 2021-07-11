@@ -53,7 +53,6 @@ export default {
       isRunningSecondaryProcess: false
     }
   },
-  // emits: ['mainFlowExecutionIsDone'],
   props: {
     AgentsPipelineList: Array,
     startingAgentId: Number,
@@ -78,7 +77,9 @@ export default {
       agentPipelineList = this.AgentsPipelineList
       const sizeList = agentPipelineList.length
       if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {
-        agentPipelineList.push({})
+        if (Object.entries(agentPipelineList[sizeList - 1]).length > 0) {
+          agentPipelineList.push({})
+        }
       }
       return agentPipelineList
     }
@@ -87,21 +88,19 @@ export default {
     getAgentBranch (indexValue) {
       const windowReziseWidth = window.outerWidth
       if (indexValue !== -1 && Object.keys(this.associatedAgents[indexValue]).length !== 0) {
-        if (windowReziseWidth < 1200) {
-          return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
-        } else {
-          if (windowReziseWidth >= 1200) {
-            return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
+        if (this.AgentsPipelineList[indexValue].agentBranch) {
+          if (windowReziseWidth < 1200) {
+            return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
+          } else {
+            if (windowReziseWidth >= 1200) {
+              return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
+            }
           }
+        } else {
+          return []
         }
       }
       return []
-    },
-    processAgentsExecution () {
-      this.indexRunningAgent++
-      if (this.indexRunningAgent >= this.AgentsPipelineList.length) {
-        // this.$emit('mainFlowExecutionIsDone', true)
-      }
     },
     processSecondaryAgentExecution () {
       this.indexRunningSecondaryAgent++

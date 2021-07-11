@@ -59,7 +59,6 @@ export default {
       this.startRunning = isRunning
     },
     stopFlow () {
-      // this.startRunning = false
       this.stopProcess = true
     }
   }
