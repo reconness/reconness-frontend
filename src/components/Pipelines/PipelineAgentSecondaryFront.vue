@@ -1,8 +1,7 @@
 <template>
   <div class="info-box float-left abs-center w-75"
         :style ="{background:item3.background}" style="position: absolute; left: 7px; top: -4px;">
-        <div class="row w-100">
-        <div class="info-box-content border-right w-50">
+        <div class="info-box-content border-right w-75">
             <span class="white-text">{{item3.name }}</span>
             <div class="pipeline-run-play-container">
             <span class="mr-2 white-text">{{time}}</span>
@@ -20,7 +19,7 @@
             </span>
         </span> <!-- /.info-box-icon process_status_panel container-container-circular-bar -->
         <div><!-- /.row w-100 -->
-    </div></div></div> <!-- /.info-box float-left abs-center w-131 -->
+    </div></div>
 </template>
 <script>
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
