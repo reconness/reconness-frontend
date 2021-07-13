@@ -47,19 +47,19 @@ export default {
         if (this.index === this.agentParentRunningIndex) {
           this.setPipelineAgentParentStatusByIndex({
             idPipeline: this.pipeline.id,
-            index: this.index,
+            index: this.getOriginalPipelineAgentParentIndex(this.pipeline, this.index),
             status: this.$entityStatus.RUNNING
           })
           this.playClock()
-          if (this.agent.agentBranch.length > 0) {
-            this.setPipelineAgentChildIndex(this.agentChildRunningIndex + 1)
+          if (this.agent.agentBranch && this.agent.agentBranch.length > 0) {
+            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.agent.id })
           } else {
             const self = this
             setTimeout(
               function () {
                 self.setPipelineAgentParentStatusByIndex({
                   idPipeline: self.pipeline.id,
-                  index: self.index,
+                  index: self.getOriginalPipelineAgentParentIndex(self.pipeline, self.index),
                   status: self.$entityStatus.FINISHED
                 })
                 if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
@@ -77,35 +77,45 @@ export default {
               5000
             )
           }
+        } else {
+          if (this.agent.status === this.$entityStatus.RUNNING) {
+            if (this.isSongOfAgent()) {
+              this.playClock()
+              const self = this
+              setTimeout(
+                function () {
+                  self.stopClock()
+                  self.setPipelineAgentParentStatusByIndex({
+                    idPipeline: self.pipeline.id,
+                    index: self.index,
+                    status: self.$entityStatus.FINISHED
+                  })
+                  self.setNumberAgentsProcessing(1)
+                  self.isDone = true
+                },
+                5000
+              )
+            }
+          }
         }
       }
     },
-    agentChildRunningIndex: function (indexChildAgent) {
-      if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
-        if (this.agentChildRunningIndex === this.calculateOriginalIndexAgent(this.index)) {
-          this.setPipelineAgentChildStatusByIndex({
-            idPipeline: this.pipeline.id,
-            indexParent: this.agentParentRunningIndex,
-            indexChild: this.agentChildRunningIndex,
-            status: this.$entityStatus.RUNNING
-          })
-          this.playClock()
-          const self = this
-          setTimeout(
-            function () {
-              self.setPipelineAgentChildStatusByIndex({
-                idPipeline: self.pipeline.id,
-                indexParent: self.agentParentRunningIndex,
-                indexChild: self.agentChildRunningIndex,
-                status: self.$entityStatus.FINISHED
-              })
-              // if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
-              //   self.setPipelineAgentChildIndex(self.agentChildRunningIndex + 1)
-              // }
-              self.stopClock()
-            },
-            5000
-          )
+    numberAgentsProcessing: function (value) {
+      if (this.index === this.agentParentRunningIndex && this.index < (this.pipeline.agent.length - 1)) {
+        if (this.agent.agentBranch && value === this.agent.agentBranch.length) {
+          this.stopClock()
+          this.isDone = true
+          if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch) {
+            this.setPipelineAgentParentIndex(this.pipeline.agent[this.agentParentRunningIndex].agentBranch.length + 1)
+          } else {
+            this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)
+          }
+          if (this.index === (this.pipeline.agent.length - 2)) {
+            this.setPipelineStatus({
+              idPipeline: this.pipeline.id,
+              status: this.$entityStatus.FINISHED
+            })
+          }
         }
       }
     }
@@ -119,11 +129,11 @@ export default {
     }
   },
   computed: {
-    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex']),
+    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
     ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent', 'setPipelineStatus']),
+    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent', 'setPipelineStatus', 'updateStatusAllChildren', 'setNumberAgentsProcessing']),
     tick () {
       this.now++
       let remain = this.now
@@ -188,6 +198,32 @@ export default {
       } else {
         return -1
       }
+    },
+    isSongOfAgent () {
+      if (this.pipeline.agent[this.agentParentRunningIndex]) {
+        if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch) {
+          if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch.find(element => element.id === this.agent.id)) {
+            return true
+          }
+        }
+      }
+      return false
+    },
+    getOriginalPipelineAgentParentIndex (pipeline, newIndex) {
+      if (newIndex === 0) {
+        return 0
+      }
+      let sonsCounter = 0
+      let generalCounter = -1
+      let i = 0
+      while (i < pipeline.agent.length && generalCounter < newIndex) {
+        if (pipeline.agent[i].agentBranch && pipeline.agent[i].agentBranch.length > 0) {
+          sonsCounter += pipeline.agent[i].agentBranch.length
+        }
+        i++
+        generalCounter = generalCounter + 1
+      }
+      return newIndex - sonsCounter
     }
   }
 }

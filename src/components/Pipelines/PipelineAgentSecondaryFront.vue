@@ -14,7 +14,8 @@
         <span class="info-box-icon process_status_panel container-container-circular-bar">
             <span class="border container-circular-bar">
             <div class="circular-bar-container border pipeline-run-execution">
-                <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
             </div>
             </span>
         </span> <!-- /.info-box-icon process_status_panel container-container-circular-bar -->
@@ -36,51 +37,41 @@ export default {
       progressValue: 0,
       time: '00:00:00',
       now: 0,
-      timer: null
+      timer: null,
+      isDone: false
     }
   },
   props: {
     item3: Object,
-    indexParent: Number,
-    totalItems: Number,
-    indexRunningAgent: Number,
-    startSecondaryProcess: Boolean,
+    pipeline: Object,
     index: Number
   },
   watch: {
-    startSecondaryProcess: function (isRunning) {
-      if (isRunning) {
-        this.playClock()
-        const self = this
-        setTimeout(
-          function () {
-            self.stopClock()
-          },
-          5000
-        )
-      } else {
-        this.stopClock()
-      }
-    },
-    indexRunningAgent: function (indexRunning) {
-      if (this.totalItems > indexRunning) {
-        if (this.index === indexRunning) {
+    item3: {
+      handler: function (data) {
+        if (data.status === self.$entityStatus.RUNNING) {
           this.playClock()
           const self = this
           setTimeout(
             function () {
               self.stopClock()
+              self.setPipelineAgentParentStatusByIndex({
+                idPipeline: self.pipeline.id,
+                index: self.index,
+                status: self.$entityStatus.FINISHED
+              })
+              self.setNumberAgentsProcessing(1)
+              self.isDone = true
             },
             5000
           )
         }
-      } else {
-        this.stopClock()
-      }
+      },
+      deep: true
     }
   },
   methods: {
-    ...mapMutations('pipelines', ['setAgent', 'setIsAgentInfoOpenedForTerminal']),
+    ...mapMutations('pipelines', ['setAgent', 'setIsAgentInfoOpenedForTerminal', 'setNumberAgentsProcessing', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentParentIndex']),
     tick () {
       this.now++
       let remain = this.now

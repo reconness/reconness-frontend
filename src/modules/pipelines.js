@@ -385,7 +385,8 @@ export default {
     agentChildRunningIndex: -1,
     isTerminalHided: true,
     agent: Object,
-    isAgentInfoOpenedForTerminal: true
+    isAgentInfoOpenedForTerminal: true,
+    numberAgentsProcessing: 0
   },
   mutations: {
     changeIsBranchFather (state, value) {
@@ -558,6 +559,16 @@ export default {
     },
     setIsAgentInfoOpenedForTerminal (state, isOpenFromTerminal) {
       state.isAgentInfoOpenedForTerminal = isOpenFromTerminal
+    },
+    updateStatusAllChildren (state, data) {
+      const pipeline = state.pipelinesListStore.find(item => item.id === data.idPipeline)
+      const agent = pipeline.agent.find(item => item.id === data.idAgent)
+      agent.agentBranch.forEach(agentSon => {
+        agentSon.status = 1
+      })
+    },
+    setNumberAgentsProcessing (state, number) {
+      state.numberAgentsProcessing += number
     }
   },
   getters: {

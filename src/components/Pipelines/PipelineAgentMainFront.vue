@@ -1,5 +1,4 @@
 <template>
-<!-- <div> -->
     <div class="info-box float-left abs-center w-65"
           :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
           <div class="row w-100">
@@ -52,11 +51,11 @@ export default {
     CircleProgress
   },
   computed: {
-    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex']),
+    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
     ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal']),
+    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren']),
     tick () {
       this.now++
       let remain = this.now
@@ -117,7 +116,7 @@ export default {
           })
           this.playClock()
           if (this.item2.agentBranch && this.item2.agentBranch.length > 0) {
-            this.setPipelineAgentChildIndex(this.agentChildRunningIndex + 1)
+            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.item2.id })
           } else {
             const self = this
             setTimeout(
@@ -141,6 +140,21 @@ export default {
               },
               5000
             )
+          }
+        }
+      }
+    },
+    numberAgentsProcessing: function (value) {
+      if (this.index === this.agentParentRunningIndex && this.index < (this.pipeline.agent.length - 1)) {
+        if (value === this.item2.agentBranch.length) {
+          this.stopClock()
+          this.isDone = true
+          this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)
+          if (this.index === (this.pipeline.agent.length - 2)) {
+            this.setPipelineStatus({
+              idPipeline: this.pipeline.id,
+              status: this.$entityStatus.FINISHED
+            })
           }
         }
       }
