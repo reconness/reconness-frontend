@@ -76,11 +76,15 @@ export default {
     pipeline: Object
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineStatus', 'setPipelineAgentParentIndex']),
+    ...mapMutations('pipelines', ['setPipelineStatus', 'setPipelineAgentParentIndex', 'setStatusToAllAgentsByPipeline']),
     executePipeline () {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
         this.setPipelineStatus({
           idPipeline: this.pipeline.id,
+          status: this.$entityStatus.FINISHED
+        })
+        this.setStatusToAllAgentsByPipeline({
+          pipeline: this.pipeline,
           status: this.$entityStatus.FINISHED
         })
         this.stopClock()

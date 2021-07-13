@@ -569,6 +569,16 @@ export default {
     },
     setNumberAgentsProcessing (state, number) {
       state.numberAgentsProcessing += number
+    },
+    setStatusToAllAgentsByPipeline (state, pipelineAndStatus) {
+      pipelineAndStatus.pipeline.agent.forEach(agentFirstLevel => {
+        agentFirstLevel.status = pipelineAndStatus.status
+        if (agentFirstLevel.agentBranch && agentFirstLevel.agentBranch.length > 0) {
+          agentFirstLevel.agentBranch.forEach(agentSecondLevel => {
+            agentSecondLevel.status = pipelineAndStatus.status
+          })
+        }
+      })
     }
   },
   getters: {
