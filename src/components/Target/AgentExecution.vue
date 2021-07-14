@@ -161,10 +161,6 @@ export default {
       this.now = -1
       this.progressValue = 0
     },
-    pauseClock () {
-      clearInterval(this.timer)
-      this.timer = null
-    },
     closeWindow () {
       if (this.$route.name !== 'PipelineRunView') {
         this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: parseInt(-1) })

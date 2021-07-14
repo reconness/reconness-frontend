@@ -85,10 +85,6 @@ export default {
       this.progressValue = 0
       this.time = '00:00:00'
     },
-    pauseClock () {
-      clearInterval(this.timer)
-      this.timer = null
-    },
     executeProgressBar () {
       if (this.progressValue <= 100) {
         this.progressValue += 5
