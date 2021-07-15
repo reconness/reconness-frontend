@@ -79,7 +79,7 @@ export default {
           }
         } else {
           if (this.agent.status === this.$entityStatus.RUNNING) {
-            if (this.isSongOfAgent()) {
+            if (this.isSonOfAgent()) {
               this.playClock()
               const self = this
               setTimeout(
@@ -195,7 +195,7 @@ export default {
         return -1
       }
     },
-    isSongOfAgent () {
+    isSonOfAgent () {
       if (this.pipeline.agent[this.agentParentRunningIndex]) {
         if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch) {
           if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch.find(element => element.id === this.agent.id)) {

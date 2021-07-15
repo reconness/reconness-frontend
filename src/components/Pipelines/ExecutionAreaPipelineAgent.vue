@@ -1,22 +1,22 @@
 <template>
   <div class="row force-scroll mt-4">
-    <div v-for="(item2,index) of associatedAgents" :key="item2.id" class="col-5"
+    <div v-for="(fatherAgent,index) of associatedAgents" :key="fatherAgent.id" class="col-5"
       :class="{'p-0': true}"
       style="position: relative;">
-      <div :class="{'invisible': Object.keys(item2).length === 0}">
+      <div :class="{'invisible': this.$isObjectEmpty(fatherAgent)}">
         <div class="info-box-background float-left w-65"
           style="position: relative; left: 0px; top: -1px;">
         </div>
-        <div :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0}"
+        <div :class="{ 'invisible': isNextElementLastItem(index)}"
           class="mt-3 margin-center abs-center border-top w-35"
           style="color:black!important;border: 1px solid; float:left"> </div>
-          <div v-if="index+1 !== associatedAgents.length" :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0 }" class="mt-3 black-circle">  </div>
+          <div v-if="index+1 !== associatedAgents.length" :class="{ 'invisible': isNextElementLastItem(index) }" class="mt-3 black-circle">  </div>
           <div>
           <div  class="workflow-tools info-box invisible">
             <div class="info-box-content">
-              <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})"><a>cancel</a></span>
+              <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: fatherAgent.id, idSon: -1})"><a>cancel</a></span>
               <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-              <span class="material-icons cursor-pointer" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="item2.id">settings</span>
+              <span class="material-icons cursor-pointer" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="fatherAgent.id">settings</span>
             </div>
           </div>
           <button :id="'b' + index"  data-toggle="modal" data-target="#pipelinesModalForm"
@@ -24,15 +24,15 @@
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
         </div>
-        <PipelineAgentMainFront :index="index" :item2="item2" :pipeline="pipeline"/>
+        <PipelineAgentMainFront :index="index" :fatherAgent="fatherAgent" :pipeline="pipeline"/>
         <div>
           <div>
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
-            <div  v-for="(item3, index1) of this.getAgentBranch(index-1)"  :id="'branch' + index1" :key="item3.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
+            <div  v-for="(sonAgent, index1) of this.getAgentBranch(index-1)"  :id="'branch' + index1" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
               <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
                 <div :class="{'invisible': index1+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
                   <div v-if="index1+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
-                      <PipelineAgentSecondaryFront :index="index1" :item3="item3" :pipeline="pipeline"/>
+                      <PipelineAgentSecondaryFront :index="index1" :sonAgent="sonAgent" :pipeline="pipeline"/>
                   </div>
                 </div>
               </div>
@@ -108,6 +108,9 @@ export default {
     },
     secondaryProcessAgentsExecution (result) {
       this.isRunningSecondaryProcess = result
+    },
+    isNextElementLastItem (arrayIndex) {
+      return arrayIndex + 1 === this.associatedAgents.length || Object.keys(this.associatedAgents[arrayIndex + 1]).length === 0
     }
   }
 }

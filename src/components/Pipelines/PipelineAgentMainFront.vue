@@ -1,15 +1,15 @@
 <template>
     <div class="info-box float-left abs-center w-65"
-          :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
+          :style ="{background:fatherAgent.background}" style="position: absolute; left: 7px; top: -4px;">
           <div class="row w-100">
             <div class="info-box-content border-right w-50">
-              <span class="white-text">{{item2.name }}</span>
+              <span class="white-text">{{fatherAgent.name }}</span>
               <div class="pipeline-run-play-container">
                 <span class="mr-2 white-text">{{time}}</span>
                 <MotionPlayOutlineIco />
               </div> <!-- /.pipeline-run-play-container -->
               <div class="output-container">
-                <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgentFromTerminal(item2)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item2.id" :data-name="item2.name" @click="setAgentFromLogs(item2)">Logs</span>
+                <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="fatherAgent.id" :data-name="fatherAgent.name" @click="setAgentFromTerminal(fatherAgent)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="fatherAgent.id" :data-name="fatherAgent.name" @click="setAgentFromLogs(fatherAgent)">Logs</span>
               </div>
             </div> <!-- /.info-box-content border-right w-50 -->
             <span class="info-box-icon process_status_panel container-container-circular-bar">
@@ -39,7 +39,7 @@ export default {
     }
   },
   props: {
-    item2: Object,
+    fatherAgent: Object,
     index: {
       type: Number,
       default: -1
@@ -111,8 +111,8 @@ export default {
             status: this.$entityStatus.RUNNING
           })
           this.playClock()
-          if (this.item2.agentBranch && this.item2.agentBranch.length > 0) {
-            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.item2.id })
+          if (this.fatherAgent.agentBranch && this.fatherAgent.agentBranch.length > 0) {
+            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.fatherAgent.id })
           } else {
             const self = this
             setTimeout(
@@ -142,7 +142,7 @@ export default {
     },
     numberAgentsProcessing: function (value) {
       if (this.index === this.agentParentRunningIndex && this.index < (this.pipeline.agent.length - 1)) {
-        if (value === this.item2.agentBranch.length) {
+        if (value === this.fatherAgent.agentBranch.length) {
           this.stopClock()
           this.isDone = true
           this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)

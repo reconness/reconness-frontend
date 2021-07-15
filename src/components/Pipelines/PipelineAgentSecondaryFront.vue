@@ -1,14 +1,14 @@
 <template>
   <div class="info-box float-left abs-center w-75"
-        :style ="{background:item3.background}" style="position: absolute; left: 7px; top: -4px;">
+        :style ="{background:sonAgent.background}" style="position: absolute; left: 7px; top: -4px;">
         <div class="info-box-content border-right w-75">
-            <span class="white-text">{{item3.name }}</span>
+            <span class="white-text">{{sonAgent.name }}</span>
             <div class="pipeline-run-play-container">
             <span class="mr-2 white-text">{{time}}</span>
             <MotionPlayOutlineIco />
             </div>
             <div class="output-container">
-            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name" @click="setAgentFromTerminal(item3)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item3.id" :data-name="item3.name" @click="setAgentFromLogs(item3)">Logs</span>
+            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="sonAgent.id" :data-name="sonAgent.name" @click="setAgentFromTerminal(sonAgent)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="sonAgent.id" :data-name="sonAgent.name" @click="setAgentFromLogs(sonAgent)">Logs</span>
             </div>
         </div><!-- /.info-box-content border-right w-50 -->
         <span class="info-box-icon process_status_panel container-container-circular-bar">
@@ -42,14 +42,14 @@ export default {
     }
   },
   props: {
-    item3: Object,
+    sonAgent: Object,
     pipeline: Object,
     index: Number
   },
   watch: {
-    item3: {
+    sonAgent: {
       handler: function (data) {
-        if (data.status === self.$entityStatus.RUNNING) {
+        if (data.status === this.$entityStatus.RUNNING) {
           this.playClock()
           const self = this
           setTimeout(

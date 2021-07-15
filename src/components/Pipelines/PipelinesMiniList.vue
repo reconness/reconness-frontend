@@ -41,7 +41,7 @@
                </div>
                 <!-- /.d-flex -->
                 <div v-if="item.agent.length > 0">
-                  <div v-for="item2 of item.agent.slice(0,3)" :key="item2.id" class="circle-color float-left mr-1" :style ="{background:item2.background}">
+                  <div v-for="fatherAgent of item.agent.slice(0,3)" :key="fatherAgent.id" class="circle-color float-left mr-1" :style ="{background:fatherAgent.background}">
                 </div>
                </div>
               </div>

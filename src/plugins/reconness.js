@@ -124,20 +124,10 @@ export default {
         default:
           return null
       }
-    },
-    /**
-     * Timer Functions
-     * */
-    app.config.globalProperties.$playClock = function (tick) {
-      return setInterval(tick, 1000)
-    },
-    app.config.globalProperties.$stopClock = function (tick) {
-      setInterval(tick, 1000)
-      return {
-        now: this.now = -1,
-        progressValue: this.progressValue = 0,
-        time: '00:00:00'
-      }
+    }
+
+    app.config.globalProperties.$isObjectEmpty = function (item) {
+      return Object.keys(item).length === 0
     }
   }
 }
