@@ -25,6 +25,7 @@
 import CircleProgress from 'vue3-circle-progress'
 import { mapState, mapMutations, mapGetters } from 'vuex'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
+import { ProgressBarMixin } from '@/mixins/ProgressBarMixin'
 
 export default {
   name: 'AgentInfo',
@@ -32,12 +33,9 @@ export default {
     CircleProgress,
     MotionPlayOutlineIco
   },
+  mixins: [ProgressBarMixin],
   data: function () {
     return {
-      progressValue: 0,
-      time: '00:00:00',
-      now: 0,
-      timer: null,
       isDone: false
     }
   },
@@ -134,42 +132,6 @@ export default {
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent', 'setPipelineStatus', 'updateStatusAllChildren', 'setNumberAgentsProcessing']),
-    tick () {
-      this.now++
-      let remain = this.now
-      let hours = Math.floor(remain / 3600)
-      let mins = Math.floor(remain / 60)
-      remain -= mins * 60
-      let secs = remain
-
-      if (hours < 10) {
-        hours = '0' + hours
-      }
-      if (mins < 10) {
-        mins = '0' + mins
-      }
-      if (secs < 10) {
-        secs = '0' + secs
-      }
-      this.time = hours + ':' + mins + ':' + secs
-      this.executeProgressBar()
-    },
-    playClock () {
-      this.timer = setInterval(this.tick, 1000)
-    },
-    stopClock () {
-      clearInterval(this.timer)
-      this.now = -1
-      this.progressValue = 0
-      this.time = '00:00:00'
-    },
-    executeProgressBar () {
-      if (this.progressValue <= 100) {
-        this.progressValue += 5
-      } else {
-        this.progressValue = 0
-      }
-    },
     calculateOriginalIndexAgent (currentIndex) {
       let counter = -1
       let i = 0
@@ -221,10 +183,6 @@ export default {
       }
       return newIndex - sonsCounter
     }
-    // getNextOriginalParentIndex (pipeline, currentAgentIndex) {
-    //   agents = pipeline.agent
-    //   const parentOriginalIndex = agents[this.getOriginalPipelineAgentParentIndex()]
-    // }
   }
 }
 </script>
@@ -264,12 +222,6 @@ export default {
   border-radius: 10px;
   background-color: rgba(255,255,255,0.3);
 }
-/* .vue3-circular-progressbar{
-  margin-left: 10%;
-}
-.vue3-circular-progressbar svg{
-  margin-bottom: 27%;
-} */
 .terminal-container .vue3-circular-progressbar{
     top: -11%
 }

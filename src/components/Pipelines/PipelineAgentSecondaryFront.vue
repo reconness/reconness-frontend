@@ -26,18 +26,16 @@
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import CircleProgress from 'vue3-circle-progress'
 import { mapMutations } from 'vuex'
+import { ProgressBarMixin } from '@/mixins/ProgressBarMixin'
 export default {
   name: 'PipelineAgentSecondaryFront',
   components: {
     MotionPlayOutlineIco,
     CircleProgress
   },
+  mixins: [ProgressBarMixin],
   data: function () {
     return {
-      progressValue: 0,
-      time: '00:00:00',
-      now: 0,
-      timer: null,
       isDone: false
     }
   },
@@ -72,42 +70,6 @@ export default {
   },
   methods: {
     ...mapMutations('pipelines', ['setAgent', 'setIsAgentInfoOpenedForTerminal', 'setNumberAgentsProcessing', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentParentIndex']),
-    tick () {
-      this.now++
-      let remain = this.now
-      let hours = Math.floor(remain / 3600)
-      let mins = Math.floor(remain / 60)
-      remain -= mins * 60
-      let secs = remain
-
-      if (hours < 10) {
-        hours = '0' + hours
-      }
-      if (mins < 10) {
-        mins = '0' + mins
-      }
-      if (secs < 10) {
-        secs = '0' + secs
-      }
-      this.time = hours + ':' + mins + ':' + secs
-      this.executeProgressBar()
-    },
-    playClock () {
-      this.timer = setInterval(this.tick, 1000)
-    },
-    stopClock () {
-      clearInterval(this.timer)
-      this.now = -1
-      this.progressValue = 0
-      this.time = '00:00:00'
-    },
-    executeProgressBar () {
-      if (this.progressValue <= 100) {
-        this.progressValue += 5
-      } else {
-        this.progressValue = 0
-      }
-    },
     setAgentFromTerminal (agent) {
       this.setAgent(agent)
       this.setIsAgentInfoOpenedForTerminal(true)
