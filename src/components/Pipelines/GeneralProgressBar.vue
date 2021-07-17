@@ -65,7 +65,7 @@ export default {
     },
     pipeline: {
       handler: function (data) {
-        if (data.statusRun === this.$entityStatus.FINISHED) {
+        if (data.statusRun !== this.$entityStatus.RUNNING) {
           this.stopClock()
         }
       },
@@ -81,11 +81,11 @@ export default {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
         this.setPipelineStatus({
           idPipeline: this.pipeline.id,
-          status: this.$entityStatus.FINISHED
+          status: this.$entityStatus.WAITING
         })
         this.setStatusToAllAgentsByPipeline({
           pipeline: this.pipeline,
-          status: this.$entityStatus.FINISHED
+          status: this.$entityStatus.WAITING
         })
         this.stopClock()
         this.setPipelineAgentParentIndex(-1)

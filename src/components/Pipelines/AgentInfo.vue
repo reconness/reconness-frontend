@@ -52,7 +52,7 @@ export default {
           })
           this.playClock()
           if (this.agent.agentBranch && this.agent.agentBranch.length > 0) {
-            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.agent.id })
+            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.agent.id, status: this.$entityStatus.RUNNING })
           } else {
             const self = this
             setTimeout(
@@ -221,6 +221,10 @@ export default {
       }
       return newIndex - sonsCounter
     }
+    // getNextOriginalParentIndex (pipeline, currentAgentIndex) {
+    //   agents = pipeline.agent
+    //   const parentOriginalIndex = agents[this.getOriginalPipelineAgentParentIndex()]
+    // }
   }
 }
 </script>

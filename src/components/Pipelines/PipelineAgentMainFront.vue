@@ -112,7 +112,7 @@ export default {
           })
           this.playClock()
           if (this.fatherAgent.agentBranch && this.fatherAgent.agentBranch.length > 0) {
-            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.fatherAgent.id })
+            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.fatherAgent.id, status: this.$entityStatus.RUNNING })
           } else {
             const self = this
             setTimeout(

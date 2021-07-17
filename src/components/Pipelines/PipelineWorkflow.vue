@@ -106,11 +106,6 @@ export default {
     associatedAgents () {
       let agentPipelineList = []
       if (this.$route.name === 'PipelineDetail') {
-        /* if (this.startingAgentId === -1) {
-          agentPipelineList = this.AgentsPipelineList.slice(0, 2)
-        } else {
-          agentPipelineList = this.AgentsPipelineList
-        } */
         agentPipelineList = this.AgentsPipelineList
         const sizeList = agentPipelineList.length
         if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {

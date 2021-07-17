@@ -8,7 +8,7 @@
         <div :class="{content: isTerminalHided}">
           <GeneralProgressBar v-if="isTerminalHided" :pipeline="referencedPipeline"/>
           <TerminalSection v-if="!isTerminalHided" :pipeline="referencedPipeline"/>
-          <ExecutionAreaPipelineAgent v-else @mainFlowExecutionIsDone="stopFlow" :pipeline="referencedPipeline" :startMainProcess="startRunning" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
+          <ExecutionAreaPipelineAgent v-else :pipeline="referencedPipeline" :AgentsPipelineList="referencedPipeline.agent" :startingAgentId="startingAgentId" />
         </div>
       </div>
     </div>
@@ -31,8 +31,8 @@ export default {
       progressValue: 0,
       showRunContainer: true,
       referencedPipeline: null,
-      startRunning: false,
-      stopProcess: false
+      startRunning: false
+      // stopProcess: false
     }
   },
   created: function () {
@@ -57,10 +57,10 @@ export default {
   methods: {
     managePipelineRun (isRunning) {
       this.startRunning = isRunning
-    },
-    stopFlow () {
-      this.stopProcess = true
     }
+    // stopFlow () {
+    //   this.stopProcess = true
+    // }
   }
 }
 </script>
