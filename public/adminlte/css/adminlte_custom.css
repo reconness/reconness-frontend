@@ -38,7 +38,18 @@ a.brand-link{
 }
 
 .blue-text{
-  color: #00B1FF;
+  color: #00B1FF !important;
+}
+.white-text{
+  color: #ffffff !important;
+}
+.black-text{
+  color: #000000 !important;
+}
+.pipeline-run-play-container svg{
+  width: 15px;
+  height: 15px;
+  fill: #ffffff;
 }
 
 
@@ -755,12 +766,12 @@ div.card-body a svg{
 }
 
 .isLinkDisabled {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }
 
-.isLinkDisabled > a, .isLinkDisabled > input , .isLinkDisabled > span, .isLinkDisabled > label, .isLinkDisabled > div{
-  color: currentColor;
-  pointer-events: none;
+.isLinkDisabled > a, .isLinkDisabled > input , .isLinkDisabled > span, .isLinkDisabled > label, .isLinkDisabled > div, .isLinkDisabled > svg{
+  color: currentColor !important;
+  pointer-events: none !important;
   opacity: 0.5 !important;
 }
 .domain-names-list{
@@ -931,4 +942,21 @@ div.pipeline_spacing .p-autocomplete-loader{
   padding-bottom: 3px;
   padding-left: 0px;
   padding-right: 0px;
+}
+.red-font-color {
+  color: #FF4545 !important;
+}
+.pipeline-run-execution svg{
+  position: relative;
+  bottom: 26%;
+}
+.pipeline-run-terminal .vue3-circular-progressbar{
+  margin-left: 10%;
+  top: -10%
+}
+.pipeline-run-terminal .vue3-circular-progressbar svg{
+  margin-bottom: 27%;
+}
+.pipeline-run-execution .vue3-circular-progressbar svg{
+  margin-bottom: 0;
 }

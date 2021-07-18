@@ -77,10 +77,11 @@ export default {
       }
     )
 
-    app.config.globalProperties.$agentStatus = Object.freeze(
+    app.config.globalProperties.$entityStatus = Object.freeze(
       {
         RUNNING: 1,
-        FINISHED: 2
+        FINISHED: 2,
+        WAITING: 3
       }
     )
 
@@ -123,6 +124,10 @@ export default {
         default:
           return null
       }
+    }
+
+    app.config.globalProperties.$isObjectEmpty = function (item) {
+      return Object.keys(item).length === 0
     }
   }
 }

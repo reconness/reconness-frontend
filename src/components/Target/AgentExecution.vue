@@ -7,14 +7,14 @@
                    <div class="modal-body">
                           <div class="row">
                             <div class="col-12 col-sm-5 col-md-6 col-lg-4">
-                                <div class="info-box agent_info_panel">
+                                <div class="info-box agent_info_panel" v-bind:style ="{background: color}">
                                     <div class="info-box-content">
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold overflow-visible">{{ nameAgent }}</span>
                                         <span class="mr-4">{{ time }}</span>
                                         <MotionPlayOutlineIco />
                                         <div class="mt-2 output-selector">
-                                          <span @click="is_terminal_open = true" class="mr-2 cursor-pointer">Terminal</span><span @click="is_terminal_open = false" class="pl-2 border-left cursor-pointer">Logs</span>
+                                          <span @click="setIsAgentInfoOpenedForTerminal(true)" class="mr-2 cursor-pointer">Terminal</span><span @click="setIsAgentInfoOpenedForTerminal(false)" class="pl-2 border-left cursor-pointer">Logs</span>
                                         </div>
                                       </div>
                                     </div>
@@ -41,9 +41,10 @@
                                             <div class="d-flex align_left-ordered_columns">
                                             <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
-                                              <span class="font-weight-bold" v-if="is_terminal_open">Terminal</span>
-                                              <span class="font-weight-bold" v-else>Logs</span>
-                                              <span @click="is_terminal_open = !is_terminal_open" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
+                                              <!-- <span class="font-weight-bold black-text" v-if="is_terminal_open">Terminal</span> -->
+                                              <span class="font-weight-bold black-text" v-if="isAgentInfoOpenedForTerminal">Terminal</span>
+                                              <span class="font-weight-bold black-text" v-else>Logs</span>
+                                              <span @click="setIsAgentInfoOpenedForTerminal(!isAgentInfoOpenedForTerminal)" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
                                             </div>
                                             </div>
                                         </div>
@@ -53,7 +54,8 @@
                             <div class="col-12">
                                 <v-ace-editor v-model:value="terminal_ouput" lang="csharp" :readonly="true" style="height:300px" theme="monokai"/>
                                 <div class="d-flex flex-row-reverse mt-3">
-                                  <button @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
+                                  <button v-if="this.$route.name !== 'PipelineRunView'" @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
+                                  <button v-else @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
                                 </div>
                                 <div class="text-center">
                                   <span class="material-icons cursor-pointer" @click="minimizeWindow" @mouseover="toggle">keyboard_arrow_down</span>
@@ -76,6 +78,7 @@ import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import CircleProgress from 'vue3-circle-progress'
 import { mapMutations, mapState } from 'vuex'
+import { ProgressBarMixin } from '@/mixins/ProgressBarMixin'
 import jQuery from 'jquery'
 export default {
   data: function () {
@@ -84,11 +87,7 @@ export default {
       logs_generated: '',
       is_running: false,
       is_terminal_open: true,
-      time: '00:00:00',
-      now: 0,
-      timer: null,
-      minimized: false,
-      progressValue: 0
+      minimized: false
     }
   },
   components: {
@@ -97,11 +96,14 @@ export default {
     OverlayPanel,
     CircleProgress
   },
+  mixins: [ProgressBarMixin],
   computed: {
-    ...mapState('target', ['agentStatus'])
+    ...mapState('target', ['agentStatus']),
+    ...mapState('pipelines', ['isAgentInfoOpenedForTerminal'])
   },
   methods: {
     ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
+    ...mapMutations('pipelines', ['setIsAgentInfoOpenedForTerminal']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -115,7 +117,7 @@ export default {
         })
       } else {
         this.updateStatusSubDomainAgent({
-          status: this.$agentStatus.RUNNING,
+          status: this.$entityStatus.RUNNING,
           idTarget: parseInt(this.$route.params.idTarget),
           idRoot: parseInt(this.$route.params.id),
           idAgent: parseInt(this.idAgent),
@@ -129,74 +131,56 @@ export default {
       this.minimized = true
       this.$refs.op.hide()
     },
-    tick () {
-      this.now++
-      let remain = this.now
-      let hours = Math.floor(remain / 3600)
-      let mins = Math.floor(remain / 60)
-      remain -= mins * 60
-      let secs = remain
-
-      if (hours < 10) {
-        hours = '0' + hours
-      }
-      if (mins < 10) {
-        mins = '0' + mins
-      }
-      if (secs < 10) {
-        secs = '0' + secs
-      }
-      this.time = hours + ':' + mins + ':' + secs
-      this.executeProgressBar()
-    },
-    playClock () {
-      this.timer = setInterval(this.tick, 1000)
-    },
-    stopClock () {
-      clearInterval(this.timer)
-      this.now = -1
-      this.progressValue = 0
-    },
-    pauseClock () {
-      clearInterval(this.timer)
-      this.timer = null
-    },
     closeWindow () {
-      this.setAgentStatus({ status: this.$agentStatus.FINISHED, id: parseInt(-1) })
-      if (this.$route.name === 'RootDomainDetails') {
-        this.updateStatusRootDomainAgent({
-          status: this.$agentStatus.FINISHED,
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
-          idAgent: parseInt(this.idAgent)
-        })
-      } else {
-        this.updateStatusSubDomainAgent({
-          status: this.$agentStatus.FINISHED,
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
-          idAgent: parseInt(this.idAgent),
-          idSubDomain: parseInt(this.$route.params.idsubdomain)
-        })
-      }
-      this.stopClock()
-    },
-    executeProgressBar () {
-      if (this.progressValue <= 100) {
-        this.progressValue += 5
-      } else {
-        this.progressValue = 0
+      if (this.$route.name !== 'PipelineRunView') {
+        this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: parseInt(-1) })
+        if (this.$route.name === 'RootDomainDetails') {
+          this.updateStatusRootDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idTarget: parseInt(this.$route.params.idTarget),
+            idRoot: parseInt(this.$route.params.id),
+            idAgent: parseInt(this.idAgent)
+          })
+        } else {
+          this.updateStatusSubDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idTarget: parseInt(this.$route.params.idTarget),
+            idRoot: parseInt(this.$route.params.id),
+            idAgent: parseInt(this.idAgent),
+            idSubDomain: parseInt(this.$route.params.idsubdomain)
+          })
+        }
+        this.stopClock()
       }
     }
   },
   props: {
     idAgent: Number,
-    nameAgent: String
+    nameAgent: String,
+    status: {
+      type: Number,
+      default: 2
+    },
+    color: {
+      type: String,
+      default: ''
+    }
   },
   watch: {
     agentStatus (value) {
-      if (value.status === this.$agentStatus.RUNNING && !this.minimized) {
-        this.playClock()
+      if (this.$route.name !== 'PipelineRunView') {
+        if (value.status === this.$entityStatus.RUNNING && !this.minimized) {
+          this.playClock()
+        }
+      }
+    },
+    status (value) {
+      if (this.$route.name === 'PipelineRunView') {
+        if (value === this.$entityStatus.RUNNING) {
+          this.playClock()
+        } else {
+          this.stopClock()
+        }
       }
     }
   }

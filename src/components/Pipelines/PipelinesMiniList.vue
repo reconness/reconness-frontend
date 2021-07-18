@@ -15,8 +15,10 @@
                    <li class="nav-item icon-gray mr-1 setting-icon cursor-pointer" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="item.id" @click="openSettings">
                       <GearIcon/>
                     </li>
-                    <li class="nav-item icon-gray">
+                    <li class="nav-item">
+                     <router-link class="icon-gray rocket-icon cursor-pointer"  :to="{ name: 'PipelineRunView', params: {id: item.id}  }">
                      <RocketIco/>
+                     </router-link>
                     </li>
                   </ul>
             </div>
@@ -30,7 +32,7 @@
                       <small class="text-muted">Last run {{ new Date(item.date).toLocaleDateString('en-US') }}</small>
                     </li>
                     <li class="nav-item">
-                    <small class="main_reconnes_text-color font-weight-bold" v-if ="item.statusRun">Success
+                    <small class="main_reconnes_text-color font-weight-bold" v-if ="item.statusRun === this.$entityStatus.RUNNING">Success
                     </small>
                     <small v-else class="color-delete font-weight-bold">Failed</small>
                     </li>
@@ -39,7 +41,7 @@
                </div>
                 <!-- /.d-flex -->
                 <div v-if="item.agent.length > 0">
-                  <div v-for="item2 of item.agent.slice(0,3)" :key="item2.id" class="circle-color float-left mr-1" :style ="{background:item2.background}">
+                  <div v-for="fatherAgent of item.agent.slice(0,3)" :key="fatherAgent.id" class="circle-color float-left mr-1" :style ="{background:fatherAgent.background}">
                 </div>
                </div>
               </div>
@@ -202,7 +204,7 @@ input[type="checkbox"] {
 div.card-header span{
   font-size: 20px;
 }
-li.setting-icon:hover{
+a.setting-icon:hover, a.rocket-icon:hover, li.setting-icon:hover, li.rocket-icon:hover{
   fill: #00B1FF;
 }
 </style>

@@ -12,10 +12,10 @@
                   <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}" class="mt-3 black-circle">  </div>
     </div>
 
-    <div v-for="(item2,index) of associatedAgents" :key="item2.id"
+    <div v-for="(fatherAgent,index) of associatedAgents" :key="fatherAgent.id"
                   :class="{'col-4' : this.$route.name === 'Pipelines', 'col-3': this.$route.name === 'PipelineDetail', 'p-0': true}"
                   style="position: relative;">
-                  <div :class="{'invisible': Object.keys(item2).length === 0}" @mouseenter="showAdd( index )" @mouseleave="hideAdd(index)">
+                  <div :class="{'invisible': this.$isObjectEmpty(fatherAgent)}" @mouseenter="showAdd( index )" @mouseleave="hideAdd(index)">
                     <div class="info-box-background float-left"
                     :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
                     style="position: relative; left: 0px; top: -1px;"></div>
@@ -28,9 +28,9 @@
                   <div v-if="this.$route.name === 'PipelineDetail'">
                     <div  class="workflow-tools info-box">
                      <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: item2.id, idSon: -1})"><a>cancel</a></span>
+                      <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: fatherAgent.id, idSon: -1})"><a>cancel</a></span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span class="material-icons cursor-pointer" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="item2.id">settings</span>
+                      <span class="material-icons cursor-pointer" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="fatherAgent.id">settings</span>
                     </div>
                     </div>
                       <button :id="'b' + index"  data-toggle="modal" data-target="#pipelinesModalForm"
@@ -40,12 +40,12 @@
                   </div>
 
                     <div class="info-box float-left abs-center" :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
-                    :style ="{background:item2.background}" style="position: absolute; left: 7px; top: -4px;">
+                    :style ="{background:fatherAgent.background}" style="position: absolute; left: 7px; top: -4px;">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
-                        <span class="info-box-text  text-custom agent-mini-agent-name">{{item2.name }}</span>
-                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item2.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
+                        <span class="info-box-text  text-custom agent-mini-agent-name">{{fatherAgent.name }}</span>
+                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="fatherAgent.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
                       </div>
-                      <span class="number float-right ml-1 abs-center"  :style ="{background:item2.background}" >
+                      <span class="number float-right ml-1 abs-center"  :style ="{background:fatherAgent.background}" >
                       <div><AccountCogIco :class="{'change-font-size': this.$route.name === 'PipelineDetail'}"/></div>
                       </span>
                     </div>
@@ -53,25 +53,25 @@
 
             <div v-if="this.$route.name === 'PipelineDetail'">
               <div class="line" v-if="this.getAgentBranch(index).length !== 0"></div>
-                <div  v-for="(item3, index1) of this.getAgentBranch(index-1)"  :id="'branch' + index1" :key="item3.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
+                <div  v-for="(sonAgent, sonAgentIndex) of this.getAgentBranch(index-1)"  :id="'branch' + sonAgentIndex" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
                   <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
-                     <div :class="{'invisible': index1+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="index1+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
+                     <div :class="{'invisible': sonAgentIndex+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
+                    <div v-if="sonAgentIndex+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
 
-                    <div class="info-box float-left abs-center w-75" :style ="{background:item3.background}" style="position: relative; left: 7px; top: -89px;">
+                    <div class="info-box float-left abs-center w-75" :style ="{background:sonAgent.background}" style="position: relative; left: 7px; top: -89px;">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
-                        <span class="info-box-text  text-custom agent-mini-agent-name">{{item3.name }}</span>
-                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="item3.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
+                        <span class="info-box-text  text-custom agent-mini-agent-name">{{sonAgent.name }}</span>
+                        <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="sonAgent.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
                       </div>
-                      <span class="number float-right ml-1 abs-center"  :style ="{background:item3.background}" >
+                      <span class="number float-right ml-1 abs-center"  :style ="{background:sonAgent.background}" >
                       <div><AccountCogIco :class="{'change-font-size': this.$route.name === 'PipelineDetail'}"/></div>
                       </span>
                     </div>
                     <div  class="workflow-tools info-box">
                      <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: item3.id})">cancel</span>
+                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: sonAgent.id})">cancel</span>
                       <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', index-1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
-                      <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration" :data-id="item3.id" @click="onEdit">settings</span>
+                      <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration" :data-id="sonAgent.id" @click="onEdit">settings</span>
                     </div>
                     </div>
                     </div>
@@ -106,11 +106,6 @@ export default {
     associatedAgents () {
       let agentPipelineList = []
       if (this.$route.name === 'PipelineDetail') {
-        /* if (this.startingAgentId === -1) {
-          agentPipelineList = this.AgentsPipelineList.slice(0, 2)
-        } else {
-          agentPipelineList = this.AgentsPipelineList
-        } */
         agentPipelineList = this.AgentsPipelineList
         const sizeList = agentPipelineList.length
         if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {
