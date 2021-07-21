@@ -35,7 +35,6 @@ const ProgressBarMixin = {
       clearInterval(this.timer)
       this.now = -1
       this.progressValue = 0
-      this.time = '00:00:00'
     },
     executeProgressBar () {
       if (this.progressValue <= 100) {

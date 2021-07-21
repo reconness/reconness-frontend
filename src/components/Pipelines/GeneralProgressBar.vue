@@ -10,7 +10,8 @@
                 <div :style="{ width: progressValue+'%' }" class="progress-bar agent_exec_progress_bar main_reconnes_bg-color"></div>
               </div>
               <span v-if="pipeline.statusRun === $entityStatus.RUNNING" class="float-right agent-mini-color-gray">running</span>
-              <span v-else class="float-right agent-mini-color-gray">waiting</span>
+              <span v-else-if="pipeline.statusRun === $entityStatus.WAITING" class="float-right agent-mini-color-gray">waiting</span>
+              <span v-else class="float-right agent-mini-color-gray">finished</span>
             </div><!-- /.col-9 col-sm-10 col-lg-11 m-auto -->
             <div class="col-2 action-panel">
             <!-- <div class="col-3 col-sm-2 col-lg-1 action-panel"> -->
