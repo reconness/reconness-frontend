@@ -21,7 +21,8 @@
                                     <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
                                       <span class="border container-circular-bar">
                                         <div class="circular-bar-container border">
-                                          <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                                          <CircleProgress v-if="showCircleProgressBar" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                                          <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
                                         </div>
                                       </span>
                                     </span>
@@ -41,7 +42,6 @@
                                             <div class="d-flex align_left-ordered_columns">
                                             <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
-                                              <!-- <span class="font-weight-bold black-text" v-if="is_terminal_open">Terminal</span> -->
                                               <span class="font-weight-bold black-text" v-if="isAgentInfoOpenedForTerminal">Terminal</span>
                                               <span class="font-weight-bold black-text" v-else>Logs</span>
                                               <span @click="setIsAgentInfoOpenedForTerminal(!isAgentInfoOpenedForTerminal)" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
@@ -99,7 +99,10 @@ export default {
   mixins: [ProgressBarMixin],
   computed: {
     ...mapState('target', ['agentStatus']),
-    ...mapState('pipelines', ['isAgentInfoOpenedForTerminal'])
+    ...mapState('pipelines', ['isAgentInfoOpenedForTerminal']),
+    showCircleProgressBar: function () {
+      return this.status !== this.$entityStatus.FINISHED || this.$route.name === 'RootDomainDetails' || this.$route.name === 'SubDomainDetails'
+    }
   },
   methods: {
     ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
@@ -236,7 +239,7 @@ export default {
   margin-left: 10%;
 }
 .vue3-circular-progressbar svg{
-  margin-bottom: 27%;
+  margin-bottom: 53%;
 }
 .progress{
   height: 5px !important;
