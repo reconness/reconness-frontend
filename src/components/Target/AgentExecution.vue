@@ -11,7 +11,8 @@
                                     <div class="info-box-content">
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold overflow-visible">{{ nameAgent }}</span>
-                                        <span class="mr-4">{{ time }}</span>
+                                        <span v-if="isTimeElapsedExternal" class="mr-4">{{ elapsedTime }}</span>
+                                        <span  v-else class="mr-4">{{ time }}</span>
                                         <MotionPlayOutlineIco />
                                         <div class="mt-2 output-selector">
                                           <span @click="setIsAgentInfoOpenedForTerminal(true)" class="mr-2 cursor-pointer">Terminal</span><span @click="setIsAgentInfoOpenedForTerminal(false)" class="pl-2 border-left cursor-pointer">Logs</span>
@@ -102,6 +103,9 @@ export default {
     ...mapState('pipelines', ['isAgentInfoOpenedForTerminal']),
     showCircleProgressBar: function () {
       return this.status !== this.$entityStatus.FINISHED || this.$route.name === 'RootDomainDetails' || this.$route.name === 'SubDomainDetails'
+    },
+    isTimeElapsedExternal: function () {
+      return this.elapsedTime !== '00:00:00' && this.progressValue > 0
     }
   },
   methods: {
@@ -167,6 +171,10 @@ export default {
     color: {
       type: String,
       default: ''
+    },
+    elapsedTime: {
+      default: '00:00:00',
+      type: String
     }
   },
   watch: {
@@ -184,6 +192,11 @@ export default {
         } else {
           this.stopClock()
         }
+      }
+    },
+    progressValue () {
+      if (this.isTimeElapsedExternal) {
+        this.time = this.elapsedTime
       }
     }
   }

@@ -116,8 +116,12 @@ export default {
           }
         }
       }
+    },
+    time: function (value) {
+      this.$emit('agenttimechange', this.time)
     }
-  }
+  },
+  emits: ['agenttimechange']
 }
 </script>
 <style scoped>

@@ -24,7 +24,7 @@
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
         </div>
-        <PipelineAgentMainFront :index="index" :fatherAgent="fatherAgent" :pipeline="pipeline"/>
+        <PipelineAgentMainFront :index="index" :fatherAgent="fatherAgent" :pipeline="pipeline" @agenttimechange="onAgentTimeChange"/>
         <div>
           <div>
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
@@ -111,8 +111,12 @@ export default {
     },
     isNextElementLastItem (arrayIndex) {
       return arrayIndex + 1 === this.associatedAgents.length || Object.keys(this.associatedAgents[arrayIndex + 1]).length === 0
+    },
+    onAgentTimeChange (agentTime) {
+      this.$emit('agenttimechange', agentTime)
     }
-  }
+  },
+  emits: ['agenttimechange']
 }
 </script>
 <style scoped>

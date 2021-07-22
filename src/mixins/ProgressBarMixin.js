@@ -4,8 +4,7 @@ const ProgressBarMixin = {
       progressValue: 0,
       time: '00:00:00',
       now: 0,
-      timer: null,
-      isDone: false
+      timer: null
     }
   },
   methods: {
