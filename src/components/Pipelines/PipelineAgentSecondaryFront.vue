@@ -2,13 +2,13 @@
   <div class="info-box float-left abs-center w-75"
         :style ="{background:sonAgent.background}" style="position: absolute; left: 7px; top: -4px;">
         <div class="info-box-content border-right w-75">
-            <span class="white-text">{{sonAgent.name }}</span>
+            <span class="white-text responsive-fontsize">{{sonAgent.name }}</span>
             <div class="pipeline-run-play-container">
-            <span class="mr-2 white-text">{{time}}</span>
+            <span class="mr-2 white-text responsive-fontsize">{{time}}</span>
             <MotionPlayOutlineIco />
             </div>
             <div class="output-container">
-            <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="sonAgent.id" :data-name="sonAgent.name" @click="setAgentFromTerminal(sonAgent)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="sonAgent.id" :data-name="sonAgent.name" @click="setAgentFromLogs(sonAgent)">Logs</span>
+            <span class="mr-2 cursor-pointer white-text responsive-fontsize" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="sonAgent.id" :data-name="sonAgent.name" @click="setAgentFromTerminal(sonAgent)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text responsive-fontsize" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="sonAgent.id" :data-name="sonAgent.name" @click="setAgentFromLogs(sonAgent)">Logs</span>
             </div>
         </div><!-- /.info-box-content border-right w-50 -->
         <span class="info-box-icon process_status_panel container-container-circular-bar">
@@ -262,9 +262,23 @@ div.pipeline-run-line {
     -webkit-transform: rotate(36deg);  /* Safari and Chrome */
 }
 }
-
+@media (max-width: 1439px) {
+  .responsive-fontsize{
+    font-size: inherit
+  }
+}
+@media (min-width: 1440px) and (max-width: 1940px) {
+  .responsive-fontsize{
+    font-size: 12px
+  }
+}
+@media (min-width: 1941px) {
+  .responsive-fontsize{
+    font-size: inherit
+  }
+}
 @media (min-width: 1440px) and (max-width: 2560px) {
-div.pipeline-run-line {
+  div.pipeline-run-line {
     position: relative;
     z-index: 1;
     left: 59%;
@@ -275,10 +289,10 @@ div.pipeline-run-line {
     transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
-}
+  }
 }
 @media (min-width: 2560px) {
-div.pipeline-run-line {
+  div.pipeline-run-line {
     position: relative;
     z-index: 1;
     left: 62%;
@@ -289,7 +303,7 @@ div.pipeline-run-line {
     transform: rotate(45deg);
     -ms-transform: rotate(15deg);
     -webkit-transform: rotate(15deg);
-}
+  }
 }
 
 .disabled{
