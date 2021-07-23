@@ -1,7 +1,7 @@
 <template>
     <div class="row ml-3 mr-3 mt-4">
             <!-- <div class="col-9 col-sm-10 col-lg-11 m-auto"> -->
-            <div class="col-10">
+            <div class="col-10 col-xl-11">
               <div class="d-flex justify-content-between">
                 <span class="info-box-text agent-mini-color-gray">Process status</span>
                 <span class="info-box-text agent-mini-color-gray">{{ time }}</span>
@@ -13,15 +13,15 @@
               <span v-else-if="pipeline.statusRun === $entityStatus.WAITING" class="float-right agent-mini-color-gray">waiting</span>
               <span v-else class="float-right agent-mini-color-gray">finished</span>
             </div><!-- /.col-9 col-sm-10 col-lg-11 m-auto -->
-            <div class="col-2 action-panel">
+            <div class="col-2 col-xl-1 action-panel">
             <!-- <div class="col-3 col-sm-2 col-lg-1 action-panel"> -->
               <div v-if="this.pipeline.statusRun === $entityStatus.RUNNING" class="action-panel-container action-panel-container-stop d-flex w-100 flex-column">
-                <span class="cursor-pointer material-icons red-font-color m-auto" @click="executePipeline">stop</span>
+                <span class="cursor-pointer material-icons red-font-color m-auto" @click="executeOrStopPipeline">stop</span>
                 <span class="pb-2 m-auto red-font-color">STOP</span>
               </div>
               <div v-else @mouseover="toggle" class="action-panel-container action-panel-container-run d-flex w-100 flex-column start-btn">
                 <div class="m-auto">
-                <span :class="{isLinkDisabled: !areLocationsAssigned, 'cursor-pointer': areLocationsAssigned }" @click="executePipeline"><RocketIco /></span>
+                <span :class="{isLinkDisabled: !areLocationsAssigned, 'cursor-pointer': areLocationsAssigned }" @click="executeOrStopPipeline"><RocketIco /></span>
                 </div>
                 <div :class="{isLinkDisabled: !areLocationsAssigned, 'cursor-pointer': areLocationsAssigned }" class="m-auto pb-2">
                 <span class="white-font-color">RUN</span>
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineStatus', 'setPipelineAgentParentIndex', 'setStatusToAllAgentsByPipeline']),
-    executePipeline () {
+    executeOrStopPipeline () {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
         this.setPipelineStatus({
           idPipeline: this.pipeline.id,

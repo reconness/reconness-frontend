@@ -1,6 +1,6 @@
 <template>
   <div class="row force-scroll mt-4">
-    <div v-for="(fatherAgent,index) of associatedAgents" :key="fatherAgent.id" class="col-5"
+    <div v-for="(fatherAgent,index) of associatedAgents" :key="fatherAgent.id" class="col-5 col-lg-4 col-xl-3"
       :class="{'p-0': true}"
       style="position: relative;">
       <div :class="{'invisible': this.$isObjectEmpty(fatherAgent)}">

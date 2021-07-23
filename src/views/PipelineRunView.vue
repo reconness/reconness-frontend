@@ -31,7 +31,6 @@ export default {
       progressValue: 0,
       showRunContainer: true,
       referencedPipeline: null,
-      startRunning: false,
       agentTimer: ''
     }
   },
@@ -55,9 +54,6 @@ export default {
     ...mapState('pipelines', ['isTerminalHided', 'agent'])
   },
   methods: {
-    managePipelineRun (isRunning) {
-      this.startRunning = isRunning
-    },
     onAgentTimeChange (agentTime) {
       this.agentTimer = agentTime
     }
