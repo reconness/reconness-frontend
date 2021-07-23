@@ -1,6 +1,6 @@
 <template>
     <div class="row ml-3">
-        <div class="col-8">
+        <div class="col-12 col-sm-7 col-lg-8 col-xl-9">
             <div class="row">
               <div class="col-12">
                 <GeneralProgressBar :pipeline="pipeline"/>
@@ -17,7 +17,7 @@
               </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-sm-5 col-lg-4 col-xl-3">
           <div class="terminal-run-agents-container pl-2 pr-2 pt-3 pb-3 h-100">
             <AgentInfo v-for="(agent, index) of getAgentsFromIdPipeline(this.pipeline.id)" :key="agent" :index="index" :agent="agent" :pipeline="pipeline"/>
           </div>
@@ -59,11 +59,6 @@ export default {
   width: 100%;
 }
 .terminal-container .ace_editor{
-    /* position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0; */
     margin: auto;
 }
 .terminal-run-agents-container{
@@ -71,8 +66,14 @@ export default {
     box-shadow: 3px 12px 23px #00000017
 }
 .terminal-run-agents-container div.info-box.agent_info_panel{
-    width: 68%;
+    width: 90%;
     margin: auto;
     margin-bottom: 12px
+}
+
+@media (min-width: 1900px) {
+  .terminal-run-agents-container div.info-box.agent_info_panel{
+    width: 55%;
+  }
 }
 </style>

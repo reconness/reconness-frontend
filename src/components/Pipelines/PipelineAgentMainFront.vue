@@ -116,8 +116,12 @@ export default {
           }
         }
       }
+    },
+    time: function (value) {
+      this.$emit('agenttimechange', this.time)
     }
-  }
+  },
+  emits: ['agenttimechange']
 }
 </script>
 <style scoped>
@@ -369,10 +373,12 @@ div.pipeline-run-line {
 .vue3-circular-progressbar{
   margin-left: 10%;
 }
-/* .vue3-circular-progressbar svg{
-  margin-bottom: 27%;
-} */
 .output-container{
   font-size: 13px;
+}
+@media (min-width: 1024px) and (max-width: 1300px) {
+  .w-65{
+    width: 75% !important;
+  }
 }
 </style>

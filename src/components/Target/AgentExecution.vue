@@ -11,7 +11,8 @@
                                     <div class="info-box-content">
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold overflow-visible">{{ nameAgent }}</span>
-                                        <span class="mr-4">{{ time }}</span>
+                                        <span v-if="isTimeElapsedExternal" class="mr-4">{{ elapsedTime }}</span>
+                                        <span  v-else class="mr-4">{{ time }}</span>
                                         <MotionPlayOutlineIco />
                                         <div class="mt-2 output-selector">
                                           <span @click="setIsAgentInfoOpenedForTerminal(true)" class="mr-2 cursor-pointer">Terminal</span><span @click="setIsAgentInfoOpenedForTerminal(false)" class="pl-2 border-left cursor-pointer">Logs</span>
@@ -21,7 +22,8 @@
                                     <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
                                       <span class="border container-circular-bar">
                                         <div class="circular-bar-container border">
-                                          <CircleProgress :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                                          <CircleProgress v-if="showCircleProgressBar" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                                          <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
                                         </div>
                                       </span>
                                     </span>
@@ -41,7 +43,6 @@
                                             <div class="d-flex align_left-ordered_columns">
                                             <span v-if="agentStatus.status == 1" class="processbar-text">running</span>
                                             <div class="align_left-ordered_columns agent-terminal-fade">
-                                              <!-- <span class="font-weight-bold black-text" v-if="is_terminal_open">Terminal</span> -->
                                               <span class="font-weight-bold black-text" v-if="isAgentInfoOpenedForTerminal">Terminal</span>
                                               <span class="font-weight-bold black-text" v-else>Logs</span>
                                               <span @click="setIsAgentInfoOpenedForTerminal(!isAgentInfoOpenedForTerminal)" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
@@ -99,7 +100,13 @@ export default {
   mixins: [ProgressBarMixin],
   computed: {
     ...mapState('target', ['agentStatus']),
-    ...mapState('pipelines', ['isAgentInfoOpenedForTerminal'])
+    ...mapState('pipelines', ['isAgentInfoOpenedForTerminal']),
+    showCircleProgressBar: function () {
+      return this.status !== this.$entityStatus.FINISHED || this.$route.name === 'RootDomainDetails' || this.$route.name === 'SubDomainDetails'
+    },
+    isTimeElapsedExternal: function () {
+      return this.elapsedTime !== '00:00:00' && this.progressValue > 0
+    }
   },
   methods: {
     ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
@@ -164,6 +171,10 @@ export default {
     color: {
       type: String,
       default: ''
+    },
+    elapsedTime: {
+      default: '00:00:00',
+      type: String
     }
   },
   watch: {
@@ -181,6 +192,11 @@ export default {
         } else {
           this.stopClock()
         }
+      }
+    },
+    progressValue () {
+      if (this.isTimeElapsedExternal) {
+        this.time = this.elapsedTime
       }
     }
   }
@@ -236,7 +252,7 @@ export default {
   margin-left: 10%;
 }
 .vue3-circular-progressbar svg{
-  margin-bottom: 27%;
+  margin-bottom: 53%;
 }
 .progress{
   height: 5px !important;
