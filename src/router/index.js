@@ -22,19 +22,19 @@ const routes = [
     component: () => import('../views/TargetsListView.vue')
   },
   {
-    path: '/target',
+    path: '/targets/:targetName',
     name: 'TargetDetail',
     component: () => import('../views/TargetsDetailsView.vue'),
     props: true
   },
   {
-    path: '/target/rootdomain',
+    path: '/targets/:targetName/:rootdomainName',
     name: 'RootDomainDetails',
     component: () => import('../views/RootDomainDetailsView.vue'),
     props: true
   },
   {
-    path: '/target/rootdomain/subdomain',
+    path: '/targets/:targetName/:rootdomainName/:subdomainName',
     name: 'SubDomainDetails',
     component: () => import('../views/SubDomainDetailsView.vue'),
     props: true
@@ -45,7 +45,7 @@ const routes = [
     component: () => import('../views/PipelinesListView.vue')
   },
   {
-    path: '/pipeline',
+    path: '/pipelines/:pipelineName',
     name: 'PipelineDetail',
     component: () => import('../views/PipelineDetailsView.vue'),
     props: true

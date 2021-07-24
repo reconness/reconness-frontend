@@ -128,7 +128,7 @@
     </div>
     <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
-          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: parseInt(item.id)} }">
+          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: parseInt(item.id), subdomainName: item.name} }">
           <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: color}">forward</span>
           </router-link>
         </div>
