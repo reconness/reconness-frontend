@@ -21,7 +21,7 @@
                <div class="col abs-center ">
                  <div class="row p-2">
                    <div class="col-12">
-                   <router-link  :to="{ name: 'PipelineRunView', params: {id: item.id}  }">
+                   <router-link  :to="{ name: 'PipelineRunView', params: {id: item.id, pipelineName: item.name}  }">
                      <span class="info-box-icon abs-center listing-run-pipeline-ico"><RocketIco/></span>
                     </router-link>
                    </div>

@@ -124,10 +124,10 @@ export default {
         if (!this.locationsContainNonExist() && !this.validators.blank.locations) {
           this.removeBlankLocations()
           this.addPipeline(this.pipeline)
-          this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId) } })
+          this.pipeline.name = 'My pipeline'
+          this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId), pipelineName: this.pipeline.name } })
           jQuery('#pipelinesModalFormSettings').modal('hide')
           this.pipeline.agent = []
-          this.pipeline.name = 'My pipeline'
         }
       }
     },

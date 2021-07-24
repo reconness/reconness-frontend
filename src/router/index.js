@@ -51,7 +51,7 @@ const routes = [
     props: true
   },
   {
-    path: '/pipeline/run',
+    path: '/pipelines/:pipelineName/run',
     name: 'PipelineRunView',
     component: () => import('../views/PipelineRunView.vue'),
     props: true

@@ -21,7 +21,7 @@
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#pipelinesModalFormSettings" :data-id="parseInt(this.$route.params.id)" @click="openSettings">Pipeline Settings</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <router-link class="nav-link pos red-font-color" :to="{ name: 'PipelineDetail', params: {id: id} }">Close</router-link>
+          <router-link class="nav-link pos red-font-color" :to="{ name: 'PipelineDetail', params: {id: id, pipelineName: pipelineName} }">Close</router-link>
         </li>
       </ul>
     </nav>
