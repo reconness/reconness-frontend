@@ -16,7 +16,8 @@ export default {
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#03DCED'
           },
           {
             name: 'Agent 2',
@@ -24,35 +25,40 @@ export default {
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#737be5'
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#F96767'
           },
           {
             name: 'Agent 6',
-            background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
+            background: '#ff8650 0% 0% no-repeat padding-box',
             id: 6,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#ff8650'
           },
           {
             name: 'Agent 7',
             background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box',
             id: 7,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#3adb99'
           },
           {
             name: 'Agent 8',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 8,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#F96767'
           }
         ],
         locations: [
@@ -114,7 +120,8 @@ export default {
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#03DCED'
           },
           {
             name: 'Agent 2',
@@ -126,17 +133,20 @@ export default {
                 name: 'Agent 1',
                 background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
                 id: 1,
-                status: 3
+                status: 3,
+                primaryColor: '#03DCED'
               }
             ],
-            status: 3
+            status: 3,
+            primaryColor: '#737be5'
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#F96767'
           }
         ],
         locations: [
@@ -186,7 +196,8 @@ export default {
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#03DCED'
           },
           {
             name: 'Agent 2',
@@ -194,14 +205,16 @@ export default {
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#737be5'
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#F96767'
           }
         ],
         locations: [
@@ -245,7 +258,8 @@ export default {
               'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
             id: 1,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#03DCED'
           },
           {
             name: 'Agent 2',
@@ -253,14 +267,16 @@ export default {
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#737be5'
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#F96767'
           }
         ],
         locations: [
@@ -313,14 +329,18 @@ export default {
               name: 'Agent 5',
               background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
               id: 5,
-              status: 3
+              status: 3,
+              primaryColor: '#F96767'
             },
             {
               name: 'Agent 2',
               background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
               id: 2,
-              status: 3
-            }]
+              status: 3,
+              primaryColor: '#737be5'
+            }],
+            status: 3,
+            primaryColor: '#03DCED'
           },
           {
             name: 'Agent 2',
@@ -328,14 +348,16 @@ export default {
               'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
             id: 2,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#737be5'
           },
           {
             name: 'Agent 5',
             background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
             id: 5,
             agentBranch: [],
-            status: 3
+            status: 3,
+            primaryColor: '#F96767'
           }
         ],
         locations: [
@@ -555,6 +577,7 @@ export default {
       state.isTerminalHided = hide
     },
     setAgent (state, agent) {
+      console.log(agent)
       state.agent = agent
     },
     setIsAgentInfoOpenedForTerminal (state, isOpenFromTerminal) {

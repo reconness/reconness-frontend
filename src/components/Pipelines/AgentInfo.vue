@@ -13,7 +13,7 @@
         <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
         <span class="border container-circular-bar">
         <div class="circular-bar-container border pipeline-run-terminal">
-        <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+        <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(agent.primaryColor)" fill-color="#ffffff"/>
         <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
         </div>
     </span>

@@ -129,5 +129,15 @@ export default {
     app.config.globalProperties.$isObjectEmpty = function (item) {
       return Object.keys(item).length === 0
     }
+
+    app.config.globalProperties.$getEmptyCircularProgressBarColor = function (color) {
+      switch (color) {
+        case '#03DCED': return '#75e1f1'
+        case '#737be5': return '#b1aded'
+        case '#F96767': return '#ff959e'
+        case '#ff8650': return '#ffbc9d'
+        default: return '#abdcc3'
+      }
+    }
   }
 }
