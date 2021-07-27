@@ -577,7 +577,6 @@ export default {
       state.isTerminalHided = hide
     },
     setAgent (state, agent) {
-      console.log(agent)
       state.agent = agent
     },
     setIsAgentInfoOpenedForTerminal (state, isOpenFromTerminal) {
