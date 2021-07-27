@@ -292,8 +292,6 @@ export default {
       if (this.event_date) {
         this.settings_data.calendars[this.eventPositionOnViewList].date = this.event_date
       }
-      console.log(this.eventSelectionX)
-      console.log(this.eventSelectionY)
     },
     sendPipelineSettings: function (e) {
       this.$emit('pipelineSettingsDone', this.settings_data)
@@ -409,7 +407,6 @@ export default {
         if (this.eventSelectionY === 1) {
           return 1
         }
-        console.log('si')
         return this.settings_data.calendars.length - 1
       }
     }
