@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <AgentExecution :id-agent="agent.id" :name-agent="agent.name" :status="agent.status" :gradientColor="agent.background" :elapsedTime="agentTimer" :primaryColor="agent.primaryColor"/>
+    <AgentExecution :id-agent="agent.id" :name-agent="agent.name" :status="agent.status" :gradientColor="agent.background" :elapsedTime="agentTimer" :primaryColor="agent.primaryColor" :storedDurationTime="agent.durationTime"/>
   </div>
 </template>
 <script>

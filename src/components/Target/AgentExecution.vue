@@ -11,8 +11,9 @@
                                     <div class="info-box-content">
                                       <div class="border-right">
                                         <span class="info-box-text mb-2 font-weight-bold overflow-visible">{{ nameAgent }}</span>
-                                        <span v-if="isTimeElapsedExternal" class="mr-4">{{ elapsedTime }}</span>
-                                        <span  v-else class="mr-4">{{ time }}</span>
+                                        <span v-if="isTimeElapsedExternal && this.$route.name === 'PipelineRunView'" class="mr-4">{{ elapsedTime }}</span>
+                                        <span v-else-if="!isTimeElapsedExternal && this.$route.name === 'PipelineRunView'" class="mr-4">{{  this.$getStringTimeFormat(storedDurationTime.getHours(), storedDurationTime.getMinutes(), storedDurationTime.getSeconds()) }}</span>
+                                        <span  v-else-if="this.$route.name !== 'PipelineRunView'" class="mr-4">{{ time }}</span>
                                         <MotionPlayOutlineIco />
                                         <div class="mt-2 output-selector">
                                           <span @click="setIsAgentInfoOpenedForTerminal(true)" class="mr-2 cursor-pointer">Terminal</span><span @click="setIsAgentInfoOpenedForTerminal(false)" class="pl-2 border-left cursor-pointer">Logs</span>
@@ -179,6 +180,10 @@ export default {
     elapsedTime: {
       default: '00:00:00',
       type: String
+    },
+    storedDurationTime: {
+      default: new Date(),
+      type: Date
     }
   },
   watch: {

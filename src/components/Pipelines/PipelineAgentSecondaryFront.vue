@@ -4,7 +4,8 @@
         <div class="info-box-content border-right w-75">
             <span class="white-text responsive-fontsize">{{sonAgent.name }}</span>
             <div class="pipeline-run-play-container">
-            <span class="mr-2 white-text responsive-fontsize">{{time}}</span>
+            <span v-if="time !== '00:00:00'" class="mr-2 white-text responsive-fontsize">{{time}}</span>
+            <span v-else class="mr-2 white-text">{{ this.$getStringTimeFormat(sonAgent.durationTime.getHours(), sonAgent.durationTime.getMinutes(), sonAgent.durationTime.getSeconds()) }}</span>
             <MotionPlayOutlineIco />
             </div>
             <div class="output-container">
