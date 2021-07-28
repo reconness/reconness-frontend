@@ -56,6 +56,19 @@ export default {
                   index: self.getOriginalPipelineAgentParentIndex(self.pipeline, self.index),
                   status: self.$entityStatus.FINISHED
                 })
+                const today = new Date()
+                self.setPipelineAgentDurationTimeByIndex({
+                  idPipeline: self.pipeline.id,
+                  index: self.index,
+                  durationTime: new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate(),
+                    self.hours,
+                    self.mins,
+                    self.secs
+                  )
+                })
                 if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
                 }
@@ -125,7 +138,7 @@ export default {
     ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent', 'setPipelineStatus', 'updateStatusAllChildren', 'setNumberAgentsProcessing']),
+    ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent', 'setPipelineStatus', 'updateStatusAllChildren', 'setNumberAgentsProcessing', 'setPipelineAgentDurationTimeByIndex']),
     calculateOriginalIndexAgent (currentIndex) {
       let counter = -1
       let i = 0
