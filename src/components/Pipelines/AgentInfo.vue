@@ -70,6 +70,7 @@ export default {
                     idPipeline: self.pipeline.id,
                     status: self.$entityStatus.FINISHED
                   })
+                  self.setPipelineAgentParentIndex(-1)
                 }
               },
               5000

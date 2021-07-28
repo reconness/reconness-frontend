@@ -94,6 +94,7 @@ export default {
                     idPipeline: self.pipeline.id,
                     status: self.$entityStatus.FINISHED
                   })
+                  self.setPipelineAgentParentIndex(-1)
                 }
               },
               5000
@@ -113,6 +114,7 @@ export default {
               idPipeline: this.pipeline.id,
               status: this.$entityStatus.FINISHED
             })
+            this.setPipelineAgentParentIndex(-1)
           }
         }
       }
