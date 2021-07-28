@@ -14,7 +14,7 @@
         <span class="info-box-icon process_status_panel container-container-circular-bar">
             <span class="border container-circular-bar">
             <div class="circular-bar-container border pipeline-run-execution">
-                <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(sonAgent.primaryColor)" fill-color="#ffffff"/>
+                <CircleProgress v-if="sonAgent.status !== this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(sonAgent.primaryColor)" fill-color="#ffffff"/>
                 <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
             </div>
             </span>
@@ -34,11 +34,6 @@ export default {
     CircleProgress
   },
   mixins: [ProgressBarMixin],
-  data: function () {
-    return {
-      isDone: false
-    }
-  },
   props: {
     sonAgent: Object,
     pipeline: Object,
@@ -59,7 +54,6 @@ export default {
                 status: self.$entityStatus.FINISHED
               })
               self.setNumberAgentsProcessing(1)
-              self.isDone = true
             },
             5000
           )

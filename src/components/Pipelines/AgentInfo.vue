@@ -13,7 +13,7 @@
         <span class="info-box-icon elevation-1 process_status_panel container-container-circular-bar">
         <span class="border container-circular-bar">
         <div class="circular-bar-container border pipeline-run-terminal">
-        <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(agent.primaryColor)" fill-color="#ffffff"/>
+        <CircleProgress v-if="agent.status !== this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(agent.primaryColor)" fill-color="#ffffff"/>
         <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
         </div>
     </span>
@@ -34,11 +34,6 @@ export default {
     MotionPlayOutlineIco
   },
   mixins: [ProgressBarMixin],
-  data: function () {
-    return {
-      isDone: false
-    }
-  },
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
@@ -64,8 +59,7 @@ export default {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
                 }
                 self.stopClock()
-                self.isDone = true
-                if (self.pipeline.agent.length - 2 === self.index) {
+                if (self.pipeline.agent.length - 1 === self.index) {
                   self.setPipelineStatus({
                     idPipeline: self.pipeline.id,
                     status: self.$entityStatus.FINISHED
@@ -90,7 +84,6 @@ export default {
                     status: self.$entityStatus.FINISHED
                   })
                   self.setNumberAgentsProcessing(1)
-                  self.isDone = true
                 },
                 5000
               )
@@ -103,13 +96,12 @@ export default {
       if (this.index === this.agentParentRunningIndex && this.index < this.pipeline.agent.length) {
         if (this.agent.agentBranch && value === this.agent.agentBranch.length) {
           this.stopClock()
-          this.isDone = true
           if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch) {
             this.setPipelineAgentParentIndex(this.pipeline.agent[this.agentParentRunningIndex].agentBranch.length + 1)
           } else {
             this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)
           }
-          if (this.index === (this.pipeline.agent.length - 2)) {
+          if (this.index === (this.pipeline.agent.length - 1)) {
             this.setPipelineStatus({
               idPipeline: this.pipeline.id,
               status: this.$entityStatus.FINISHED
