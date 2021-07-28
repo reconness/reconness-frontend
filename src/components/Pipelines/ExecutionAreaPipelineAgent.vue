@@ -73,19 +73,13 @@ export default {
     associatedAgents () {
       let agentPipelineList = []
       agentPipelineList = this.AgentsPipelineList
-      const sizeList = agentPipelineList.length
-      if (sizeList >= 1 && Object.keys(agentPipelineList[sizeList - 1]).length !== 0) {
-        if (Object.entries(agentPipelineList[sizeList - 1]).length > 0) {
-          agentPipelineList.push({})
-        }
-      }
       return agentPipelineList
     }
   },
   methods: {
     getAgentBranch (indexValue) {
       const windowReziseWidth = window.outerWidth
-      if (indexValue !== -1 && Object.keys(this.associatedAgents[indexValue]).length !== 0) {
+      if (indexValue !== -1) {
         if (this.AgentsPipelineList[indexValue].agentBranch) {
           if (windowReziseWidth < 1200) {
             return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
@@ -110,7 +104,7 @@ export default {
       this.isRunningSecondaryProcess = result
     },
     isNextElementLastItem (arrayIndex) {
-      return arrayIndex + 1 === this.associatedAgents.length || Object.keys(this.associatedAgents[arrayIndex + 1]).length === 0
+      return arrayIndex + 1 === this.associatedAgents.length
     },
     onAgentTimeChange (agentTime) {
       this.$emit('agenttimechange', agentTime)

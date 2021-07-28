@@ -100,7 +100,7 @@ export default {
       }
     },
     numberAgentsProcessing: function (value) {
-      if (this.index === this.agentParentRunningIndex && this.index < (this.pipeline.agent.length - 1)) {
+      if (this.index === this.agentParentRunningIndex && this.index < this.pipeline.agent.length) {
         if (this.agent.agentBranch && value === this.agent.agentBranch.length) {
           this.stopClock()
           this.isDone = true
