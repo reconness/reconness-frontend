@@ -147,12 +147,18 @@ export default {
       let secondsTemp = ''
       if (hours < 10) {
         hoursTemp = '0' + hours
+      } else {
+        hoursTemp = hours
       }
       if (minutes < 10) {
         minutesTemp = '0' + minutes
+      } else {
+        minutesTemp = minutes
       }
       if (seconds < 10) {
         secondsTemp = '0' + seconds
+      } else {
+        secondsTemp = seconds
       }
       return hoursTemp + ':' + minutesTemp + ':' + secondsTemp
     }

@@ -110,7 +110,14 @@ export default {
       this.$emit('agenttimechange', agentTime)
     }
   },
-  emits: ['agenttimechange']
+  emits: ['agenttimechange'],
+  created () {
+    if (this.associatedAgents.length > 1 && this.associatedAgents[this.associatedAgents.length - 1]) {
+      if (this.$isObjectEmpty(this.associatedAgents[this.associatedAgents.length - 1])) {
+        this.associatedAgents.splice(this.associatedAgents.length - 1, 1)
+      }
+    }
+  }
 }
 </script>
 <style scoped>
