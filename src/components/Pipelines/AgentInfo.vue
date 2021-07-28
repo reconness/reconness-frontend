@@ -3,7 +3,8 @@
         <div class="info-box-content">
         <div class="border-right">
             <span class="info-box-text mb-2 font-weight-bold overflow-visible white-text">{{agent.name}}</span>
-            <span class="mr-1 white-text">{{time}}</span>
+            <span v-if="time !== '00:00:00'" class="mr-1 white-text">{{time}}</span>
+            <span v-else class="mr-2 white-text">{{ this.$getStringTimeFormat(agent.durationTime.getHours(), agent.durationTime.getMinutes(), agent.durationTime.getSeconds()) }}</span>
             <MotionPlayOutlineIco />
             <div class="mt-2 output-selector pr-2">
             <span class="mr-2 cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" @click="setAgent(agent)">Terminal</span><span class="pl-2 border-left cursor-pointer white-text" data-toggle="modal" data-target="#agentExecutionModalForm" @click="setAgent(agent)">Logs</span>

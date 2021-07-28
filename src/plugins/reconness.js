@@ -81,7 +81,8 @@ export default {
       {
         RUNNING: 1,
         FINISHED: 2,
-        WAITING: 3
+        WAITING: 3,
+        FAILED: 4
       }
     )
 
@@ -138,6 +139,22 @@ export default {
         case '#ff8650': return '#ffbc9d'
         default: return '#abdcc3'
       }
+    }
+
+    app.config.globalProperties.$getStringTimeFormat = function (hours, minutes, seconds) {
+      let hoursTemp = ''
+      let minutesTemp = ''
+      let secondsTemp = ''
+      if (hours < 10) {
+        hoursTemp = '0' + hours
+      }
+      if (minutes < 10) {
+        minutesTemp = '0' + minutes
+      }
+      if (seconds < 10) {
+        secondsTemp = '0' + seconds
+      }
+      return hoursTemp + ':' + minutesTemp + ':' + secondsTemp
     }
   }
 }

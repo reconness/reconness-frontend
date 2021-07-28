@@ -5,7 +5,8 @@
             <div class="info-box-content border-right w-50">
               <span class="white-text">{{fatherAgent.name }}</span>
               <div class="pipeline-run-play-container">
-                <span class="mr-2 white-text">{{time}}</span>
+                <span v-if="time !== '00:00:00'" class="mr-2 white-text">{{time}}</span>
+                <span v-else class="mr-2 white-text">{{ this.$getStringTimeFormat(fatherAgent.durationTime.getHours(), fatherAgent.durationTime.getMinutes(), fatherAgent.durationTime.getSeconds()) }}</span>
                 <MotionPlayOutlineIco />
               </div> <!-- /.pipeline-run-play-container -->
               <div class="output-container">
@@ -48,7 +49,7 @@ export default {
     ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren']),
+    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren', 'setPipelineAgentDurationTimeByIndex']),
     setAgentFromTerminal (agent) {
       this.setAgent(agent)
       this.setIsAgentInfoOpenedForTerminal(true)
@@ -78,6 +79,19 @@ export default {
                   idPipeline: self.pipeline.id,
                   index: self.index,
                   status: self.$entityStatus.FINISHED
+                })
+                const today = new Date()
+                self.setPipelineAgentDurationTimeByIndex({
+                  idPipeline: self.pipeline.id,
+                  index: self.index,
+                  durationTime: new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate(),
+                    self.hours,
+                    self.mins,
+                    self.secs
+                  )
                 })
                 if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)

@@ -17,7 +17,8 @@ export default {
             id: 1,
             agentBranch: [],
             status: 3,
-            primaryColor: '#03DCED'
+            primaryColor: '#03DCED',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 2',
@@ -26,7 +27,8 @@ export default {
             id: 2,
             agentBranch: [],
             status: 3,
-            primaryColor: '#737be5'
+            primaryColor: '#737be5',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 5',
@@ -34,7 +36,8 @@ export default {
             id: 5,
             agentBranch: [],
             status: 3,
-            primaryColor: '#F96767'
+            primaryColor: '#F96767',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 6',
@@ -42,7 +45,8 @@ export default {
             id: 6,
             agentBranch: [],
             status: 3,
-            primaryColor: '#ff8650'
+            primaryColor: '#ff8650',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 7',
@@ -50,7 +54,8 @@ export default {
             id: 7,
             agentBranch: [],
             status: 3,
-            primaryColor: '#3adb99'
+            primaryColor: '#3adb99',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 8',
@@ -58,7 +63,8 @@ export default {
             id: 8,
             agentBranch: [],
             status: 3,
-            primaryColor: '#F96767'
+            primaryColor: '#F96767',
+            durationTime: new Date('2020-01-08T00:00:06')
           }
         ],
         locations: [
@@ -121,7 +127,8 @@ export default {
             id: 1,
             agentBranch: [],
             status: 3,
-            primaryColor: '#03DCED'
+            primaryColor: '#03DCED',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 2',
@@ -134,11 +141,13 @@ export default {
                 background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
                 id: 1,
                 status: 3,
-                primaryColor: '#03DCED'
+                primaryColor: '#03DCED',
+                durationTime: new Date('2020-01-08T00:00:06')
               }
             ],
             status: 3,
-            primaryColor: '#737be5'
+            primaryColor: '#737be5',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 5',
@@ -146,7 +155,8 @@ export default {
             id: 5,
             agentBranch: [],
             status: 3,
-            primaryColor: '#F96767'
+            primaryColor: '#F96767',
+            durationTime: new Date('2020-01-08T00:00:06')
           }
         ],
         locations: [
@@ -197,7 +207,8 @@ export default {
             id: 1,
             agentBranch: [],
             status: 3,
-            primaryColor: '#03DCED'
+            primaryColor: '#03DCED',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 2',
@@ -206,7 +217,8 @@ export default {
             id: 2,
             agentBranch: [],
             status: 3,
-            primaryColor: '#737be5'
+            primaryColor: '#737be5',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 5',
@@ -214,7 +226,8 @@ export default {
             id: 5,
             agentBranch: [],
             status: 3,
-            primaryColor: '#F96767'
+            primaryColor: '#F96767',
+            durationTime: new Date('2020-01-08T00:00:06')
           }
         ],
         locations: [
@@ -259,7 +272,8 @@ export default {
             id: 1,
             agentBranch: [],
             status: 3,
-            primaryColor: '#03DCED'
+            primaryColor: '#03DCED',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 2',
@@ -268,7 +282,8 @@ export default {
             id: 2,
             agentBranch: [],
             status: 3,
-            primaryColor: '#737be5'
+            primaryColor: '#737be5',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 5',
@@ -276,7 +291,8 @@ export default {
             id: 5,
             agentBranch: [],
             status: 3,
-            primaryColor: '#F96767'
+            primaryColor: '#F96767',
+            durationTime: new Date('2020-01-08T00:00:06')
           }
         ],
         locations: [
@@ -330,17 +346,20 @@ export default {
               background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
               id: 5,
               status: 3,
-              primaryColor: '#F96767'
+              primaryColor: '#F96767',
+              durationTime: new Date('2020-01-08T00:00:06')
             },
             {
               name: 'Agent 2',
               background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
               id: 2,
               status: 3,
-              primaryColor: '#737be5'
+              primaryColor: '#737be5',
+              durationTime: new Date('2020-01-08T00:00:06')
             }],
             status: 3,
-            primaryColor: '#03DCED'
+            primaryColor: '#03DCED',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 2',
@@ -349,7 +368,8 @@ export default {
             id: 2,
             agentBranch: [],
             status: 3,
-            primaryColor: '#737be5'
+            primaryColor: '#737be5',
+            durationTime: new Date('2020-01-08T00:00:06')
           },
           {
             name: 'Agent 5',
@@ -357,7 +377,8 @@ export default {
             id: 5,
             agentBranch: [],
             status: 3,
-            primaryColor: '#F96767'
+            primaryColor: '#F96767',
+            durationTime: new Date('2020-01-08T00:00:06')
           }
         ],
         locations: [
@@ -556,6 +577,11 @@ export default {
       const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
       const storedAgent = pipeline.agent.find(item => item.id === agent.idAgent)
       storedAgent.status = agent.status
+    },
+    setPipelineAgentDurationTimeByIndex (state, agent) {
+      const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
+      const storedAgent = pipeline.agent[agent.index]
+      storedAgent.durationTime = agent.durationTime
     },
     setPipelineAgentParentStatusByIndex (state, agent) {
       const pipeline = state.pipelinesListStore.find(item => item.id === agent.idPipeline)
