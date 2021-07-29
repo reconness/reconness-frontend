@@ -6,7 +6,7 @@
               <span class="white-text">{{fatherAgent.name }}</span>
               <div class="pipeline-run-play-container">
                 <span v-if="time !== '00:00:00'" class="mr-2 white-text">{{time}}</span>
-                <span v-else class="mr-2 white-text">{{ this.$getStringTimeFormat(fatherAgent.durationTime.getHours(), fatherAgent.durationTime.getMinutes(), fatherAgent.durationTime.getSeconds()) }}</span>
+                <span v-else class="mr-2 white-text">{{ this.$getStringTimeFormat(durationHours, durationMinutes, durationSeconds) }}</span>
                 <MotionPlayOutlineIco />
               </div> <!-- /.pipeline-run-play-container -->
               <div class="output-container">
@@ -46,7 +46,25 @@ export default {
   },
   computed: {
     ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
-    ...mapGetters('pipelines', ['getPipelineById'])
+    ...mapGetters('pipelines', ['getPipelineById']),
+    durationHours () {
+      if (this.fatherAgent.durationTime) {
+        return this.fatherAgent.durationTime.getHours()
+      }
+      return 0
+    },
+    durationMinutes () {
+      if (this.fatherAgent.durationTime) {
+        return this.fatherAgent.durationTime.getMinutes()
+      }
+      return 0
+    },
+    durationSeconds () {
+      if (this.fatherAgent.durationTime) {
+        return this.fatherAgent.durationTime.getSeconds()
+      }
+      return 0
+    }
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren', 'setPipelineAgentDurationTimeByIndex']),

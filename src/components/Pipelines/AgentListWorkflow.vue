@@ -107,13 +107,13 @@ export default {
       if (this.branchFather === -1) {
         if (Pipeline.startingAgent === -1 && this.addStartingAgent) {
           Pipeline.startingAgent = Agent.id
-          Pipeline.agent.unshift({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [], durationTime: new Date('2020-01-08T00:00:06') })
+          Pipeline.agent.unshift({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [] })
           this.$store.commit('pipelines/changeValueStartPoint', false)
         } else {
-          Pipeline.agent.push({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [], durationTime: new Date('2020-01-08T00:00:06') })
+          Pipeline.agent.push({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [] })
         }
       } else {
-        Pipeline.agent[this.branchFather].agentBranch.push({ name: Agent.name, background: Agent.background, id: Agent.id, durationTime: new Date('2020-01-08T00:00:06') })
+        Pipeline.agent[this.branchFather].agentBranch.push({ name: Agent.name, background: Agent.background, id: Agent.id })
       }
       this.$store.commit('pipelines/changeIsBranchFather', -1)
       document.getElementById('agent' + this.agentStartingPoint).classList.remove('style-border-item')

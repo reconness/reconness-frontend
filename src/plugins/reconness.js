@@ -162,5 +162,9 @@ export default {
       }
       return hoursTemp + ':' + minutesTemp + ':' + secondsTemp
     }
+
+    app.config.globalProperties.$defaultPipelineName = function () {
+      return 'My pipeline'
+    }
   }
 }

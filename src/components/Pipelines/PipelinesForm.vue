@@ -124,7 +124,7 @@ export default {
         if (!this.locationsContainNonExist() && !this.validators.blank.locations) {
           this.removeBlankLocations()
           this.addPipeline(this.pipeline)
-          this.pipeline.name = 'My pipeline'
+          this.pipeline.name = this.$defaultPipelineName()
           this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId), pipelineName: this.pipeline.name } })
           jQuery('#pipelinesModalFormSettings').modal('hide')
           this.pipeline.agent = []
