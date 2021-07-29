@@ -95,7 +95,11 @@
                   <div class="row">
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][0]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index-x="index" :data-index-y="0" @click="removeEvent">close</span>
+                        <span class="material-icons cursor-pointer blue-text close-icon-pipeline-setting" :data-index-x="index" :data-index-y="0" @click="removeEvent">close</span>
+                        <span class="calendar-edit cursor-pointer" :data-index-x="index" :data-index-y="0" @click="selectEvent">
+                        <CalendarEditIco :style="'fill: #ff4545'" v-if="index === eventSelectionX && 0 === eventSelectionY"/>
+                        <CalendarEditIco :style="'fill: #00B1FF'" v-else/>
+                        </span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][0].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][0].date.getDate() }}</span>
@@ -127,7 +131,13 @@
                     </div>
                     <div class="col-12 col-lg-6" v-if="loadParsedCalendarsToCarousel[index][1]">
                       <div class="event-settings d-flex flex-column">
-                        <span id="close-icon-pipeline-setting" class="material-icons cursor-pointer" :data-index-x="index" :data-index-y="1" @click="removeEvent">close</span>
+                        <span class="material-icons close-icon-pipeline-setting cursor-pointer blue-text" :data-index-x="index" :data-index-y="1" @click="removeEvent">close</span>
+                        <span class="calendar-edit cursor-pointer" v-if="index === eventSelectionX && eventSelectionY === 1" :data-index-x="index" :data-index-y="1" @click="selectEvent">
+                        <CalendarEditIco :style="'fill: #ff4545'"/>
+                        </span>
+                        <span class="calendar-edit cursor-pointer" v-else :data-index-x="index" :data-index-y="1" @click="selectEvent">
+                        <CalendarEditIco :style="'fill: #00B1FF'"/>
+                        </span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
                             <span class="material-icons">calendar_today</span><span class="ml-1">{{ this.$getWeekDay(loadParsedCalendarsToCarousel[index][1].date.getDay()) + ' ' + loadParsedCalendarsToCarousel[index][1].date.getDate() }}</span>
@@ -205,6 +215,7 @@ import RocketIco from '@/components/Icons/RocketIco.vue'
 import FileImportIco from '@/components/Icons/PlusCircleIco.vue'
 import AutoCompleteLocations from '@/components/General/AutoCompleteLocations'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
+import CalendarEditIco from '@/components/Icons/CalendarEditIco.vue'
 import jQuery from 'jquery'
 export default {
   name: 'PipelinesFormStepSettings',
@@ -228,7 +239,9 @@ export default {
       isPencilVisibleAndClick: false,
       isPencilVisible: false,
       carouselIndex: -1,
-      locationOnFocusPos: 0
+      locationOnFocusPos: 0,
+      eventSelectionX: -1,
+      eventSelectionY: -1
     }
   },
   components: {
@@ -236,7 +249,8 @@ export default {
     RocketIco,
     FileImportIco,
     AutoCompleteLocations,
-    MinusCircleIco
+    MinusCircleIco,
+    CalendarEditIco
   },
   emits: {
     pipelineSettingsDone: null
@@ -275,8 +289,8 @@ export default {
       this.locationOnFocusPos = index
     },
     onChangeDate: function (e) {
-      if (this.settings_data.calendars[this.settings_data.calendars.length - 1] && this.event_date) {
-        this.settings_data.calendars[this.settings_data.calendars.length - 1].date = this.event_date
+      if (this.event_date) {
+        this.settings_data.calendars[this.eventPositionOnViewList].date = this.event_date
       }
     },
     sendPipelineSettings: function (e) {
@@ -332,6 +346,17 @@ export default {
     },
     setLocationIndex (e) {
       this.locationOnFocusPos = parseInt(e.currentTarget.getAttribute('data-index'))
+    },
+    selectEvent (e) {
+      const eventSelectionX = parseInt(e.currentTarget.getAttribute('data-index-x'))
+      const eventSelectionY = parseInt(e.currentTarget.getAttribute('data-index-y'))
+      if (this.eventSelectionX >= 0) {
+        this.eventSelectionX = -1
+        this.eventSelectionY = -1
+      } else {
+        this.eventSelectionX = eventSelectionX
+        this.eventSelectionY = eventSelectionY
+      }
     }
   },
   computed: {
@@ -363,6 +388,27 @@ export default {
         return this.carouselIndex
       }
       return this.loadParsedCalendarsToCarousel.length - 1
+    },
+    editCalendarBtnColor () {
+      if (this.eventSelectionX >= 0) {
+        return 'fill: #ff4545'
+      } else {
+        return 'fill: #00B1FF'
+      }
+    },
+    eventPositionOnViewList () {
+      if (this.eventSelectionX >= 0) {
+        if (this.eventSelectionY === 0) {
+          return this.eventSelectionX * 2
+        } else {
+          return this.eventSelectionX * 2 + 1
+        }
+      } else {
+        if (this.eventSelectionY === 1) {
+          return 1
+        }
+        return this.settings_data.calendars.length - 1
+      }
     }
   },
   watch: {
@@ -483,11 +529,10 @@ span.pipeline-setting-repeat{
     bottom: 20px;
     position: absolute;
 }
-#close-icon-pipeline-setting{
+.close-icon-pipeline-setting{
     position: relative;
     top: -7px;
     left: 91%;
-    color: #00B1FF;
 }
 span.p-autocomplete{
   margin-top: 7px;
@@ -553,5 +598,10 @@ div.event-settings hr{
 }
 .pencil-align-main{
   font-size: 18px;
+}
+.calendar-edit svg{
+  position: absolute;
+  top: 2%;
+  right: 15%;
 }
 </style>

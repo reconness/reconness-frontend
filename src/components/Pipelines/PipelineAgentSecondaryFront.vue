@@ -4,7 +4,8 @@
         <div class="info-box-content border-right w-75">
             <span class="white-text responsive-fontsize">{{sonAgent.name }}</span>
             <div class="pipeline-run-play-container">
-            <span class="mr-2 white-text responsive-fontsize">{{time}}</span>
+            <span v-if="time !== '00:00:00'" class="mr-2 white-text responsive-fontsize">{{time}}</span>
+            <span v-else class="mr-2 white-text">{{ this.$getStringTimeFormat(sonAgent.durationTime.getHours(), sonAgent.durationTime.getMinutes(), sonAgent.durationTime.getSeconds()) }}</span>
             <MotionPlayOutlineIco />
             </div>
             <div class="output-container">
@@ -14,7 +15,7 @@
         <span class="info-box-icon process_status_panel container-container-circular-bar">
             <span class="border container-circular-bar">
             <div class="circular-bar-container border pipeline-run-execution">
-                <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                <CircleProgress v-if="sonAgent.status !== this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(sonAgent.primaryColor)" fill-color="#ffffff"/>
                 <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
             </div>
             </span>
@@ -34,11 +35,6 @@ export default {
     CircleProgress
   },
   mixins: [ProgressBarMixin],
-  data: function () {
-    return {
-      isDone: false
-    }
-  },
   props: {
     sonAgent: Object,
     pipeline: Object,
@@ -59,7 +55,6 @@ export default {
                 status: self.$entityStatus.FINISHED
               })
               self.setNumberAgentsProcessing(1)
-              self.isDone = true
             },
             5000
           )

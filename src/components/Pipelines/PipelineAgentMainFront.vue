@@ -5,7 +5,8 @@
             <div class="info-box-content border-right w-50">
               <span class="white-text">{{fatherAgent.name }}</span>
               <div class="pipeline-run-play-container">
-                <span class="mr-2 white-text">{{time}}</span>
+                <span v-if="time !== '00:00:00'" class="mr-2 white-text">{{time}}</span>
+                <span v-else class="mr-2 white-text">{{ this.$getStringTimeFormat(durationHours, durationMinutes, durationSeconds) }}</span>
                 <MotionPlayOutlineIco />
               </div> <!-- /.pipeline-run-play-container -->
               <div class="output-container">
@@ -15,7 +16,7 @@
             <span class="info-box-icon process_status_panel container-container-circular-bar">
               <span class="border container-circular-bar">
                 <div class="circular-bar-container border pipeline-run-execution">
-                  <CircleProgress v-if="!isDone" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" empty-color="#ff959e" fill-color="#ffffff"/>
+                  <CircleProgress v-if="fatherAgent.status !== this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(fatherAgent.primaryColor)" fill-color="#ffffff"/>
                   <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
                 </div>
               </span>
@@ -30,11 +31,6 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 import { ProgressBarMixin } from '@/mixins/ProgressBarMixin'
 export default {
   name: 'PipelineAgentMainFront',
-  data: function () {
-    return {
-      isDone: false
-    }
-  },
   mixins: [ProgressBarMixin],
   props: {
     fatherAgent: Object,
@@ -50,10 +46,28 @@ export default {
   },
   computed: {
     ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
-    ...mapGetters('pipelines', ['getPipelineById'])
+    ...mapGetters('pipelines', ['getPipelineById']),
+    durationHours () {
+      if (this.fatherAgent.durationTime) {
+        return this.fatherAgent.durationTime.getHours()
+      }
+      return 0
+    },
+    durationMinutes () {
+      if (this.fatherAgent.durationTime) {
+        return this.fatherAgent.durationTime.getMinutes()
+      }
+      return 0
+    },
+    durationSeconds () {
+      if (this.fatherAgent.durationTime) {
+        return this.fatherAgent.durationTime.getSeconds()
+      }
+      return 0
+    }
   },
   methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren']),
+    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren', 'setPipelineAgentDurationTimeByIndex']),
     setAgentFromTerminal (agent) {
       this.setAgent(agent)
       this.setIsAgentInfoOpenedForTerminal(true)
@@ -66,7 +80,7 @@ export default {
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
-        if (this.index === this.agentParentRunningIndex && this.index < (this.pipeline.agent.length - 1)) {
+        if (this.index === this.agentParentRunningIndex && this.index < this.pipeline.agent.length) {
           this.setPipelineAgentParentStatusByIndex({
             idPipeline: this.pipeline.id,
             index: this.index,
@@ -84,16 +98,29 @@ export default {
                   index: self.index,
                   status: self.$entityStatus.FINISHED
                 })
+                const today = new Date()
+                self.setPipelineAgentDurationTimeByIndex({
+                  idPipeline: self.pipeline.id,
+                  index: self.index,
+                  durationTime: new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate(),
+                    self.hours,
+                    self.mins,
+                    self.secs
+                  )
+                })
                 if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
                   self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
                 }
                 self.stopClock()
-                self.isDone = true
-                if (self.index === (self.pipeline.agent.length - 2)) {
+                if (self.index === (self.pipeline.agent.length - 1)) {
                   self.setPipelineStatus({
                     idPipeline: self.pipeline.id,
                     status: self.$entityStatus.FINISHED
                   })
+                  self.setPipelineAgentParentIndex(-1)
                 }
               },
               5000
@@ -103,16 +130,16 @@ export default {
       }
     },
     numberAgentsProcessing: function (value) {
-      if (this.index === this.agentParentRunningIndex && this.index < (this.pipeline.agent.length - 1)) {
+      if (this.index === this.agentParentRunningIndex && this.index < this.pipeline.agent.length) {
         if (value === this.fatherAgent.agentBranch.length) {
           this.stopClock()
-          this.isDone = true
           this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)
           if (this.index === (this.pipeline.agent.length - 2)) {
             this.setPipelineStatus({
               idPipeline: this.pipeline.id,
               status: this.$entityStatus.FINISHED
             })
+            this.setPipelineAgentParentIndex(-1)
           }
         }
       }

@@ -1,6 +1,5 @@
 <template>
     <div class="row ml-3 mr-3 mt-4">
-            <!-- <div class="col-9 col-sm-10 col-lg-11 m-auto"> -->
             <div class="col-10 col-xl-11">
               <div class="d-flex justify-content-between">
                 <span class="info-box-text agent-mini-color-gray">Process status</span>
@@ -88,6 +87,10 @@ export default {
         this.setPipelineStatus({
           idPipeline: this.pipeline.id,
           status: this.$entityStatus.RUNNING
+        })
+        this.setStatusToAllAgentsByPipeline({
+          pipeline: this.pipeline,
+          status: this.$entityStatus.WAITING
         })
         this.playClock()
         this.setPipelineAgentParentIndex(this.agentParentRunningIndex + 1)

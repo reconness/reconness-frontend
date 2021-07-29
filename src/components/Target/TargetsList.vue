@@ -7,7 +7,7 @@
         <label :for="item.id+1" v-show= check  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
           <div class="d-flex justify-content-between mb-4">
-             <router-link :to="{ name: 'TargetDetail', params: {id: item.id} }">
+             <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.name} }">
             <h1 class="card-title mt-2">{{item.name}}</h1>
              </router-link>
             <a href="#" class="mt-n2">  <BullseyeArrowIco/> </a>
@@ -16,7 +16,7 @@
             <ul class="list-unstyled min-height" >
               <li v-for="item2 of item.rootDomains.slice(- 3) " :key="item2.id">
               <span  class="material-icons float-left mt-1"> chevron_right </span>
-              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item2.id} }">
+              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item2.id, targetName: item.name, rootdomainName: item2.root} }">
                {{item2.root}}
               </router-link>
               </li>

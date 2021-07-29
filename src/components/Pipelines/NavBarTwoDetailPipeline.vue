@@ -32,7 +32,7 @@
           <a class="nav-link pos" v-show= "checkDetail" href="#" @click="close()">Cancel Remove</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
-          <router-link class="nav-link pos blue-text" :to="{ name: 'PipelineRunView', params: {id: id}  }">Run</router-link>
+          <router-link class="nav-link pos blue-text" :to="{ name: 'PipelineRunView', params: {id: id, pipelineName: pipelineName}  }">Run</router-link>
         </li>
       </ul>
     </nav>

@@ -4,27 +4,21 @@ const ProgressBarMixin = {
       progressValue: 0,
       time: '00:00:00',
       now: 0,
-      timer: null
+      timer: null,
+      hours: 0,
+      mins: 0,
+      secs: 0
     }
   },
   methods: {
     tick () {
       this.now++
       let remain = this.now
-      let hours = Math.floor(remain / 3600)
-      let mins = Math.floor(remain / 60)
-      remain -= mins * 60
-      let secs = remain
-      if (hours < 10) {
-        hours = '0' + hours
-      }
-      if (mins < 10) {
-        mins = '0' + mins
-      }
-      if (secs < 10) {
-        secs = '0' + secs
-      }
-      this.time = hours + ':' + mins + ':' + secs
+      this.hours = Math.floor(remain / 3600)
+      this.mins = Math.floor(remain / 60)
+      remain -= this.mins * 60
+      this.secs = remain
+      this.time = this.$getStringTimeFormat(this.hours, this.mins, this.secs)
       this.executeProgressBar()
     },
     playClock () {

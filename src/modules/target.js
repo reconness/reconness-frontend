@@ -1326,6 +1326,11 @@ export default ({
         return roots.subdomain.length
       }
     },
+    getRootDomainByIdTargetAndIdRootDomain: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
+      return roots
+    },
     getSubDomain: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idtarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)

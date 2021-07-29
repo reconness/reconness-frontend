@@ -81,7 +81,8 @@ export default {
       {
         RUNNING: 1,
         FINISHED: 2,
-        WAITING: 3
+        WAITING: 3,
+        FAILED: 4
       }
     )
 
@@ -128,6 +129,42 @@ export default {
 
     app.config.globalProperties.$isObjectEmpty = function (item) {
       return Object.keys(item).length === 0
+    }
+
+    app.config.globalProperties.$getEmptyCircularProgressBarColor = function (color) {
+      switch (color) {
+        case '#03DCED': return '#75e1f1'
+        case '#737be5': return '#b1aded'
+        case '#F96767': return '#ff959e'
+        case '#ff8650': return '#ffbc9d'
+        default: return '#abdcc3'
+      }
+    }
+
+    app.config.globalProperties.$getStringTimeFormat = function (hours, minutes, seconds) {
+      let hoursTemp = ''
+      let minutesTemp = ''
+      let secondsTemp = ''
+      if (hours < 10) {
+        hoursTemp = '0' + hours
+      } else {
+        hoursTemp = hours
+      }
+      if (minutes < 10) {
+        minutesTemp = '0' + minutes
+      } else {
+        minutesTemp = minutes
+      }
+      if (seconds < 10) {
+        secondsTemp = '0' + seconds
+      } else {
+        secondsTemp = seconds
+      }
+      return hoursTemp + ':' + minutesTemp + ':' + secondsTemp
+    }
+
+    app.config.globalProperties.$defaultPipelineName = function () {
+      return 'My pipeline'
     }
   }
 }

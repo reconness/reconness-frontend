@@ -99,7 +99,10 @@ export default {
         idrootdomain: parseInt(this.id),
         idsubdomain: parseInt(this.idsubdomain)
       })
-      return [loadedSubdomain.agent.length, loadedSubdomain.services.length, loadedSubdomain.directories.length]
+      if (loadedSubdomain) {
+        return [loadedSubdomain.agent.length, loadedSubdomain.services.length, loadedSubdomain.directories.length]
+      }
+      return [0, 0, 0]
     }
   },
   mounted () {

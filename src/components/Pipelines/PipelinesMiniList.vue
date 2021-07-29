@@ -7,7 +7,7 @@
         <label :for="item.id+1" v-show= check  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" class="mb-0"></label>
         <div class="card-header border-bottom-0 mb-1 mt-3 p-0 pl-2 pr-3 ">
            <span  class="material-icons main_reconnes_text-color mr-1 float-left"> chevron_right </span>
-            <router-link :to="{ name: 'PipelineDetail', params: {id: item.id} }" class="text-body card-title domain-names-target">
+            <router-link :to="{ name: 'PipelineDetail', params: {id: item.id, pipelineName: item.name} }" class="text-body card-title domain-names-target">
            {{item.name}}
            </router-link>
             <div class="card-tools mr-0">
@@ -16,7 +16,7 @@
                       <GearIcon/>
                     </li>
                     <li class="nav-item">
-                     <router-link class="icon-gray rocket-icon cursor-pointer"  :to="{ name: 'PipelineRunView', params: {id: item.id}  }">
+                     <router-link class="icon-gray rocket-icon cursor-pointer"  :to="{ name: 'PipelineRunView', params: {id: item.id, pipelineName: item.name}  }">
                      <RocketIco/>
                      </router-link>
                     </li>

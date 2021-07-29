@@ -71,7 +71,14 @@ export default {
               this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The subdomain has been deleted successfully', life: 3000 })
             } else {
               this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
-              this.$router.push({ name: 'RootDomainDetails', params: { idTarget: parseInt(this.$route.params.idTarget), id: parseInt(this.$route.params.id) } })
+              const nameRootDomain = this.getRootDomainByIdTargetAndIdRootDomain(
+                {
+                  idTarget: parseInt(this.$route.params.idTarget),
+                  idRootDomain: parseInt(this.$route.params.id)
+                }
+              ).root
+              const targetName = this.getTargetById(parseInt(this.$route.params.idTarget)).name
+              this.$router.push({ name: 'RootDomainDetails', params: { idTarget: parseInt(this.$route.params.idTarget), id: parseInt(this.$route.params.id), targetName: targetName, rootdomainName: nameRootDomain } })
               this.setIsElementDeleted(true)
             }
             break
@@ -79,7 +86,7 @@ export default {
             var params = { idTarget: parseInt(this.$route.params.idTarget), idRootDomain: parseInt(this.$route.params.id) }
             this.$store.commit('target/removeRootDomain', params)
             this.setIsElementDeleted(true)
-            this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget } })
+            this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget, targetName: this.getTargetById(parseInt(this.$route.params.idTarget)).name } })
             break
           default:
             break
@@ -97,7 +104,7 @@ export default {
     ...mapMutations(['setIsElementDeleted'])
   },
   computed: {
-    ...mapGetters('target', ['getTargetById'])
+    ...mapGetters('target', ['getTargetById', 'getRootDomainByIdTargetAndIdRootDomain'])
   }
 }
 </script>
