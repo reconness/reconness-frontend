@@ -46,7 +46,7 @@
         </li>
         <li class="nav-item dropdown">
           <div class="image nav-link cursor-pointer" data-toggle="dropdown">
-            <span class="loged-user-name">John Doe</span>
+            <span class="loged-user-name">{{loggedUser.name}}</span>
             <img src="/adminlte/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -183,6 +183,7 @@ export default {
   },
   computed: {
     ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isMessageSectionOpened']),
+    ...mapState('target', ['loggedUser']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
     }

@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
-import target from '../modules/target'
-import pipelines from '../modules/pipelines'
+import target from './modules/target'
+import pipelines from './modules/pipelines'
 
 export default createStore({
   state: {
