@@ -991,7 +991,10 @@ export default ({
     targetIdList: [],
     colorDelete: '#000000',
     idMessage: -1,
-    loggedUser: { name: 'John Doe' },
+    loggedUser: {
+      name: 'John Doe',
+      email: 'johndoe@gmail.com'
+    },
     isTargetDeleted: false,
     isTableList: true,
     idSubdomain: 55,

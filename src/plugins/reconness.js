@@ -166,5 +166,9 @@ export default {
     app.config.globalProperties.$defaultPipelineName = function () {
       return 'My pipeline'
     }
+
+    app.config.globalProperties.$getGravatarUrlByEmail = function (hashedEmail) {
+      return 'https://www.gravatar.com/avatar/' + hashedEmail
+    }
   }
 }
