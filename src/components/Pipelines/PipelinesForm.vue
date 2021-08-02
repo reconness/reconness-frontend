@@ -22,7 +22,6 @@
                <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
               </div>
               <div>
-                <!-- <p v-if="validators.blank.locations" :class="{invalid: validators.blank.locations}" class="ml-5">You must not leave any text field blank</p> -->
                 <p  v-if="validators.exist.locations && !validators.blank.locations" :class="{invalid: validators.exist.locations}" class="ml-5">You must select a location from the list</p>
               </div>
             </div>

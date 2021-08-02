@@ -47,7 +47,6 @@
         <li class="nav-item dropdown">
           <div class="image nav-link cursor-pointer" data-toggle="dropdown">
             <span class="loged-user-name">{{loggedUser.name}}</span>
-            <!-- <img src="/adminlte/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
             <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/user2-160x160.jpg'" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -55,11 +54,9 @@
               My account
             </a>
             <div class="dropdown-divider"></div>
-              <!-- <a href="#" class="dropdown-item"> -->
               <router-link class="dropdown-item" :to="{ name: 'LogOut'}" >
                 Sign out
               </router-link>
-              <!-- </a> -->
           </div>
         </li>
 
