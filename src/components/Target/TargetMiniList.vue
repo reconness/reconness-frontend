@@ -136,12 +136,14 @@ import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import { mapState, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   components: {
     TargetConfirmation,
     BullseyeArrowIco,
     TargetForm
   },
+  mixins: [TargetMixin],
   data: function () {
     return {
       checkSelected: false,
@@ -161,24 +163,6 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
-    addListTargetId (e) {
-      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedTargetName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId).checked === false) {
-        if (this.targetIdList.length !== 0 && this.checkSelected === false) {
-          this.checkSelected = false
-          this.checkDeleted = selectedId
-        } else {
-          this.checkSelected = true
-        }
-        this.addIdTarget({ id: selectedId, name: selectedTargetName })
-      } else {
-        this.removebyIdTarget(selectedId)
-        if (this.checkSelected === false) {
-          this.checkDeleted = selectedId
-        }
-      }
-    },
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },

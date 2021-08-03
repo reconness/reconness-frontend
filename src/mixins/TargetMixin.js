@@ -1,13 +1,13 @@
 const TargetMixin = {
   methods: {
-    isTargetChecked (targetId) {
-      const self = this
-      setTimeout(
-        function () {
-          return self.targetIdList.find(target => target.id === targetId)
-        },
-        1000
-      )
+    addListTargetId (e) {
+      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
+      const selectedTargetName = e.currentTarget.getAttribute('data-name')
+      if (document.getElementById(selectedId).checked === false) {
+        this.addIdTarget({ id: selectedId, name: selectedTargetName })
+      } else {
+        this.removebyIdTarget(selectedId)
+      }
     }
   }
 }
