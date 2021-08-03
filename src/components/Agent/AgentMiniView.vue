@@ -1,7 +1,7 @@
 <template>
     <div class="col-12 col-sm-4 col-xl-3 col-lgg-5" @mouseover="hoverCard( {id} )" @mouseout="hoverCard(-1)">
         <div class="initial-info-box agent-mini-main-container rounded-corners">
-          <input type="checkbox" :id="id" name="checkitem"  :checked="isAgentChecked(id)" ><label class="float-right" :for="id" v-show="check" @click="addListAgentId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
+          <input type="checkbox" :id="id" name="checkitem"  :checked="this.$isItemOnList(id, agentIdList)" ><label class="float-right" :for="id" v-show="check" @click="addListAgentId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="p-2">
         <div class="info-box ">
           <span class="info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
@@ -154,14 +154,12 @@ div.agent-mini-main-container svg {
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import { mapState } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentMiniView',
   components: {
     AgentConfirmation,
     AccountCogIco
   },
-  mixins: [AgentMixin],
   data: function () {
     return {
       checkSelected: false,
