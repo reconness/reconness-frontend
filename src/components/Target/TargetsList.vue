@@ -4,7 +4,7 @@
     class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
       <div class="card text-white card-style  mb-3" v-bind:style ="{background: 'linear-gradient(160deg,'+item.primaryColor+' '+ '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
         <input type="checkbox" :id="item.id+1"  name="checkitem" :checked="isChecked(item.id)">
-        <label :for="item.id+1" v-show= check  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
+        <label :for="item.id+1" v-show="check"  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
           <div class="d-flex justify-content-between mb-4">
              <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.name} }">
