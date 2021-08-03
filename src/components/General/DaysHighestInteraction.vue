@@ -17,6 +17,7 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'DaysHighestInteraction',
   data: function () {
@@ -35,7 +36,7 @@ export default {
           }
         },
         stroke: {
-          curve: 'straight' // smooth,straight,stepline
+          curve: 'straight'
         },
         grid: {
           borderColor: 'transparent',
@@ -49,16 +50,6 @@ export default {
             sizeOffset: 3
           }
         },
-        //  title: {
-        //      text: 'Days with the most interactions in the last week',
-        //     align: 'left',
-        //      style: {
-        //        fontSize: '14px',
-        //        color: '#ffffff',
-        //        opacity: '1',
-        //        fontWeight: 'unset'
-        //      }
-        //    },
         xaxis: {
           categories: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
         },
@@ -72,8 +63,19 @@ export default {
       },
       series: [{
         name: 'series-1',
-        data: [22, 30, 70, 77, 42, 20, 50]
+        data: []
       }]
+    }
+  },
+  computed: {
+    ...mapGetters(['daysWithMostInteractionsLastWeek'])
+  },
+  created: function () {
+    this.updateDaysInGraph()
+  },
+  methods: {
+    updateDaysInGraph () {
+      this.series[0].data = this.daysWithMostInteractionsLastWeek
     }
   }
 }
@@ -86,8 +88,6 @@ export default {
   margin-bottom: 1rem;
 }
 .dhPadding{
-   /*padding: 25px;
-   padding-bottom: 0px;*/
    padding: 25px 15px 0px 15px;
 }
 .apexcharts-canvas {
