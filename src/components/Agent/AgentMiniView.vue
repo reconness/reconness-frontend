@@ -154,12 +154,14 @@ div.agent-mini-main-container svg {
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import { mapState } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentMiniView',
   components: {
     AgentConfirmation,
     AccountCogIco
   },
+  mixins: [AgentMixin],
   data: function () {
     return {
       checkSelected: false,
@@ -193,24 +195,6 @@ export default {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
       this.$store.commit('setDetailsLinks', true)
-    },
-    addListAgentId (e) {
-      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedAgentName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId).checked === false) {
-        if (this.agentIdList.length !== 0 && this.checkSelected === false) {
-          this.checkSelected = false
-          this.checkDeleted = selectedId
-        } else {
-          this.checkSelected = true
-        }
-        this.$store.commit('addIdAgent', { id: selectedId, name: selectedAgentName })
-      } else {
-        this.$store.commit('removebyIdAgent', selectedId)
-        if (this.checkSelected === false) {
-          this.checkDeleted = selectedId
-        }
-      }
     }
   }
 }
