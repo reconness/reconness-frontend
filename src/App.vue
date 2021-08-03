@@ -47,7 +47,7 @@
         <li class="nav-item dropdown">
           <div class="image nav-link cursor-pointer" data-toggle="dropdown">
             <span class="loged-user-name">{{loggedUser.name}}</span>
-            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/user2-160x160.jpg'" class="img-circle elevation-2" alt="User Image">
+            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <a href="#" class="dropdown-item">
@@ -187,7 +187,6 @@ export default {
       return this.$route.name === 'LogIn'
     },
     gravatarURL () {
-      console.log(this.$getGravatarUrlByEmail(this.loggedUser.email))
       const hashedUrl = md5(this.loggedUser.email)
       return this.$getGravatarUrlByEmail(hashedUrl)
     }
