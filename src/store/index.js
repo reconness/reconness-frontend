@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
-import target from '../modules/target'
-import pipelines from '../modules/pipelines'
+import target from './modules/target'
+import pipelines from './modules/pipelines'
 
 export default createStore({
   state: {
@@ -254,6 +254,9 @@ export default createStore({
     },
     getAgentsByType: (state) => (type) => {
       return state.agentListStore.filter(item => item.type === type)
+    },
+    daysWithMostInteractionsLastWeek (state) {
+      return [22, 30, 70, 77, 42, 20, 50]
     }
   }
 })

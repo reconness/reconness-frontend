@@ -10,16 +10,18 @@
   "dependencies": {
     "@types/typography": "0.16.3",
     "apexcharts": "3.25.0",
+    "axios": "^0.21.1",
     "bootstrap": "4.6.0",
     "core-js": "3.15.2",
     "jquery": "3.6.0",
     "material-icons": "0.7.2",
+    "md5": "^2.3.0",
     "mdbvue": "6.7.2",
     "mitt": "2.1.0",
     "primeflex": "2.0.0",
     "primeicons": "4.1.0",
     "primevue": "3.5.1",
-    "typography": "0.16.19",
+    "typography": "0.16.21",
     "vue": "3.1.5",
     "vue-router": "4.0.10",
     "vue3-ace-editor": "1.0.2",
@@ -38,12 +40,12 @@
     "@vue/eslint-config-standard": "6.0.0",
     "babel-eslint": "10.1.0",
     "eslint": "7.31.0",
-    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-import": "2.23.4",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "5.1.0",
     "eslint-plugin-standard": "4.1.0",
     "eslint-plugin-vue": "7.14.0",
     "node-sass": "6.0.1",
-    "sass-loader": "8.0.2"
+    "sass-loader": "12.1.0"
   }
 }

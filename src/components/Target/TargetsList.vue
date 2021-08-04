@@ -3,8 +3,8 @@
     <div v-for="item of arrayFilterList" :key="item.id" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)"
     class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
       <div class="card text-white card-style  mb-3" v-bind:style ="{background: 'linear-gradient(160deg,'+item.primaryColor+' '+ '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-        <input type="checkbox" :id="item.id+1"  name="checkitem" :checked="isChecked(item.id)">
-        <label :for="item.id+1" v-show= check  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
+        <input type="checkbox" :id="item.id"  name="checkitem" :checked="this.$isItemOnList(item.id, targetIdList)">
+        <label :for="item.id" v-show="check"  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
           <div class="d-flex justify-content-between mb-4">
              <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.name} }">
@@ -51,6 +51,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
 
 export default {
   name: 'TargetsList',
@@ -74,41 +75,6 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
-    isChecked (itemID) {
-      if (this.checkSelected === false) {
-        if (this.targetIdList.find(target => target.id === itemID)) {
-          if (this.checkDeleted === itemID) {
-            return false
-          } else {
-            return true
-          }
-        } else {
-          if (this.checkDeleted === itemID) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-    },
-    addListTargetId (e) {
-      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedTargetName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId + 1).checked === false) {
-        if (this.targetIdList.length !== 0 && this.checkSelected === false) {
-          this.checkSelected = false
-          this.checkDeleted = selectedId
-        } else {
-          this.checkSelected = true
-        }
-        this.addIdTarget({ id: selectedId, name: selectedTargetName })
-      } else {
-        this.removebyIdTarget(selectedId)
-        if (this.checkSelected === false) {
-          this.checkDeleted = selectedId
-        }
-      }
-    },
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },
@@ -128,7 +94,8 @@ export default {
     BullseyeArrowIco,
     TargetForm,
     TargetConfirmation
-  }
+  },
+  mixins: [TargetMixin]
 }
 </script>
 <style scoped>

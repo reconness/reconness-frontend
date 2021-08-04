@@ -46,19 +46,17 @@
         </li>
         <li class="nav-item dropdown">
           <div class="image nav-link cursor-pointer" data-toggle="dropdown">
-            <span class="loged-user-name">John Doe</span>
-            <img src="/adminlte/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <span class="loged-user-name">{{loggedUser.name}}</span>
+            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <a href="#" class="dropdown-item">
               My account
             </a>
             <div class="dropdown-divider"></div>
-              <!-- <a href="#" class="dropdown-item"> -->
               <router-link class="dropdown-item" :to="{ name: 'LogOut'}" >
                 Sign out
               </router-link>
-              <!-- </a> -->
           </div>
         </li>
 
@@ -70,7 +68,7 @@
       <!-- Brand Logo -->
        <router-link :to="{name: 'Home'}">
       <a href="#" class="brand-link">
-        <img src="/adminlte/img/reconnes/logo2x.png" v-show="hide_logo" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="/adminlte/img/reconnes/logo2x.png" v-show="hide_logo" alt="ReconNess Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <div class="text-center">
           <span class="brand-text"><strong>Recon</strong></span><span>Ness</span>
         </div>
@@ -161,6 +159,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 export default {
   name: 'App',
@@ -183,8 +182,13 @@ export default {
   },
   computed: {
     ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isMessageSectionOpened']),
+    ...mapState('target', ['loggedUser']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
+    },
+    gravatarURL () {
+      const hashedUrl = md5(this.loggedUser.email)
+      return this.$getGravatarUrlByEmail(hashedUrl)
     }
   },
   watch: {

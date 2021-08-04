@@ -1,7 +1,7 @@
 <template>
 <div class="card float-right initial-info-box agent-mini-main-container rounded-corners container-card" :style="{background:pipelineBackground}">
   <input type="checkbox" :id="pipelineID+1"  name="checkitem">
-  <label :for="pipelineID+1" v-show= checkDetail  @click="addListPipelinesId" :data-id="pipelineID" :data-name="pipelineName" class="mb-0 float-right"></label>
+  <label :for="pipelineID+1" v-show="checkDetail"  @click="addListPipelinesId" :data-id="pipelineID" :data-name="pipelineName" class="mb-0 float-right"></label>
   <div class=" car-body m-2 " >
     <div class="row">
      <div class="col-7 border-right">

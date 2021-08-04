@@ -166,5 +166,18 @@ export default {
     app.config.globalProperties.$defaultPipelineName = function () {
       return 'My pipeline'
     }
+
+    app.config.globalProperties.$getGravatarUrlByEmail = function (hashedEmail) {
+      return 'https://www.gravatar.com/avatar/' + hashedEmail
+    }
+
+    app.config.globalProperties.$isItemOnList = function (idItem, listItems) {
+      setTimeout(
+        function () {
+          return listItems.find(item => item.id === idItem)
+        },
+        1000
+      )
+    }
   }
 }

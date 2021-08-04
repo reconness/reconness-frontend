@@ -3,7 +3,7 @@
     <div v-for="item of arrayFilterList" :key="item.id" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)"
     class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
       <div class="card text-white card-style  mb-3" v-bind:style ="{background:item.background}">
-        <input type="checkbox" :id="item.id+1" :checked="isChecked(item.id)" name="checkitem" ><label :for="item.id+1" v-show= check @click="addListAgentId" :data-id="item.id" :data-name="item.name" ></label>
+        <input type="checkbox" :id="item.id" :checked="this.$isItemOnList(item.id, agentIdList)" name="checkitem" ><label :for="item.id" v-show="check" @click="addListAgentId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
           <div class="d-flex justify-content-between mb-2">
             <h3 class="card-title cursor-pointer" @click="setDetailsLink" data-toggle="modal" :data-id="item.id" data-target="#exampleModalCenter">{{item.name}}</h3>
@@ -49,7 +49,7 @@ import { mapState, mapGetters } from 'vuex'
 import AgentForm from '@/components/Agent/AgentForm.vue'
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-
+import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentsList',
   computed: {
@@ -71,23 +71,6 @@ export default {
     }
   },
   methods: {
-    isChecked (itemID) {
-      if (this.checkSelected === false && this.agentIdList.length !== 0) {
-        if (this.agentIdList.find(agent => agent.id === itemID)) {
-          if (this.checkDeleted === itemID) {
-            return false
-          } else {
-            return true
-          }
-        } else {
-          if (this.checkDeleted === itemID) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-    },
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },
@@ -97,24 +80,6 @@ export default {
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('setIdAgent', selectedAgentId)
-    },
-    addListAgentId (e) {
-      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedAgentName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId + 1).checked === false) {
-        if (this.agentIdList.length !== 0 && this.checkSelected === false) {
-          this.checkSelected = false
-          this.checkDeleted = selectedId
-        } else {
-          this.checkSelected = true
-        }
-        this.$store.commit('addIdAgent', { id: selectedId, name: selectedAgentName })
-      } else {
-        this.$store.commit('removebyIdAgent', selectedId)
-        if (this.checkSelected === false) {
-          this.checkDeleted = selectedId
-        }
-      }
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
@@ -130,7 +95,8 @@ export default {
     AgentForm,
     AgentConfirmation,
     AccountCogIco
-  }
+  },
+  mixins: [AgentMixin]
 }
 </script>
 

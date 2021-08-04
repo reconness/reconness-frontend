@@ -5,7 +5,7 @@
     <span  class="material-icons main_reconnes_text-color mt-1 float-left"> chevron_right </span>
        <div class="card card-custom w-auto mb-3">
         <input type="checkbox" :id="item.id+1"  name="checkitem" :checked="isChecked(item.id)">
-        <label :for="item.id+1" v-show= check  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" ></label>
+        <label :for="item.id+1" v-show="check"  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" ></label>
          <div class="p-2">
          <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
            <router-link :to="{ name: 'PipelineDetail', params: {id: item.id, pipelineName: item.name} }">
