@@ -337,7 +337,7 @@ import Toast from 'primevue/toast'
 import { mapMutations } from 'vuex'
 export default {
   methods: {
-    ...mapMutations(['setIsDeletetFromForm']),
+    ...mapMutations('agent', ['setIsDeletetFromForm']),
     setBlueColor: function () {
       this.agent.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
     },
@@ -360,17 +360,17 @@ export default {
         if (this.editable) {
           if (randomResult) {
             this.agent.id = parseInt(this.$store.getters.idAgent)
-            this.$store.commit('updateAgent', this.agent)
-            this.$store.commit('setIdAgent', -1)
+            this.$store.commit('agent/updateAgent', this.agent)
+            this.$store.commit('agent/setIdAgent', -1)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
           } else {
-            this.$store.commit('setIdAgent', -1)
+            this.$store.commit('agent/setIdAgent', -1)
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
           }
         } else {
           if (randomResult) {
             this.agent.id = this.nextAgentSequence++
-            this.$store.commit('addAgent', this.agent)
+            this.$store.commit('agent/addAgent', this.agent)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
           } else {
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
@@ -384,8 +384,8 @@ export default {
     close () {
       this.resetAgentForm()
       this.editable = false
-      this.$store.commit('setIdAgent', -1)
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setIdAgent', -1)
+      this.$store.commit('agent/setDetailsLinks', false)
     },
     resetAgentForm () {
       this.agent = {
@@ -522,7 +522,7 @@ export default {
       }
     },
     onEdit () {
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setDetailsLinks', false)
     }
   },
   data () {

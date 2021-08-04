@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     ...mapState('pipelines', ['autoId']),
-    ...mapGetters(['getAgentById']),
+    ...mapGetters('agent', ['getAgentById']),
     ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
     isFromPipelineDetails () {
       return this.routeName === 'PipelineDetail'

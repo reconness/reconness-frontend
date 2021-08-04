@@ -66,10 +66,10 @@ export default {
     AgentExecution
   },
   computed: {
-    ...mapGetters(['getLastAgentRootDomain', 'getAgentsByType']),
+    ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents', 'listCurrentRunningRootDomainsAgent']),
     ...mapState('target', ['agentStatus']),
-    ...mapState(['agentListStore']),
+    ...mapState('agent', ['agentListStore']),
     listAgents: function () {
       return this.listRootDomainsAgents({
         idTarget: parseInt(this.$route.params.idTarget),

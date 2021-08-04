@@ -275,14 +275,14 @@ export default {
   },
   computed: {
     ...mapGetters('target', ['getTargetById']),
-    ...mapState(['isElementDeleted'])
+    ...mapState('agent', ['isElementDeleted'])
   },
   methods: {
-    ...mapMutations(['setIsElementDeleted']),
+    ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['setCurrentView'])
   },
   mounted () {
-    this.$store.commit('updateLocView', 'Targets', true)
+    this.$store.commit('agent/updateLocView', 'Targets', true)
     this.Target = this.getTargetById(parseInt(this.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor

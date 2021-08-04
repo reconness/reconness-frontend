@@ -54,10 +54,10 @@ export default {
     close () {
       this.nameTyped = ''
     },
-    ...mapMutations(['setIsElementDeleted'])
+    ...mapMutations('agent', ['setIsElementDeleted'])
   },
   computed: {
-    ...mapGetters(['getAgentById']),
+    ...mapGetters('agent', ['getAgentById']),
     ...mapState('pipelines', ['idFather', 'idSon']),
     getNamePipeline () {
       if (this.idSon !== -1 && this.idFather !== -1) {

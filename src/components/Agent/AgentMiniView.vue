@@ -174,7 +174,7 @@ export default {
     id: Number
   },
   computed: {
-    ...mapState(['check', 'agentIdList'])
+    ...mapState('agent', ['check', 'agentIdList'])
   },
   methods: {
     hoverCard (selectedIndex) {
@@ -185,16 +185,16 @@ export default {
     },
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
     },
     onEdit (e) {
       this.setAgentId(e)
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setDetailsLinks', false)
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     }
   }
 }

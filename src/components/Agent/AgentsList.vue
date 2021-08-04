@@ -53,8 +53,8 @@ import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentsList',
   computed: {
-    ...mapState(['agentListStore', 'check', 'filterColour', 'styleList', 'agentIdList']),
-    ...mapGetters(['filterByColor']),
+    ...mapState('agent', ['agentListStore', 'check', 'filterColour', 'styleList', 'agentIdList']),
+    ...mapGetters('agent', ['filterByColor']),
     arrayFilterList () {
       if (this.filterColour === '') {
         return this.agentListStore
@@ -79,16 +79,16 @@ export default {
     },
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     },
     onEdit (e) {
       this.setAgentId(e)
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setDetailsLinks', false)
     }
   },
   components: {

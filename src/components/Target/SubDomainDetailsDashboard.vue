@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     updateConfirm (itemName) {
-      return this.$store.commit('confirm', { name: itemName, route: 'subdomains' })
+      return this.$store.commit('agent/confirm', { name: itemName, route: 'subdomains' })
     },
     printAgent (agents) {
       var listAgent = []

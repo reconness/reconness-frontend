@@ -171,12 +171,12 @@ export default {
     },
     onEdit (e) {
       this.setTargetId(e)
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setDetailsLinks', false)
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     },
     setTargetId (e) {
       const selectedTargetId = e.currentTarget.getAttribute('data-id')

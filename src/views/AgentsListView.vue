@@ -37,12 +37,12 @@ export default {
     AgentForm
   },
   mounted () {
-    this.$store.commit('updateLocView', 'Agents', true)
+    this.$store.commit('agent/updateLocView', 'Agents', true)
   },
   computed: {
-    ...mapState(['agentListStore']),
-    ...mapState(['filterColour']),
-    ...mapGetters(['filterByColor']),
+    ...mapState('agent', ['agentListStore']),
+    ...mapState('agent', ['filterColour']),
+    ...mapGetters('agent', ['filterByColor']),
     arrayFilterList () {
       if (this.filterColour === '') {
         return this.agentListStore

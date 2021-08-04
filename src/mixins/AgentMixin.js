@@ -4,9 +4,9 @@ const AgentMixin = {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       const selectedAgentName = e.currentTarget.getAttribute('data-name')
       if (document.getElementById(selectedId).checked === false) {
-        this.$store.commit('addIdAgent', { id: selectedId, name: selectedAgentName })
+        this.$store.commit('agent/addIdAgent', { id: selectedId, name: selectedAgentName })
       } else {
-        this.$store.commit('removebyIdAgent', selectedId)
+        this.$store.commit('agent/removebyIdAgent', selectedId)
       }
     }
   }

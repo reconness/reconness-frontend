@@ -167,7 +167,7 @@ export default {
   },
   computed: {
     ...mapState('target', ['targetListStore']),
-    ...mapState(['isMessageSectionOpened'])
+    ...mapState('agent', ['isMessageSectionOpened'])
   },
   components: {
     OverlayPanel,

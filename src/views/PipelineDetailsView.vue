@@ -66,12 +66,12 @@ export default {
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     }
   },
   mounted () {
-    this.$store.commit('updateLocView', 'Pipelines', true)
+    this.$store.commit('agent/updateLocView', 'Pipelines', true)
   }
 }
 </script>

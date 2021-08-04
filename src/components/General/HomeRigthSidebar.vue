@@ -66,7 +66,7 @@ export default {
       return this.targetListStore.sort(this.$orderByCalendarSplitting)
     },
     updateConfirm (itemName) {
-      return this.$store.commit('confirm', { name: itemName, route: 'target' })
+      return this.$store.commit('agent/confirm', { name: itemName, route: 'target' })
     }
   }
 }

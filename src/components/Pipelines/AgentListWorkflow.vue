@@ -59,10 +59,10 @@ export default {
     routeName: String
   },
   computed: {
-    ...mapState(['agentListStore', 'autoId']),
+    ...mapState('agent', ['agentListStore', 'autoId']),
     ...mapState('pipelines', ['autoId', 'branchFather', 'addStartingAgent']),
     ...mapGetters('pipelines', ['getPipelineById']),
-    ...mapGetters(['getAgentById']),
+    ...mapGetters('agent', ['getAgentById']),
     iterList () {
       if (this.addStartingAgent) {
         return this.agentListStore.filter(item => item.type === this.getPipelineById(parseInt(this.$route.params.id)).type)
@@ -121,8 +121,8 @@ export default {
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     }
   }
 }

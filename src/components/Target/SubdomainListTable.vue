@@ -220,7 +220,7 @@ export default {
       this.$refs.op.toggle(event)
     },
     updateConfirm (itemName) {
-      return this.$store.commit('confirm', { name: itemName, route: 'subdomains' })
+      return this.$store.commit('agent/confirm', { name: itemName, route: 'subdomains' })
     },
     selectRow (id, name) {
       if (document.getElementById('customCheckbox' + id).checked) {
@@ -349,11 +349,11 @@ export default {
         this.isFilterResultEmpty = false
       }
     },
-    ...mapMutations(['setIsElementDeleted'])
+    ...mapMutations('agent', ['setIsElementDeleted'])
   },
   computed: {
     ...mapGetters('target', ['getSubdomainSize']),
-    ...mapState(['isElementDeleted'])
+    ...mapState('agent', ['isElementDeleted'])
   },
   mounted () {
     if (this.isElementDeleted) {

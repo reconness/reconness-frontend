@@ -132,8 +132,8 @@ export default {
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     },
     resize () {
       window.onresize = function () {
@@ -155,7 +155,7 @@ export default {
     },
     onEdit (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
     }
   }
 }

@@ -256,7 +256,7 @@ import Chips from 'primevue/chips'
 import { mapMutations, mapGetters } from 'vuex'
 export default {
   methods: {
-    ...mapMutations(['setIsDeletetFromForm']),
+    ...mapMutations('agent', ['setIsDeletetFromForm']),
     setBlueColor: function () {
       this.target.primaryColor = '#03DCED'
       this.target.secondaryColor = '#0cb8e0'
@@ -309,7 +309,7 @@ export default {
       this.resetTargetForm()
       this.editable = false
       this.$store.commit('target/setIdTarget', -1)
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setDetailsLinks', false)
     },
     resetTargetForm () {
       this.target = {
@@ -415,7 +415,7 @@ export default {
       }
     },
     onEdit () {
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setDetailsLinks', false)
     },
     addItemToRootDomains (item) {
       const urlElem = typeof item === 'object' && item !== null ? item.value[item.value.length - 1] : item

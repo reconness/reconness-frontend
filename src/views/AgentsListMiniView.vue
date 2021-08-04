@@ -32,9 +32,9 @@ export default {
     AgentConfirmation
   },
   computed: {
-    ...mapState(['agentListStore']),
-    ...mapState(['filterColour']),
-    ...mapGetters(['filterByColor']),
+    ...mapState('agent', ['agentListStore']),
+    ...mapState('agent', ['filterColour']),
+    ...mapGetters('agent', ['filterByColor']),
     arrayFilterList () {
       if (this.filterColour === '') {
         return this.agentListStore
@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.commit('updateLocView', this.$route.name, true)
+    this.$store.commit('agent/updateLocView', this.$route.name, true)
   }
 }
 </script>

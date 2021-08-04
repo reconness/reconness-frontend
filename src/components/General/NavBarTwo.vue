@@ -71,12 +71,12 @@
             <a class="nav-link">
             <p class="float-left">View Mode</p>
             <a v-bind:class="{ 'router-link-exact-active': isMiniView} " v-on:click="activeNavButton('isMiniView')">
-            <button type="button" class="btn btn-light margin-right" @click="this.$store.commit('setIsDefaultViewOnAgent', false)">
+            <button type="button" class="btn btn-light margin-right" @click="this.$store.commit('agent/setIsDefaultViewOnAgent', false)">
                 <i class="material-icons">format_list_bulleted</i>
             </button>
             </a>
              <a v-bind:class="{ 'router-link-exact-active': isListView} " v-on:click="activeNavButton('isListView')">
-            <button type="button" class="btn btn-light" @click="this.$store.commit('setIsDefaultViewOnAgent', true)">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('agent/setIsDefaultViewOnAgent', true)">
               <i class="material-icons">grid_view</i>
             </button>
             </a>
@@ -114,7 +114,7 @@
             <button type="button" class="btn btn-sm" id="dropdownMenuButton">
               <i class="material-icons">format_list_bulleted</i>
             </button></router-link>
-            <button type="button" class="btn btn-light" @click="this.$store.commit('setIsDefaultViewOnAgent', true)">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('agent/setIsDefaultViewOnAgent', true)">
               <i class="material-icons">grid_view</i>
             </button>
           </a>
@@ -248,7 +248,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
+    ...mapState('agent', ['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
@@ -270,7 +270,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations(['isFilter', 'editList']),
+    ...mapMutations('agent', ['isFilter', 'editList']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -312,7 +312,7 @@ export default {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''
-      this.$store.commit('cancelIdAgent')
+      this.$store.commit('agent/cancelIdAgent')
     },
     activeNavButton: function (valueIn) {
       if (valueIn === 'isMiniView') {

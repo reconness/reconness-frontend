@@ -14,7 +14,7 @@ export default {
     CommentIco
   },
   methods: {
-    ...mapMutations(['setIsMessageSectionOpened']),
+    ...mapMutations('agent', ['setIsMessageSectionOpened']),
     mouseEnter: function () {
       this.setIsMessageSectionOpened(true)
     }

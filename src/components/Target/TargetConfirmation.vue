@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setIdTarget']),
-    ...mapMutations(['setIsDeletetFromForm']),
+    ...mapMutations('agent', ['setIsDeletetFromForm']),
     removeTarget: function () {
       if (this.nameTyped === this.selectedTargetName) {
         if (this.$randomBooleanResult()) {
@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     ...mapGetters('target', ['idTarget', 'getTargetById']),
-    ...mapState(['isDeletetFromForm']),
+    ...mapState('agent', ['isDeletetFromForm']),
     loadSelectedTarget () {
       const id = this.idTarget
       return this.getTargetById(parseInt(id))

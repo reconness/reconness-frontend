@@ -101,7 +101,7 @@ export default {
     close () {
       this.nameTyped = ''
     },
-    ...mapMutations(['setIsElementDeleted'])
+    ...mapMutations('agent', ['setIsElementDeleted'])
   },
   computed: {
     ...mapGetters('target', ['getTargetById', 'getRootDomainByIdTargetAndIdRootDomain'])

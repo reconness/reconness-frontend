@@ -6,7 +6,7 @@
 export default {
   name: 'Notifications',
   mounted () {
-    this.$store.commit('updateLocView', 'Notifications', true)
+    this.$store.commit('agent/updateLocView', 'Notifications', true)
   }
 }
 </script>
