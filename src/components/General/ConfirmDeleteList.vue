@@ -66,8 +66,8 @@ export default {
   computed: {
     ...mapState('agent', ['agentIdList']),
     loadSelectedAgent2 () {
-      const id = this.$store.getters.idAgent
-      return this.$store.getters.getAgentById(parseInt(id))
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
     }
   },
   watch: {

@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12" style="height: 54px">
-                                        <span v-if="this.$store.state.fromDetailsLink" class="float-right text-white targetform-action">Target Details...</span>
+                                        <span v-if="this.$store.state['agent/fromDetailsLink']" class="float-right text-white targetform-action">Target Details...</span>
                                         <span v-else-if="editable" class="float-right text-white targetform-action">Editing Target...</span>
                                         <span v-else class="float-right text-white targetform-action">Creating Target...</span>
                                     </div>
@@ -118,8 +118,8 @@
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
                   <button @click=" this.setIsDeletetFromForm(true)" v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
-                  <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state.fromDetailsLink" type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button @click="onEdit()" v-if="this.$store.state['agent/fromDetailsLink']" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state['agent/fromDetailsLink']" type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -402,7 +402,7 @@ export default {
       this.enableValidationMessageUniqueName()
     },
     setRandomColor () {
-      const predefinedColors = this.$store.state.systemColors
+      const predefinedColors = this.$store.state['agent/systemColors']
       const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
       this.target.primaryColor = randomColor.primaryColor
       this.target.secondaryColor = randomColor.secondaryColor

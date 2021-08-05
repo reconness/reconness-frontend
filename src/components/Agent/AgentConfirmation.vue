@@ -65,12 +65,13 @@ export default {
   computed: {
     ...mapState('agent', ['isDeletetFromForm']),
     loadSelectedAgent2 () {
-      const id = this.$store.getters.idAgent
-      return this.$store.getters.getAgentById(parseInt(id))
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
     }
   },
   watch: {
     loadSelectedAgent2: function (value) {
+      console.log(value)
       if (value !== undefined) {
         this.selectedAgentName = value.name
       }

@@ -63,7 +63,8 @@ export default ({
     isElementDeleted: false,
     nameRoute: '',
     valueDelete: '',
-    isDefaultViewOnAgent: true
+    isDefaultViewOnAgent: true,
+    agentSequence: 30
   },
   mutations: {
     confirm (state, valueIN) {
@@ -71,6 +72,8 @@ export default ({
       state.valueDelete = valueIN.name
     },
     addAgent (state, agent) {
+      state.agentSequence = state.agentSequence + 1
+      agent.id = state.agentSequence
       state.agentListStore.push(agent)
     },
     setIdAgent (state, id) {

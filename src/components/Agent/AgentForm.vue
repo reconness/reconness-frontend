@@ -80,7 +80,7 @@
                                 <div class="row">
                                     <div
                                      class="col-12" style="height: 54px">
-                                        <span v-if="this.$store.state.fromDetailsLink && !readOnly" class="float-right text-white agentform-action">Agent Details...</span>
+                                        <span v-if="this.$store.state['agent/fromDetailsLink'] && !readOnly" class="float-right text-white agentform-action">Agent Details...</span>
                                         <span v-else-if="editable" class="float-right text-white agentform-action">Editing Agent...</span>
                                         <span v-else class="float-right text-white agentform-action">Creating Agent...</span>
                                     </div>
@@ -217,8 +217,8 @@
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
                   <button @click="setIsDeletetFromForm(true)" v-if="this.editable && !readOnly" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
-                  <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink && !readOnly" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state.fromDetailsLink && !readOnly" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button @click="onEdit()" v-if="this.$store.state['agent/fromDetailsLink'] && !readOnly" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state['agent/fromDetailsLink'] && !readOnly" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -359,7 +359,7 @@ export default {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {
-            this.agent.id = parseInt(this.$store.getters.idAgent)
+            this.agent.id = parseInt(this.$store.getters['agent/idAgent'])
             this.$store.commit('agent/updateAgent', this.agent)
             this.$store.commit('agent/setIdAgent', -1)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
@@ -369,7 +369,7 @@ export default {
           }
         } else {
           if (randomResult) {
-            this.agent.id = this.nextAgentSequence++
+            // this.agent.id = this.nextAgentSequence++
             this.$store.commit('agent/addAgent', this.agent)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
           } else {
@@ -511,7 +511,7 @@ export default {
       reader.readAsDataURL(files[0])
     },
     setRandomColor () {
-      const predefinedColors = this.$store.state.systemColors
+      const predefinedColors = this.$store.state['agent/systemColors']
       this.agent.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
     },
     verifyPencilStatus () {
@@ -585,8 +585,8 @@ export default {
       return true
     },
     loadSelectedAgent () {
-      const id = this.$store.getters.idAgent
-      return this.$store.getters.getAgentById(parseInt(id))
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
     },
     isFormValid () {
       return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)

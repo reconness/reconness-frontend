@@ -53,7 +53,7 @@ export default {
   methods: {
     remove: function () {
       if (this.$randomBooleanResult()) {
-        switch (this.$store.state.nameRoute) {
+        switch (this.$store.state['agent/nameRoute']) {
           case 'target':
             this.$store.commit('target/removeTarget', this.nameTyped)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })

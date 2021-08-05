@@ -300,7 +300,7 @@ export default {
       this.$refs.op.toggle(event)
     },
     onBashRemoveAgents () {
-      if (this.$store.state.agentIdList.length > 0) {
+      if (this.$store.state['agent/agentIdList'].length > 0) {
         jQuery('#confirmation-modald').modal()
       } else {
         return false
@@ -327,7 +327,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.$store.state.isDefaultViewOnAgent) {
+    if (!this.$store.state['agent/isDefaultViewOnAgent']) {
       this.isMiniView = true
       this.isListView = false
     }
