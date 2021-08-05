@@ -18,6 +18,55 @@
             <AgentConfirmation></AgentConfirmation>
     </div><!-- /.col -->
 </template>
+<script>
+import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
+import { mapState } from 'vuex'
+import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import { AgentMixin } from '@/mixins/AgentMixin'
+export default {
+  name: 'AgentMiniView',
+  components: {
+    AgentConfirmation,
+    AccountCogIco
+  },
+  props: {
+    name: String,
+    background: String,
+    id: Number
+  },
+  data: function () {
+    return {
+      checkSelected: false,
+      checkDeleted: -1
+    }
+  },
+  mixins: [AgentMixin],
+  computed: {
+    ...mapState('agent', ['check', 'agentIdList'])
+  },
+  methods: {
+    hoverCard (selectedIndex) {
+      this.selectedCard = selectedIndex
+    },
+    isSelected (cardIndex) {
+      return this.selectedCard === cardIndex
+    },
+    setAgentId (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+    },
+    onEdit (e) {
+      this.setAgentId(e)
+      this.$store.commit('agent/setDetailsLinks', false)
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
+    }
+  }
+}
+</script>
 <style scoped>
 .agent-mini-main-container{
     margin-bottom: 32px;
@@ -150,52 +199,3 @@ div.agent-mini-main-container svg {
     opacity: 0.2;
 }
 </style>
-<script>
-import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
-import { mapState } from 'vuex'
-import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { AgentMixin } from '@/mixins/AgentMixin'
-export default {
-  name: 'AgentMiniView',
-  components: {
-    AgentConfirmation,
-    AccountCogIco
-  },
-  mixins: [AgentMixin],
-  data: function () {
-    return {
-      checkSelected: false,
-      checkDeleted: -1
-    }
-  },
-  props: {
-    name: String,
-    background: String,
-    id: Number
-  },
-  computed: {
-    ...mapState('agent', ['check', 'agentIdList'])
-  },
-  methods: {
-    hoverCard (selectedIndex) {
-      this.selectedCard = selectedIndex
-    },
-    isSelected (cardIndex) {
-      return this.selectedCard === cardIndex
-    },
-    setAgentId (e) {
-      const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setIdAgent', selectedAgentId)
-    },
-    onEdit (e) {
-      this.setAgentId(e)
-      this.$store.commit('agent/setDetailsLinks', false)
-    },
-    setDetailsLink (e) {
-      const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setIdAgent', selectedAgentId)
-      this.$store.commit('agent/setDetailsLinks', true)
-    }
-  }
-}
-</script>
