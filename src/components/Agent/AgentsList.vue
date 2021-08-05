@@ -52,6 +52,19 @@ import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentsList',
+  components: {
+    AgentForm,
+    AgentConfirmation,
+    AccountCogIco
+  },
+  data: function () {
+    return {
+      selectedCard: -1,
+      checkSelected: false,
+      checkDeleted: -1
+    }
+  },
+  mixins: [AgentMixin],
   computed: {
     ...mapState('agent', ['agentListStore', 'check', 'filterColour', 'styleList', 'agentIdList']),
     ...mapGetters('agent', ['filterByColor']),
@@ -61,13 +74,6 @@ export default {
       } else {
         return this.filterByColor(this.filterColour)
       }
-    }
-  },
-  data: function () {
-    return {
-      selectedCard: -1,
-      checkSelected: false,
-      checkDeleted: -1
     }
   },
   methods: {
@@ -90,16 +96,9 @@ export default {
       this.setAgentId(e)
       this.$store.commit('agent/setDetailsLinks', false)
     }
-  },
-  components: {
-    AgentForm,
-    AgentConfirmation,
-    AccountCogIco
-  },
-  mixins: [AgentMixin]
+  }
 }
 </script>
-
 <style scoped>
 .widhtLine{
   width: 30%;
