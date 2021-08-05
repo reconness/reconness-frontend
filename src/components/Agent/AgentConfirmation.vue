@@ -29,6 +29,7 @@ import jQuery from 'jquery'
 import Toast from 'primevue/toast'
 import { mapState } from 'vuex'
 export default {
+  name: 'AgentConfirmation',
   components: {
     Toast
   },
@@ -36,6 +37,20 @@ export default {
     return {
       nameTyped: '',
       selectedAgentName: ''
+    }
+  },
+  computed: {
+    ...mapState('agent', ['isDeletetFromForm']),
+    loadSelectedAgent2 () {
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
+    }
+  },
+  watch: {
+    loadSelectedAgent2: function (value) {
+      if (value !== undefined) {
+        this.selectedAgentName = value.name
+      }
     }
   },
   methods: {
@@ -59,21 +74,6 @@ export default {
         this.$store.commit('agent/setIdAgent', -1)
       } else {
         this.$store.commit('agent/setIsDeletetFromForm', false)
-      }
-    }
-  },
-  computed: {
-    ...mapState('agent', ['isDeletetFromForm']),
-    loadSelectedAgent2 () {
-      const id = this.$store.getters['agent/idAgent']
-      return this.$store.getters['agent/getAgentById'](parseInt(id))
-    }
-  },
-  watch: {
-    loadSelectedAgent2: function (value) {
-      console.log(value)
-      if (value !== undefined) {
-        this.selectedAgentName = value.name
       }
     }
   }
