@@ -227,107 +227,6 @@
     </form>
     </div>
 </template>
-<style>
-    .agentform-action{
-        bottom: -28%;
-        position: absolute;
-        right: 8%;
-        font-size: .875rem;
-    }
-
-    .agentform-color-components{
-        width: 30px;
-        height: 30px;
-    }
-
-    .agentform-color-spacing-bottom{
-        margin-top: 18px !important;
-    }
-
-    .agentform-color-components-align{
-        margin: auto;
-    }
-
-    .image-button{
-      background-image: url('~@/assets/Rect.png');
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      width: 32px;
-      height: 32px;
-    }
-
-    .agent-border{
-        border: 1px solid #F1F3F5;
-        border-radius: 12px;
-        width: 90px;
-        height: 47px;
-    }
-    .input.invalid input {
-        border: 1px solid red;
-    }
-
-    .invalid {
-        color: red;
-    }
-
-    .combo-box-size{
-        height: 153px;
-    }
-
-    .combo-box-left-padding{
-        flex: 1 1 auto;
-        min-height: 1px;
-        padding-left: 19px;
-    }
-
-    .combo-box-right-padding{
-        padding-right: 15px;
-    }
-
-    .more-option-padding{
-      padding-top: 12px;
-      margin-right: 15px;
-    }
-
-    .postal-title{
-      overflow: hidden;
-    }
-
-    .p-colorpicker-preview {
-        width: 30px;
-        height: 30px;
-        margin: auto;
-        background-image: url('~@/assets/Rect.png');
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-    }
-
-    .p-colorpicker-overlay {
-      margin-left: 1.5rem;
-    }
-
-    .triggers-label-space {
-      margin-left: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .triggers-options-space {
-      margin-top: 0.5rem;
-    }
-
-    .triggers-container-label-space{
-      margin-bottom: 0.2rem;
-    }
-
-    .triggers-more-options-area-size{
-      height: 335px;
-    }
-
-    button.delete-left-align{
-      margin-right: auto;
-    }
-
-</style>
 <script>
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
@@ -336,6 +235,100 @@ import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
 import Toast from 'primevue/toast'
 import { mapMutations } from 'vuex'
 export default {
+  name: 'AgentForm',
+  components: {
+    VAceEditor,
+    AccountCogIco,
+    FileCodeIco,
+    Toast
+  },
+  props: {
+    readOnly: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      agent: {
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        repository: '',
+        target: '',
+        command: '',
+        type: '',
+        isRootDomainType: false,
+        isSubDomainType: false,
+        isAliveTrigger: false,
+        isHttpOpenTrigger: false,
+        category: '',
+        script: '',
+        id: -1,
+        creationDate: new Date().toString(),
+        image: '',
+        status: this.$entityStatus.FINISHED,
+        lastRun: null
+      },
+      colorpickerData: '',
+      isVisibleTopSection: true,
+      isVisibleMiddleSection: true,
+      isVisibleBottomSection: false,
+      middleSection: 'collapse',
+      editable: false,
+      arrow_down: true,
+      arrow_up: false,
+      isPencilVisible: false,
+      isPencilVisibleAndClick: false,
+      validators: {
+        blank: {
+          name: false,
+          repository: false,
+          target: false,
+          command: false
+        }
+      },
+      nextAgentSequence: 30
+    }
+  },
+  computed: {
+    isValid () {
+      if (this.agent.name !== '' &&
+      this.agent.repository !== '' &&
+      this.agent.target !== '' &&
+      this.agent.command !== '' &&
+      this.agent.type !== '' && (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
+        return false
+      }
+      return true
+    },
+    loadSelectedAgent () {
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
+    },
+    isFormValid () {
+      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
+    }
+  },
+  watch: {
+    loadSelectedAgent: function (value) {
+      if (value !== undefined) {
+        this.agent.name = value.name
+        this.agent.background = value.background
+        this.agent.repository = value.repository
+        this.agent.target = value.target
+        this.agent.command = value.command
+        this.agent.type = value.type
+        this.agent.isAliveTrigger = value.isAliveTrigger
+        this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
+        this.agent.script = value.script
+        this.editable = true
+        this.agent.id = value.id
+      } else {
+        this.resetAgentForm()
+        this.agent.script = ''
+      }
+    }
+  },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
     setBlueColor: function () {
@@ -524,103 +517,110 @@ export default {
     onEdit () {
       this.$store.commit('agent/setDetailsLinks', false)
     }
-  },
-  data () {
-    return {
-      agent: {
-        name: '',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-        repository: '',
-        target: '',
-        command: '',
-        type: '',
-        isRootDomainType: false,
-        isSubDomainType: false,
-        isAliveTrigger: false,
-        isHttpOpenTrigger: false,
-        category: '',
-        script: '',
-        id: -1,
-        creationDate: new Date().toString(),
-        image: '',
-        status: this.$entityStatus.FINISHED,
-        lastRun: null
-      },
-      colorpickerData: '',
-      isVisibleTopSection: true,
-      isVisibleMiddleSection: true,
-      isVisibleBottomSection: false,
-      middleSection: 'collapse',
-      editable: false,
-      arrow_down: true,
-      arrow_up: false,
-      isPencilVisible: false,
-      isPencilVisibleAndClick: false,
-      validators: {
-        blank: {
-          name: false,
-          repository: false,
-          target: false,
-          command: false
-        }
-      },
-      nextAgentSequence: 30
-    }
-  },
-  components: {
-    VAceEditor,
-    AccountCogIco,
-    FileCodeIco,
-    Toast
-  },
-  computed: {
-    isValid () {
-      if (this.agent.name !== '' &&
-      this.agent.repository !== '' &&
-      this.agent.target !== '' &&
-      this.agent.command !== '' &&
-      this.agent.type !== '' && (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
-        return false
-      }
-      return true
-    },
-    loadSelectedAgent () {
-      const id = this.$store.getters['agent/idAgent']
-      return this.$store.getters['agent/getAgentById'](parseInt(id))
-    },
-    isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
-    }
-  },
-  watch: {
-    loadSelectedAgent: function (value) {
-      if (value !== undefined) {
-        this.agent.name = value.name
-        this.agent.background = value.background
-        this.agent.repository = value.repository
-        this.agent.target = value.target
-        this.agent.command = value.command
-        this.agent.type = value.type
-        this.agent.isAliveTrigger = value.isAliveTrigger
-        this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
-        this.agent.script = value.script
-        this.editable = true
-        this.agent.id = value.id
-      } else {
-        this.resetAgentForm()
-        this.agent.script = ''
-      }
-    }
-  },
-  props: {
-    readOnly: {
-      type: Boolean,
-      default: false
-    }
   }
 }
 </script>
+<style>
+    .agentform-action{
+        bottom: -28%;
+        position: absolute;
+        right: 8%;
+        font-size: .875rem;
+    }
 
+    .agentform-color-components{
+        width: 30px;
+        height: 30px;
+    }
+
+    .agentform-color-spacing-bottom{
+        margin-top: 18px !important;
+    }
+
+    .agentform-color-components-align{
+        margin: auto;
+    }
+
+    .image-button{
+      background-image: url('~@/assets/Rect.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      width: 32px;
+      height: 32px;
+    }
+
+    .agent-border{
+        border: 1px solid #F1F3F5;
+        border-radius: 12px;
+        width: 90px;
+        height: 47px;
+    }
+    .input.invalid input {
+        border: 1px solid red;
+    }
+
+    .invalid {
+        color: red;
+    }
+
+    .combo-box-size{
+        height: 153px;
+    }
+
+    .combo-box-left-padding{
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding-left: 19px;
+    }
+
+    .combo-box-right-padding{
+        padding-right: 15px;
+    }
+
+    .more-option-padding{
+      padding-top: 12px;
+      margin-right: 15px;
+    }
+
+    .postal-title{
+      overflow: hidden;
+    }
+
+    .p-colorpicker-preview {
+        width: 30px;
+        height: 30px;
+        margin: auto;
+        background-image: url('~@/assets/Rect.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .p-colorpicker-overlay {
+      margin-left: 1.5rem;
+    }
+
+    .triggers-label-space {
+      margin-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .triggers-options-space {
+      margin-top: 0.5rem;
+    }
+
+    .triggers-container-label-space{
+      margin-bottom: 0.2rem;
+    }
+
+    .triggers-more-options-area-size{
+      height: 335px;
+    }
+
+    button.delete-left-align{
+      margin-right: auto;
+    }
+
+</style>
 <style scoped>
 input[type="file"]{
   width: 0.1px;
