@@ -9,14 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  name: 'AutoComplete',
-  data: function () {
-    return {
-      filteredLocations: [],
-      closedMenu: false,
-      isWriting: false
-    }
-  },
+  name: 'AutoCompleteLocations',
   props: {
     selectedType: {
       type: Number,
@@ -24,10 +17,17 @@ export default {
     },
     modelValue: String
   },
-  emits: ['update:modelValue'],
+  data: function () {
+    return {
+      filteredLocations: [],
+      closedMenu: false,
+      isWriting: false
+    }
+  },
   computed: {
     ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName'])
   },
+  emits: ['update:modelValue'],
   methods: {
     filteredEntities (event) {
       if (this.selectedType === this.$agentType.TARGET) {
