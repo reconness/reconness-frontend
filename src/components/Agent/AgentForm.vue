@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
                         <div style="float: left;" class="d-flex flex-row agent-name-container">
-                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="this.$store.state.agent.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
                     </div><!-- /.col-12 -->
@@ -18,7 +18,7 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="this.$store.state.agent.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
@@ -32,7 +32,7 @@
                             <br>
                             your logo
                             </span>
-                            <input :disabled="$store.state.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
+                            <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
                             <label for="uploadimage">
                             <FileCodeIco/>
 
@@ -40,19 +40,19 @@
                         </div><!-- /.d-flex -->
                         </div>
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.repository">
                             <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
                         </div>
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.target">
                           <span :class="{invalid: validators.blank.target}">The field target is required</span>
                         </div>
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
                         </div>
                         <div class="col-12" v-if="validators.blank.command">
                           <span :class="{invalid: validators.blank.command}">The field command is required</span>
@@ -80,7 +80,7 @@
                                 <div class="row">
                                     <div
                                      class="col-12" style="height: 54px">
-                                        <span v-if="this.$store.state['agent/fromDetailsLink'] && !readOnly" class="float-right text-white agentform-action">Agent Details...</span>
+                                        <span v-if="this.$store.state.agent.fromDetailsLink && !readOnly" class="float-right text-white agentform-action">Agent Details...</span>
                                         <span v-else-if="editable" class="float-right text-white agentform-action">Editing Agent...</span>
                                         <span v-else class="float-right text-white agentform-action">Creating Agent...</span>
                                     </div>
@@ -102,15 +102,15 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="agent.type">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="agent.type">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
                                 </div>
                             </div>
@@ -129,11 +129,11 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox4">Run Only if it is Alive</label>
                                 </div>
                                 <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
                                 </div>
                                 <div style="text-align: right;"  class="form-check more-option-padding">
@@ -156,22 +156,22 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                 </div>
                             </div>
@@ -216,9 +216,9 @@
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
-                  <button @click="setIsDeletetFromForm(true)" v-if="this.editable && !readOnly" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
-                  <button @click="onEdit()" v-if="this.$store.state['agent/fromDetailsLink'] && !readOnly" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state['agent/fromDetailsLink'] && !readOnly" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button @click="setIsDeletetFromForm(true)" v-if="this.editable && !readOnly" :disabled="this.$store.state.agent.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <button @click="onEdit()" v-if="this.$store.state.agent.fromDetailsLink && !readOnly" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state.agent.fromDetailsLink && !readOnly" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -504,7 +504,7 @@ export default {
       reader.readAsDataURL(files[0])
     },
     setRandomColor () {
-      const predefinedColors = this.$store.state['agent/systemColors']
+      const predefinedColors = this.$store.state.agent.systemColors
       this.agent.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
     },
     verifyPencilStatus () {

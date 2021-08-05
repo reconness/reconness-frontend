@@ -44,15 +44,15 @@
             <p>Set an option to set where you are going to run your pipeline</p>
             <div class="form-group">
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="settings_data.type">
+                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="settings_data.type">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
                 </div>
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="settings_data.type">
+                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="settings_data.type">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
                 </div>
                 <div class="custom-control custom-radio form-check">
-                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="settings_data.type">
+                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="settings_data.type">
                 <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
                 </div>
             </div>

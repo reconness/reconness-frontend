@@ -8,26 +8,26 @@
               <div class="modal-header dialog-without-lines-header">
                 <!-- PARAMETERIZABLE -->
                   <h5  class="modal-title">
-                    <b v-if="$store.state.valueDelete === '' && $store.state.nameRoute === 'subdomains'">Are you sure you want to delete all subdomains below?</b>
-                    <b v-else >Are you sure you want to delete selected {{$store.state.nameRoute}}?</b>
+                    <b v-if="this.$store.state.agent.valueDelete === '' && this.$store.state.agent.nameRoute === 'subdomains'">Are you sure you want to delete all subdomains below?</b>
+                    <b v-else >Are you sure you want to delete selected {{this.$store.state.agent.nameRoute}}?</b>
                   </h5>
               </div>
               <div class="modal-body">
                 <!-- PARAMETERIZABLE -->
-                  <div  v-if="$store.state.valueDelete === '' && $store.state.nameRoute === 'subdomains'">
+                  <div  v-if="this.$store.state.agent.valueDelete === '' && this.$store.state.agent.nameRoute === 'subdomains'">
                   <p class="mb-0">Please, type "yes" to confirm the delete action </p>
                    <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="">
                   </div>
                   <div v-else>
-                  <p class="mb-0">Please, confirm the name of the {{$store.state.nameRoute}} <b> {{$store.state.valueDelete}} </b> before delete it</p>
+                  <p class="mb-0">Please, confirm the name of the {{$store.state.agent.nameRoute}} <b> {{$store.state.agent.valueDelete}} </b> before delete it</p>
                   <input autofocus required v-model="nameTyped"  class="form-control input-line" placeholder="Name">
               </div></div>
               <div class="modal-footer dialog-without-lines-footer">
                   <button :disabled="nameTyped !== 'yes'"
-                  v-if="$store.state.valueDelete === '' && $store.state.nameRoute === 'subdomains'"
+                  v-if="this.$store.state.agent.valueDelete === '' && this.$store.state.agent.nameRoute === 'subdomains'"
                   type="button" class="btn btn-primary btn-danger delete_btn" @click="remove(this.nameTyped)">Delete</button>
 
-                  <button v-else :disabled="nameTyped !== $store.state.valueDelete"
+                  <button v-else :disabled="nameTyped !== this.$store.state.agent.valueDelete"
                   type="button" class="btn btn-primary btn-danger delete_btn" @click="remove(this.nameTyped)">Delete</button>
                   <button @click="close()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
@@ -53,7 +53,7 @@ export default {
   methods: {
     remove: function () {
       if (this.$randomBooleanResult()) {
-        switch (this.$store.state['agent/nameRoute']) {
+        switch (this.$store.state.agent.nameRoute) {
           case 'target':
             this.$store.commit('target/removeTarget', this.nameTyped)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })

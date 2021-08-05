@@ -10,7 +10,7 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <input  v-model="target.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My Target" @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <input  v-model="target.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My Target" @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="this.$store.state.agent.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
@@ -33,14 +33,14 @@
 
                         <div class="col-12">
                           <label class="target-inputs-separator">Bug Bounty Program URL</label>
-                          <input :readonly="$store.state.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageBugBountyUrl" class="form-control target-input-borders">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageBugBountyUrl" class="form-control target-input-borders">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.url.bugBountyUrl">
                             <span :class="{invalid: validators.url.bugBountyUrl}">The field bug bounty is not a valid URL</span>
                         </div>
                         <div class="col-12">
                           <div class="custom-control custom-checkbox form-check private-program-container">
-                            <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="target_customCheckbox" v-model="target.isPrivateProgram">
+                            <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="target_customCheckbox" v-model="target.isPrivateProgram">
                             <label class="form-check-label custom-control-label float-right" for="target_customCheckbox">Is Private Program?</label>
                           </div>
                         </div>
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12" style="height: 54px">
-                                        <span v-if="this.$store.state['agent/fromDetailsLink']" class="float-right text-white targetform-action">Target Details...</span>
+                                        <span v-if="this.$store.state.agent.fromDetailsLink" class="float-right text-white targetform-action">Target Details...</span>
                                         <span v-else-if="editable" class="float-right text-white targetform-action">Editing Target...</span>
                                         <span v-else class="float-right text-white targetform-action">Creating Target...</span>
                                     </div>
@@ -89,22 +89,22 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                 </div>
                             </div>
@@ -117,9 +117,9 @@
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
-                  <button @click=" this.setIsDeletetFromForm(true)" v-if="this.editable" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
-                  <button @click="onEdit()" v-if="this.$store.state['agent/fromDetailsLink']" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state['agent/fromDetailsLink']" type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button @click=" this.setIsDeletetFromForm(true)" v-if="this.editable" :disabled="this.$store.state.agent.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <button @click="onEdit()" v-if="this.$store.state.agent.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state.agent.fromDetailsLink" type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -402,7 +402,7 @@ export default {
       this.enableValidationMessageUniqueName()
     },
     setRandomColor () {
-      const predefinedColors = this.$store.state['agent/systemColors']
+      const predefinedColors = this.$store.state.agent.systemColors
       const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
       this.target.primaryColor = randomColor.primaryColor
       this.target.secondaryColor = randomColor.secondaryColor

@@ -200,9 +200,9 @@ export default {
     },
     updateConfirm () {
       if (this.showRootDomains) {
-        return this.$store.commit('confirm', { name: this.rootName, route: 'rootdomains' })
+        return this.$store.commit('agent/confirm', { name: this.rootName, route: 'rootdomains' })
       } else {
-        return this.$store.commit('confirm', { name: this.TargetName, route: 'target' })
+        return this.$store.commit('agent/confirm', { name: this.TargetName, route: 'target' })
       }
     }
 
