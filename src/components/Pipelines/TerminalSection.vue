@@ -39,14 +39,14 @@ export default {
   props: {
     pipeline: Object
   },
-  computed: {
-    ...mapGetters('pipelines', ['getAgentsFromIdPipeline'])
-  },
   data () {
     return {
       script: '',
       is_terminal_open: false
     }
+  },
+  computed: {
+    ...mapGetters('pipelines', ['getAgentsFromIdPipeline'])
   }
 }
 </script>
