@@ -59,7 +59,7 @@ import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 export default {
-  name: 'PipelinesList',
+  name: 'PipelinesMiniList',
   components: {
     RocketIco,
     GearIcon,
