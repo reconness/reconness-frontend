@@ -22,13 +22,13 @@ import { mapState, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 export default {
   name: 'PipelineAgent',
+  components: {
+    AccountCogIco
+  },
   props: {
     pipelineName: String,
     pipelineID: Number,
     pipelineBackground: String
-  },
-  components: {
-    AccountCogIco
   },
   computed: {
     ...mapState('pipelines', ['checkDetail'])
@@ -66,7 +66,6 @@ export default {
     min-height: 70px;
     position: relative;
     width: 100%;
-    /*box-shadow: 13px 19px 41px #d6d6d6;*/
     box-shadow: 13px 8px 21px #d6d6d6;
     opacity: 1;
 }
