@@ -1,7 +1,7 @@
 <template>
 <div class="card float-right initial-info-box agent-mini-main-container rounded-corners container-card" :style="{background:pipelineBackground}">
-  <input type="checkbox" :id="pipelineID+1"  name="checkitem">
-  <label :for="pipelineID+1" v-show="checkDetail"  @click="addListPipelinesId" :data-id="pipelineID" :data-name="pipelineName" class="mb-0 float-right"></label>
+  <input type="checkbox" :id="pipelineID"  name="checkitem">
+  <label :for="pipelineID" v-show="checkDetail"  @click="addListPipelinesId" :data-id="pipelineID" :data-name="pipelineName" class="mb-0 float-right"></label>
   <div class=" car-body m-2 " >
     <div class="row">
      <div class="col-7 border-right">
@@ -38,7 +38,7 @@ export default {
     addListPipelinesId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       const selectedPipelinesName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId + 1).checked === false) {
+      if (document.getElementById(selectedId).checked === false) {
         this.addIdAgentPipelineDetail({ id: selectedId, name: selectedPipelinesName })
       } else {
         this.removebyIdAgentPipelinesDetail(selectedId)
