@@ -19,6 +19,7 @@
 <script>
 import jQuery from 'jquery'
 export default {
+  name: 'SimpleConfirmation',
   methods: {
     removeResource: function () {
       this.$store.commit('agent/removeResource', parseInt(this.$store.state.agent.idResource))
