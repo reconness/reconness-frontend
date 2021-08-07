@@ -38,6 +38,12 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 import PipelinesFormStepSettings from '@/components/Pipelines/PipelinesFormStepSettings.vue'
 export default {
   name: 'PipelinesForm',
+  components: {
+    PipelinesFormStepSettings
+  },
+  props: {
+    routeName: String
+  },
   data: function () {
     return {
       settings_data: null,
@@ -63,9 +69,6 @@ export default {
       }
     }
   },
-  props: {
-    routeName: String
-  },
   computed: {
     ...mapState('pipelines', ['autoId']),
     ...mapGetters('agent', ['getAgentById']),
@@ -90,16 +93,12 @@ export default {
       handler: function () {
         this.enableDoneBtn = this.isDoneButtonEnabled
         this.pipeline.locations = this.transformPipelineLocations(this.settings_data.locations)
-        // this.locationsContainBlank()
         this.locationsContainNonExist()
         this.pipeline.type = this.settings_data.type
         this.pipeline.date = this.settings_data.date
       },
       deep: true
     }
-  },
-  components: {
-    PipelinesFormStepSettings
   },
   methods: {
     ...mapMutations('pipelines', ['addPipeline', 'updatePipeline', 'setIdPipeline']),
