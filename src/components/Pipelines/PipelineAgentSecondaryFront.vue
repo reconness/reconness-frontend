@@ -34,12 +34,12 @@ export default {
     MotionPlayOutlineIco,
     CircleProgress
   },
-  mixins: [ProgressBarMixin],
   props: {
     sonAgent: Object,
     pipeline: Object,
     index: Number
   },
+  mixins: [ProgressBarMixin],
   watch: {
     sonAgent: {
       handler: function (data) {
@@ -339,9 +339,6 @@ div.pipeline-run-line {
 .vue3-circular-progressbar{
   margin-left: 10%;
 }
-/* .vue3-circular-progressbar svg{
-  margin-bottom: 27%;
-} */
 .output-container{
   font-size: 13px;
 }
