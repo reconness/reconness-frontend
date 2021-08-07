@@ -10,11 +10,12 @@
 import { mapMutations } from 'vuex'
 import CommentIco from '@/components/Icons/CommentIco.vue'
 export default {
+  name: 'MessagesBtn',
   components: {
     CommentIco
   },
   methods: {
-    ...mapMutations(['setIsMessageSectionOpened']),
+    ...mapMutations('agent', ['setIsMessageSectionOpened']),
     mouseEnter: function () {
       this.setIsMessageSectionOpened(true)
     }

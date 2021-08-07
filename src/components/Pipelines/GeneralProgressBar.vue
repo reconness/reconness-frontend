@@ -43,6 +43,9 @@ export default {
     RocketIco,
     OverlayPanel
   },
+  props: {
+    pipeline: Object
+  },
   mixins: [ProgressBarMixin],
   computed: {
     ...mapState('pipelines', ['agentParentRunningIndex']),
@@ -65,9 +68,6 @@ export default {
       },
       deep: true
     }
-  },
-  props: {
-    pipeline: Object
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineStatus', 'setPipelineAgentParentIndex', 'setStatusToAllAgentsByPipeline']),

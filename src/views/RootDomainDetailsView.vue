@@ -59,11 +59,11 @@ export default {
   computed: {
     ...mapState('target', ['countSubdomainList', 'isTableList']),
     ...mapGetters('target', ['getTargetById', 'getSubdomainSize']),
-    ...mapGetters(['getLastAgentRootDomain', 'getAgentsByType']),
+    ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents'])
   },
   mounted () {
-    this.$store.commit('updateLocView', 'Targets', true)
+    this.$store.commit('agent/updateLocView', 'Targets', true)
     this.Target = this.getTargetById(parseInt(this.idTarget))
     this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'

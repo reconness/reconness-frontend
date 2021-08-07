@@ -71,12 +71,12 @@
             <a class="nav-link">
             <p class="float-left">View Mode</p>
             <a v-bind:class="{ 'router-link-exact-active': isMiniView} " v-on:click="activeNavButton('isMiniView')">
-            <button type="button" class="btn btn-light margin-right" @click="this.$store.commit('setIsDefaultViewOnAgent', false)">
+            <button type="button" class="btn btn-light margin-right" @click="this.$store.commit('agent/setIsDefaultViewOnAgent', false)">
                 <i class="material-icons">format_list_bulleted</i>
             </button>
             </a>
              <a v-bind:class="{ 'router-link-exact-active': isListView} " v-on:click="activeNavButton('isListView')">
-            <button type="button" class="btn btn-light" @click="this.$store.commit('setIsDefaultViewOnAgent', true)">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('agent/setIsDefaultViewOnAgent', true)">
               <i class="material-icons">grid_view</i>
             </button>
             </a>
@@ -114,7 +114,7 @@
             <button type="button" class="btn btn-sm" id="dropdownMenuButton">
               <i class="material-icons">format_list_bulleted</i>
             </button></router-link>
-            <button type="button" class="btn btn-light" @click="this.$store.commit('setIsDefaultViewOnAgent', true)">
+            <button type="button" class="btn btn-light" @click="this.$store.commit('agent/setIsDefaultViewOnAgent', true)">
               <i class="material-icons">grid_view</i>
             </button>
           </a>
@@ -235,6 +235,16 @@ import jQuery from 'jquery'
 import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
 export default {
   name: 'NavBarTwo',
+  components: {
+    AgentForm,
+    Debug,
+    InstallOnDebug,
+    UninstallOnDebug,
+    Toast,
+    OverlayPanel,
+    ConfirmDeleteList,
+    LocalMallIco
+  },
   data: function () {
     return {
       active: false,
@@ -248,20 +258,16 @@ export default {
     }
   },
   computed: {
-    ...mapState(['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
+    ...mapState('agent', ['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
   },
-  components: {
-    AgentForm,
-    Debug,
-    InstallOnDebug,
-    UninstallOnDebug,
-    Toast,
-    OverlayPanel,
-    ConfirmDeleteList,
-    LocalMallIco
+  mounted () {
+    if (!this.$store.state.agent.isDefaultViewOnAgent) {
+      this.isMiniView = true
+      this.isListView = false
+    }
   },
   methods: {
     mouseenter: function () {
@@ -270,7 +276,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations(['isFilter', 'editList']),
+    ...mapMutations('agent', ['isFilter', 'editList']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -300,7 +306,7 @@ export default {
       this.$refs.op.toggle(event)
     },
     onBashRemoveAgents () {
-      if (this.$store.state.agentIdList.length > 0) {
+      if (this.$store.state.agent.agentIdList.length > 0) {
         jQuery('#confirmation-modald').modal()
       } else {
         return false
@@ -312,7 +318,7 @@ export default {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''
-      this.$store.commit('cancelIdAgent')
+      this.$store.commit('agent/cancelIdAgent')
     },
     activeNavButton: function (valueIn) {
       if (valueIn === 'isMiniView') {
@@ -324,12 +330,6 @@ export default {
           this.isMiniView = false
         }
       }
-    }
-  },
-  mounted () {
-    if (!this.$store.state.isDefaultViewOnAgent) {
-      this.isMiniView = true
-      this.isListView = false
     }
   }
 }

@@ -4,6 +4,7 @@
 </template>
 <script>
 export default {
+  name: 'LocalMallIco',
   props: {
     customClass: {
       type: String,
@@ -11,5 +12,4 @@ export default {
     }
   }
 }
-// class="float-left mr-1"
 </script>

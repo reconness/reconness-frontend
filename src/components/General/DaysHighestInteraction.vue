@@ -68,7 +68,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['daysWithMostInteractionsLastWeek'])
+    ...mapGetters('agent', ['daysWithMostInteractionsLastWeek'])
   },
   created: function () {
     this.updateDaysInGraph()

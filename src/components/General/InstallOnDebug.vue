@@ -24,6 +24,7 @@
 </template>
 <script>
 export default {
+  name: 'InstallOnDebug',
   props: {
     installerOption: Number
   },
@@ -31,8 +32,8 @@ export default {
     installer () {
       const success = this.$randomBooleanResult()
       if (success) {
-        this.$store.commit('installUninstallAgent', this.installerOption)
-        this.$store.commit('addAgentFromInstaller', this.installerOption)
+        this.$store.commit('agent/installUninstallAgent', this.installerOption)
+        this.$store.commit('agent/addAgentFromInstaller', this.installerOption)
         this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent was installed', life: 3000 })
       } else {
         this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error ocurred during installation', life: 3000 })

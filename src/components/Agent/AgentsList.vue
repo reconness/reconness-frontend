@@ -52,22 +52,28 @@ import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentsList',
-  computed: {
-    ...mapState(['agentListStore', 'check', 'filterColour', 'styleList', 'agentIdList']),
-    ...mapGetters(['filterByColor']),
-    arrayFilterList () {
-      if (this.filterColour === '') {
-        return this.agentListStore
-      } else {
-        return this.filterByColor(this.filterColour)
-      }
-    }
+  components: {
+    AgentForm,
+    AgentConfirmation,
+    AccountCogIco
   },
   data: function () {
     return {
       selectedCard: -1,
       checkSelected: false,
       checkDeleted: -1
+    }
+  },
+  mixins: [AgentMixin],
+  computed: {
+    ...mapState('agent', ['agentListStore', 'check', 'filterColour', 'styleList', 'agentIdList']),
+    ...mapGetters('agent', ['filterByColor']),
+    arrayFilterList () {
+      if (this.filterColour === '') {
+        return this.agentListStore
+      } else {
+        return this.filterByColor(this.filterColour)
+      }
     }
   },
   methods: {
@@ -79,27 +85,20 @@ export default {
     },
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     },
     onEdit (e) {
       this.setAgentId(e)
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setDetailsLinks', false)
     }
-  },
-  components: {
-    AgentForm,
-    AgentConfirmation,
-    AccountCogIco
-  },
-  mixins: [AgentMixin]
+  }
 }
 </script>
-
 <style scoped>
 .widhtLine{
   width: 30%;

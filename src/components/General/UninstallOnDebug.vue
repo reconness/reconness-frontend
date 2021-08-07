@@ -24,13 +24,14 @@
 </template>
 <script>
 export default {
+  name: 'UninstallOnDebug',
   props: ['installerOptionName', 'installerOption'],
   methods: {
     installer () {
       const success = this.$randomBooleanResult()
       if (success) {
-        this.$store.commit('installUninstallAgent', this.installerOption)
-        this.$store.commit('removeAgentFromInstaller', this.installerOption)
+        this.$store.commit('agent/installUninstallAgent', this.installerOption)
+        this.$store.commit('agent/removeAgentFromInstaller', this.installerOption)
         this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent was uninstalled', life: 3000 })
       } else {
         this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error ocurred during uninstallation', life: 3000 })

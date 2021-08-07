@@ -4,8 +4,8 @@
     class="col-12 col-lg-12 col-xl-6 col-xxl-4 p-4 container-card">
     <span  class="material-icons main_reconnes_text-color mt-1 float-left"> chevron_right </span>
        <div class="card card-custom w-auto mb-3">
-        <input type="checkbox" :id="item.id+1"  name="checkitem" :checked="isChecked(item.id)">
-        <label :for="item.id+1" v-show="check"  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" ></label>
+        <input type="checkbox" :id="item.id"  name="checkitem" :checked="isChecked(item.id)">
+        <label :for="item.id" v-show="check"  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" ></label>
          <div class="p-2">
          <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
            <router-link :to="{ name: 'PipelineDetail', params: {id: item.id, pipelineName: item.name} }">
@@ -95,7 +95,7 @@ export default {
     addListPipelinesId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       const selectedPipelinesName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId + 1).checked === false) {
+      if (document.getElementById(selectedId).checked === false) {
         if (this.pipelinesIdList.length !== 0 && this.checkSelected === false) {
           this.checkSelected = false
           this.checkDeleted = selectedId

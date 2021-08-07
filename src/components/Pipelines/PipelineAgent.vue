@@ -1,7 +1,7 @@
 <template>
 <div class="card float-right initial-info-box agent-mini-main-container rounded-corners container-card" :style="{background:pipelineBackground}">
-  <input type="checkbox" :id="pipelineID+1"  name="checkitem">
-  <label :for="pipelineID+1" v-show="checkDetail"  @click="addListPipelinesId" :data-id="pipelineID" :data-name="pipelineName" class="mb-0 float-right"></label>
+  <input type="checkbox" :id="pipelineID"  name="checkitem">
+  <label :for="pipelineID" v-show="checkDetail"  @click="addListPipelinesId" :data-id="pipelineID" :data-name="pipelineName" class="mb-0 float-right"></label>
   <div class=" car-body m-2 " >
     <div class="row">
      <div class="col-7 border-right">
@@ -22,13 +22,13 @@ import { mapState, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 export default {
   name: 'PipelineAgent',
+  components: {
+    AccountCogIco
+  },
   props: {
     pipelineName: String,
     pipelineID: Number,
     pipelineBackground: String
-  },
-  components: {
-    AccountCogIco
   },
   computed: {
     ...mapState('pipelines', ['checkDetail'])
@@ -38,7 +38,7 @@ export default {
     addListPipelinesId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       const selectedPipelinesName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId + 1).checked === false) {
+      if (document.getElementById(selectedId).checked === false) {
         this.addIdAgentPipelineDetail({ id: selectedId, name: selectedPipelinesName })
       } else {
         this.removebyIdAgentPipelinesDetail(selectedId)
@@ -46,8 +46,8 @@ export default {
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     }
   }
 }
@@ -66,7 +66,6 @@ export default {
     min-height: 70px;
     position: relative;
     width: 100%;
-    /*box-shadow: 13px 19px 41px #d6d6d6;*/
     box-shadow: 13px 8px 21px #d6d6d6;
     opacity: 1;
 }

@@ -5,7 +5,7 @@
 export default {
   name: 'Logs',
   mounted () {
-    this.$store.commit('updateLocView', 'Logs', true)
+    this.$store.commit('agent/updateLocView', 'Logs', true)
   }
 }
 </script>

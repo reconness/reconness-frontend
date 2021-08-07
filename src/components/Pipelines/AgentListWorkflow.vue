@@ -42,6 +42,13 @@ import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
 export default {
   name: 'AgentListWorkflow',
+  components: {
+    AccountCogIco,
+    AgentForm
+  },
+  props: {
+    routeName: String
+  },
   data: function () {
     return {
       step: 1,
@@ -55,14 +62,11 @@ export default {
       }
     }
   },
-  props: {
-    routeName: String
-  },
   computed: {
-    ...mapState(['agentListStore', 'autoId']),
+    ...mapState('agent', ['agentListStore', 'autoId']),
     ...mapState('pipelines', ['autoId', 'branchFather', 'addStartingAgent']),
     ...mapGetters('pipelines', ['getPipelineById']),
-    ...mapGetters(['getAgentById']),
+    ...mapGetters('agent', ['getAgentById']),
     iterList () {
       if (this.addStartingAgent) {
         return this.agentListStore.filter(item => item.type === this.getPipelineById(parseInt(this.$route.params.id)).type)
@@ -77,10 +81,6 @@ export default {
         return false
       }
     }
-  },
-  components: {
-    AccountCogIco,
-    AgentForm
   },
   methods: {
     ...mapMutations('pipelines', ['addPipeline']),
@@ -102,7 +102,7 @@ export default {
     },
     save () {
       const Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
-      const Agent = this.$store.getters.getAgentById(this.agentStartingPoint)
+      const Agent = this.$store.getters['agent/getAgentById'](this.agentStartingPoint)
       Pipeline.agent.splice(Pipeline.agent.length - 1, 1)
       if (this.branchFather === -1) {
         if (Pipeline.startingAgent === -1 && this.addStartingAgent) {
@@ -121,8 +121,8 @@ export default {
     },
     setDetailsLink (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setIdAgent', selectedAgentId)
-      this.$store.commit('setDetailsLinks', true)
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
     }
   }
 }

@@ -138,7 +138,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['resources'])
+    ...mapState('agent', ['resources'])
   },
   watch: {
     resource: {
@@ -152,11 +152,11 @@ export default {
   methods: {
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setSelectedResource', selectedId)
+      this.$store.commit('agent/setSelectedResource', selectedId)
     },
     addReference () {
       if (!this.validators.url.name && !this.validators.blank.name) {
-        this.$store.commit('addResource', {
+        this.$store.commit('agent/addResource', {
           url: this.resource.url,
           categories: this.resource.categories,
           id: this.resources.length + 1

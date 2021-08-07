@@ -19,14 +19,15 @@
 <script>
 import jQuery from 'jquery'
 export default {
+  name: 'SimpleConfirmation',
   methods: {
     removeResource: function () {
-      this.$store.commit('removeResource', parseInt(this.$store.state.idResource))
+      this.$store.commit('agent/removeResource', parseInt(this.$store.state.agent.idResource))
       jQuery('#simple-confirmation-modal').modal('hide')
     },
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('setSelectedResource', selectedId)
+      this.$store.commit('agent/setSelectedResource', selectedId)
     }
   }
 }

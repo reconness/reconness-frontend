@@ -28,7 +28,7 @@ export default {
     PipelinesMiniList
   },
   mounted () {
-    this.$store.commit('updateLocView', 'Pipelines', true)
+    this.$store.commit('agent/updateLocView', 'Pipelines', true)
   }
 }
 </script>

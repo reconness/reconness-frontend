@@ -29,6 +29,7 @@ import jQuery from 'jquery'
 import Toast from 'primevue/toast'
 import { mapState } from 'vuex'
 export default {
+  name: 'AgentConfirmation',
   components: {
     Toast
   },
@@ -38,11 +39,25 @@ export default {
       selectedAgentName: ''
     }
   },
+  computed: {
+    ...mapState('agent', ['isDeletetFromForm']),
+    loadSelectedAgent2 () {
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
+    }
+  },
+  watch: {
+    loadSelectedAgent2: function (value) {
+      if (value !== undefined) {
+        this.selectedAgentName = value.name
+      }
+    }
+  },
   methods: {
     removeAgent: function () {
       if (this.nameTyped === this.selectedAgentName) {
         if (this.$randomBooleanResult()) {
-          this.$store.commit('removeAgent', this.nameTyped)
+          this.$store.commit('agent/removeAgent', this.nameTyped)
           this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been deleted successfully', life: 3000 })
         } else {
           this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
@@ -51,28 +66,14 @@ export default {
         jQuery('#confirmation-modal').modal('hide')
         jQuery('#exampleModalCenter').modal('hide')
       }
-      this.$store.commit('setIdAgent', -1)
+      this.$store.commit('agent/setIdAgent', -1)
     },
     close () {
       this.nameTyped = ''
       if (!this.isDeletetFromForm) {
-        this.$store.commit('setIdAgent', -1)
+        this.$store.commit('agent/setIdAgent', -1)
       } else {
-        this.$store.commit('setIsDeletetFromForm', false)
-      }
-    }
-  },
-  computed: {
-    ...mapState(['isDeletetFromForm']),
-    loadSelectedAgent2 () {
-      const id = this.$store.getters.idAgent
-      return this.$store.getters.getAgentById(parseInt(id))
-    }
-  },
-  watch: {
-    loadSelectedAgent2: function (value) {
-      if (value !== undefined) {
-        this.selectedAgentName = value.name
+        this.$store.commit('agent/setIsDeletetFromForm', false)
       }
     }
   }

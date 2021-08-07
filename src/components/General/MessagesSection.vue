@@ -65,6 +65,16 @@
 import CommentIco from '@/components/Icons/CommentIco.vue'
 import { mapMutations, mapGetters, mapState } from 'vuex'
 export default {
+  name: 'MessagesSection',
+  components: {
+    CommentIco
+  },
+  props: {
+    opened: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function () {
     return {
       message: '',
@@ -77,7 +87,7 @@ export default {
   computed: {
     ...mapGetters('target', ['getTargetMessages', 'getRootDomainMessages', 'getSubDomainMessages']),
     ...mapState('target', ['idMessage', 'currentView']),
-    ...mapState(['isMessageSectionOpened']),
+    ...mapState('agent', ['isMessageSectionOpened']),
     getMessages: function () {
       if (this.order_by_date) {
         if (this.active_arrow_down_message) {
@@ -171,7 +181,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setIsMessageSectionOpened']),
+    ...mapMutations('agent', ['setIsMessageSectionOpened']),
     sendMessage: function () {
       if (this.$route.name === 'TargetDetail') {
         this.sendTargetMessage({
@@ -247,15 +257,6 @@ export default {
         return 1
       }
       return 0
-    }
-  },
-  components: {
-    CommentIco
-  },
-  props: {
-    opened: {
-      type: Boolean,
-      default: false
     }
   },
   directives: {

@@ -36,6 +36,7 @@ import { mapState, mapMutations } from 'vuex'
 import jQuery from 'jquery'
 import Toast from 'primevue/toast'
 export default {
+  name: 'ConfirmationPipelinesList',
   data () {
     return {
       nameTyped: ''
@@ -46,6 +47,9 @@ export default {
   },
   props: {
     nameRoute: String
+  },
+  computed: {
+    ...mapState('pipelines', ['pipelinesIdList', 'pipelinesIdAgentsList'])
   },
   methods: {
     ...mapMutations('pipelines', ['removePipelinesChecked', 'removeAgentsPipelinesChecked', 'cancelElementSelected']),
@@ -73,9 +77,6 @@ export default {
       this.nameTyped = ''
       this.$store.commit('pipelines/cancelElementSelected', this.nameRoute)
     }
-  },
-  computed: {
-    ...mapState('pipelines', ['pipelinesIdList', 'pipelinesIdAgentsList'])
   }
 }
 </script>

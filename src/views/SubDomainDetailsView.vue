@@ -91,7 +91,7 @@ export default {
     idsubdomain: String
   },
   computed: {
-    ...mapGetters(['getLastAgentSubdom', 'getAgentsByType']),
+    ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
     ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain']),
     getSubdomainSize () {
       const loadedSubdomain = this.getSubDomain({
@@ -106,7 +106,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.commit('updateLocView', 'Targets', true)
+    this.$store.commit('agent/updateLocView', 'Targets', true)
     this.Target = this.getTargetById(parseInt(this.idTarget))
     this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'

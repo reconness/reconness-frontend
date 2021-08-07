@@ -31,7 +31,10 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 import { ProgressBarMixin } from '@/mixins/ProgressBarMixin'
 export default {
   name: 'PipelineAgentMainFront',
-  mixins: [ProgressBarMixin],
+  components: {
+    MotionPlayOutlineIco,
+    CircleProgress
+  },
   props: {
     fatherAgent: Object,
     index: {
@@ -40,10 +43,7 @@ export default {
     },
     pipeline: Object
   },
-  components: {
-    MotionPlayOutlineIco,
-    CircleProgress
-  },
+  mixins: [ProgressBarMixin],
   computed: {
     ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
     ...mapGetters('pipelines', ['getPipelineById']),
@@ -66,17 +66,7 @@ export default {
       return 0
     }
   },
-  methods: {
-    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren', 'setPipelineAgentDurationTimeByIndex']),
-    setAgentFromTerminal (agent) {
-      this.setAgent(agent)
-      this.setIsAgentInfoOpenedForTerminal(true)
-    },
-    setAgentFromLogs (agent) {
-      this.setAgent(agent)
-      this.setIsAgentInfoOpenedForTerminal(false)
-    }
-  },
+  emits: ['agenttimechange'],
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
@@ -148,7 +138,17 @@ export default {
       this.$emit('agenttimechange', this.time)
     }
   },
-  emits: ['agenttimechange']
+  methods: {
+    ...mapMutations('pipelines', ['setPipelineAgentStatus', 'setAgent', 'setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setPipelineStatus', 'setIsAgentInfoOpenedForTerminal', 'updateStatusAllChildren', 'setPipelineAgentDurationTimeByIndex']),
+    setAgentFromTerminal (agent) {
+      this.setAgent(agent)
+      this.setIsAgentInfoOpenedForTerminal(true)
+    },
+    setAgentFromLogs (agent) {
+      this.setAgent(agent)
+      this.setIsAgentInfoOpenedForTerminal(false)
+    }
+  }
 }
 </script>
 <style scoped>

@@ -181,7 +181,7 @@ export default {
     BullseyeArrowIco
   },
   computed: {
-    ...mapState(['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isMessageSectionOpened']),
+    ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isMessageSectionOpened']),
     ...mapState('target', ['loggedUser']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
@@ -230,7 +230,7 @@ export default {
         this.arrow_up_settings = !this.arrow_up_settings
       }
       if (loc !== 'Settings') {
-        this.$store.commit('updateLocView', loc)
+        this.$store.commit('agent/updateLocView', loc)
       }
     },
     redirectToHomePage: function () {

@@ -32,19 +32,34 @@ import { mapState } from 'vuex'
 import jQuery from 'jquery'
 import Toast from 'primevue/toast'
 export default {
+  name: 'ConfirmDeleteList',
+  components: {
+    Toast
+  },
   data () {
     return {
       nameTyped: '',
       selectedAgentName: ''
     }
   },
-  components: {
-    Toast
+  computed: {
+    ...mapState('agent', ['agentIdList']),
+    loadSelectedAgent2 () {
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
+    }
+  },
+  watch: {
+    loadSelectedAgent2: function (value) {
+      if (value !== undefined) {
+        this.selectedAgentName = value.name
+      }
+    }
   },
   methods: {
     removeAgent: function () {
       if (this.$randomBooleanResult()) {
-        this.$store.commit('removeAgents')
+        this.$store.commit('agent/removeAgents')
         this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents has been deleted successfully', life: 3000 })
       } else {
         this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
@@ -60,21 +75,7 @@ export default {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''
-      this.$store.commit('cancelIdAgent')
-    }
-  },
-  computed: {
-    ...mapState(['agentIdList']),
-    loadSelectedAgent2 () {
-      const id = this.$store.getters.idAgent
-      return this.$store.getters.getAgentById(parseInt(id))
-    }
-  },
-  watch: {
-    loadSelectedAgent2: function (value) {
-      if (value !== undefined) {
-        this.selectedAgentName = value.name
-      }
+      this.$store.commit('agent/cancelIdAgent')
     }
   }
 }

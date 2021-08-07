@@ -44,12 +44,10 @@
 import PipelineAgentMainFront from '@/components/Pipelines/PipelineAgentMainFront.vue'
 import PipelineAgentSecondaryFront from '@/components/Pipelines/PipelineAgentSecondaryFront.vue'
 export default {
-  data: function () {
-    return {
-      indexRunningAgent: 0,
-      indexRunningSecondaryAgent: 0,
-      isRunningSecondaryProcess: false
-    }
+  name: 'ExecutionAreaPipelineAgent',
+  components: {
+    PipelineAgentMainFront,
+    PipelineAgentSecondaryFront
   },
   props: {
     AgentsPipelineList: Array,
@@ -57,10 +55,21 @@ export default {
     startMainProcess: Boolean,
     pipeline: Object
   },
-  components: {
-    PipelineAgentMainFront,
-    PipelineAgentSecondaryFront
+  data: function () {
+    return {
+      indexRunningAgent: 0,
+      indexRunningSecondaryAgent: 0,
+      isRunningSecondaryProcess: false
+    }
   },
+  computed: {
+    associatedAgents () {
+      let agentPipelineList = []
+      agentPipelineList = this.AgentsPipelineList
+      return agentPipelineList
+    }
+  },
+  emits: ['agenttimechange'],
   watch: {
     startMainProcess: function (value) {
       if (value) {
@@ -69,11 +78,11 @@ export default {
       }
     }
   },
-  computed: {
-    associatedAgents () {
-      let agentPipelineList = []
-      agentPipelineList = this.AgentsPipelineList
-      return agentPipelineList
+  created () {
+    if (this.associatedAgents.length > 1 && this.associatedAgents[this.associatedAgents.length - 1]) {
+      if (this.$isObjectEmpty(this.associatedAgents[this.associatedAgents.length - 1])) {
+        this.associatedAgents.splice(this.associatedAgents.length - 1, 1)
+      }
     }
   },
   methods: {
@@ -108,14 +117,6 @@ export default {
     },
     onAgentTimeChange (agentTime) {
       this.$emit('agenttimechange', agentTime)
-    }
-  },
-  emits: ['agenttimechange'],
-  created () {
-    if (this.associatedAgents.length > 1 && this.associatedAgents[this.associatedAgents.length - 1]) {
-      if (this.$isObjectEmpty(this.associatedAgents[this.associatedAgents.length - 1])) {
-        this.associatedAgents.splice(this.associatedAgents.length - 1, 1)
-      }
     }
   }
 }
@@ -369,9 +370,6 @@ div.pipeline-run-line {
 .vue3-circular-progressbar{
   margin-left: 10%;
 }
-/* .vue3-circular-progressbar svg{
-  margin-bottom: 27%;
-} */
 .output-container{
   font-size: 13px;
 }

@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <hr class="reset-margin-top" />
         <div class="content">
-          <AgentsList v-if="$store.state.isDefaultViewOnAgent"></AgentsList>
+          <AgentsList v-if="this.$store.state.agent.isDefaultViewOnAgent"></AgentsList>
           <div class="row" v-else>
             <AgentMiniView v-for="agent of arrayFilterList" :key="agent.id" :id="agent.id" :name="agent.name" :background="agent.background"></AgentMiniView>
           </div>
@@ -37,12 +37,12 @@ export default {
     AgentForm
   },
   mounted () {
-    this.$store.commit('updateLocView', 'Agents', true)
+    this.$store.commit('agent/updateLocView', 'Agents', true)
   },
   computed: {
-    ...mapState(['agentListStore']),
-    ...mapState(['filterColour']),
-    ...mapGetters(['filterByColor']),
+    ...mapState('agent', ['agentListStore']),
+    ...mapState('agent', ['filterColour']),
+    ...mapGetters('agent', ['filterByColor']),
     arrayFilterList () {
       if (this.filterColour === '') {
         return this.agentListStore

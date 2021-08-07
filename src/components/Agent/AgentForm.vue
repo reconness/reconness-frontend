@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-12 collapse multi-collapse" id="top-section" style="margin-bottom: 20px;">
                         <div style="float: left;" class="d-flex flex-row agent-name-container">
-                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <input style="width: 65%" v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="this.$store.state.agent.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
                         </div><!-- /.d-flex -->
                     </div><!-- /.col-12 -->
@@ -18,7 +18,7 @@
                     <div class="col-12 col-sm-8">
                         <div class="col-12">
                         <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="$store.state.fromDetailsLink">
+                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="this.$store.state.agent.fromDetailsLink">
                             <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
                         </div><!-- /.d-flex -->
                         </div><!-- /.col-12 -->
@@ -32,7 +32,7 @@
                             <br>
                             your logo
                             </span>
-                            <input :disabled="$store.state.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
+                            <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
                             <label for="uploadimage">
                             <FileCodeIco/>
 
@@ -40,19 +40,19 @@
                         </div><!-- /.d-flex -->
                         </div>
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Repository">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.repository">
                             <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
                         </div>
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.target">
                           <span :class="{invalid: validators.blank.target}">The field target is required</span>
                         </div>
                         <div class="col-12">
-                          <input :readonly="$store.state.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Command">
                         </div>
                         <div class="col-12" v-if="validators.blank.command">
                           <span :class="{invalid: validators.blank.command}">The field command is required</span>
@@ -80,7 +80,7 @@
                                 <div class="row">
                                     <div
                                      class="col-12" style="height: 54px">
-                                        <span v-if="this.$store.state.fromDetailsLink && !readOnly" class="float-right text-white agentform-action">Agent Details...</span>
+                                        <span v-if="this.$store.state.agent.fromDetailsLink && !readOnly" class="float-right text-white agentform-action">Agent Details...</span>
                                         <span v-else-if="editable" class="float-right text-white agentform-action">Editing Agent...</span>
                                         <span v-else class="float-right text-white agentform-action">Creating Agent...</span>
                                     </div>
@@ -102,15 +102,15 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="agent.type">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="agent.type">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="agent.type">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
                                 </div>
                             </div>
@@ -129,11 +129,11 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox4">Run Only if it is Alive</label>
                                 </div>
                                 <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="$store.state.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
                                 </div>
                                 <div style="text-align: right;"  class="form-check more-option-padding">
@@ -156,22 +156,22 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="$store.state.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                 </div>
                             </div>
@@ -216,9 +216,9 @@
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
-                  <button @click="setIsDeletetFromForm(true)" v-if="this.editable && !readOnly" :disabled="$store.state.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
-                  <button @click="onEdit()" v-if="this.$store.state.fromDetailsLink && !readOnly" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state.fromDetailsLink && !readOnly" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                  <button @click="setIsDeletetFromForm(true)" v-if="this.editable && !readOnly" :disabled="this.$store.state.agent.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
+                  <button @click="onEdit()" v-if="this.$store.state.agent.fromDetailsLink && !readOnly" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
+                  <button v-if="!this.$store.state.agent.fromDetailsLink && !readOnly" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -227,107 +227,6 @@
     </form>
     </div>
 </template>
-<style>
-    .agentform-action{
-        bottom: -28%;
-        position: absolute;
-        right: 8%;
-        font-size: .875rem;
-    }
-
-    .agentform-color-components{
-        width: 30px;
-        height: 30px;
-    }
-
-    .agentform-color-spacing-bottom{
-        margin-top: 18px !important;
-    }
-
-    .agentform-color-components-align{
-        margin: auto;
-    }
-
-    .image-button{
-      background-image: url('~@/assets/Rect.png');
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      width: 32px;
-      height: 32px;
-    }
-
-    .agent-border{
-        border: 1px solid #F1F3F5;
-        border-radius: 12px;
-        width: 90px;
-        height: 47px;
-    }
-    .input.invalid input {
-        border: 1px solid red;
-    }
-
-    .invalid {
-        color: red;
-    }
-
-    .combo-box-size{
-        height: 153px;
-    }
-
-    .combo-box-left-padding{
-        flex: 1 1 auto;
-        min-height: 1px;
-        padding-left: 19px;
-    }
-
-    .combo-box-right-padding{
-        padding-right: 15px;
-    }
-
-    .more-option-padding{
-      padding-top: 12px;
-      margin-right: 15px;
-    }
-
-    .postal-title{
-      overflow: hidden;
-    }
-
-    .p-colorpicker-preview {
-        width: 30px;
-        height: 30px;
-        margin: auto;
-        background-image: url('~@/assets/Rect.png');
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-    }
-
-    .p-colorpicker-overlay {
-      margin-left: 1.5rem;
-    }
-
-    .triggers-label-space {
-      margin-left: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .triggers-options-space {
-      margin-top: 0.5rem;
-    }
-
-    .triggers-container-label-space{
-      margin-bottom: 0.2rem;
-    }
-
-    .triggers-more-options-area-size{
-      height: 335px;
-    }
-
-    button.delete-left-align{
-      margin-right: auto;
-    }
-
-</style>
 <script>
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
@@ -336,8 +235,102 @@ import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
 import Toast from 'primevue/toast'
 import { mapMutations } from 'vuex'
 export default {
+  name: 'AgentForm',
+  components: {
+    VAceEditor,
+    AccountCogIco,
+    FileCodeIco,
+    Toast
+  },
+  props: {
+    readOnly: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      agent: {
+        name: '',
+        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        repository: '',
+        target: '',
+        command: '',
+        type: '',
+        isRootDomainType: false,
+        isSubDomainType: false,
+        isAliveTrigger: false,
+        isHttpOpenTrigger: false,
+        category: '',
+        script: '',
+        id: -1,
+        creationDate: new Date().toString(),
+        image: '',
+        status: this.$entityStatus.FINISHED,
+        lastRun: null
+      },
+      colorpickerData: '',
+      isVisibleTopSection: true,
+      isVisibleMiddleSection: true,
+      isVisibleBottomSection: false,
+      middleSection: 'collapse',
+      editable: false,
+      arrow_down: true,
+      arrow_up: false,
+      isPencilVisible: false,
+      isPencilVisibleAndClick: false,
+      validators: {
+        blank: {
+          name: false,
+          repository: false,
+          target: false,
+          command: false
+        }
+      },
+      nextAgentSequence: 30
+    }
+  },
+  computed: {
+    isValid () {
+      if (this.agent.name !== '' &&
+      this.agent.repository !== '' &&
+      this.agent.target !== '' &&
+      this.agent.command !== '' &&
+      this.agent.type !== '' && (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
+        return false
+      }
+      return true
+    },
+    loadSelectedAgent () {
+      const id = this.$store.getters['agent/idAgent']
+      return this.$store.getters['agent/getAgentById'](parseInt(id))
+    },
+    isFormValid () {
+      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
+    }
+  },
+  watch: {
+    loadSelectedAgent: function (value) {
+      if (value !== undefined) {
+        this.agent.name = value.name
+        this.agent.background = value.background
+        this.agent.repository = value.repository
+        this.agent.target = value.target
+        this.agent.command = value.command
+        this.agent.type = value.type
+        this.agent.isAliveTrigger = value.isAliveTrigger
+        this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
+        this.agent.script = value.script
+        this.editable = true
+        this.agent.id = value.id
+      } else {
+        this.resetAgentForm()
+        this.agent.script = ''
+      }
+    }
+  },
   methods: {
-    ...mapMutations(['setIsDeletetFromForm']),
+    ...mapMutations('agent', ['setIsDeletetFromForm']),
     setBlueColor: function () {
       this.agent.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
     },
@@ -359,18 +352,18 @@ export default {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {
-            this.agent.id = parseInt(this.$store.getters.idAgent)
-            this.$store.commit('updateAgent', this.agent)
-            this.$store.commit('setIdAgent', -1)
+            this.agent.id = parseInt(this.$store.getters['agent/idAgent'])
+            this.$store.commit('agent/updateAgent', this.agent)
+            this.$store.commit('agent/setIdAgent', -1)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
           } else {
-            this.$store.commit('setIdAgent', -1)
+            this.$store.commit('agent/setIdAgent', -1)
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
           }
         } else {
           if (randomResult) {
-            this.agent.id = this.nextAgentSequence++
-            this.$store.commit('addAgent', this.agent)
+            // this.agent.id = this.nextAgentSequence++
+            this.$store.commit('agent/addAgent', this.agent)
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
           } else {
             this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
@@ -384,8 +377,8 @@ export default {
     close () {
       this.resetAgentForm()
       this.editable = false
-      this.$store.commit('setIdAgent', -1)
-      this.$store.commit('setDetailsLinks', false)
+      this.$store.commit('agent/setIdAgent', -1)
+      this.$store.commit('agent/setDetailsLinks', false)
     },
     resetAgentForm () {
       this.agent = {
@@ -511,7 +504,7 @@ export default {
       reader.readAsDataURL(files[0])
     },
     setRandomColor () {
-      const predefinedColors = this.$store.state.systemColors
+      const predefinedColors = this.$store.state.agent.systemColors
       this.agent.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
     },
     verifyPencilStatus () {
@@ -522,105 +515,112 @@ export default {
       }
     },
     onEdit () {
-      this.$store.commit('setDetailsLinks', false)
-    }
-  },
-  data () {
-    return {
-      agent: {
-        name: '',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-        repository: '',
-        target: '',
-        command: '',
-        type: '',
-        isRootDomainType: false,
-        isSubDomainType: false,
-        isAliveTrigger: false,
-        isHttpOpenTrigger: false,
-        category: '',
-        script: '',
-        id: -1,
-        creationDate: new Date().toString(),
-        image: '',
-        status: this.$entityStatus.FINISHED,
-        lastRun: null
-      },
-      colorpickerData: '',
-      isVisibleTopSection: true,
-      isVisibleMiddleSection: true,
-      isVisibleBottomSection: false,
-      middleSection: 'collapse',
-      editable: false,
-      arrow_down: true,
-      arrow_up: false,
-      isPencilVisible: false,
-      isPencilVisibleAndClick: false,
-      validators: {
-        blank: {
-          name: false,
-          repository: false,
-          target: false,
-          command: false
-        }
-      },
-      nextAgentSequence: 30
-    }
-  },
-  components: {
-    VAceEditor,
-    AccountCogIco,
-    FileCodeIco,
-    Toast
-  },
-  computed: {
-    isValid () {
-      if (this.agent.name !== '' &&
-      this.agent.repository !== '' &&
-      this.agent.target !== '' &&
-      this.agent.command !== '' &&
-      this.agent.type !== '' && (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
-        return false
-      }
-      return true
-    },
-    loadSelectedAgent () {
-      const id = this.$store.getters.idAgent
-      return this.$store.getters.getAgentById(parseInt(id))
-    },
-    isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
-    }
-  },
-  watch: {
-    loadSelectedAgent: function (value) {
-      if (value !== undefined) {
-        this.agent.name = value.name
-        this.agent.background = value.background
-        this.agent.repository = value.repository
-        this.agent.target = value.target
-        this.agent.command = value.command
-        this.agent.type = value.type
-        this.agent.isAliveTrigger = value.isAliveTrigger
-        this.agent.isHttpOpenTrigger = value.isHttpOpenTrigger
-        this.agent.script = value.script
-        this.editable = true
-        this.agent.id = value.id
-      } else {
-        this.resetAgentForm()
-        this.agent.script = ''
-      }
-    }
-  },
-  props: {
-    readOnly: {
-      type: Boolean,
-      default: false
+      this.$store.commit('agent/setDetailsLinks', false)
     }
   }
 }
 </script>
+<style>
+    .agentform-action{
+        bottom: -28%;
+        position: absolute;
+        right: 8%;
+        font-size: .875rem;
+    }
 
+    .agentform-color-components{
+        width: 30px;
+        height: 30px;
+    }
+
+    .agentform-color-spacing-bottom{
+        margin-top: 18px !important;
+    }
+
+    .agentform-color-components-align{
+        margin: auto;
+    }
+
+    .image-button{
+      background-image: url('~@/assets/Rect.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      width: 32px;
+      height: 32px;
+    }
+
+    .agent-border{
+        border: 1px solid #F1F3F5;
+        border-radius: 12px;
+        width: 90px;
+        height: 47px;
+    }
+    .input.invalid input {
+        border: 1px solid red;
+    }
+
+    .invalid {
+        color: red;
+    }
+
+    .combo-box-size{
+        height: 153px;
+    }
+
+    .combo-box-left-padding{
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding-left: 19px;
+    }
+
+    .combo-box-right-padding{
+        padding-right: 15px;
+    }
+
+    .more-option-padding{
+      padding-top: 12px;
+      margin-right: 15px;
+    }
+
+    .postal-title{
+      overflow: hidden;
+    }
+
+    .p-colorpicker-preview {
+        width: 30px;
+        height: 30px;
+        margin: auto;
+        background-image: url('~@/assets/Rect.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .p-colorpicker-overlay {
+      margin-left: 1.5rem;
+    }
+
+    .triggers-label-space {
+      margin-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .triggers-options-space {
+      margin-top: 0.5rem;
+    }
+
+    .triggers-container-label-space{
+      margin-bottom: 0.2rem;
+    }
+
+    .triggers-more-options-area-size{
+      height: 335px;
+    }
+
+    button.delete-left-align{
+      margin-right: auto;
+    }
+
+</style>
 <style scoped>
 input[type="file"]{
   width: 0.1px;

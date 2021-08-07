@@ -39,7 +39,7 @@ export default {
       jQuery('#message-confirmation-modal').modal('hide')
     },
     setSelectedMessage (e) {
-      this.$store.commit('setIdMessage', -1)
+      this.$store.commit('agent/setIdMessage', -1)
     },
     ...mapMutations('target', ['setIdMessage', 'removeTargetMessage', 'removeRootDomainMessage', 'removeSubDomainMessage'])
   },

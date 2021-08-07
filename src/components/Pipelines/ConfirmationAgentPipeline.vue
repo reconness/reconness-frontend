@@ -31,33 +31,17 @@ import jQuery from 'jquery'
 import Toast from 'primevue/toast'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 export default {
+  name: 'ConfirmationAgentPipeline',
+  components: {
+    Toast
+  },
   data () {
     return {
       nameTyped: ''
     }
   },
-  components: {
-    Toast
-  },
-  methods: {
-    remove: function () {
-      // if (this.$randomBooleanResult()) {
-      this.$store.commit('pipelines/removeAgentOfPipelineWorkflow', parseInt(this.$route.params.id))
-      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
-      // } else {
-      //   this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
-      // }
-      this.nameTyped = ''
-      jQuery('#confirmation-modal').modal('hide')
-      jQuery('#targetModalForm').modal('hide')
-    },
-    close () {
-      this.nameTyped = ''
-    },
-    ...mapMutations(['setIsElementDeleted'])
-  },
   computed: {
-    ...mapGetters(['getAgentById']),
+    ...mapGetters('agent', ['getAgentById']),
     ...mapState('pipelines', ['idFather', 'idSon']),
     getNamePipeline () {
       if (this.idSon !== -1 && this.idFather !== -1) {
@@ -69,6 +53,19 @@ export default {
       }
       return 0
     }
+  },
+  methods: {
+    remove: function () {
+      this.$store.commit('pipelines/removeAgentOfPipelineWorkflow', parseInt(this.$route.params.id))
+      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
+      this.nameTyped = ''
+      jQuery('#confirmation-modal').modal('hide')
+      jQuery('#targetModalForm').modal('hide')
+    },
+    close () {
+      this.nameTyped = ''
+    },
+    ...mapMutations('agent', ['setIsElementDeleted'])
   }
 }
 </script>

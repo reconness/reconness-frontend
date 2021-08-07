@@ -37,21 +37,21 @@ import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwoRunPipeline',
+  components: {
+    PipelinesForm,
+    OverlayPanel
+  },
+  props: {
+    pipelineName: String,
+    id: String
+  },
   data: function () {
     return {
       name: String
     }
   },
-  components: {
-    PipelinesForm,
-    OverlayPanel
-  },
   computed: {
     ...mapState('pipelines', ['isTerminalHided'])
-  },
-  props: {
-    pipelineName: String,
-    id: String
   },
   methods: {
     ...mapMutations('pipelines', ['hideTerminal']),
