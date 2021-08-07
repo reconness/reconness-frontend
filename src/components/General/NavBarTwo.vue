@@ -235,6 +235,16 @@ import jQuery from 'jquery'
 import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
 export default {
   name: 'NavBarTwo',
+  components: {
+    AgentForm,
+    Debug,
+    InstallOnDebug,
+    UninstallOnDebug,
+    Toast,
+    OverlayPanel,
+    ConfirmDeleteList,
+    LocalMallIco
+  },
   data: function () {
     return {
       active: false,
@@ -253,15 +263,11 @@ export default {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }
   },
-  components: {
-    AgentForm,
-    Debug,
-    InstallOnDebug,
-    UninstallOnDebug,
-    Toast,
-    OverlayPanel,
-    ConfirmDeleteList,
-    LocalMallIco
+  mounted () {
+    if (!this.$store.state.agent.isDefaultViewOnAgent) {
+      this.isMiniView = true
+      this.isListView = false
+    }
   },
   methods: {
     mouseenter: function () {
@@ -324,12 +330,6 @@ export default {
           this.isMiniView = false
         }
       }
-    }
-  },
-  mounted () {
-    if (!this.$store.state.agent.isDefaultViewOnAgent) {
-      this.isMiniView = true
-      this.isListView = false
     }
   }
 }
