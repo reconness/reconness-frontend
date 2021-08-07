@@ -42,6 +42,13 @@ import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
 export default {
   name: 'AgentListWorkflow',
+  components: {
+    AccountCogIco,
+    AgentForm
+  },
+  props: {
+    routeName: String
+  },
   data: function () {
     return {
       step: 1,
@@ -54,9 +61,6 @@ export default {
         agentBranch: []
       }
     }
-  },
-  props: {
-    routeName: String
   },
   computed: {
     ...mapState('agent', ['agentListStore', 'autoId']),
@@ -77,10 +81,6 @@ export default {
         return false
       }
     }
-  },
-  components: {
-    AccountCogIco,
-    AgentForm
   },
   methods: {
     ...mapMutations('pipelines', ['addPipeline']),
