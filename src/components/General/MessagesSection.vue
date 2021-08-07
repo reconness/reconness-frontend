@@ -65,6 +65,16 @@
 import CommentIco from '@/components/Icons/CommentIco.vue'
 import { mapMutations, mapGetters, mapState } from 'vuex'
 export default {
+  name: 'MessagesSection',
+  components: {
+    CommentIco
+  },
+  props: {
+    opened: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function () {
     return {
       message: '',
@@ -247,15 +257,6 @@ export default {
         return 1
       }
       return 0
-    }
-  },
-  components: {
-    CommentIco
-  },
-  props: {
-    opened: {
-      type: Boolean,
-      default: false
     }
   },
   directives: {
