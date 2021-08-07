@@ -24,6 +24,7 @@
 </template>
 <script>
 export default {
+  name: 'UninstallOnDebug',
   props: ['installerOptionName', 'installerOption'],
   methods: {
     installer () {
