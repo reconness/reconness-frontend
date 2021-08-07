@@ -22,12 +22,15 @@ const ProgressBarMixin = {
       this.executeProgressBar()
     },
     playClock () {
-      this.timer = setInterval(this.tick, 1000)
+      if (!this.timer) {
+        this.timer = setInterval(this.tick, 1000)
+      }
     },
     stopClock () {
       clearInterval(this.timer)
       this.now = -1
       this.progressValue = 0
+      this.timer = null
     },
     executeProgressBar () {
       if (this.progressValue <= 100) {
