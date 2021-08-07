@@ -219,6 +219,14 @@ import CalendarEditIco from '@/components/Icons/CalendarEditIco.vue'
 import jQuery from 'jquery'
 export default {
   name: 'PipelinesFormStepSettings',
+  components: {
+    Calendar,
+    RocketIco,
+    FileImportIco,
+    AutoCompleteLocations,
+    MinusCircleIco,
+    CalendarEditIco
+  },
   data: function () {
     return {
       event_date: null,
@@ -244,16 +252,110 @@ export default {
       eventSelectionY: -1
     }
   },
-  components: {
-    Calendar,
-    RocketIco,
-    FileImportIco,
-    AutoCompleteLocations,
-    MinusCircleIco,
-    CalendarEditIco
+  computed: {
+    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
+    ...mapGetters('pipelines', ['getPipelineById']),
+    loadParsedCalendarsToCarousel: function () {
+      const carouselItems = []
+      let carouselPairItems = []
+      for (let index = 0; index < this.settings_data.calendars.length; index++) {
+        carouselPairItems.push({
+          enabled: this.settings_data.calendars[index].enabled,
+          time: this.settings_data.calendars[index].time,
+          date: this.settings_data.calendars[index].date
+        })
+        if (this.$isOddNumber(index + 1)) {
+          carouselItems.push(carouselPairItems)
+        } else {
+          carouselPairItems = []
+        }
+      }
+      return carouselItems
+    },
+    loadSelectedPipeline () {
+      const id = this.$store.getters['pipelines/getIdPipeline']
+      return this.$store.getters['pipelines/getPipelineById'](parseInt(id))
+    },
+    carouselIndexComputed () {
+      if (this.carouselIndex !== -1) {
+        return this.carouselIndex
+      }
+      return this.loadParsedCalendarsToCarousel.length - 1
+    },
+    editCalendarBtnColor () {
+      if (this.eventSelectionX >= 0) {
+        return 'fill: #ff4545'
+      } else {
+        return 'fill: #00B1FF'
+      }
+    },
+    eventPositionOnViewList () {
+      if (this.eventSelectionX >= 0) {
+        if (this.eventSelectionY === 0) {
+          return this.eventSelectionX * 2
+        } else {
+          return this.eventSelectionX * 2 + 1
+        }
+      } else {
+        if (this.eventSelectionY === 1) {
+          return 1
+        }
+        return this.settings_data.calendars.length - 1
+      }
+    }
   },
   emits: {
     pipelineSettingsDone: null
+  },
+  watch: {
+    settings_data: {
+      handler: function () {
+        this.sendPipelineSettings()
+      },
+      deep: true
+    },
+    loadSelectedPipeline: function (value) {
+      if (value !== undefined) {
+        this.settings_data.locations.splice(0)
+        value.locations.forEach(element => {
+          this.settings_data.locations.push({
+            entity: {
+              name: element.name,
+              entityType: element.entityType,
+              entityId: element.entityId
+            }
+          })
+        })
+        this.settings_data.calendars.splice(0)
+        value.calendars.forEach(element => {
+          this.settings_data.calendars.push(element)
+        })
+        this.settings_data.editable = true
+        this.settings_data.id = value.id
+        this.settings_data.name = value.name
+        this.settings_data.date = value.date
+        this.settings_data.statusRun = value.statusRun
+        this.settings_data.agent = value.agent
+        this.settings_data.type = value.type
+      } else {
+        this.settings_data.editable = false
+        this.resetPipelineForm()
+      }
+    }
+  },
+  created: function () {
+    if (this.settings_data.locations.length === 0) {
+      this.addLocation({})
+    }
+    if (this.settings_data.calendars.length === 0) {
+      this.addCalendarEvent({})
+    }
+  },
+  mounted: function () {
+    const self = this
+    jQuery('#carouselPipelineControls').on('slide.bs.carousel', function (slide) {
+      self.carouselIndex = slide.to
+    })
   },
   methods: {
     addLocation: function (item) {
@@ -358,108 +460,6 @@ export default {
         this.eventSelectionY = eventSelectionY
       }
     }
-  },
-  computed: {
-    ...mapGetters('target', ['filterTargetsByName', 'filterRootDomainsByName', 'filterSubDomainsByName']),
-    ...mapGetters('pipelines', ['getPipelineById']),
-    loadParsedCalendarsToCarousel: function () {
-      const carouselItems = []
-      let carouselPairItems = []
-      for (let index = 0; index < this.settings_data.calendars.length; index++) {
-        carouselPairItems.push({
-          enabled: this.settings_data.calendars[index].enabled,
-          time: this.settings_data.calendars[index].time,
-          date: this.settings_data.calendars[index].date
-        })
-        if (this.$isOddNumber(index + 1)) {
-          carouselItems.push(carouselPairItems)
-        } else {
-          carouselPairItems = []
-        }
-      }
-      return carouselItems
-    },
-    loadSelectedPipeline () {
-      const id = this.$store.getters['pipelines/getIdPipeline']
-      return this.$store.getters['pipelines/getPipelineById'](parseInt(id))
-    },
-    carouselIndexComputed () {
-      if (this.carouselIndex !== -1) {
-        return this.carouselIndex
-      }
-      return this.loadParsedCalendarsToCarousel.length - 1
-    },
-    editCalendarBtnColor () {
-      if (this.eventSelectionX >= 0) {
-        return 'fill: #ff4545'
-      } else {
-        return 'fill: #00B1FF'
-      }
-    },
-    eventPositionOnViewList () {
-      if (this.eventSelectionX >= 0) {
-        if (this.eventSelectionY === 0) {
-          return this.eventSelectionX * 2
-        } else {
-          return this.eventSelectionX * 2 + 1
-        }
-      } else {
-        if (this.eventSelectionY === 1) {
-          return 1
-        }
-        return this.settings_data.calendars.length - 1
-      }
-    }
-  },
-  watch: {
-    settings_data: {
-      handler: function () {
-        this.sendPipelineSettings()
-      },
-      deep: true
-    },
-    loadSelectedPipeline: function (value) {
-      if (value !== undefined) {
-        this.settings_data.locations.splice(0)
-        value.locations.forEach(element => {
-          this.settings_data.locations.push({
-            entity: {
-              name: element.name,
-              entityType: element.entityType,
-              entityId: element.entityId
-            }
-          })
-        })
-        this.settings_data.calendars.splice(0)
-        value.calendars.forEach(element => {
-          this.settings_data.calendars.push(element)
-        })
-        this.settings_data.editable = true
-        this.settings_data.id = value.id
-        this.settings_data.name = value.name
-        this.settings_data.date = value.date
-        this.settings_data.statusRun = value.statusRun
-        this.settings_data.agent = value.agent
-        this.settings_data.type = value.type
-      } else {
-        this.settings_data.editable = false
-        this.resetPipelineForm()
-      }
-    }
-  },
-  created: function () {
-    if (this.settings_data.locations.length === 0) {
-      this.addLocation({})
-    }
-    if (this.settings_data.calendars.length === 0) {
-      this.addCalendarEvent({})
-    }
-  },
-  mounted: function () {
-    const self = this
-    jQuery('#carouselPipelineControls').on('slide.bs.carousel', function (slide) {
-      self.carouselIndex = slide.to
-    })
   }
 }
 </script>
