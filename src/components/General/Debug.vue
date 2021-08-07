@@ -26,6 +26,10 @@
 <script>
 import { VAceEditor } from 'vue3-ace-editor'
 export default {
+  name: 'Debug',
+  components: {
+    VAceEditor
+  },
   data () {
     return {
       terminalOutput: '',
@@ -40,9 +44,6 @@ export default {
       }
       return true
     }
-  },
-  components: {
-    VAceEditor
   },
   methods: {
     clearContent: function () {
