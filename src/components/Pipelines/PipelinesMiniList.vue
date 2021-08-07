@@ -3,8 +3,8 @@
     <div v-for="item of pipelinesListStore" :key="item.id"
     class=" col-12 col-sm-4 col-xl-3 col-lgg-5 p-3">
         <div class="card initial-info-box agent-mini-main-container rounded-corners container-card" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)">
-        <input type="checkbox" :id="item.id+1"  name="checkitem" :checked="isChecked(item.id)">
-        <label :for="item.id+1" v-show="check"  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" class="mb-0"></label>
+        <input type="checkbox" :id="item.id"  name="checkitem" :checked="isChecked(item.id)">
+        <label :for="item.id" v-show="check"  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" class="mb-0"></label>
         <div class="card-header border-bottom-0 mb-1 mt-3 p-0 pl-2 pr-3 ">
            <span  class="material-icons main_reconnes_text-color mr-1 float-left"> chevron_right </span>
             <router-link :to="{ name: 'PipelineDetail', params: {id: item.id, pipelineName: item.name} }" class="text-body card-title domain-names-target">
@@ -104,7 +104,7 @@ export default {
     addListPipelinesId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       const selectedPipelinesName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId + 1).checked === false) {
+      if (document.getElementById(selectedId).checked === false) {
         if (this.pipelinesIdList.length !== 0 && this.checkSelected === false) {
           this.checkSelected = false
           this.checkDeleted = selectedId
