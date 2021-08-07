@@ -51,6 +51,15 @@ import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'NavBarTwoDetailPipeline',
+  components: {
+    ConfirmationPipelinesList,
+    PipelinesForm,
+    OverlayPanel
+  },
+  props: {
+    pipelineName: String,
+    id: String
+  },
   data: function () {
     return {
       name: String,
@@ -59,17 +68,8 @@ export default {
       showInputPipelineName: true
     }
   },
-  components: {
-    ConfirmationPipelinesList,
-    PipelinesForm,
-    OverlayPanel
-  },
   computed: {
     ...mapState('pipelines', ['checkDetail', 'colorDeleteDetail', 'pipelinesIdAgentsList'])
-  },
-  props: {
-    pipelineName: String,
-    id: String
   },
   methods: {
     ...mapMutations('pipelines', ['editListDetail', 'cancelIdAgentPipelinesDetail']),
