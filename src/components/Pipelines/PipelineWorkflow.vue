@@ -88,11 +88,7 @@ import ConfirmationAgentPipeline from '@/components/Pipelines/ConfirmationAgentP
 import AgentConfiguration from '@/components/Pipelines/AgentConfiguration'
 
 export default {
-  data: function () {
-    return {
-      classResize: ''
-    }
-  },
+  name: 'PipelineWorkflow',
   components: {
     AccountCogIco,
     ConfirmationAgentPipeline,
@@ -101,6 +97,11 @@ export default {
   props: {
     AgentsPipelineList: Object,
     startingAgentId: Number
+  },
+  data: function () {
+    return {
+      classResize: ''
+    }
   },
   computed: {
     associatedAgents () {
