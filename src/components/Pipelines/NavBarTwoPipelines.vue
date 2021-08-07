@@ -61,7 +61,6 @@
             <button type="button" class="btn btn-light" @click="this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)">
               <i class="material-icons">grid_view</i>
             </button></a>
-            <!-- </router-link> -->
             </a>
         </li>
       </ul>
@@ -77,6 +76,10 @@ import ConfirmationPipelinesList from '@/components/Pipelines/ConfirmationPipeli
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 export default {
   name: 'NavBarTwoPipelines',
+  components: {
+    ConfirmationPipelinesList,
+    PipelinesForm
+  },
   data: function () {
     return {
       active_arrow_down: true,
@@ -84,10 +87,6 @@ export default {
       isMiniView: false,
       isListView: true
     }
-  },
-  components: {
-    ConfirmationPipelinesList,
-    PipelinesForm
   },
   computed: {
     ...mapState('pipelines', ['pipelinesListStore', 'check', 'colorDelete', 'pipelinesIdList'])
