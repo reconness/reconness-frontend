@@ -34,7 +34,19 @@ export default {
     CircleProgress,
     MotionPlayOutlineIco
   },
+  props: {
+    agent: Object,
+    pipeline: Object,
+    index: {
+      type: Number,
+      default: -1
+    }
+  },
   mixins: [ProgressBarMixin],
+  computed: {
+    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
+    ...mapGetters('pipelines', ['getPipelineById'])
+  },
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
@@ -124,18 +136,6 @@ export default {
         }
       }
     }
-  },
-  props: {
-    agent: Object,
-    pipeline: Object,
-    index: {
-      type: Number,
-      default: -1
-    }
-  },
-  computed: {
-    ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
-    ...mapGetters('pipelines', ['getPipelineById'])
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineAgentParentStatusByIndex', 'setPipelineAgentChildStatusByIndex', 'setPipelineAgentParentIndex', 'setPipelineAgentChildIndex', 'setAgent', 'setPipelineStatus', 'updateStatusAllChildren', 'setNumberAgentsProcessing', 'setPipelineAgentDurationTimeByIndex']),
