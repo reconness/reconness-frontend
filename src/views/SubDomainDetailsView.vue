@@ -41,7 +41,19 @@ import SubDomainDetailsServices from '@/components/Target/SubDomainDetailsServic
 import SubDomainDetailsDirectories from '@/components/Target/SubDomainDetailsDirectories.vue'
 
 export default {
-  name: 'TargetsDetailsView',
+  name: 'SubDomainDetailsView',
+  components: {
+    NavBarTwoDetailTarget,
+    SubDomainDetailsDashboard,
+    SubDomainDetailsAgents,
+    SubDomainDetailsDirectories,
+    SubDomainDetailsServices
+  },
+  props: {
+    idTarget: String,
+    id: String,
+    idsubdomain: String
+  },
   data: function () {
     return {
       TargetName: String,
@@ -77,18 +89,6 @@ export default {
       directoriesCount: 0
 
     }
-  },
-  components: {
-    NavBarTwoDetailTarget,
-    SubDomainDetailsDashboard,
-    SubDomainDetailsAgents,
-    SubDomainDetailsDirectories,
-    SubDomainDetailsServices
-  },
-  props: {
-    idTarget: String,
-    id: String,
-    idsubdomain: String
   },
   computed: {
     ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
