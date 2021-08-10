@@ -150,7 +150,14 @@ import MessagesSection from '@/components/General/MessagesSection.vue'
 import Confirmation from '@/components/Target/Confirmation.vue'
 import MessageConfirmation from '@/components/Target/MessageConfirmation.vue'
 export default {
-  name: 'NavBarTwoTarget',
+  name: 'NavBarTwoDetailTarget',
+  components: {
+    OverlayPanel,
+    Confirmation,
+    MessagesBtn,
+    MessagesSection,
+    MessageConfirmation
+  },
   props: {
     TargetName: String,
     gradient: String,
@@ -168,13 +175,6 @@ export default {
   computed: {
     ...mapState('target', ['targetListStore']),
     ...mapState('agent', ['isMessageSectionOpened'])
-  },
-  components: {
-    OverlayPanel,
-    Confirmation,
-    MessagesBtn,
-    MessagesSection,
-    MessageConfirmation
   },
   methods: {
     ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),
