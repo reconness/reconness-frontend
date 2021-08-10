@@ -50,7 +50,13 @@
 import { mapGetters, mapState, mapMutations } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
-  name: 'AgentListTable',
+  name: 'SubDomainDetailsAgents',
+  components: {
+    AgentExecution
+  },
+  props: {
+    color: String
+  },
   data: function () {
     return {
       active_arrow_down: true,
@@ -60,9 +66,6 @@ export default {
       selectedAgentName: '',
       selectedAgentId: -1
     }
-  },
-  props: {
-    color: String
   },
   computed: {
     ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
@@ -163,9 +166,6 @@ export default {
       this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: parseInt(this.selectedAgentId) })
     },
     ...mapMutations('target', ['setAgentStatus', 'updateStatusSubDomainAgent', 'insertAgentIfNotExistInSubDomain'])
-  },
-  components: {
-    AgentExecution
   }
 }
 </script>
