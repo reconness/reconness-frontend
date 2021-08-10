@@ -83,6 +83,37 @@ import { mapMutations, mapState } from 'vuex'
 import { ProgressBarMixin } from '@/mixins/ProgressBarMixin'
 import jQuery from 'jquery'
 export default {
+  name: 'AgentExecution ',
+  components: {
+    VAceEditor,
+    MotionPlayOutlineIco,
+    OverlayPanel,
+    CircleProgress
+  },
+  props: {
+    idAgent: Number,
+    nameAgent: String,
+    status: {
+      type: Number,
+      default: 2
+    },
+    gradientColor: {
+      type: String,
+      default: ''
+    },
+    primaryColor: {
+      type: String,
+      default: '#ff959e'
+    },
+    elapsedTime: {
+      default: '00:00:00',
+      type: String
+    },
+    storedDurationTime: {
+      default: new Date(),
+      type: Date
+    }
+  },
   data: function () {
     return {
       terminal_ouput: '',
@@ -91,12 +122,6 @@ export default {
       is_terminal_open: true,
       minimized: false
     }
-  },
-  components: {
-    VAceEditor,
-    MotionPlayOutlineIco,
-    OverlayPanel,
-    CircleProgress
   },
   mixins: [ProgressBarMixin],
   computed: {
@@ -107,6 +132,29 @@ export default {
     },
     isTimeElapsedExternal: function () {
       return this.elapsedTime !== '00:00:00' && this.progressValue > 0
+    }
+  },
+  watch: {
+    agentStatus (value) {
+      if (this.$route.name !== 'PipelineRunView') {
+        if (value.status === this.$entityStatus.RUNNING && !this.minimized) {
+          this.playClock()
+        }
+      }
+    },
+    status (value) {
+      if (this.$route.name === 'PipelineRunView') {
+        if (value === this.$entityStatus.RUNNING) {
+          this.playClock()
+        } else {
+          this.stopClock()
+        }
+      }
+    },
+    progressValue () {
+      if (this.isTimeElapsedExternal) {
+        this.time = this.elapsedTime
+      }
     }
   },
   methods: {
@@ -159,53 +207,6 @@ export default {
           })
         }
         this.stopClock()
-      }
-    }
-  },
-  props: {
-    idAgent: Number,
-    nameAgent: String,
-    status: {
-      type: Number,
-      default: 2
-    },
-    gradientColor: {
-      type: String,
-      default: ''
-    },
-    primaryColor: {
-      type: String,
-      default: '#ff959e'
-    },
-    elapsedTime: {
-      default: '00:00:00',
-      type: String
-    },
-    storedDurationTime: {
-      default: new Date(),
-      type: Date
-    }
-  },
-  watch: {
-    agentStatus (value) {
-      if (this.$route.name !== 'PipelineRunView') {
-        if (value.status === this.$entityStatus.RUNNING && !this.minimized) {
-          this.playClock()
-        }
-      }
-    },
-    status (value) {
-      if (this.$route.name === 'PipelineRunView') {
-        if (value === this.$entityStatus.RUNNING) {
-          this.playClock()
-        } else {
-          this.stopClock()
-        }
-      }
-    },
-    progressValue () {
-      if (this.isTimeElapsedExternal) {
-        this.time = this.elapsedTime
       }
     }
   }
