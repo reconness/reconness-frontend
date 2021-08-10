@@ -21,7 +21,7 @@ import PipelinesList from '@/components/Pipelines/PipelinesList.vue'
 import PipelinesMiniList from '@/components/Pipelines/PipelinesMiniList.vue'
 import NavBarTwoPipelines from '@/components/Pipelines/NavBarTwoPipelines.vue'
 export default {
-  name: 'TargetsListView',
+  name: 'PipelinesListView',
   components: {
     PipelinesList,
     NavBarTwoPipelines,
