@@ -42,13 +42,17 @@ import jQuery from 'jquery'
 import Toast from 'primevue/toast'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
+  name: 'Confirmation',
+  components: {
+    Toast
+  },
   data () {
     return {
       nameTyped: ''
     }
   },
-  components: {
-    Toast
+  computed: {
+    ...mapGetters('target', ['getTargetById', 'getRootDomainByIdTargetAndIdRootDomain'])
   },
   methods: {
     remove: function () {
@@ -102,9 +106,6 @@ export default {
       this.nameTyped = ''
     },
     ...mapMutations('agent', ['setIsElementDeleted'])
-  },
-  computed: {
-    ...mapGetters('target', ['getTargetById', 'getRootDomainByIdTargetAndIdRootDomain'])
   }
 }
 </script>
