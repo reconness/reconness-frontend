@@ -180,6 +180,23 @@ import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'SubdomainListTable',
+  components: {
+    SubDomainInsertionForm,
+    OverlayPanel,
+    Confirmation,
+    FileExportIco,
+    FileImportIco,
+    HeartIco,
+    ConfirmationList
+  },
+  props: {
+    color: String,
+    gradient: String,
+    rootDomain: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data: function () {
     return {
       dataColor: '',
@@ -198,22 +215,15 @@ export default {
       isFilterResultEmpty: false
     }
   },
-  props: {
-    color: String,
-    gradient: String,
-    rootDomain: {
-      type: Object,
-      default: () => {}
-    }
+  computed: {
+    ...mapGetters('target', ['getSubdomainSize']),
+    ...mapState('agent', ['isElementDeleted'])
   },
-  components: {
-    SubDomainInsertionForm,
-    OverlayPanel,
-    Confirmation,
-    FileExportIco,
-    FileImportIco,
-    HeartIco,
-    ConfirmationList
+  mounted () {
+    if (this.isElementDeleted) {
+      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The SubDomain has been deleted successfully', life: 3000 })
+      this.setIsElementDeleted(false)
+    }
   },
   methods: {
     toggle (event) {
@@ -350,16 +360,6 @@ export default {
       }
     },
     ...mapMutations('agent', ['setIsElementDeleted'])
-  },
-  computed: {
-    ...mapGetters('target', ['getSubdomainSize']),
-    ...mapState('agent', ['isElementDeleted'])
-  },
-  mounted () {
-    if (this.isElementDeleted) {
-      this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The SubDomain has been deleted successfully', life: 3000 })
-      this.setIsElementDeleted(false)
-    }
   }
 }
 </script>
