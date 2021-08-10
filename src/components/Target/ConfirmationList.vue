@@ -32,16 +32,20 @@ import { mapState, mapMutations } from 'vuex'
 import jQuery from 'jquery'
 import Toast from 'primevue/toast'
 export default {
-  data () {
-    return {
-      nameTyped: ''
-    }
-  },
+  name: 'ConfirmationList',
   components: {
     Toast
   },
   props: {
     nameRoute: String
+  },
+  data () {
+    return {
+      nameTyped: ''
+    }
+  },
+  computed: {
+    ...mapState('target', ['elementSelectedList'])
   },
   methods: {
     ...mapMutations('target', ['removeSubdomainChecked']),
@@ -62,9 +66,6 @@ export default {
       this.nameTyped = ''
       this.$store.commit('target/cancelElementSelected')
     }
-  },
-  computed: {
-    ...mapState('target', ['elementSelectedList'])
   }
 }
 </script>
