@@ -72,6 +72,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'SubDomainDetailsDashboard',
   data: function () {
     return {
       loadedSubdomain: {},
