@@ -49,6 +49,12 @@ import { mapGetters, mapState, mapMutations } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
 export default {
   name: 'AgentListTable',
+  components: {
+    AgentExecution
+  },
+  props: {
+    color: String
+  },
   data: function () {
     return {
       active_arrow_down: true,
@@ -58,12 +64,6 @@ export default {
       selectedAgentName: '',
       selectedAgentId: -1
     }
-  },
-  props: {
-    color: String
-  },
-  components: {
-    AgentExecution
   },
   computed: {
     ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
