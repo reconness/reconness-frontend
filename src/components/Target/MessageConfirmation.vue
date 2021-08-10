@@ -20,6 +20,10 @@
 import jQuery from 'jquery'
 import { mapState, mapMutations } from 'vuex'
 export default {
+  name: 'MessageConfirmation',
+  computed: {
+    ...mapState('target', ['idMessage'])
+  },
   methods: {
     removeMessageFn: function () {
       if (this.$route.name === 'TargetDetail') {
@@ -42,9 +46,6 @@ export default {
       this.$store.commit('agent/setIdMessage', -1)
     },
     ...mapMutations('target', ['setIdMessage', 'removeTargetMessage', 'removeRootDomainMessage', 'removeSubDomainMessage'])
-  },
-  computed: {
-    ...mapState('target', ['idMessage'])
   }
 }
 </script>
