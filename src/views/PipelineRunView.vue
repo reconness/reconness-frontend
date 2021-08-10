@@ -26,17 +26,6 @@ import AgentExecution from '@/components/Target/AgentExecution.vue'
 
 export default {
   name: 'PipelineRunView',
-  data: function () {
-    return {
-      progressValue: 0,
-      showRunContainer: true,
-      referencedPipeline: null,
-      agentTimer: ''
-    }
-  },
-  created: function () {
-    this.referencedPipeline = this.getPipelineById(parseInt(this.id))
-  },
   components: {
     NavBarTwoRunPipeline,
     ExecutionAreaPipelineAgent,
@@ -49,9 +38,20 @@ export default {
     AgentsPipelineList: Object,
     startingAgentId: Number
   },
+  data: function () {
+    return {
+      progressValue: 0,
+      showRunContainer: true,
+      referencedPipeline: null,
+      agentTimer: ''
+    }
+  },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById']),
     ...mapState('pipelines', ['isTerminalHided', 'agent'])
+  },
+  created: function () {
+    this.referencedPipeline = this.getPipelineById(parseInt(this.id))
   },
   methods: {
     onAgentTimeChange (agentTime) {
