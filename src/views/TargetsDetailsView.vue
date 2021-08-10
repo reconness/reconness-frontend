@@ -156,6 +156,14 @@ import TargetsHighestInteraction from '@/components/General/TargetsHighestIntera
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 export default {
   name: 'TargetsDetailsView',
+  components: {
+    DaysHighestInteraction,
+    TargetsHighestInteraction,
+    NavBarTwoDetailTarget
+  },
+  props: {
+    id: String
+  },
   data: function () {
     return {
       Target: Object,
@@ -265,21 +273,9 @@ export default {
       }
     }
   },
-  components: {
-    DaysHighestInteraction,
-    TargetsHighestInteraction,
-    NavBarTwoDetailTarget
-  },
-  props: {
-    id: String
-  },
   computed: {
     ...mapGetters('target', ['getTargetById']),
     ...mapState('agent', ['isElementDeleted'])
-  },
-  methods: {
-    ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['setCurrentView'])
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
@@ -293,6 +289,10 @@ export default {
       this.setIsElementDeleted(false)
     }
     this.setCurrentView(this.$route.name)
+  },
+  methods: {
+    ...mapMutations('agent', ['setIsElementDeleted']),
+    ...mapMutations('target', ['setCurrentView'])
   }
 }
 </script>
