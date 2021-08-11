@@ -101,19 +101,19 @@ export default {
       }
     },
     save () {
-      const Pipeline = this.getPipelineById(parseInt(this.$route.params.id))
-      const Agent = this.$store.getters['agent/getAgentById'](this.agentStartingPoint)
-      Pipeline.agent.splice(Pipeline.agent.length - 1, 1)
+      const pipeline = this.getPipelineById(parseInt(this.$route.params.id))
+      const agent = this.$store.getters['agent/getAgentById'](this.agentStartingPoint)
+      pipeline.agent.splice(pipeline.agent.length - 1, 1)
       if (this.branchFather === -1) {
-        if (Pipeline.startingAgent === -1 && this.addStartingAgent) {
-          Pipeline.startingAgent = Agent.id
-          Pipeline.agent.unshift({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [] })
+        if (pipeline.startingAgent === -1 && this.addStartingAgent) {
+          pipeline.startingAgent = agent.id
+          pipeline.agent.unshift({ name: agent.name, background: agent.background, id: agent.id, agentBranch: [] })
           this.$store.commit('pipelines/changeValueStartPoint', false)
         } else {
-          Pipeline.agent.push({ name: Agent.name, background: Agent.background, id: Agent.id, agentBranch: [] })
+          pipeline.agent.push({ name: agent.name, background: agent.background, id: agent.id, agentBranch: [] })
         }
       } else {
-        Pipeline.agent[this.branchFather].agentBranch.push({ name: Agent.name, background: Agent.background, id: Agent.id })
+        pipeline.agent[this.branchFather].agentBranch.push({ name: agent.name, background: agent.background, id: agent.id })
       }
       this.$store.commit('pipelines/changeIsBranchFather', -1)
       document.getElementById('agent' + this.agentStartingPoint).classList.remove('style-border-item')
