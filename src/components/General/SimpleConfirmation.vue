@@ -22,8 +22,13 @@ export default {
   name: 'SimpleConfirmation',
   methods: {
     removeResource: function () {
-      this.$store.commit('agent/removeResource', parseInt(this.$store.state.agent.idResource))
-      jQuery('#simple-confirmation-modal').modal('hide')
+      try {
+        this.$store.commit('agent/removeResource', parseInt(this.$store.state.agent.idResource))
+      } catch (error) {
+        this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
+      } finally {
+        jQuery('#simple-confirmation-modal').modal('hide')
+      }
     },
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')

@@ -93,7 +93,7 @@
                       </div><!-- /.row -->
                     </div><!-- /.home-quote-box -->
                   </div> <!-- /.col-sm-12 -->
-                  <SimpleConfirmation></SimpleConfirmation>
+                  <SimpleConfirmation />
                 </div><!-- /.row -->
               </div><!-- /.col-sm-12 -->
             </div><!-- /.row -->
