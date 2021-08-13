@@ -114,6 +114,13 @@ export default {
       }
     )
 
+    app.config.globalProperties.$compilationResponse = Object.freeze(
+      {
+        success: { description: 'Compiled successfully' },
+        error: { description: 'Failed to compile with errors' }
+      }
+    )
+
     app.config.globalProperties.$getEntityTypeById = function (idEntity) {
       switch (idEntity) {
         case 1:
