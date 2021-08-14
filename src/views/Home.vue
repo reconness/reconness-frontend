@@ -156,12 +156,17 @@ export default {
     },
     addReference () {
       if (!this.validators.url.name && !this.validators.blank.name) {
-        this.$store.commit('agent/addResource', {
-          url: this.resource.url,
-          categories: this.resource.categories,
-          id: this.resources.length + 1
-        })
-        this.resetResource()
+        try {
+          this.$store.commit('agent/addResource', {
+            url: this.resource.url,
+            categories: this.resource.categories,
+            id: this.resources.length + 1
+          })
+        } catch (error) {
+          this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the insertion process', life: 3000 })
+        } finally {
+          this.resetResource()
+        }
       }
     },
     resetResource: function () {
