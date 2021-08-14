@@ -1,11 +1,11 @@
 <template>
     <transition name="slide-fade">
-      <aside v-if="this.isMessageSectionOpened" class="control-sidebar-dark main-messages-container overflow-auto" v-click-outside="closeComments">
-        <div class="p-3 control-sidebar-content-target-details overflow-auto message-container">
-            <input class="form-control target-input-borders" placeholder="Write your comments here..." v-model="message">
+      <aside v-if="this.isNotesSectionOpened" class="control-sidebar-dark main-notes-container overflow-auto" v-click-outside="closeComments">
+        <div class="p-3 control-sidebar-content-target-details overflow-auto note-container">
+            <input class="form-control target-input-borders" placeholder="Write your comments here..." v-model="note">
             <CommentIco/>
-            <button :disabled="message === ''" style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendMessage">Send</button>
-            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0" @click="message = ''">Cancel</button>
+            <button :disabled="note === ''" style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendNotes">Send</button>
+            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0" @click="note = ''">Cancel</button>
         </div>
 
         <div class="sidebar-list comments-list">
@@ -13,7 +13,7 @@
             <div class="col-7">
               <h5>Comments List</h5>
             </div>
-            <div v-if="getMessages.length !== 0" class="col-5">
+            <div v-if="getNotes.length !== 0" class="col-5">
               <a class="float-right sortby-lnk" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"  aria-expanded="false" >
                 <p class="float-left">Sort by</p>
                 <button type="button" class="btn btn-light sortby-comments">
@@ -24,36 +24,36 @@
               <a class="dropdown-item float-left" href="#" v-on:click="orderByUserName()">
                   <i class="material-icons float-left">title</i>
                   <p class="float-left">User Name</p>
-                  <i class="material-icons arrow-right" v-if="!order_by_date && active_arrow_down_message">keyboard_arrow_down</i>
-                  <i class="material-icons arrow-right" v-if="!order_by_date && active_arrow_up_message">keyboard_arrow_up</i>
+                  <i class="material-icons arrow-right" v-if="!order_by_date && active_arrow_down_note">keyboard_arrow_down</i>
+                  <i class="material-icons arrow-right" v-if="!order_by_date && active_arrow_up_note">keyboard_arrow_up</i>
                 </a>
-                <a class="dropdown-item float-left" href="#" v-on:click="orderByMessageDate()">
+                <a class="dropdown-item float-left" href="#" v-on:click="orderByNoteDate()">
                   <i class="material-icons float-left">event</i>
                   <p class="float-left">Created</p>
-                  <i class="material-icons arrow-right" v-if="order_by_date && active_arrow_down_message">keyboard_arrow_down</i>
-                  <i class="material-icons arrow-right" v-if="order_by_date && active_arrow_up_message">keyboard_arrow_up</i>
+                  <i class="material-icons arrow-right" v-if="order_by_date && active_arrow_down_note">keyboard_arrow_down</i>
+                  <i class="material-icons arrow-right" v-if="order_by_date && active_arrow_up_note">keyboard_arrow_up</i>
                 </a>
               </div>
             </div>
-            <div v-for="message of this.getMessages" :key="message.id" class="col-12">
+            <div v-for="note of this.getNotes" :key="note.id" class="col-12">
               <div class="row">
                 <div class="col-12">
                   <p>
-                    {{message.message}}
+                    {{note.message}}
                   </p>
                 </div>
                 <div class="col-9">
-                  <i style="color: #c2c7d0;">{{message.sender}} / {{new Date(message.sendDate).toISOString().substring(0, 10)}}</i>
+                  <i style="color: #c2c7d0;">{{note.sender}} / {{new Date(note.sendDate).toISOString().substring(0, 10)}}</i>
                 </div>
                 <div class="col-3">
-                  <a class="float-right" @click="setSelectedMessage" href="#" data-target="#message-confirmation-modal" :data-id="message.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
+                  <a class="float-right" @click="setSelectedNote" href="#" data-target="#note-confirmation-modal" :data-id="note.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
                 </div>
                 <div class="col-12">
                   <hr style="width: 84%;">
                 </div>
               </div>
             </div>
-            <div v-if="getMessages.length === 0" class="col-12">
+            <div v-if="getNotes.length === 0" class="col-12">
               <span class="comment-font-style">There are no comments. Please, add a comment</span>
             </div>
           </dl>
@@ -65,7 +65,7 @@
 import CommentIco from '@/components/Icons/CommentIco.vue'
 import { mapMutations, mapGetters, mapState } from 'vuex'
 export default {
-  name: 'MessagesSection',
+  name: 'NotesSection',
   components: {
     CommentIco
   },
@@ -77,33 +77,33 @@ export default {
   },
   data: function () {
     return {
-      message: '',
-      active_arrow_down_message: true,
-      active_arrow_up_message: false,
+      note: '',
+      active_arrow_down_note: true,
+      active_arrow_up_note: false,
       order_by_date: true,
       order_by_user: false
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetMessages', 'getRootDomainMessages', 'getSubDomainMessages']),
-    ...mapState('target', ['idMessage', 'currentView']),
-    ...mapState('agent', ['isMessageSectionOpened']),
-    getMessages: function () {
+    ...mapGetters('target', ['getTargetNotes', 'getRootDomainNotes', 'getSubDomainNotes']),
+    ...mapState('target', ['idNote', 'currentView']),
+    ...mapState('agent', ['isNotesSectionOpened']),
+    getNotes: function () {
       if (this.order_by_date) {
-        if (this.active_arrow_down_message) {
+        if (this.active_arrow_down_note) {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
               this.sortDescendingOrderByDateFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainMessages({
+            return this.getRootDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
               this.sortDescendingOrderByDateFn
             )
           } else {
-            return this.getSubDomainMessages({
+            return this.getSubDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
@@ -113,18 +113,18 @@ export default {
           }
         } else {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
               this.sortAscendingOrderByDateFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainMessages({
+            return this.getRootDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
               this.sortAscendingOrderByDateFn
             )
           } else {
-            return this.getSubDomainMessages({
+            return this.getSubDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
@@ -134,20 +134,20 @@ export default {
           }
         }
       } else { // order by user
-        if (this.active_arrow_down_message) {
+        if (this.active_arrow_down_note) {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
               this.sortDescendingOrderByUserNameFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainMessages({
+            return this.getRootDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
               this.sortDescendingOrderByUserNameFn
             )
           } else {
-            return this.getSubDomainMessages({
+            return this.getSubDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
@@ -157,18 +157,18 @@ export default {
           }
         } else {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetMessages(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
               this.sortAscendingOrderByUserNameFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainMessages({
+            return this.getRootDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id)
             }).sort(
               this.sortAscendingOrderByUserNameFn
             )
           } else {
-            return this.getSubDomainMessages({
+            return this.getSubDomainNotes({
               idTarget: parseInt(this.$route.params.idTarget),
               idRootDomain: parseInt(this.$route.params.id),
               idSubDomain: parseInt(this.$route.params.idsubdomain)
@@ -181,57 +181,57 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('agent', ['setIsMessageSectionOpened']),
-    sendMessage: function () {
+    ...mapMutations('agent', ['setIsNotesSectionOpened']),
+    sendNotes: function () {
       if (this.$route.name === 'TargetDetail') {
-        this.sendTargetMessage({
+        this.sendTargetNote({
           idTarget: parseInt(this.$route.params.id),
-          message: this.message
+          message: this.note
         })
       } else if (this.$route.name === 'RootDomainDetails') {
-        this.sendRootDomainMessage({
+        this.sendRootDomainNote({
           idTarget: parseInt(this.$route.params.idTarget),
           idRootDomain: parseInt(this.$route.params.id),
-          message: this.message
+          message: this.note
         })
       } else if (this.$route.name === 'SubDomainDetails') {
-        this.sendSubDomainMessage({
+        this.sendSubDomainNote({
           idTarget: parseInt(this.$route.params.idTarget),
           idRootDomain: parseInt(this.$route.params.id),
           idSubDomain: parseInt(this.$route.params.idsubdomain),
-          message: this.message
+          message: this.note
         })
       }
-      this.message = ''
+      this.note = ''
     },
-    setSelectedMessage: function (e) {
+    setSelectedNote: function (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
-      this.setIdMessage(selectedId)
+      this.setIdNote(selectedId)
     },
     closeComments: function () {
-      const isDeleteWindowsOpened = document.getElementById('message-confirmation-modal').getAttribute('aria-modal')
-      if (this.isMessageSectionOpened && isDeleteWindowsOpened) {
-        this.setIsMessageSectionOpened(true)
+      const isDeleteWindowsOpened = document.getElementById('note-confirmation-modal').getAttribute('aria-modal')
+      if (this.isNotesSectionOpened && isDeleteWindowsOpened) {
+        this.setIsNotesSectionOpened(true)
       } else {
-        this.setIsMessageSectionOpened(false)
+        this.setIsNotesSectionOpened(false)
       }
     },
-    ...mapMutations('target', ['sendTargetMessage', 'setIdMessage', 'sendRootDomainMessage', 'sendSubDomainMessage']),
+    ...mapMutations('target', ['sendTargetNote', 'setIdNote', 'sendRootDomainNote', 'sendSubDomainNote']),
     orderByUserName: function () {
       this.order_by_date = false
       this.changeArrowDirection()
     },
-    orderByMessageDate: function () {
+    orderByNoteDate: function () {
       this.order_by_date = true
       this.changeArrowDirection()
     },
     changeArrowDirection: function () {
-      if (this.active_arrow_down_message === true) {
-        this.active_arrow_down_message = false
-        this.active_arrow_up_message = true
-      } else if (this.active_arrow_up_message === true) {
-        this.active_arrow_down_message = true
-        this.active_arrow_up_message = false
+      if (this.active_arrow_down_note === true) {
+        this.active_arrow_down_note = false
+        this.active_arrow_up_note = true
+      } else if (this.active_arrow_up_note === true) {
+        this.active_arrow_down_note = true
+        this.active_arrow_up_note = false
       }
     },
     sortDescendingOrderByDateFn: function (a, b) {
@@ -292,11 +292,11 @@ export default {
   border-radius: 5px;
 }
 
-div.message-container input {
+div.note-container input {
   border-radius: 10px;
 }
 
-div.message-container button {
+div.note-container button {
   color: #949191;
 }
 
@@ -307,7 +307,7 @@ div.sidebar-list.comments-list {
   margin-top: 10px;
   overflow: visible;
 }
-div.control-sidebar-dark.main-messages-container{
+div.control-sidebar-dark.main-notes-container{
  border-radius: 12px;
 }
 
@@ -353,7 +353,7 @@ div.sidebar-list.comments-list i{
   color: #000000;
   font-weight: normal;
 }
-aside.control-sidebar-dark.main-messages-container {
+aside.control-sidebar-dark.main-notes-container {
   /* width: 48%; */
   /*width: 23%;usar media queries*/
   width: 350px;

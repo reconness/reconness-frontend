@@ -58,7 +58,7 @@ export default ({
       { name: 'SubkisteD', description: 'Breve descripcion del agente SubkisteD', id: 4, installed: false },
       { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: false }
     ],
-    isMessageSectionOpened: false,
+    isNotesSectionOpened: false,
     isDeletetFromForm: false,
     isElementDeleted: false,
     nameRoute: '',
@@ -212,8 +212,8 @@ export default ({
         state.agentListStore.splice(index, 1)
       }
     },
-    setIsMessageSectionOpened (state, value) {
-      state.isMessageSectionOpened = value
+    setIsNotesSectionOpened (state, value) {
+      state.isNotesSectionOpened = value
     },
     setIsDeletetFromForm (state, value) {
       state.isDeletetFromForm = value

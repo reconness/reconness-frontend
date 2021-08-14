@@ -1,7 +1,7 @@
 <template>
   <a class="nav-link float-left control-sidebar-right btn-messages-container"
       href="#" data-slide="true" @mouseenter="mouseEnter">
-    <button type="button message-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
+    <button type="button note-icon" class="btn btn-sm control-sidebar-right" id="dropdownMenuButton">
       <CommentIco/>
     </button>
   </a>
@@ -10,14 +10,14 @@
 import { mapMutations } from 'vuex'
 import CommentIco from '@/components/Icons/CommentIco.vue'
 export default {
-  name: 'MessagesBtn',
+  name: 'NotesBtn',
   components: {
     CommentIco
   },
   methods: {
-    ...mapMutations('agent', ['setIsMessageSectionOpened']),
+    ...mapMutations('agent', ['setIsNotesSectionOpened']),
     mouseEnter: function () {
-      this.setIsMessageSectionOpened(true)
+      this.setIsNotesSectionOpened(true)
     }
   }
 }

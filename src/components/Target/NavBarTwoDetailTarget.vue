@@ -73,7 +73,7 @@
           </div>
         </li>
         <li class="nav-item border-right d-none d-sm-block">
-          <MessagesBtn/>
+          <NotesBtn/>
         </li>
       </ul>
     </nav>
@@ -134,29 +134,29 @@
         </li>
       </ul>
     </nav>
-    <MessagesSection :opened="this.isMessageSectionOpened"/>
+    <NotesSection :opened="this.isNotesSectionOpened"/>
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
   <Confirmation ></Confirmation>
-  <MessageConfirmation></MessageConfirmation>
+  <NoteConfirmation />
      </div>
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
-import MessagesBtn from '@/components/General/MessagesBtn.vue'
-import MessagesSection from '@/components/General/MessagesSection.vue'
+import NotesBtn from '@/components/General/NotesBtn.vue'
+import NotesSection from '@/components/General/NotesSection.vue'
 import Confirmation from '@/components/Target/Confirmation.vue'
-import MessageConfirmation from '@/components/Target/MessageConfirmation.vue'
+import NoteConfirmation from '@/components/Target/NoteConfirmation.vue'
 export default {
   name: 'NavBarTwoDetailTarget',
   components: {
     OverlayPanel,
     Confirmation,
-    MessagesBtn,
-    MessagesSection,
-    MessageConfirmation
+    NotesBtn,
+    NotesSection,
+    NoteConfirmation
   },
   props: {
     TargetName: String,
@@ -174,7 +174,7 @@ export default {
   },
   computed: {
     ...mapState('target', ['targetListStore']),
-    ...mapState('agent', ['isMessageSectionOpened'])
+    ...mapState('agent', ['isNotesSectionOpened'])
   },
   methods: {
     ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),

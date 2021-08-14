@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-bind:class="{ prevent_overflowx: this.isMessageSectionOpenedReference}">
+  <div class="wrapper" v-bind:class="{ prevent_overflowx: this.isNoteSectionOpenedReference}">
     <!-- Navbar -->
     <nav v-if="!isLoginPage" class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
@@ -174,14 +174,14 @@ export default {
       button_vert: true,
       location: 'Home',
       goAgent: false,
-      isMessageSectionOpenedReference: true
+      isNoteSectionOpenedReference: true
     }
   },
   components: {
     BullseyeArrowIco
   },
   computed: {
-    ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isMessageSectionOpened']),
+    ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('target', ['loggedUser']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
@@ -192,8 +192,8 @@ export default {
     }
   },
   watch: {
-    isMessageSectionOpened: function (value) {
-      this.isMessageSectionOpenedReference = value
+    isNotesSectionOpened: function (value) {
+      this.isNoteSectionOpenedReference = value
     }
   },
   created () {
