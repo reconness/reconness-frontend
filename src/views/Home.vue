@@ -111,7 +111,7 @@ import HomeRigthSidebar from '@/components/General/HomeRigthSidebar.vue'
 import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
 import SimpleConfirmation from '@/components/General/SimpleConfirmation.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Chips from 'primevue/chips'
 export default {
   name: 'Home',
@@ -138,7 +138,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('agent', ['resources'])
+    ...mapState('agent', ['resources', 'authentication_token'])
   },
   watch: {
     resource: {
@@ -147,9 +147,21 @@ export default {
         this.validators.blank.name = this.$validateIsBlank(value.url)
       },
       deep: true
+    },
+    authentication_token: function (value) {
+      if (value !== '') {
+        this.loadResources()
+      }
     }
   },
+  created () {
+    this.login({
+      username: 'gorums',
+      password: 'gorums123456'
+    })
+  },
   methods: {
+    ...mapActions('agent', ['login', 'loadResources']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('agent/setSelectedResource', selectedId)

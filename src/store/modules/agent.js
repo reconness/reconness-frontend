@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
@@ -64,7 +65,8 @@ export default ({
     nameRoute: '',
     valueDelete: '',
     isDefaultViewOnAgent: true,
-    agentSequence: 30
+    agentSequence: 30,
+    authentication_token: ''
   },
   mutations: {
     confirm (state, valueIN) {
@@ -133,6 +135,18 @@ export default ({
     },
     addResource (state, resource) {
       state.resources.push(resource)
+    },
+    mapAndUpdateResources (state, resources) {
+      state.resources.splice(0, state.resources.length)
+      let newResource
+      resources.forEach(resource => {
+        newResource = {
+          id: resource.id,
+          url: resource.url,
+          categories: []
+        }
+        state.resources.push(newResource)
+      })
     },
     setSelectedResource (state, idResource) {
       state.idResource = idResource
@@ -223,9 +237,37 @@ export default ({
     },
     setIsDefaultViewOnAgent (state, value) {
       state.isDefaultViewOnAgent = value
+    },
+    updateAuthenticationToken (state, token) {
+      state.authentication_token = token
     }
   },
   actions: {
+    login ({ commit, state }, credentials) {
+      axios.post('/auth/login',
+        {
+          userName: credentials.username,
+          password: credentials.password
+        })
+        .then(function (response) {
+          commit('updateAuthenticationToken', response.data.auth_token)
+          axios.defaults.headers.common.Authorization = 'Bearer ' + state.authentication_token
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    loadResources ({ state, commit }) {
+      if (state.authentication_token !== '') {
+        axios.get('/references')
+          .then(function (response) {
+            commit('mapAndUpdateResources', response.data)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      }
+    }
   },
   getters: {
     idAgent: state => {
