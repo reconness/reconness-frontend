@@ -143,7 +143,7 @@ export default ({
         newResource = {
           id: resource.id,
           url: resource.url,
-          categories: []
+          categories: resource.categories.split(', ')
         }
         state.resources.push(newResource)
       })
@@ -244,7 +244,7 @@ export default ({
   },
   actions: {
     login ({ commit, state }, credentials) {
-      axios.post('/auth/login',
+      return axios.post('/auth/login',
         {
           userName: credentials.username,
           password: credentials.password
@@ -252,19 +252,48 @@ export default ({
         .then(function (response) {
           commit('updateAuthenticationToken', response.data.auth_token)
           axios.defaults.headers.common.Authorization = 'Bearer ' + state.authentication_token
+          return true
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch(function () {
+          return false
         })
     },
     loadResources ({ state, commit }) {
       if (state.authentication_token !== '') {
-        axios.get('/references')
+        return axios.get('/references')
           .then(function (response) {
             commit('mapAndUpdateResources', response.data)
+            return true
           })
-          .catch(function (error) {
-            console.log(error)
+          .catch(function () {
+            return false
+          })
+      }
+    },
+    addResource ({ state, commit, dispatch }, resource) {
+      if (state.authentication_token !== '') {
+        return axios.post('/references', {
+          url: resource.url,
+          categories: resource.categories.join(',')
+        })
+          .then(function (response) {
+            dispatch('loadResources')
+            return true
+          })
+          .catch(function () {
+            return false
+          })
+      }
+    },
+    deleteResource ({ state, dispatch }, idResource) {
+      if (state.authentication_token !== '') {
+        return axios.delete('/references/' + idResource)
+          .then(function (response) {
+            dispatch('loadResources')
+            return true
+          })
+          .catch(function () {
+            return false
           })
       }
     }

@@ -161,24 +161,24 @@ export default {
     })
   },
   methods: {
-    ...mapActions('agent', ['login', 'loadResources']),
+    ...mapActions('agent', ['login', 'loadResources', 'addResource']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('agent/setSelectedResource', selectedId)
     },
     addReference () {
       if (!this.validators.url.name && !this.validators.blank.name) {
-        try {
-          this.$store.commit('agent/addResource', {
-            url: this.resource.url,
-            categories: this.resource.categories,
-            id: this.resources.length + 1
-          })
-        } catch (error) {
-          this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the insertion process', life: 3000 })
-        } finally {
+        this.addResource({
+          url: this.resource.url,
+          categories: this.resource.categories
+        }).then(success => {
+          if (success) {
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The reference has been inserted successfully', life: 3000 })
+          } else {
+            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the insertion process', life: 3000 })
+          }
           this.resetResource()
-        }
+        })
       }
     },
     resetResource: function () {
