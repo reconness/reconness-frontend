@@ -117,11 +117,9 @@ export default {
       if (valueIn === 'isMiniView') {
         this.isMiniView = true
         this.isListView = false
-      } else {
-        if (valueIn === 'isListView') {
-          this.isListView = true
-          this.isMiniView = false
-        }
+      } else if (valueIn === 'isListView') {
+        this.isListView = true
+        this.isMiniView = false
       }
     },
     onBashRemovePipelines () {
