@@ -45,74 +45,43 @@ export default {
   mixins: [ProgressBarMixin],
   computed: {
     ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
-    ...mapGetters('pipelines', ['getPipelineById'])
+    ...mapGetters('pipelines', ['getPipelineById']),
+    isPipelineIsRunning () {
+      return this.pipeline.statusRun === this.$entityStatus.RUNNING
+    },
+    isCurrentParentAgentRunning () {
+      return this.index === this.agentParentRunningIndex
+    },
+    haveRunningAgentChildrens () {
+      return this.agent.agentBranch && this.agent.agentBranch.length > 0
+    },
+    isCurrentAgentRunning () {
+      return this.agent.status === this.$entityStatus.RUNNING
+    },
+    getFormatedCurrentDate () {
+      const today = new Date()
+      return new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+        this.hours,
+        this.mins,
+        this.secs
+      )
+    },
+    isRunningAgentLastOneInPipelineAgents () {
+      return this.pipeline.agent.length - 1 === this.index
+    }
   },
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
-      if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
-        if (this.index === this.agentParentRunningIndex) {
-          this.setPipelineAgentParentStatusByIndex({
-            idPipeline: this.pipeline.id,
-            index: this.getOriginalPipelineAgentParentIndex(this.pipeline, this.index),
-            status: this.$entityStatus.RUNNING
-          })
-          this.playClock()
-          if (this.agent.agentBranch && this.agent.agentBranch.length > 0) {
-            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.agent.id, status: this.$entityStatus.RUNNING })
-          } else {
-            const self = this
-            setTimeout(
-              function () {
-                self.setPipelineAgentParentStatusByIndex({
-                  idPipeline: self.pipeline.id,
-                  index: self.getOriginalPipelineAgentParentIndex(self.pipeline, self.index),
-                  status: self.$entityStatus.FINISHED
-                })
-                const today = new Date()
-                self.setPipelineAgentDurationTimeByIndex({
-                  idPipeline: self.pipeline.id,
-                  index: self.index,
-                  durationTime: new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate(),
-                    self.hours,
-                    self.mins,
-                    self.secs
-                  )
-                })
-                if (self.pipeline.statusRun === self.$entityStatus.RUNNING) {
-                  self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
-                }
-                self.stopClock()
-                if (self.pipeline.agent.length - 1 === self.index) {
-                  self.setPipelineStatus({
-                    idPipeline: self.pipeline.id,
-                    status: self.$entityStatus.FINISHED
-                  })
-                  self.setPipelineAgentParentIndex(-1)
-                }
-              },
-              5000
-            )
-          }
+      if (this.isPipelineIsRunning) {
+        if (this.isCurrentParentAgentRunning) {
+          this.updatePipelineAndRelatedData()
         } else {
-          if (this.agent.status === this.$entityStatus.RUNNING) {
-            if (this.isSonOfAgent()) {
-              this.playClock()
-              const self = this
-              setTimeout(
-                function () {
-                  self.stopClock()
-                  self.setPipelineAgentParentStatusByIndex({
-                    idPipeline: self.pipeline.id,
-                    index: self.index,
-                    status: self.$entityStatus.FINISHED
-                  })
-                  self.setNumberAgentsProcessing(1)
-                },
-                5000
-              )
+          if (this.isCurrentAgentRunning) {
+            if (this.isSonOfRunningParentAgent()) {
+              this.playClockAndUpdateAgentParentStatusAndStopClockAfterTimeElapsed()
             }
           }
         }
@@ -164,7 +133,7 @@ export default {
         return -1
       }
     },
-    isSonOfAgent () {
+    isSonOfRunningParentAgent () {
       if (this.pipeline.agent[this.agentParentRunningIndex]) {
         if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch) {
           if (this.pipeline.agent[this.agentParentRunningIndex].agentBranch.find(element => element.id === this.agent.id)) {
@@ -189,6 +158,62 @@ export default {
         generalCounter = generalCounter + 1
       }
       return newIndex - sonsCounter
+    },
+    updatePipelineAndRelatedData () {
+      this.setPipelineAgentParentStatusByIndex({
+        idPipeline: this.pipeline.id,
+        index: this.getOriginalPipelineAgentParentIndex(this.pipeline, this.index),
+        status: this.$entityStatus.RUNNING
+      })
+      this.playClock()
+      if (this.haveRunningAgentChildrens) {
+        this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.agent.id, status: this.$entityStatus.RUNNING })
+      } else {
+        this.updatePipelineAndRelatedDataAfterElapsedTime()
+      }
+    },
+    playClockAndUpdateAgentParentStatusAndStopClockAfterTimeElapsed () {
+      this.playClock()
+      const self = this
+      setTimeout(
+        function () {
+          self.stopClock()
+          self.setPipelineAgentParentStatusByIndex({
+            idPipeline: self.pipeline.id,
+            index: self.index,
+            status: self.$entityStatus.FINISHED
+          })
+          self.setNumberAgentsProcessing(1)
+        },
+        5000
+      )
+    },
+    updatePipelineAndRelatedDataAfterElapsedTime () {
+      const self = this
+      setTimeout(
+        function () {
+          self.setPipelineAgentParentStatusByIndex({
+            idPipeline: self.pipeline.id,
+            index: self.getOriginalPipelineAgentParentIndex(self.pipeline, self.index),
+            status: self.$entityStatus.FINISHED
+          })
+          self.setPipelineAgentDurationTimeByIndex({
+            idPipeline: self.pipeline.id,
+            index: self.index,
+            durationTime: this.getFormatedCurrentDate
+          })
+          self.setPipelineAgentParentIndex(self.agentParentRunningIndex + 1)
+          self.stopClock()
+          if (this.isRunningAgentLastOneInPipelineAgents) {
+            self.setPipelineStatus({
+              idPipeline: self.pipeline.id,
+              status: self.$entityStatus.FINISHED
+            })
+            self.setPipelineAgentParentIndex(-1)
+          }
+        },
+        5000
+      )
     }
   }
 }
