@@ -22,9 +22,9 @@ import { mapActions } from 'vuex'
 export default {
   name: 'SimpleConfirmation',
   methods: {
-    ...mapActions('agent', ['deleteResource']),
+    ...mapActions('referent', ['deleteResource']),
     removeResource: function () {
-      this.deleteResource(this.$store.state.agent.idResource)
+      this.deleteResource(this.$store.state.referent.idResource)
         .then(success => {
           if (success) {
             this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The reference has been removed successfully', life: 3000 })
@@ -36,7 +36,7 @@ export default {
     },
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setSelectedResource', selectedId)
+      this.$store.commit('referent/setSelectedResource', selectedId)
     }
   }
 }

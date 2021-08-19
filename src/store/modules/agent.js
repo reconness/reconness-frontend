@@ -1,4 +1,3 @@
-import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
@@ -11,10 +10,6 @@ export default ({
       { name: 'Agent 6', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 6, repository: 'repository6.com', target: 'target 6', command: 'command 6', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 6', image: '', date: '21/06/2020', installedFrom: '', lastRun: '12/02/2021' },
       { name: 'Agent 7', background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020', installedFrom: '', lastRun: '24/02/2021' },
       { name: 'Agent 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '', lastRun: '01/01/2021' }
-    ],
-    resources: [
-      { url: 'http://google.com', categories: ['searcher', 'docs'], id: 1 },
-      { url: 'http://yahoo.es', categories: ['searcher'], id: 2 }
     ],
     filterColour: '',
     idAgent: -1,
@@ -41,7 +36,6 @@ export default ({
       }
     ],
     fromDetailsLink: false,
-    idResource: -1,
     check: false,
     agentIdList: [],
     styleList: '1.25rem',
@@ -65,8 +59,7 @@ export default ({
     nameRoute: '',
     valueDelete: '',
     isDefaultViewOnAgent: true,
-    agentSequence: 30,
-    authentication_token: ''
+    agentSequence: 30
   },
   mutations: {
     confirm (state, valueIN) {
@@ -132,30 +125,6 @@ export default ({
     },
     setDetailsLinks (state, isSelected) {
       state.fromDetailsLink = isSelected
-    },
-    addResource (state, resource) {
-      state.resources.push(resource)
-    },
-    mapAndUpdateResources (state, resources) {
-      state.resources.splice(0, state.resources.length)
-      let newResource
-      resources.forEach(resource => {
-        newResource = {
-          id: resource.id,
-          url: resource.url,
-          categories: resource.categories.split(', ')
-        }
-        state.resources.push(newResource)
-      })
-    },
-    setSelectedResource (state, idResource) {
-      state.idResource = idResource
-    },
-    removeResource (state, idResource) {
-      const index = state.resources.findIndex(resource => resource.id === idResource)
-      if (index !== -1) {
-        state.resources.splice(index, 1)
-      }
     },
     cancelIdAgent (state) {
       state.agentIdList = []
@@ -237,65 +206,6 @@ export default ({
     },
     setIsDefaultViewOnAgent (state, value) {
       state.isDefaultViewOnAgent = value
-    },
-    updateAuthenticationToken (state, token) {
-      state.authentication_token = token
-    }
-  },
-  actions: {
-    login ({ commit, state }, credentials) {
-      return axios.post('/auth/login',
-        {
-          userName: credentials.username,
-          password: credentials.password
-        })
-        .then(function (response) {
-          commit('updateAuthenticationToken', response.data.auth_token)
-          axios.defaults.headers.common.Authorization = 'Bearer ' + state.authentication_token
-          return true
-        })
-        .catch(function () {
-          return false
-        })
-    },
-    loadResources ({ state, commit }) {
-      if (state.authentication_token !== '') {
-        return axios.get('/references')
-          .then(function (response) {
-            commit('mapAndUpdateResources', response.data)
-            return true
-          })
-          .catch(function () {
-            return false
-          })
-      }
-    },
-    addResource ({ state, commit, dispatch }, resource) {
-      if (state.authentication_token !== '') {
-        return axios.post('/references', {
-          url: resource.url,
-          categories: resource.categories.join(',')
-        })
-          .then(function (response) {
-            dispatch('loadResources')
-            return true
-          })
-          .catch(function () {
-            return false
-          })
-      }
-    },
-    deleteResource ({ state, dispatch }, idResource) {
-      if (state.authentication_token !== '') {
-        return axios.delete('/references/' + idResource)
-          .then(function (response) {
-            dispatch('loadResources')
-            return true
-          })
-          .catch(function () {
-            return false
-          })
-      }
     }
   },
   getters: {

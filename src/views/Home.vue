@@ -138,7 +138,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('agent', ['resources', 'authentication_token'])
+    ...mapState('auth', ['authentication_token']),
+    ...mapState('referent', ['resources'])
   },
   watch: {
     resource: {
@@ -161,10 +162,11 @@ export default {
     })
   },
   methods: {
-    ...mapActions('agent', ['login', 'loadResources', 'addResource']),
+    ...mapActions('auth', ['login']),
+    ...mapActions('referent', ['loadResources', 'addResource']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setSelectedResource', selectedId)
+      this.$store.commit('referent/setSelectedResource', selectedId)
     },
     addReference () {
       if (!this.validators.url.name && !this.validators.blank.name) {
