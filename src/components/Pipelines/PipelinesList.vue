@@ -77,24 +77,6 @@ export default {
       const selectedPipelineId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('pipelines/setIdPipelines', selectedPipelineId)
     },
-    addListPipelinesId (e) {
-      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedPipelinesName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId).checked === false) {
-        if (this.pipelinesIdList.length !== 0 && this.checkSelected === false) {
-          this.checkSelected = false
-          this.checkDeleted = selectedId
-        } else {
-          this.checkSelected = true
-        }
-        this.addIdPipeline({ id: selectedId, name: selectedPipelinesName })
-      } else {
-        this.removebyIdPipelines(selectedId)
-        if (this.checkSelected === false) {
-          this.checkDeleted = selectedId
-        }
-      }
-    },
     openSettings (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       this.$store.commit('pipelines/setIdPipeline', selectedId)
