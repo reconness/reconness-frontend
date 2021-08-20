@@ -58,6 +58,7 @@ import { mapState, mapMutations } from 'vuex'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
+import { PipelineMixin } from '@/mixins/PipelineMixin'
 export default {
   name: 'PipelinesMiniList',
   components: {
@@ -72,6 +73,7 @@ export default {
       checkDeleted: -1
     }
   },
+  mixins: [PipelineMixin],
   computed: {
     ...mapState('pipelines', ['pipelinesListStore', 'pipelinesIdList', 'check'])
   },
@@ -83,23 +85,6 @@ export default {
     setPipelinesId (e) {
       const selectedPipelineId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('pipelines/setIdPipelines', selectedPipelineId)
-    },
-    isChecked (itemID) {
-      if (this.checkSelected === false) {
-        if (this.pipelinesIdList.find(pipeline => pipeline.id === itemID)) {
-          if (this.checkDeleted === itemID) {
-            return false
-          } else {
-            return true
-          }
-        } else {
-          if (this.checkDeleted === itemID) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
     },
     addListPipelinesId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
