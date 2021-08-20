@@ -52,51 +52,77 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetById', 'getRootDomainByIdTargetAndIdRootDomain'])
+    ...mapGetters('target', ['getTargetById', 'getRootDomainByIdTargetAndIdRootDomain']),
+    getRouteName () {
+      return this.$store.state.agent.nameRoute
+    },
+    isRouteNameTargetDetail () {
+      return this.$route.name === 'TargetDetail'
+    },
+    userTypeYes () {
+      return this.nameTyped === 'yes'
+    }
   },
   methods: {
+    removeTargetOrRootDomainOrSubDomainByRoutName: function () {
+      switch (this.getRouteName) {
+        case 'target':
+          this.removeTargetAndShowNotificationOnFinish()
+          if (this.isRouteNameTargetDetail) {
+            this.redirectToTargetsList()
+          }
+          break
+        case 'subdomains':
+          if (this.userTypeYes) {
+            this.removeSubDomainsAndShowNotificationOnFinish()
+          } else if (!this.$route.params.idsubdomain) {
+            this.removeSubDomainAndShowNotificationOnFinish()
+          } else {
+            this.removeSubDomainAndRedirectToRootDomainDetails()
+          }
+          break
+        case 'rootdomains':
+          this.removeRootDomainAndRedirectToTargetDetails()
+          break
+        default:
+          break
+      }
+    },
+    removeTargetAndShowNotificationOnFinish: function () {
+      this.removeTargetByName()
+      this.$toast.add({ severity: 'success', sumary: this.$message.successSumary, detail: this.$message.successMessageForTargetDeletion, life: 3000 })
+    },
+    removeRootDomainAndRedirectToTargetDetails: function () {
+      var params = { idTarget: parseInt(this.$route.params.idTarget), idRootDomain: parseInt(this.$route.params.id) }
+      this.$store.commit('target/removeRootDomain', params)
+      this.setIsElementDeleted(true)
+      this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget, targetName: this.getTargetById(parseInt(this.$route.params.idTarget)).name } })
+    },
+    removeSubDomainAndRedirectToRootDomainDetails: function () {
+      this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
+      const nameRootDomain = this.getRootDomainByIdTargetAndIdRootDomain(
+        {
+          idTarget: parseInt(this.$route.params.idTarget),
+          idRootDomain: parseInt(this.$route.params.id)
+        }
+      ).root
+      const targetName = this.getTargetById(parseInt(this.$route.params.idTarget)).name
+      this.$router.push({ name: 'RootDomainDetails', params: { idTarget: parseInt(this.$route.params.idTarget), id: parseInt(this.$route.params.id), targetName: targetName, rootdomainName: nameRootDomain } })
+      this.setIsElementDeleted(true)
+    },
+    removeSubDomainAndShowNotificationOnFinish: function () {
+      this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
+      this.$toast.add({ severity: 'success', sumary: this.$message.successSumary, detail: this.$successMessageForSubDomainDeletion, life: 3000 })
+    },
+    removeSubDomainsAndShowNotificationOnFinish: function () {
+      this.removeSubDomains()
+      this.$toast.add({ severity: 'success', sumary: this.$message.successSumary, detail: this.$successMessageForSubDomainDeletion, life: 3000 })
+    },
     remove: function () {
       if (this.$randomBooleanResult()) {
-        switch (this.$store.state.agent.nameRoute) {
-          case 'target':
-            this.$store.commit('target/removeTarget', this.nameTyped)
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
-            if (this.$route.name === 'TargetDetail') {
-              this.$router.push({ name: 'Targets' })
-              this.setIsElementDeleted(true)
-            }
-            break
-          case 'subdomains':
-            if (this.nameTyped === 'yes') {
-              this.$store.commit('target/removeSubDomains', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id) })
-              this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The subdomain has been deleted successfully', life: 3000 })
-            } else if (!this.$route.params.idsubdomain) {
-              this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
-              this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The subdomain has been deleted successfully', life: 3000 })
-            } else {
-              this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
-              const nameRootDomain = this.getRootDomainByIdTargetAndIdRootDomain(
-                {
-                  idTarget: parseInt(this.$route.params.idTarget),
-                  idRootDomain: parseInt(this.$route.params.id)
-                }
-              ).root
-              const targetName = this.getTargetById(parseInt(this.$route.params.idTarget)).name
-              this.$router.push({ name: 'RootDomainDetails', params: { idTarget: parseInt(this.$route.params.idTarget), id: parseInt(this.$route.params.id), targetName: targetName, rootdomainName: nameRootDomain } })
-              this.setIsElementDeleted(true)
-            }
-            break
-          case 'rootdomains':
-            var params = { idTarget: parseInt(this.$route.params.idTarget), idRootDomain: parseInt(this.$route.params.id) }
-            this.$store.commit('target/removeRootDomain', params)
-            this.setIsElementDeleted(true)
-            this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget, targetName: this.getTargetById(parseInt(this.$route.params.idTarget)).name } })
-            break
-          default:
-            break
-        }
+        this.removeTargetOrRootDomainOrSubDomainByRoutName()
       } else {
-        this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
+        this.$toast.add({ severity: 'error', sumary: this.$message.errorSumary, detail: this.$message.errorMessageForAllPurpose, life: 3000 })
       }
       this.nameTyped = ''
       jQuery('#confirmation-modal').modal('hide')
@@ -105,7 +131,17 @@ export default {
     close () {
       this.nameTyped = ''
     },
-    ...mapMutations('agent', ['setIsElementDeleted'])
+    ...mapMutations('agent', ['setIsElementDeleted']),
+    removeTargetByName () {
+      this.$store.commit('target/removeTarget', this.nameTyped)
+    },
+    redirectToTargetsList () {
+      this.$router.push({ name: 'Targets' })
+      this.setIsElementDeleted(true)
+    },
+    removeSubDomains () {
+      this.$store.commit('target/removeSubDomains', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id) })
+    }
   }
 }
 </script>

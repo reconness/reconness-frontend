@@ -186,5 +186,15 @@ export default {
         1000
       )
     }
+
+    app.config.globalProperties.$message = Object.freeze(
+      {
+        errorSummary: 'Error',
+        successSumary: 'Success',
+        errorMessageForAllPurpose: 'An error occured during the removal process',
+        successMessageForTargetDeletion: 'The target has been deleted successfully',
+        successMessageForSubDomainDeletion: 'The subdomain has been deleted successfully'
+      }
+    )
   }
 }
