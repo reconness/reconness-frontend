@@ -134,7 +134,7 @@
                 <div class="col donut-legend link-color">
                  <p> All running targets </p>
                  <hr>
-                 <p class="text-right"> 110</p>
+                 <p class="text-right">{{ getNumberOfRunningTargets }}</p>
                 </div>
                 <div class="col-7">
                 <apexchart  height="200" type="radialBar" :options="chartOptions" :series="seriesRadial"></apexchart>
@@ -246,7 +246,7 @@ export default {
         name: 'series-1',
         data: []
       }],
-      seriesRadial: [87],
+      seriesRadial: [],
       chartOptions: {
         chart: {
           type: 'radialBar'
@@ -274,12 +274,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts']),
+    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets']),
     ...mapState('agent', ['isElementDeleted'])
   },
   created () {
     this.updateOpenPortsInGraph()
     this.updateSubDomainsNumberByOpenPortInGraph()
+    this.updatePercentOfRunningTargetsInGraph()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
@@ -302,6 +303,9 @@ export default {
     },
     updateSubDomainsNumberByOpenPortInGraph () {
       this.seriesBar[0].data = this.getNumberSubDomainsByOpenPorts
+    },
+    updatePercentOfRunningTargetsInGraph () {
+      this.seriesRadial[0] = this.getPercentOfRunningTargets
     }
   }
 }

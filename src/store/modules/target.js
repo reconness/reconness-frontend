@@ -1459,6 +1459,12 @@ export default ({
     },
     getNumberSubDomainsByOpenPorts () {
       return [62, 44, 38, 50, 78, 57]
+    },
+    getNumberOfRunningTargets () {
+      return 110
+    },
+    getPercentOfRunningTargets () {
+      return 87
     }
   }
 })
