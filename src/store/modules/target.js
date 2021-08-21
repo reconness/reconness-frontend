@@ -1465,6 +1465,34 @@ export default ({
     },
     getPercentOfRunningTargets () {
       return 87
+    },
+    getLatestThingsFoundedInRootDomains () {
+      return [
+        {
+          entity: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        }
+      ]
     }
   }
 })

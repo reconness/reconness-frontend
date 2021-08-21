@@ -65,46 +65,11 @@
                     </blockquote>
                     <i class="material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}" style="font-size:26px">event</i>
                 </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
+                <div v-for="novelty in getLatestThingsFoundedInRootDomains" :key="novelty" class="d-flex justify-content-between item-list">
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{novelty.entity}} </em> </p>
                   <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
+                    <span><span class="font-weight-bold">{{this.getMonthByDate(novelty.date)}}</span>{{novelty.date.getDate()}}</span>
+                    <span class="text-style-opacity">{{novelty.date.getFullYear()}}</span>
                   </div>
                 </div>
               </div>
@@ -177,7 +142,7 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
-              position: 'top' // top, center, bottom
+              position: 'top'
             },
             columnWidth: '20%',
             borderRadius: 200
@@ -274,7 +239,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets']),
+    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains']),
     ...mapState('agent', ['isElementDeleted'])
   },
   created () {
@@ -306,6 +271,16 @@ export default {
     },
     updatePercentOfRunningTargetsInGraph () {
       this.seriesRadial[0] = this.getPercentOfRunningTargets
+    },
+    getShortMonthName (dateData) {
+      return dateData.toLocaleString('default', { month: 'short' })
+    },
+    capitalizeFirstChartByMonth (dateData) {
+      const month = this.getShortMonthName(dateData)
+      return month.charAt(0).toUpperCase() + month.slice(1)
+    },
+    getMonthByDate (dateData) {
+      return this.capitalizeFirstChartByMonth(dateData)
     }
   }
 }
