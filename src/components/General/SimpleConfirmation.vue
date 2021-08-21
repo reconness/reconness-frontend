@@ -33,10 +33,6 @@ export default {
           }
           jQuery('#simple-confirmation-modal').modal('hide')
         })
-    },
-    setSelectedReference (e) {
-      const selectedId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('referent/setSelectedResource', selectedId)
     }
   }
 }

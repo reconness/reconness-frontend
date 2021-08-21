@@ -59,11 +59,11 @@ export default ({
           })
       }
     },
-    deleteResource ({ state, dispatch }, idResource) {
+    deleteResource ({ state, commit }, idResource) {
       if (state.authentication_token !== '') {
         return axios.delete('/references/' + idResource)
-          .then(function (response) {
-            dispatch('loadResources')
+          .then(function () {
+            commit('removeResource', idResource)
             return true
           })
           .catch(function () {
