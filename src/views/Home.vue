@@ -139,7 +139,13 @@ export default {
   },
   computed: {
     ...mapState('auth', ['authentication_token']),
-    ...mapState('referent', ['resources'])
+    ...mapState('referent', ['resources']),
+    getApiUserName () {
+      return process.env.VUE_APP_API_RECONNES_USERNAME
+    },
+    getApiPassword () {
+      return process.env.VUE_APP_API_RECONNES_PASSWORD
+    }
   },
   watch: {
     resource: {
@@ -157,8 +163,8 @@ export default {
   },
   created () {
     this.login({
-      username: 'gorums',
-      password: 'gorums123456'
+      username: this.getApiUserName,
+      password: this.getApiPassword
     })
   },
   methods: {
