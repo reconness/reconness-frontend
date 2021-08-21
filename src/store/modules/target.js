@@ -1453,6 +1453,12 @@ export default ({
         return runningAgent.id
       }
       return -1
+    },
+    getOpenPorts () {
+      return [21, 22, 53, 80, 443, 62]
+    },
+    getNumberSubDomainsByOpenPorts () {
+      return [62, 44, 38, 50, 78, 57]
     }
   }
 })

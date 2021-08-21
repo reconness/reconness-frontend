@@ -2,10 +2,7 @@ import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
-    resources: [
-      { url: 'http://google.com', categories: ['searcher', 'docs'], id: 1 },
-      { url: 'http://yahoo.es', categories: ['searcher'], id: 2 }
-    ],
+    resources: [],
     idResource: -1
   },
   mutations: {

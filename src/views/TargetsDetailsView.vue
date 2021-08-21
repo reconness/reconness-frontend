@@ -219,7 +219,7 @@ export default {
           }
         },
         xaxis: {
-          categories: [21, 22, 53, 80, 443, 62],
+          categories: [],
           axisBorder: {
             show: true
           },
@@ -244,7 +244,7 @@ export default {
       },
       seriesBar: [{
         name: 'series-1',
-        data: [62, 44, 38, 50, 78, 57]
+        data: []
       }],
       seriesRadial: [87],
       chartOptions: {
@@ -274,8 +274,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetById']),
+    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts']),
     ...mapState('agent', ['isElementDeleted'])
+  },
+  created () {
+    this.updateOpenPortsInGraph()
+    this.updateSubDomainsNumberByOpenPortInGraph()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
@@ -292,7 +296,13 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['setCurrentView'])
+    ...mapMutations('target', ['setCurrentView']),
+    updateOpenPortsInGraph () {
+      this.optionsBar.xaxis.categories = this.getOpenPorts
+    },
+    updateSubDomainsNumberByOpenPortInGraph () {
+      this.seriesBar[0].data = this.getNumberSubDomainsByOpenPorts
+    }
   }
 }
 </script>
