@@ -56,7 +56,7 @@
                                 <span class="material-icons search-icon form-control-feddback">search</span>
                                 <input class="form-control" type="search" placeholder="URL" v-model="resource.url">
                               </div>
-                              <p v-if="validators.url.name && !validators.blank.name" :class="{invalid: validators.url.name}">The text is not a valid URL address</p>
+                              <p v-if="validators.url.name && !validators.blank.name" :class="{invalid: validators.url.name}">The text is not a valid URL address. Please do not forget to specify the http or https protocol</p>
                             </div>
                             <div class="col-lg-6">
                               <div class="row">
