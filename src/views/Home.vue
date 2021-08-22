@@ -150,7 +150,7 @@ export default {
   watch: {
     resource: {
       handler: function (value) {
-        this.validators.url.name = !this.$validateUrl(value.url)
+        this.validators.url.name = !this.$validateUrlWithProtocol(value.url)
         this.validators.blank.name = this.$validateIsBlank(value.url)
       },
       deep: true
