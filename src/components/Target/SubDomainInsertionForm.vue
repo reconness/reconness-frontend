@@ -50,8 +50,12 @@ import { mapMutations, mapGetters } from 'vuex'
 import jQuery from 'jquery'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
+  name: 'SubDomainInsertionForm',
   components: {
     MinusCircleIco
+  },
+  props: {
+    gradient: String
   },
   data: function () {
     return {
@@ -68,6 +72,31 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    isFormValid () {
+      return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
+    },
+    ...mapGetters('target', ['checkIfSubdomainExistsByName'])
+  },
+  created: function () {
+    this.subdomains.push({
+      name: '',
+      added: new Date().toISOString().slice(0, 10),
+      checking: false,
+      interesting: false,
+      vulnerable: false,
+      boubty: false,
+      ignore: false,
+      scope: false,
+      agent: [],
+      ipAddress: '',
+      http: false,
+      isAlive: false,
+      ports: [],
+      services: [],
+      directories: []
+    })
   },
   methods: {
     createSubdomains: function () {
@@ -225,34 +254,6 @@ export default {
         this.validators.exist.subDomainName.splice(subdomainIndex, 1)
       }
     }
-  },
-  created: function () {
-    this.subdomains.push({
-      name: '',
-      added: new Date().toISOString().slice(0, 10),
-      checking: false,
-      interesting: false,
-      vulnerable: false,
-      boubty: false,
-      ignore: false,
-      scope: false,
-      agent: [],
-      ipAddress: '',
-      http: false,
-      isAlive: false,
-      ports: [],
-      services: [],
-      directories: []
-    })
-  },
-  computed: {
-    isFormValid () {
-      return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
-    },
-    ...mapGetters('target', ['checkIfSubdomainExistsByName'])
-  },
-  props: {
-    gradient: String
   }
 }
 </script>

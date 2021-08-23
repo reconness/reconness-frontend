@@ -30,7 +30,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  name: 'SubDomainDetailsDirectories',
+  name: 'SubDomainDetailsServices',
   data: function () {
     return {
       active_arrow_down: true,

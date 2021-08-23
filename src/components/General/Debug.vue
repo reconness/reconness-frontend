@@ -55,9 +55,9 @@ export default {
       if (this.terminalInput !== '') {
         const success = this.$randomBooleanResult()
         if (success) {
-          this.executionResult = 'Compiled successfully'
+          this.executionResult = this.$compilationResponse.success.description
         } else {
-          this.executionResult = 'Failed to compile with errors'
+          this.executionResult = this.$compilationResponse.error.description
         }
       }
     }

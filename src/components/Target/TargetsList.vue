@@ -55,6 +55,19 @@ import { TargetMixin } from '@/mixins/TargetMixin'
 
 export default {
   name: 'TargetsList',
+  components: {
+    BullseyeArrowIco,
+    TargetForm,
+    TargetConfirmation
+  },
+  data: function () {
+    return {
+      selectedCard: -1,
+      checkSelected: false,
+      checkDeleted: -1
+    }
+  },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('target', ['targetListStore', 'check', 'filterColour', 'styleList', 'targetIdList']),
     ...mapGetters('target', ['filterByColor']),
@@ -64,13 +77,6 @@ export default {
       } else {
         return this.filterByColor(this.filterColour)
       }
-    }
-  },
-  data: function () {
-    return {
-      selectedCard: -1,
-      checkSelected: false,
-      checkDeleted: -1
     }
   },
   methods: {
@@ -89,13 +95,7 @@ export default {
       const selectedTargetId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('target/setIdTarget', selectedTargetId)
     }
-  },
-  components: {
-    BullseyeArrowIco,
-    TargetForm,
-    TargetConfirmation
-  },
-  mixins: [TargetMixin]
+  }
 }
 </script>
 <style scoped>

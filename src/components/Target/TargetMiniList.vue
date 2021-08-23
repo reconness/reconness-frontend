@@ -25,6 +25,64 @@
         <TargetForm/>
     </div><!-- /.col -->
 </template>
+<script>
+import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
+import { mapState, mapMutations } from 'vuex'
+import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
+import TargetForm from '@/components/Target/TargetForm.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
+export default {
+  name: 'TargetMiniList',
+  components: {
+    TargetConfirmation,
+    BullseyeArrowIco,
+    TargetForm
+  },
+  props: {
+    name: String,
+    primaryColor: String,
+    secondaryColor: String,
+    id: Number,
+    rootDom: Array
+  },
+  data: function () {
+    return {
+      checkSelected: false,
+      checkDeleted: -1,
+      selectedTargetName: ''
+    }
+  },
+  mixins: [TargetMixin],
+  computed: {
+    ...mapState('target', ['check', 'targetIdList'])
+  },
+  methods: {
+    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
+    hoverCard (selectedIndex) {
+      this.selectedCard = selectedIndex
+    },
+    isSelected (cardIndex) {
+      return this.selectedCard === cardIndex
+    },
+    onEdit (e) {
+      this.setTargetId(e)
+      this.$store.commit('agent/setDetailsLinks', false)
+    },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
+    },
+    setTargetId (e) {
+      const selectedTargetId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('target/setIdTarget', selectedTargetId)
+    },
+    setTargetName (e) {
+      this.selectedTargetName = e.currentTarget.getAttribute('data-name')
+    }
+  }
+}
+</script>
 <style scoped>
 .agent-mini-main-container{
     margin-bottom: 32px;
@@ -131,60 +189,3 @@ input[type="checkbox"] {
   display: none;
 }
 </style>
-<script>
-import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
-import { mapState, mapMutations } from 'vuex'
-import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
-import TargetForm from '@/components/Target/TargetForm.vue'
-import { TargetMixin } from '@/mixins/TargetMixin'
-export default {
-  components: {
-    TargetConfirmation,
-    BullseyeArrowIco,
-    TargetForm
-  },
-  mixins: [TargetMixin],
-  data: function () {
-    return {
-      checkSelected: false,
-      checkDeleted: -1,
-      selectedTargetName: ''
-    }
-  },
-  props: {
-    name: String,
-    primaryColor: String,
-    secondaryColor: String,
-    id: Number,
-    rootDom: Array
-  },
-  computed: {
-    ...mapState('target', ['check', 'targetIdList'])
-  },
-  methods: {
-    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
-    hoverCard (selectedIndex) {
-      this.selectedCard = selectedIndex
-    },
-    isSelected (cardIndex) {
-      return this.selectedCard === cardIndex
-    },
-    onEdit (e) {
-      this.setTargetId(e)
-      this.$store.commit('agent/setDetailsLinks', false)
-    },
-    setDetailsLink (e) {
-      const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setIdAgent', selectedAgentId)
-      this.$store.commit('agent/setDetailsLinks', true)
-    },
-    setTargetId (e) {
-      const selectedTargetId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('target/setIdTarget', selectedTargetId)
-    },
-    setTargetName (e) {
-      this.selectedTargetName = e.currentTarget.getAttribute('data-name')
-    }
-  }
-}
-</script>

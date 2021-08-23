@@ -11,10 +11,6 @@ export default ({
       { name: 'Agent 7', background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box', id: 7, repository: 'repository7.com', target: 'target 7', command: 'command 7', type: 1, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 7', image: '', date: '21/07/2020', installedFrom: '', lastRun: '24/02/2021' },
       { name: 'Agent 8', background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box', id: 8, repository: 'repository8.com', target: 'target 8', command: 'command 8', type: 2, isAliveTrigger: true, isHttpOpenTrigger: false, script: 'run agent 8', image: '', date: '08/01/2020', installedFrom: '', lastRun: '01/01/2021' }
     ],
-    resources: [
-      { url: 'http://google.com', categories: ['searcher', 'docs'], id: 1 },
-      { url: 'http://yahoo.es', categories: ['searcher'], id: 2 }
-    ],
     filterColour: '',
     idAgent: -1,
     systemColors: [
@@ -40,7 +36,6 @@ export default ({
       }
     ],
     fromDetailsLink: false,
-    idResource: -1,
     check: false,
     agentIdList: [],
     styleList: '1.25rem',
@@ -58,7 +53,7 @@ export default ({
       { name: 'SubkisteD', description: 'Breve descripcion del agente SubkisteD', id: 4, installed: false },
       { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: false }
     ],
-    isMessageSectionOpened: false,
+    isNotesSectionOpened: false,
     isDeletetFromForm: false,
     isElementDeleted: false,
     nameRoute: '',
@@ -131,18 +126,6 @@ export default ({
     setDetailsLinks (state, isSelected) {
       state.fromDetailsLink = isSelected
     },
-    addResource (state, resource) {
-      state.resources.push(resource)
-    },
-    setSelectedResource (state, idResource) {
-      state.idResource = idResource
-    },
-    removeResource (state, idResource) {
-      const index = state.resources.findIndex(resource => resource.id === idResource)
-      if (index !== -1) {
-        state.resources.splice(index, 1)
-      }
-    },
     cancelIdAgent (state) {
       state.agentIdList = []
       state.check = !state.check
@@ -212,8 +195,8 @@ export default ({
         state.agentListStore.splice(index, 1)
       }
     },
-    setIsMessageSectionOpened (state, value) {
-      state.isMessageSectionOpened = value
+    setIsNotesSectionOpened (state, value) {
+      state.isNotesSectionOpened = value
     },
     setIsDeletetFromForm (state, value) {
       state.isDeletetFromForm = value
@@ -224,8 +207,6 @@ export default ({
     setIsDefaultViewOnAgent (state, value) {
       state.isDefaultViewOnAgent = value
     }
-  },
-  actions: {
   },
   getters: {
     idAgent: state => {

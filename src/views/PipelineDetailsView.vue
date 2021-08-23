@@ -32,10 +32,6 @@ import PipelineWorkflow from '@/components/Pipelines/PipelineWorkflow.vue'
 
 export default {
   name: 'PipelineDetailsView',
-  data: function () {
-    return {
-    }
-  },
   components: {
     NavBarTwoDetailPipeline,
     AgentListWorkflow,
@@ -43,6 +39,10 @@ export default {
   },
   props: {
     id: String
+  },
+  data: function () {
+    return {
+    }
   },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById']),
@@ -57,6 +57,9 @@ export default {
       return padding
     }
   },
+  mounted () {
+    this.$store.commit('agent/updateLocView', 'Pipelines', true)
+  },
   methods: {
     collapseDown () {
       document.getElementById('scroll-div').scrollBy({ top: 120, behavior: 'smooth' })
@@ -69,9 +72,6 @@ export default {
       this.$store.commit('agent/setIdAgent', selectedAgentId)
       this.$store.commit('agent/setDetailsLinks', true)
     }
-  },
-  mounted () {
-    this.$store.commit('agent/updateLocView', 'Pipelines', true)
   }
 }
 </script>

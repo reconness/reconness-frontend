@@ -29,17 +29,33 @@ import jQuery from 'jquery'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 import Toast from 'primevue/toast'
 export default {
+  name: 'TargetConfirmation',
+  components: {
+    Toast
+  },
+  props: {
+    type: String
+  },
   data () {
     return {
       nameTyped: '',
       selectedTargetName: ''
     }
   },
-  props: {
-    type: String
+  computed: {
+    ...mapGetters('target', ['idTarget', 'getTargetById']),
+    ...mapState('agent', ['isDeletetFromForm']),
+    loadSelectedTarget () {
+      const id = this.idTarget
+      return this.getTargetById(parseInt(id))
+    }
   },
-  components: {
-    Toast
+  watch: {
+    loadSelectedTarget: function (value) {
+      if (value !== undefined) {
+        this.selectedTargetName = value.name
+      }
+    }
   },
   methods: {
     ...mapMutations('target', ['setIdTarget']),
@@ -67,21 +83,6 @@ export default {
         this.setIdTarget(-1)
       } else {
         this.setIsDeletetFromForm(false)
-      }
-    }
-  },
-  computed: {
-    ...mapGetters('target', ['idTarget', 'getTargetById']),
-    ...mapState('agent', ['isDeletetFromForm']),
-    loadSelectedTarget () {
-      const id = this.idTarget
-      return this.getTargetById(parseInt(id))
-    }
-  },
-  watch: {
-    loadSelectedTarget: function (value) {
-      if (value !== undefined) {
-        this.selectedTargetName = value.name
       }
     }
   }

@@ -65,46 +65,11 @@
                     </blockquote>
                     <i class="material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}" style="font-size:26px">event</i>
                 </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
+                <div v-for="novelty in getLatestThingsFoundedInRootDomains" :key="novelty" class="d-flex justify-content-between item-list">
+                  <p class="mb-0"> New port opened<br> in subdomain <em> {{novelty.entity}} </em> </p>
                   <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{'<yanet>'}} </em> </p>
-                  <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">Jun</span>24</span>
-                    <span class="text-style-opacity">2020</span>
+                    <span><span class="font-weight-bold">{{this.getMonthByDate(novelty.date)}}</span>{{novelty.date.getDate()}}</span>
+                    <span class="text-style-opacity">{{novelty.date.getFullYear()}}</span>
                   </div>
                 </div>
               </div>
@@ -134,7 +99,7 @@
                 <div class="col donut-legend link-color">
                  <p> All running targets </p>
                  <hr>
-                 <p class="text-right"> 110</p>
+                 <p class="text-right">{{ getNumberOfRunningTargets }}</p>
                 </div>
                 <div class="col-7">
                 <apexchart  height="200" type="radialBar" :options="chartOptions" :series="seriesRadial"></apexchart>
@@ -156,6 +121,14 @@ import TargetsHighestInteraction from '@/components/General/TargetsHighestIntera
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 export default {
   name: 'TargetsDetailsView',
+  components: {
+    DaysHighestInteraction,
+    TargetsHighestInteraction,
+    NavBarTwoDetailTarget
+  },
+  props: {
+    id: String
+  },
   data: function () {
     return {
       Target: Object,
@@ -169,7 +142,7 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
-              position: 'top' // top, center, bottom
+              position: 'top'
             },
             columnWidth: '20%',
             borderRadius: 200
@@ -211,7 +184,7 @@ export default {
           }
         },
         xaxis: {
-          categories: [21, 22, 53, 80, 443, 62],
+          categories: [],
           axisBorder: {
             show: true
           },
@@ -236,9 +209,9 @@ export default {
       },
       seriesBar: [{
         name: 'series-1',
-        data: [62, 44, 38, 50, 78, 57]
+        data: []
       }],
-      seriesRadial: [87],
+      seriesRadial: [],
       chartOptions: {
         chart: {
           type: 'radialBar'
@@ -265,21 +238,14 @@ export default {
       }
     }
   },
-  components: {
-    DaysHighestInteraction,
-    TargetsHighestInteraction,
-    NavBarTwoDetailTarget
-  },
-  props: {
-    id: String
-  },
   computed: {
-    ...mapGetters('target', ['getTargetById']),
+    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains']),
     ...mapState('agent', ['isElementDeleted'])
   },
-  methods: {
-    ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['setCurrentView'])
+  created () {
+    this.updateOpenPortsInGraph()
+    this.updateSubDomainsNumberByOpenPortInGraph()
+    this.updatePercentOfRunningTargetsInGraph()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
@@ -293,6 +259,29 @@ export default {
       this.setIsElementDeleted(false)
     }
     this.setCurrentView(this.$route.name)
+  },
+  methods: {
+    ...mapMutations('agent', ['setIsElementDeleted']),
+    ...mapMutations('target', ['setCurrentView']),
+    updateOpenPortsInGraph () {
+      this.optionsBar.xaxis.categories = this.getOpenPorts
+    },
+    updateSubDomainsNumberByOpenPortInGraph () {
+      this.seriesBar[0].data = this.getNumberSubDomainsByOpenPorts
+    },
+    updatePercentOfRunningTargetsInGraph () {
+      this.seriesRadial[0] = this.getPercentOfRunningTargets
+    },
+    getShortMonthName (dateData) {
+      return dateData.toLocaleString('default', { month: 'short' })
+    },
+    capitalizeFirstChartByMonth (dateData) {
+      const month = this.getShortMonthName(dateData)
+      return month.charAt(0).toUpperCase() + month.slice(1)
+    },
+    getMonthByDate (dateData) {
+      return this.capitalizeFirstChartByMonth(dateData)
+    }
   }
 }
 </script>

@@ -990,7 +990,7 @@ export default ({
     check: false,
     targetIdList: [],
     colorDelete: '#000000',
-    idMessage: -1,
+    idNote: -1,
     loggedUser: {
       name: 'John Doe',
       email: 'johndoe@gmail.com'
@@ -1139,59 +1139,59 @@ export default ({
       }
       return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
     },
-    setIdMessage (state, id) {
-      state.idMessage = parseInt(id)
+    setIdNote (state, id) {
+      state.idNote = parseInt(id)
     },
-    removeTargetMessage (state, idTarget) {
+    removeTargetNote (state, idTarget) {
       const target = state.targetListStore.find(item => item.id === parseInt(idTarget))
-      const messageIndex = target.messages.findIndex(message => message.id === parseInt(state.idMessage))
-      target.messages.splice(messageIndex, 1)
+      const noteIndex = target.messages.findIndex(message => message.id === parseInt(state.idNote))
+      target.messages.splice(noteIndex, 1)
     },
-    removeRootDomainMessage (state, params) {
+    removeRootDomainNote (state, params) {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
-      const messageIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idMessage))
-      rootdomain.messages.splice(messageIndex, 1)
+      const noteIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
+      rootdomain.messages.splice(noteIndex, 1)
     },
-    removeSubDomainMessage (state, params) {
+    removeSubDomainNote (state, params) {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
       const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.id === params.idSubDomain)
-      const messageIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idMessage))
-      subdomain.messages.splice(messageIndex, 1)
+      const noteIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
+      subdomain.messages.splice(noteIndex, 1)
     },
-    sendTargetMessage (state, messageInfo, rootGetters) {
+    sendTargetNote (state, messageInfo, rootGetters) {
       const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
-      const message = {
-        id: state.idMessage++,
+      const note = {
+        id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
         sender: state.loggedUser.name
       }
-      target.messages.push(message)
+      target.messages.push(note)
     },
-    sendRootDomainMessage (state, messageInfo) {
+    sendRootDomainNote (state, messageInfo) {
       const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
-      const message = {
-        id: state.idMessage++,
+      const note = {
+        id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
         sender: state.loggedUser.name
       }
-      rootdomain.messages.push(message)
+      rootdomain.messages.push(note)
     },
-    sendSubDomainMessage (state, messageInfo) {
+    sendSubDomainNote (state, messageInfo) {
       const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
       const subdomain = rootdomain.subdomain.find(subDomain => subDomain.id === messageInfo.idSubDomain)
-      const message = {
-        id: state.idMessage++,
+      const note = {
+        id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
         sender: state.loggedUser.name
       }
-      subdomain.messages.push(message)
+      subdomain.messages.push(note)
     },
     setIsTargetDeleted (state, value) {
       state.isTargetDeleted = value
@@ -1288,10 +1288,10 @@ export default ({
     getTargetById: (state) => (id) => {
       return state.targetListStore.find(target => target.id === id)
     },
-    getTargetMessages: (state) => (id) => {
+    getTargetNotes: (state) => (id) => {
       return state.targetListStore.find(target => target.id === id).messages
     },
-    getRootDomainMessages: (state) => (params) => {
+    getRootDomainNotes: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
       if (target) {
         return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
@@ -1299,7 +1299,7 @@ export default ({
         return []
       }
     },
-    getSubDomainMessages: (state) => (params) => {
+    getSubDomainNotes: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
       if (target) {
         const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
@@ -1453,6 +1453,46 @@ export default ({
         return runningAgent.id
       }
       return -1
+    },
+    getOpenPorts () {
+      return [21, 22, 53, 80, 443, 62]
+    },
+    getNumberSubDomainsByOpenPorts () {
+      return [62, 44, 38, 50, 78, 57]
+    },
+    getNumberOfRunningTargets () {
+      return 110
+    },
+    getPercentOfRunningTargets () {
+      return 87
+    },
+    getLatestThingsFoundedInRootDomains () {
+      return [
+        {
+          entity: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        },
+        {
+          subdomain: 'yanet',
+          date: new Date('06/24/2020')
+        }
+      ]
     }
   }
 })

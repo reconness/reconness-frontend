@@ -44,15 +44,15 @@ export default {
       }
     }
   },
-  methods: {
-    ...mapMutations('agent', ['setIsElementDeleted'])
-  },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
     if (this.isElementDeleted) {
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
       this.setIsElementDeleted(false)
     }
+  },
+  methods: {
+    ...mapMutations('agent', ['setIsElementDeleted'])
   }
 }
 </script>

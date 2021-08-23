@@ -18,16 +18,21 @@
 </template>
 <script>
 import jQuery from 'jquery'
+import { mapActions } from 'vuex'
 export default {
   name: 'SimpleConfirmation',
   methods: {
+    ...mapActions('referent', ['deleteResource']),
     removeResource: function () {
-      this.$store.commit('agent/removeResource', parseInt(this.$store.state.agent.idResource))
-      jQuery('#simple-confirmation-modal').modal('hide')
-    },
-    setSelectedReference (e) {
-      const selectedId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setSelectedResource', selectedId)
+      this.deleteResource(this.$store.state.referent.idResource)
+        .then(success => {
+          if (success) {
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The reference has been removed successfully', life: 3000 })
+          } else {
+            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
+          }
+          jQuery('#simple-confirmation-modal').modal('hide')
+        })
     }
   }
 }

@@ -54,25 +54,29 @@ export default {
   methods: {
     ...mapMutations('pipelines', ['removePipelinesChecked', 'removeAgentsPipelinesChecked', 'cancelElementSelected']),
     remove: function () {
-      switch (this.nameRoute) {
-        case 'Pipelines':
-          this.removePipelinesChecked()
-          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The pipeline has been deleted successfully', life: 3000 })
-          break
-        case 'PipelineDetail':
-          this.removeAgentsPipelinesChecked(parseInt(this.$route.params.id))
-          this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents from this pipeline has been deleted successfully', life: 3000 })
-          break
+      try {
+        switch (this.nameRoute) {
+          case 'Pipelines':
+            this.removePipelinesChecked()
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The pipeline has been deleted successfully', life: 3000 })
+            break
+          case 'PipelineDetail':
+            this.removeAgentsPipelinesChecked(parseInt(this.$route.params.id))
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agents from this pipeline has been deleted successfully', life: 3000 })
+            break
+        }
+      } catch (error) {
+        this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the removal process', life: 3000 })
+      } finally {
+        jQuery('#confirmationList-modal').modal('hide')
+        jQuery('#exampleModalCenter').modal('hide')
+        this.nameTyped = ''
       }
-      jQuery('#confirmationList-modal').modal('hide')
-      jQuery('#exampleModalCenter').modal('hide')
-      this.nameTyped = ''
     },
     close () {
       const checkboxes = document.getElementsByName('checkitem')
       for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = false
-        // document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = '#fff'
       }
       this.nameTyped = ''
       this.$store.commit('pipelines/cancelElementSelected', this.nameRoute)

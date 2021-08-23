@@ -176,6 +176,11 @@ import TargetConfirmList from '@/components/Target/TargetConfirmList.vue'
 import jQuery from 'jquery'
 export default {
   name: 'NavBarTwoTarget',
+  components: {
+    TargetForm,
+    Toast,
+    TargetConfirmList
+  },
   data: function () {
     return {
       active: false,
@@ -193,11 +198,6 @@ export default {
     arrayUniqueColours () {
       return [...new Set(this.targetListStore.map(item => 'linear-gradient(160deg,' + item.primaryColor + ' ' + '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'))]
     }
-  },
-  components: {
-    TargetForm,
-    Toast,
-    TargetConfirmList
   },
   mounted () {
     if (!this.$store.state.target.isDefaultViewOnTarget) {

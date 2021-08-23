@@ -4,7 +4,7 @@
     class="col-12 col-lg-12 col-xl-6 col-xxl-4 p-4 container-card">
     <span  class="material-icons main_reconnes_text-color mt-1 float-left"> chevron_right </span>
        <div class="card card-custom w-auto mb-3">
-        <input type="checkbox" :id="item.id"  name="checkitem" :checked="isChecked(item.id)">
+        <input type="checkbox" :id="item.id"  name="checkitem" :checked="this.$isItemOnList(item.id, pipelinesIdList)">
         <label :for="item.id" v-show="check"  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" ></label>
          <div class="p-2">
          <div class="d-flex justify-content-between ml-3 mt-2 mr-2">
@@ -46,6 +46,7 @@ import GearIcon from '@/components/Icons/GearIcon.vue'
 import PipelineWorkflow from '@/components/Pipelines/PipelineWorkflow.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
+import { PipelineMixin } from '@/mixins/PipelineMixin'
 export default {
   name: 'PipelinesList',
   components: {
@@ -63,6 +64,7 @@ export default {
       selectedPipeline: { id: -1 }
     }
   },
+  mixins: [PipelineMixin],
   computed: {
     ...mapState('pipelines', ['pipelinesListStore', 'pipelinesIdList', 'check'])
   },
@@ -74,41 +76,6 @@ export default {
     setPipelinesId (e) {
       const selectedPipelineId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('pipelines/setIdPipelines', selectedPipelineId)
-    },
-    isChecked (itemID) {
-      if (this.checkSelected === false) {
-        if (this.pipelinesIdList.find(pipeline => pipeline.id === itemID)) {
-          if (this.checkDeleted === itemID) {
-            return false
-          } else {
-            return true
-          }
-        } else {
-          if (this.checkDeleted === itemID) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-    },
-    addListPipelinesId (e) {
-      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedPipelinesName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId).checked === false) {
-        if (this.pipelinesIdList.length !== 0 && this.checkSelected === false) {
-          this.checkSelected = false
-          this.checkDeleted = selectedId
-        } else {
-          this.checkSelected = true
-        }
-        this.addIdPipeline({ id: selectedId, name: selectedPipelinesName })
-      } else {
-        this.removebyIdPipelines(selectedId)
-        if (this.checkSelected === false) {
-          this.checkDeleted = selectedId
-        }
-      }
     },
     openSettings (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))

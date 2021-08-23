@@ -56,7 +56,7 @@
                                 <span class="material-icons search-icon form-control-feddback">search</span>
                                 <input class="form-control" type="search" placeholder="URL" v-model="resource.url">
                               </div>
-                              <p v-if="validators.url.name && !validators.blank.name" :class="{invalid: validators.url.name}">The text is not a valid URL address</p>
+                              <p v-if="validators.url.name && !validators.blank.name" :class="{invalid: validators.url.name}">The text is not a valid URL address. Please do not forget to specify the http or https protocol</p>
                             </div>
                             <div class="col-lg-6">
                               <div class="row">
@@ -93,7 +93,7 @@
                       </div><!-- /.row -->
                     </div><!-- /.home-quote-box -->
                   </div> <!-- /.col-sm-12 -->
-                  <SimpleConfirmation></SimpleConfirmation>
+                  <SimpleConfirmation />
                 </div><!-- /.row -->
               </div><!-- /.col-sm-12 -->
             </div><!-- /.row -->
@@ -111,7 +111,7 @@ import HomeRigthSidebar from '@/components/General/HomeRigthSidebar.vue'
 import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
 import SimpleConfirmation from '@/components/General/SimpleConfirmation.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Chips from 'primevue/chips'
 export default {
   name: 'Home',
@@ -138,30 +138,55 @@ export default {
     }
   },
   computed: {
-    ...mapState('agent', ['resources'])
+    ...mapState('auth', ['authentication_token']),
+    ...mapState('referent', ['resources']),
+    getApiUserName () {
+      return process.env.VUE_APP_API_RECONNES_USERNAME
+    },
+    getApiPassword () {
+      return process.env.VUE_APP_API_RECONNES_PASSWORD
+    }
   },
   watch: {
     resource: {
       handler: function (value) {
-        this.validators.url.name = !this.$validateUrl(value.url)
+        this.validators.url.name = !this.$validateUrlWithProtocol(value.url)
         this.validators.blank.name = this.$validateIsBlank(value.url)
       },
       deep: true
+    },
+    authentication_token: function (value) {
+      if (value !== '') {
+        this.loadResources()
+      }
     }
   },
+  created () {
+    this.login({
+      username: this.getApiUserName,
+      password: this.getApiPassword
+    })
+  },
   methods: {
+    ...mapActions('auth', ['login']),
+    ...mapActions('referent', ['loadResources', 'addResource']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setSelectedResource', selectedId)
+      this.$store.commit('referent/setSelectedResource', selectedId)
     },
     addReference () {
       if (!this.validators.url.name && !this.validators.blank.name) {
-        this.$store.commit('agent/addResource', {
+        this.addResource({
           url: this.resource.url,
-          categories: this.resource.categories,
-          id: this.resources.length + 1
+          categories: this.resource.categories
+        }).then(success => {
+          if (success) {
+            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The reference has been inserted successfully', life: 3000 })
+          } else {
+            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the insertion process', life: 3000 })
+          }
+          this.resetResource()
         })
-        this.resetResource()
       }
     },
     resetResource: function () {

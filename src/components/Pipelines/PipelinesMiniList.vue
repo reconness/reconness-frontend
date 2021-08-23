@@ -3,7 +3,7 @@
     <div v-for="item of pipelinesListStore" :key="item.id"
     class=" col-12 col-sm-4 col-xl-3 col-lgg-5 p-3">
         <div class="card initial-info-box agent-mini-main-container rounded-corners container-card" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)">
-        <input type="checkbox" :id="item.id"  name="checkitem" :checked="isChecked(item.id)">
+        <input type="checkbox" :id="item.id"  name="checkitem" :checked="this.$isItemOnList(item.id, pipelinesIdList)">
         <label :for="item.id" v-show="check"  @click="addListPipelinesId" :data-id="item.id" :data-name="item.name" class="mb-0"></label>
         <div class="card-header border-bottom-0 mb-1 mt-3 p-0 pl-2 pr-3 ">
            <span  class="material-icons main_reconnes_text-color mr-1 float-left"> chevron_right </span>
@@ -58,6 +58,7 @@ import { mapState, mapMutations } from 'vuex'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
+import { PipelineMixin } from '@/mixins/PipelineMixin'
 export default {
   name: 'PipelinesMiniList',
   components: {
@@ -72,6 +73,7 @@ export default {
       checkDeleted: -1
     }
   },
+  mixins: [PipelineMixin],
   computed: {
     ...mapState('pipelines', ['pipelinesListStore', 'pipelinesIdList', 'check'])
   },
@@ -83,41 +85,6 @@ export default {
     setPipelinesId (e) {
       const selectedPipelineId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('pipelines/setIdPipelines', selectedPipelineId)
-    },
-    isChecked (itemID) {
-      if (this.checkSelected === false) {
-        if (this.pipelinesIdList.find(pipeline => pipeline.id === itemID)) {
-          if (this.checkDeleted === itemID) {
-            return false
-          } else {
-            return true
-          }
-        } else {
-          if (this.checkDeleted === itemID) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-    },
-    addListPipelinesId (e) {
-      const selectedId = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedPipelinesName = e.currentTarget.getAttribute('data-name')
-      if (document.getElementById(selectedId).checked === false) {
-        if (this.pipelinesIdList.length !== 0 && this.checkSelected === false) {
-          this.checkSelected = false
-          this.checkDeleted = selectedId
-        } else {
-          this.checkSelected = true
-        }
-        this.addIdPipeline({ id: selectedId, name: selectedPipelinesName })
-      } else {
-        this.removebyIdPipelines(selectedId)
-        if (this.checkSelected === false) {
-          this.checkDeleted = selectedId
-        }
-      }
     },
     openSettings (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))

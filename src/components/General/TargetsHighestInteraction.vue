@@ -1,5 +1,5 @@
 <template>
-        <div :style ="{background:background}" style="border-radius: 25px; padding: 25px; box-shadow: 13px 31px 41px #0C1F6A3B; margin-bottom: 1rem;">
+        <div :style ="{background:background}" class="box-outline">
             <div class="row">
             <div class="col-9">
                 <p  class="targets-title">
@@ -116,5 +116,11 @@ export default {
     color: #ffffff;
     font-size: 10px;
     opacity: 1;
+}
+.box-outline {
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 13px 31px 41px #0C1F6A3B;
+    margin-bottom: 1rem;
 }
 </style>

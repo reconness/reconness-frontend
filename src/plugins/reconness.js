@@ -52,6 +52,16 @@ export default {
       return !!pattern.test(url)
     }
 
+    app.config.globalProperties.$validateUrlWithProtocol = function (url) {
+      const pattern = new RegExp('^(https?:\\/\\/)' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
+      return !!pattern.test(url)
+    }
+
     app.config.globalProperties.$validateUrl = function (url) {
       const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -111,6 +121,13 @@ export default {
         TARGET: { id: 1, description: 'Target' },
         ROOTDOMAIN: { id: 1, description: 'RootDomain' },
         SUBDOMAIN: { id: 1, description: 'SubDomain' }
+      }
+    )
+
+    app.config.globalProperties.$compilationResponse = Object.freeze(
+      {
+        success: { description: 'Compiled successfully' },
+        error: { description: 'Failed to compile with errors' }
       }
     )
 
@@ -179,5 +196,15 @@ export default {
         1000
       )
     }
+
+    app.config.globalProperties.$message = Object.freeze(
+      {
+        errorSummary: 'Error',
+        successSumary: 'Success',
+        errorMessageForAllPurpose: 'An error occured during the removal process',
+        successMessageForTargetDeletion: 'The target has been deleted successfully',
+        successMessageForSubDomainDeletion: 'The subdomain has been deleted successfully'
+      }
+    )
   }
 }

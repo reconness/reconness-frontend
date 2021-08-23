@@ -128,126 +128,6 @@
     </form>
     </div>
 </template>
-<style>
-    .targetform-action{
-        bottom: -28%;
-        position: absolute;
-        right: 8%;
-        font-size: .875rem;
-    }
-
-    .target-form-color-components{
-        width: 30px;
-        height: 30px;
-        margin-top: 23px !important;
-    }
-
-    .custom-control-input:checked~.custom-control-label::before {
-      color: #fff;
-      border-color: #00B1FF;
-      background-color: #00B1FF;
-      box-shadow: none;
-    }
-
-    .target-form-color-spacing-bottom{
-        margin-top: 44% !important;
-    }
-
-    .agentform-color-components-align{
-        margin: auto;
-    }
-
-    .image-button{
-      background-image: url('~@/assets/Rect.png');
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      width: 32px;
-      height: 32px;
-    }
-
-    .agent-border{
-        border: 1px solid #F1F3F5;
-        border-radius: 12px;
-        width: 90px;
-        height: 47px;
-    }
-
-    .agent-name-input{
-      font-size: 24px;
-      font-weight: bold;
-      color: #000000;
-      border-left: 4px solid #00B1FF;
-      border-top: none;
-      border-bottom: none;
-      border-right: none;
-    }
-
-    .input.invalid input {
-        border: 1px solid red;
-    }
-
-    .invalid {
-        color: red;
-    }
-
-    .target-combo-box-size{
-        height: 144px;
-    }
-
-    .combo-box-left-padding{
-        flex: 1 1 auto;
-        min-height: 1px;
-        padding-left: 19px;
-    }
-
-    .combo-box-right-padding{
-        padding-right: 15px;
-    }
-
-    .more-option-padding{
-      padding-top: 12px;
-      margin-right: 15px;
-    }
-
-    .postal-title{
-      overflow: hidden;
-    }
-
-    .p-colorpicker-preview {
-        width: 30px;
-        height: 30px;
-        margin: auto;
-        background-image: url('~@/assets/Rect.png');
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-    }
-
-    .p-colorpicker-overlay {
-      margin-left: 1.5rem;
-    }
-
-    .triggers-label-space {
-      margin-left: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .triggers-options-space {
-      margin-top: 0.5rem;
-    }
-
-    .triggers-container-label-space{
-      margin-bottom: 0.2rem;
-    }
-
-    .triggers-more-options-area-size{
-      height: 335px;
-    }
-
-    button.delete-left-align{
-      margin-right: auto;
-    }
-
-</style>
 <script>
 import jQuery from 'jquery'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
@@ -255,6 +135,87 @@ import Toast from 'primevue/toast'
 import Chips from 'primevue/chips'
 import { mapMutations, mapGetters } from 'vuex'
 export default {
+  name: 'TargetForm',
+  components: {
+    BullseyeArrowIco,
+    Toast,
+    Chips
+  },
+  data () {
+    return {
+      target: {
+        name: '',
+        id: -1,
+        date: new Date().toString(),
+        rootDomains: [],
+        bugBountyUrl: '',
+        isPrivateProgram: false,
+        inScope: '',
+        outScope: '',
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3'
+      },
+      rootDomainsTextItems: [],
+      isVisibleTopSection: true,
+      isVisibleMiddleSection: true,
+      isVisibleBottomSection: false,
+      middleSection: 'collapse',
+      editable: false,
+      arrow_down: true,
+      arrow_up: false,
+      isPencilVisible: false,
+      isPencilVisibleAndClick: false,
+      validators: {
+        blank: {
+          name: false,
+          rootDomains: false,
+          bugBountyUrl: false,
+          inScope: false,
+          outScope: false
+        },
+        url: {
+          bugBountyUrl: false,
+          rootDomains: false
+        },
+        exist: {
+          name: false
+        }
+      },
+      nextTargetSequence: 30
+    }
+  },
+  computed: {
+    loadSelectedTarget () {
+      const id = this.$store.getters['target/idTarget']
+      return this.$store.getters['target/getTargetById'](parseInt(id))
+    },
+    isFormValid () {
+      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.url.bugBountyUrl && this.validators.exist.name)
+    },
+    ...mapGetters('target', ['checkIfTargetExistsByName'])
+  },
+  watch: {
+    loadSelectedTarget: function (value) {
+      if (value !== undefined) {
+        this.target.name = value.name
+        this.target.primaryColor = value.primaryColor
+        this.target.secondaryColor = value.secondaryColor
+        this.target.id = value.id
+        this.target.bugBountyUrl = value.bugBountyUrl
+        this.target.isPrivateProgram = value.isPrivateProgram
+        this.target.inScope = value.inScope
+        this.target.outScope = value.outScope
+        this.editable = true
+
+        this.target.rootDomains = value.rootDomains.slice(0)
+        this.target.rootDomains.forEach(element => {
+          this.rootDomainsTextItems.push(element.root)
+        })
+      } else {
+        this.resetTargetForm()
+      }
+    }
+  },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
     setBlueColor: function () {
@@ -455,90 +416,129 @@ export default {
       this.isPencilVisibleAndClick = false
       this.enableValidationMessageUniqueName()
     }
-  },
-  data () {
-    return {
-      target: {
-        name: '',
-        id: -1,
-        date: new Date().toString(),
-        rootDomains: [],
-        bugBountyUrl: '',
-        isPrivateProgram: false,
-        inScope: '',
-        outScope: '',
-        primaryColor: '#737be5',
-        secondaryColor: '#7159d3'
-      },
-      rootDomainsTextItems: [],
-      isVisibleTopSection: true,
-      isVisibleMiddleSection: true,
-      isVisibleBottomSection: false,
-      middleSection: 'collapse',
-      editable: false,
-      arrow_down: true,
-      arrow_up: false,
-      isPencilVisible: false,
-      isPencilVisibleAndClick: false,
-      validators: {
-        blank: {
-          name: false,
-          rootDomains: false,
-          bugBountyUrl: false,
-          inScope: false,
-          outScope: false
-        },
-        url: {
-          bugBountyUrl: false,
-          rootDomains: false
-        },
-        exist: {
-          name: false
-        }
-      },
-      nextTargetSequence: 30
-    }
-  },
-  components: {
-    BullseyeArrowIco,
-    Toast,
-    Chips
-  },
-  computed: {
-    loadSelectedTarget () {
-      const id = this.$store.getters['target/idTarget']
-      return this.$store.getters['target/getTargetById'](parseInt(id))
-    },
-    isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.url.bugBountyUrl && this.validators.exist.name)
-    },
-    ...mapGetters('target', ['checkIfTargetExistsByName'])
-  },
-  watch: {
-    loadSelectedTarget: function (value) {
-      if (value !== undefined) {
-        this.target.name = value.name
-        this.target.primaryColor = value.primaryColor
-        this.target.secondaryColor = value.secondaryColor
-        this.target.id = value.id
-        this.target.bugBountyUrl = value.bugBountyUrl
-        this.target.isPrivateProgram = value.isPrivateProgram
-        this.target.inScope = value.inScope
-        this.target.outScope = value.outScope
-        this.editable = true
-
-        this.target.rootDomains = value.rootDomains.slice(0)
-        this.target.rootDomains.forEach(element => {
-          this.rootDomainsTextItems.push(element.root)
-        })
-      } else {
-        this.resetTargetForm()
-      }
-    }
   }
 }
 </script>
+<style>
+    .targetform-action{
+        bottom: -28%;
+        position: absolute;
+        right: 8%;
+        font-size: .875rem;
+    }
 
+    .target-form-color-components{
+        width: 30px;
+        height: 30px;
+        margin-top: 23px !important;
+    }
+
+    .custom-control-input:checked~.custom-control-label::before {
+      color: #fff;
+      border-color: #00B1FF;
+      background-color: #00B1FF;
+      box-shadow: none;
+    }
+
+    .target-form-color-spacing-bottom{
+        margin-top: 44% !important;
+    }
+
+    .agentform-color-components-align{
+        margin: auto;
+    }
+
+    .image-button{
+      background-image: url('~@/assets/Rect.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      width: 32px;
+      height: 32px;
+    }
+
+    .agent-border{
+        border: 1px solid #F1F3F5;
+        border-radius: 12px;
+        width: 90px;
+        height: 47px;
+    }
+
+    .agent-name-input{
+      font-size: 24px;
+      font-weight: bold;
+      color: #000000;
+      border-left: 4px solid #00B1FF;
+      border-top: none;
+      border-bottom: none;
+      border-right: none;
+    }
+
+    .input.invalid input {
+        border: 1px solid red;
+    }
+
+    .invalid {
+        color: red;
+    }
+
+    .target-combo-box-size{
+        height: 144px;
+    }
+
+    .combo-box-left-padding{
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding-left: 19px;
+    }
+
+    .combo-box-right-padding{
+        padding-right: 15px;
+    }
+
+    .more-option-padding{
+      padding-top: 12px;
+      margin-right: 15px;
+    }
+
+    .postal-title{
+      overflow: hidden;
+    }
+
+    .p-colorpicker-preview {
+        width: 30px;
+        height: 30px;
+        margin: auto;
+        background-image: url('~@/assets/Rect.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .p-colorpicker-overlay {
+      margin-left: 1.5rem;
+    }
+
+    .triggers-label-space {
+      margin-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .triggers-options-space {
+      margin-top: 0.5rem;
+    }
+
+    .triggers-container-label-space{
+      margin-bottom: 0.2rem;
+    }
+
+    .triggers-more-options-area-size{
+      height: 335px;
+    }
+
+    button.delete-left-align{
+      margin-right: auto;
+    }
+
+</style>
 <style scoped>
 input[type="file"]{
   width: 0.1px;

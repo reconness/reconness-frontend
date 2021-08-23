@@ -29,7 +29,16 @@ import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue
 import SubdomainListTable from '@/components/Target/SubdomainListTable.vue'
 import AgentListTable from '@/components/Target/AgentListTable.vue'
 export default {
-  name: 'TargetsDetailsView',
+  name: 'RootDomainDetailsView',
+  components: {
+    NavBarTwoDetailTarget,
+    SubdomainListTable,
+    AgentListTable
+  },
+  props: {
+    id: String,
+    idTarget: String
+  },
   data: function () {
     return {
       TargetName: String,
@@ -51,16 +60,16 @@ export default {
       }
     }
   },
-  components: {
-    NavBarTwoDetailTarget,
-    SubdomainListTable,
-    AgentListTable
-  },
   computed: {
     ...mapState('target', ['countSubdomainList', 'isTableList']),
     ...mapGetters('target', ['getTargetById', 'getSubdomainSize']),
     ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents'])
+  },
+  watch: {
+    $route (to, from) {
+      this.setIsDefaultTabButton(true)
+    }
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
@@ -70,10 +79,6 @@ export default {
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor
     this.setCurrentView(this.$route.name)
-  },
-  props: {
-    id: String,
-    idTarget: String
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton']),
@@ -91,11 +96,6 @@ export default {
         this.shadowSubd = ''
         this.shadowAg = '13px 19px 41px #d6d6d6'
       }
-    }
-  },
-  watch: {
-    $route (to, from) {
-      this.setIsDefaultTabButton(true)
     }
   }
 }
