@@ -10,7 +10,7 @@
         <div :class="{ 'invisible': isNextElementLastItem(index)}"
           class="mt-3 margin-center abs-center border-top w-35"
           style="color:black!important;border: 1px solid; float:left"> </div>
-          <div v-if="index+1 !== associatedAgents.length" :class="{ 'invisible': isNextElementLastItem(index) }" class="mt-3 black-circle">  </div>
+          <div v-if="index !== associatedAgents.length" :class="{ 'invisible': isNextElementLastItem(index) }" class="mt-3 black-circle">  </div>
           <div>
           <div  class="workflow-tools info-box invisible">
             <div class="info-box-content">
@@ -30,8 +30,8 @@
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
             <div  v-for="(sonAgent, sonAgentIndex) of this.getAgentBranch(index-1)"  :id="'branch' + sonAgentIndex" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
               <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
-                <div :class="{'invisible': sonAgentIndex+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
-                  <div v-if="sonAgentIndex+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
+                <div :class="{'invisible': sonAgentIndex === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
+                  <div v-if="sonAgentIndex !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
                       <PipelineAgentSecondaryFront :index="sonAgentIndex" :sonAgent="sonAgent" :pipeline="pipeline"/>
                   </div>
                 </div>
