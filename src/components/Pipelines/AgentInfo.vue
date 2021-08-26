@@ -46,10 +46,10 @@ export default {
   computed: {
     ...mapState('pipelines', ['agentParentRunningIndex', 'agentChildRunningIndex', 'numberAgentsProcessing']),
     ...mapGetters('pipelines', ['getPipelineById']),
-    isPipelineIsRunning () {
+    isPipelineRunning () {
       return this.pipeline.statusRun === this.$entityStatus.RUNNING
     },
-    isCurrentParentAgentRunning () {
+    isCurrentAgentInstanceRunning () {
       return this.index === this.agentParentRunningIndex
     },
     haveRunningAgentChildrens () {
