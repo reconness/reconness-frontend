@@ -85,7 +85,7 @@
             <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: TargetName.name} }" v-if = showRootDomains>
+            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: TargetName} }" v-if = showRootDomains>
             <p class="float-right ml-2 font-weight-bold color-black">{{TargetName}}</p>
             </router-link>
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
