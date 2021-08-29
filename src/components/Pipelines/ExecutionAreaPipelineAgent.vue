@@ -89,19 +89,15 @@ export default {
     getAgentBranch (indexValue) {
       const windowReziseWidth = window.outerWidth
       if (indexValue !== -1) {
-        if (this.AgentsPipelineList[indexValue].agentBranch) {
-          if (windowReziseWidth < 1200) {
-            return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
-          } else {
-            if (windowReziseWidth >= 1200) {
-              return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
-            }
-          }
-        } else {
-          return []
-        }
+        return []
       }
-      return []
+      if (this.isAgentOrAgentSongsUndefined(indexValue)) {
+        return []
+      }
+      if (windowReziseWidth < 1200) {
+        return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
+      }
+      return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
     },
     processSecondaryAgentExecution () {
       this.indexRunningSecondaryAgent++
@@ -117,6 +113,9 @@ export default {
     },
     onAgentTimeChange (agentTime) {
       this.$emit('agenttimechange', agentTime)
+    },
+    isAgentOrAgentSongsUndefined (pipelineIndex) {
+      return (this.AgentsPipelineList[pipelineIndex] === undefined || this.AgentsPipelineList[pipelineIndex].agentBranch === undefined)
     }
   }
 }

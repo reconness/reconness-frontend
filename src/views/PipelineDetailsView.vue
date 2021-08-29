@@ -40,10 +40,6 @@ export default {
   props: {
     id: String
   },
-  data: function () {
-    return {
-    }
-  },
   computed: {
     ...mapGetters('pipelines', ['getPipelineById']),
     ...mapState('pipelines', ['checkDetail']),

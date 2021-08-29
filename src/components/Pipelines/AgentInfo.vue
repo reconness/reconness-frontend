@@ -75,8 +75,8 @@ export default {
   },
   watch: {
     agentParentRunningIndex: function (indexParentAgent) {
-      if (this.isPipelineIsRunning) {
-        if (this.isCurrentParentAgentRunning) {
+      if (this.isPipelineRunning) {
+        if (this.isCurrentAgentInstanceRunning) {
           this.updatePipelineAndRelatedData()
         } else {
           if (this.isCurrentAgentRunning) {
