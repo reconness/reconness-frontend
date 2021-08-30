@@ -197,7 +197,7 @@ export default {
     }
   },
   created () {
-    window.addEventListener('beforeunload', this.redirectToHomePage())
+    this.whenRefreshPageRedirecToHome()
   },
   mounted () {
     this.location = this.viewloc
@@ -235,6 +235,9 @@ export default {
     },
     redirectToHomePage: function () {
       this.$router.push('/')
+    },
+    whenRefreshPageRedirecToHome () {
+      window.addEventListener('beforeunload', this.redirectToHomePage())
     }
   }
 }
