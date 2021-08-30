@@ -18,11 +18,11 @@
           <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
         </li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
-          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: TargetName,  rootdomainName: rootName } }">
+          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: TargetName,  rootdomainName: $route.params.rootdomainName } }">
           <span class="material-icons ml-2 icon-color-style font-weight-bold" style="line-height: 1.6"> chevron_right </span>
         </router-link></li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
-          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: TargetName, rootdomainName: rootName} }">
+          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: TargetName, rootdomainName: $route.params.rootdomainName} }">
           <span class="ml-2 font-weight-bold">{{rootName}}</span>
           </router-link>
         </li>
