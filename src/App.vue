@@ -92,19 +92,16 @@
               </a>
             </router-link>
             </li>
-            <li class="nav-item has-treeview menu-open cursor-pointer">
-                <a class="nav-link" v-on:click="switchArrowsPipeline">
-                <span class="material-icons badge badge-dark float-left">code</span>
+            <li class="nav-item has-treeview">
+                <router-link :to="{ name: 'Pipelines'}">
+                <a class="nav-link" v-on:click="goToPipelinesListPageAndExpandMenu">
+                <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
                 <p>Pipelines</p>
                 <span v-show="arrow_down" class="material-icons float-right">arrow_drop_down</span>
-                <span v-show="arrow_up" class="material-icons float-right">arrow_drop_up</span></a>
+                <span v-show="arrow_up" class="material-icons float-right">arrow_drop_up</span>
+                </a>
+                </router-link>
               <ul class="nav nav-treeview">
-                <li class="nav-item" ><router-link :to="{ name: 'Pipelines'}">
-                  <a class="nav-link" id ='pipelineNav' v-on:click="this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)" v-bind:class="{'nav2': stylePipelinesState}">
-                    <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
-                        <p>Pipelines</p>
-                  </a></router-link>
-                </li>
                 <li class="nav-item" ><router-link :to="{name: 'Agent'}">
                   <a href="#" class="nav-link" id ='agentNav'  v-on:click="addLocation('Agents')" v-bind:class="{'nav2': styleAgentState}" >
                     <span class="material-icons">font_download</span>
@@ -165,8 +162,8 @@ export default {
   name: 'App',
   data: function () {
     return {
-      arrow_down: false,
-      arrow_up: true,
+      arrow_down: true,
+      arrow_up: false,
       arrow_down_settings: true,
       arrow_up_settings: false,
       hide_logo: false,
@@ -228,8 +225,7 @@ export default {
       if (loc === 'Settings') {
         this.arrow_down_settings = !this.arrow_down_settings
         this.arrow_up_settings = !this.arrow_up_settings
-      }
-      if (loc !== 'Settings') {
+      } else {
         this.$store.commit('agent/updateLocView', loc)
       }
     },
@@ -238,6 +234,10 @@ export default {
     },
     whenRefreshPageRedirecToHome () {
       window.addEventListener('beforeunload', this.redirectToHomePage())
+    },
+    goToPipelinesListPageAndExpandMenu () {
+      this.switchArrowsPipeline()
+      this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)
     }
   }
 }
