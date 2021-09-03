@@ -93,7 +93,7 @@
             </router-link>
             </li>
             <li class="nav-item has-treeview">
-                <router-link :to="{ name: 'Pipelines'}">
+                <router-link :to="{ name: 'Pipelines'}" v-bind:class="{'router-link-active': isAnyPipelineRelatedPage, 'router-link-exact-active': isAnyPipelineRelatedPage}">
                 <a class="nav-link" v-on:click="goToPipelinesListPageAndExpandMenu">
                 <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
                 <p>Pipelines</p>
@@ -186,6 +186,9 @@ export default {
     gravatarURL () {
       const hashedUrl = md5(this.loggedUser.email)
       return this.$getGravatarUrlByEmail(hashedUrl)
+    },
+    isAnyPipelineRelatedPage () {
+      return this.$route.name === 'Pipelines' || this.$route.name === 'PipelineDetail' || this.$route.name === 'PipelineRunView'
     }
   },
   watch: {

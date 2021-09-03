@@ -20,10 +20,10 @@
                     :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
                     style="position: relative; left: 0px; top: -1px;"></div>
                     <div
-                    :class="{ 'invisible': index === associatedAgents.length || Object.keys(associatedAgents[index]).length === 0, 'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
+                    :class="{ 'invisible': isLastItemOnAgentsListByIndex(index) || isNextItemTheLastInAgentsListByIndex(index), 'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
                     class="mt-3 margin-center abs-center border-top"
                     style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="index !== associatedAgents.length" :class="{ 'invisible': index === associatedAgents.length || Object.keys(associatedAgents[index]).length === 0 }" class="mt-3 black-circle">  </div>
+                    <div v-if="!isLastItemOnAgentsListByIndex(index)" :class="{ 'invisible': isLastItemOnAgentsListByIndex(index) || isNextItemTheLastInAgentsListByIndex(index) }" class="mt-3 black-circle">  </div>
 
                   <div v-if="this.$route.name === 'PipelineDetail'">
                     <div  class="workflow-tools info-box">
@@ -155,6 +155,12 @@ export default {
     onEdit (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('agent/setIdAgent', selectedAgentId)
+    },
+    isLastItemOnAgentsListByIndex (index) {
+      return index + 1 === this.associatedAgents.length
+    },
+    isNextItemTheLastInAgentsListByIndex (index) {
+      return Object.keys(this.associatedAgents[index + 1]).length === 0
     }
   }
 }
