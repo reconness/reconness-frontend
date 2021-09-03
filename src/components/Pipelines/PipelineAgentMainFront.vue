@@ -84,17 +84,7 @@ export default {
     agentParentRunningIndex: function (indexParentAgent) {
       if (this.isPipelineRunning) {
         if (this.isCurrentAgentInstanceRunning) {
-          this.setPipelineAgentParentStatusByIndex({
-            idPipeline: this.pipeline.id,
-            index: this.index,
-            status: this.$entityStatus.RUNNING
-          })
-          this.playClock()
-          if (this.haveRunningAgentChildrens) {
-            this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.fatherAgent.id, status: this.$entityStatus.RUNNING })
-          } else {
-            this.updatePipelineAndRelatedDataAfterElapsedTime()
-          }
+          this.updatePipelineAndRelatedDataAndStartProgress()
         }
       }
     },
@@ -166,6 +156,19 @@ export default {
         },
         5000
       )
+    },
+    updatePipelineAndRelatedDataAndStartProgress () {
+      this.setPipelineAgentParentStatusByIndex({
+        idPipeline: this.pipeline.id,
+        index: this.index,
+        status: this.$entityStatus.RUNNING
+      })
+      this.playClock()
+      if (this.haveRunningAgentChildrens) {
+        this.updateStatusAllChildren({ idPipeline: this.pipeline.id, idAgent: this.fatherAgent.id, status: this.$entityStatus.RUNNING })
+      } else {
+        this.updatePipelineAndRelatedDataAfterElapsedTime()
+      }
     }
   }
 }
