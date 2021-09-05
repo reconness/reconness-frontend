@@ -20,6 +20,9 @@
                         <div class="col-12" v-if="validators.exist.name">
                             <span :class="{invalid: validators.exist.name}">The written name is already being used by another target</span>
                         </div>
+                        <div class="col-12" v-if="targetNameContainsHyphens">
+                            <span :class="{invalid: targetNameContainsHyphens}">The written name cannot contain hyphens</span>
+                        </div>
                         <div class="col-12">
                           <label style="margin-top: 40px;">Root Domain</label>
                           <Chips v-model="rootDomainsTextItems" class="target-input-borders" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="checkSeparator" id="chips_el" :separator="','"/>
@@ -153,7 +156,8 @@ export default {
         inScope: '',
         outScope: '',
         primaryColor: '#737be5',
-        secondaryColor: '#7159d3'
+        secondaryColor: '#7159d3',
+        transformedName: ''
       },
       rootDomainsTextItems: [],
       isVisibleTopSection: true,
@@ -190,9 +194,12 @@ export default {
       return this.$store.getters['target/getTargetById'](parseInt(id))
     },
     isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.url.bugBountyUrl && this.validators.exist.name)
+      return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.url.bugBountyUrl && this.validators.exist.name && !this.targetNameContainsHyphens)
     },
-    ...mapGetters('target', ['checkIfTargetExistsByName'])
+    ...mapGetters('target', ['checkIfTargetExistsByName']),
+    targetNameContainsHyphens () {
+      return this.target.name.indexOf('-') > -1
+    }
   },
   watch: {
     loadSelectedTarget: function (value) {
@@ -214,6 +221,9 @@ export default {
       } else {
         this.resetTargetForm()
       }
+    },
+    'target.name': function (value) {
+      this.target.transformedName = this.$convertSpacesToHyphensByString(value).toLowerCase()
     }
   },
   methods: {
@@ -240,7 +250,7 @@ export default {
     },
     addTarget () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.url.bugBountyUrl && !this.validators.exist.name) {
+      if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.url.bugBountyUrl && !this.validators.exist.name && !this.targetNameContainsHyphens) {
         const randomResult = this.$randomBooleanResult()
         if (this.editable) {
           if (randomResult) {

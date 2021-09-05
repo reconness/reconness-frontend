@@ -7,7 +7,7 @@
         <label :for="item.id" v-show="check"  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
         <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
           <div class="d-flex justify-content-between mb-4">
-             <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.name} }">
+             <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.transformedName} }">
             <h1 class="card-title mt-2">{{item.name}}</h1>
              </router-link>
             <a href="#" class="mt-n2">  <BullseyeArrowIco/> </a>

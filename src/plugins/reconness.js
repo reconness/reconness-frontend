@@ -206,5 +206,9 @@ export default {
         successMessageForSubDomainDeletion: 'The subdomain has been deleted successfully'
       }
     )
+
+    app.config.globalProperties.$convertSpacesToHyphensByString = function (text) {
+      return text.trim().replace(/\s+/g, '-')
+    }
   }
 }
