@@ -196,9 +196,6 @@ export default {
       this.isNoteSectionOpenedReference = value
     }
   },
-  created () {
-    this.whenRefreshPageRedirecToHome()
-  },
   mounted () {
     this.location = this.viewloc
   },
@@ -234,9 +231,6 @@ export default {
     },
     redirectToHomePage: function () {
       this.$router.push('/')
-    },
-    whenRefreshPageRedirecToHome () {
-      window.addEventListener('beforeunload', this.redirectToHomePage())
     },
     goToPipelinesListPageAndExpandMenu () {
       this.switchArrowsPipeline()

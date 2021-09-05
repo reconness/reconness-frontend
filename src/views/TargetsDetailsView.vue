@@ -133,6 +133,7 @@ export default {
     return {
       Target: Object,
       LinearGradient: String,
+      idTargetLoadedWhenIdPropsIsNull: Number,
       optionsBar: {
         chart: {
           toolbar: { show: false },
@@ -239,17 +240,26 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains']),
-    ...mapState('agent', ['isElementDeleted'])
+    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByTransformedName']),
+    ...mapState('agent', ['isElementDeleted']),
+    getTargetId () {
+      if (this.isIdPropsUndefined) {
+        return this.Target.id
+      }
+      return this.id
+    },
+    isIdPropsUndefined () {
+      return this.$route.params.id === undefined
+    }
   },
   created () {
     this.updateOpenPortsInGraph()
     this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
+    this.updateTarget()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.Target = this.getTargetById(parseInt(this.id))
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
     this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor
@@ -281,6 +291,18 @@ export default {
     },
     getMonthByDate (dateData) {
       return this.capitalizeFirstChartByMonth(dateData)
+    },
+    updateTarget () {
+      if (this.isIdPropsUndefined) {
+        this.updateTargetWhenUrlAccessedDirectly()
+      } else {
+        this.Target = this.getTargetById(parseInt(this.getTargetId))
+      }
+    },
+    updateTargetWhenUrlAccessedDirectly () {
+      const transformedName = this.$route.params.targetName
+      this.Target = this.getTargetByTransformedName(transformedName)
+      this.idTargetLoadedWhenIdPropsIsNull = this.Target.id
     }
   }
 }
