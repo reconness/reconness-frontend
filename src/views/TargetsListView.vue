@@ -9,7 +9,7 @@
         <div class="content">
           <TargetsList v-if="this.$store.state.target.isDefaultViewOnTarget"/>
           <div class="row" v-else>
-          <TargetMiniList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains">
+          <TargetMiniList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains">
           </TargetMiniList>
           </div>
           <Toast :baseZIndex="200"/>

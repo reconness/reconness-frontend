@@ -16,7 +16,7 @@
             <ul class="list-unstyled min-height" >
               <li v-for="item2 of item.rootDomains.slice(- 3) " :key="item2.id">
               <span  class="material-icons float-left mt-1"> chevron_right </span>
-              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item2.id, targetName: item.name, rootdomainName: item2.root} }">
+              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item2.id, targetName: item.transformedName, rootdomainName: item2.root} }">
                {{item2.root}}
               </router-link>
               </li>

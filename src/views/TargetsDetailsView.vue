@@ -21,7 +21,7 @@
                     <ul class="list-unstyled min-height" >
                       <li v-for="item of Target.rootDomains" :key="item.id">
                         <span v-bind:style ="{background:LinearGradient}"  class="material-icons mt-1 gradient-style icon-color-style"> chevron_right </span>
-                        <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.name, rootdomainName: item.root} }">
+                        <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.transformedName, rootdomainName: item.root} }">
                           {{item.root}}
                           <span v-bind:style ="{background:LinearGradient}"
                             class="material-icons mt-2 float-right icon-color-style gradient-style"> open_in_new

@@ -8,7 +8,7 @@
             <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: TargetName} }" v-if = showRootDomains>
+            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: $route.params.targetName} }" v-if = showRootDomains>
             <p class="float-right ml-2 font-weight-bold color-black">{{TargetName}}</p>
             </router-link>
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
@@ -18,11 +18,11 @@
           <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
         </li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
-          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: TargetName,  rootdomainName: $route.params.rootdomainName } }">
+          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: this.$route.params.targetName,  rootdomainName: $route.params.rootdomainName } }">
           <span class="material-icons ml-2 icon-color-style font-weight-bold" style="line-height: 1.6"> chevron_right </span>
         </router-link></li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
-          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: TargetName, rootdomainName: $route.params.rootdomainName} }">
+          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: this.$route.params.targetName, rootdomainName: $route.params.rootdomainName} }">
           <span class="ml-2 font-weight-bold">{{rootName}}</span>
           </router-link>
         </li>
@@ -85,7 +85,7 @@
             <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: TargetName} }" v-if = showRootDomains>
+            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: $route.params.targetName} }" v-if = showRootDomains>
             <p class="float-right ml-2 font-weight-bold color-black">{{TargetName}}</p>
             </router-link>
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>

@@ -8,12 +8,12 @@
           <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco/></span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
-           <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: name} }" class="text-body" >
+           <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: transformedName} }" class="text-body" >
             {{name}}</router-link>
           </span>
           <nav class="nav">
             <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Delete</a>
-            <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: name} }" class="nav-link active agent-mini-agent-details agent-mini-color-gray">Details </router-link>
+            <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: transformedName} }" class="nav-link active agent-mini-agent-details agent-mini-color-gray">Details </router-link>
             <a class="nav-link agent-mini-agent-edit agent-mini-color-gray" href="#" @click="onEdit" data-toggle="modal" :data-id="id" data-target="#targetModalForm">Edit</a>
           </nav>
           </div>
@@ -43,7 +43,8 @@ export default {
     primaryColor: String,
     secondaryColor: String,
     id: Number,
-    rootDom: Array
+    rootDom: Array,
+    transformedName: String
   },
   data: function () {
     return {
