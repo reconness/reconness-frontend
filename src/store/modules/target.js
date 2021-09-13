@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
@@ -1274,9 +1275,28 @@ export default ({
           JSON.parse(JSON.stringify(params.agentData))
         )
       }
+    },
+    updateTargets (state, targets) {
+      state.targetListStore.splice(0, state.targetListStore.length)
+      targets.forEach(target => {
+        state.targetListStore.push(target)
+      })
     }
   },
   actions: {
+    loadTargets ({ state, commit, getters }) {
+      if (state.authentication_token !== '') {
+        return axios.get('/targets')
+          .then(function (response) {
+            const targetsMapped = getters.mapTargets(response.data)
+            commit('updateTargets', targetsMapped)
+            return true
+          })
+          .catch(function () {
+            return false
+          })
+      }
+    }
   },
   modules: {
   },
@@ -1508,6 +1528,43 @@ export default ({
           date: new Date('06/24/2020')
         }
       ]
+    },
+    mapTargets: (state, getters) => (targets) => {
+      const newTargets = []
+      let newTarget
+      targets.forEach(target => {
+        newTarget = {
+          id: target.id,
+          name: target.name,
+          transformedName: 'my-target-11',
+          primaryColor: '#03dced',
+          secondaryColor: '#0cb8e0',
+          date: '20/01/2020',
+          rootDomains: getters.mapRootDomains(target.rootDomains),
+          isPrivateProgram: target.isPrivate,
+          inScope: target.inScope,
+          outScope: target.outOfScope,
+          messages: []
+        }
+        newTargets.push(newTarget)
+      })
+      return newTargets
+    },
+    mapRootDomains: (state) => (rootDomains) => {
+      const newRootDomains = []
+      let newRootDomain
+      rootDomains.forEach(rootDomain => {
+        newRootDomain = {
+          id: rootDomain.id,
+          root: rootDomain.name,
+          date: '21/09/2018',
+          subdomain: [],
+          messages: [],
+          agent: []
+        }
+        newRootDomains.push(newRootDomain)
+      })
+      return newRootDomains
     }
   }
 })
