@@ -16,6 +16,9 @@
         </div>
       </div>
     </div>
+    <div class="w-100 h-50 d-flex justify-content-center left-aside">
+      <span class="font-weight-bold">241 - 300 de 1050 elementos</span>
+    </div>
   </div>
 </template>
 <script>

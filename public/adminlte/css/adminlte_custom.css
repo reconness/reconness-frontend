@@ -867,6 +867,20 @@ div.card-body a svg{
   transform: translateX(100px);
   opacity: 0;
 }
+
+.slide-fade-cards-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-cards-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-cards-enter-from, .slide-fade-cards-leave-to {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+
 .overflow-visible {
   overflow: visible !important;
 }

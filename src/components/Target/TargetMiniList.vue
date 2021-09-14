@@ -1,6 +1,8 @@
 <template>
-    <div class="col-12 col-sm-4 col-xl-3 col-lgg-5" @mouseover="hoverCard( {id} )" @mouseout="hoverCard(-1)">
-        <div class="initial-info-box agent-mini-main-container rounded-corners">
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3" @mouseenter="hoverCard( {id} )" @mouseleave="hoverCard(-1)">
+        <div class="row">
+          <div class="col-10">
+        <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
         <input type="checkbox" :id="id" name="checkitem"  :checked="this.$isItemOnList(id, targetIdList)" >
         <label class="float-right" :for="id" v-show="check" @click="addListTargetId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="p-2">
@@ -12,14 +14,23 @@
             {{name}}</router-link>
           </span>
           <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Details</a>
-          <div class="d-flex target-mosaic-options">
-            <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Settings</a>
-            <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="1">settings</span>
-          </div>
-          </div>
-          <!-- /.info-box-content -->
-            </div></div>
+            <div class="d-flex target-mosaic-options">
+              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Settings</a>
+              <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="1">settings</span>
+            </div> <!-- /.d-flex target-mosaic-options -->
+          </div> <!-- /.info-box-content -->
+          </div> <!-- /.info-box -->
+          </div> <!-- /.p2 -->
             <!-- /.info-box-content -->
+        </div> <!-- ./initial-info-box agent-mini-main-container rounded-corners -->
+        </div>
+        <div class="col-2">
+          <transition name="slide-fade-cards">
+        <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
+          <span class="material-icons-outlined red-font-color">delete</span>
+        </div>
+        </transition>
+        </div>
         </div>
         <TargetConfirmation></TargetConfirmation>
         <TargetForm/>
@@ -50,7 +61,8 @@ export default {
     return {
       checkSelected: false,
       checkDeleted: -1,
-      selectedTargetName: ''
+      selectedTargetName: '',
+      selectedCard: -1
     }
   },
   mixins: [TargetMixin],
@@ -60,10 +72,11 @@ export default {
   methods: {
     ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
     hoverCard (selectedIndex) {
+      console.log(selectedIndex)
       this.selectedCard = selectedIndex
     },
     isSelected (cardIndex) {
-      return this.selectedCard === cardIndex
+      return parseInt(this.selectedCard.id) === parseInt(cardIndex)
     },
     onEdit (e) {
       this.setTargetId(e)
@@ -88,16 +101,11 @@ export default {
 .agent-mini-main-container{
     margin-bottom: 32px;
 }
-
-div.initial-info-box.agent-mini-main-container.rounded-corners{
-    width: 223px;
-}
-
 .agent-mini-main-container {
-transition: all .25s ease;
+/* transition: all .25s ease; */
 width:100%;
 }
-.agent-mini-main-container:hover {
+/* .agent-mini-main-container:hover {
 -webkit-transform:scale(1.25);
 -moz-transform:scale(1.25);
 -ms-transform:scale(1.25);
@@ -105,7 +113,7 @@ width:100%;
 transform:scale(1.05);
 transition: all .25s ease;
 z-index: 500;
-}
+} */
 
 .col-lgg-5 {
   min-height: 1px;
@@ -191,5 +199,13 @@ input[type="checkbox"] {
 }
 .target-mosaic-options .settings-ico {
   font-size: 18px
+}
+.delete-btn-circular-container {
+  background-color: #fff;
+  height: 35px;
+  width: 35px;
+}
+.delete-btn-circular-container span {
+  margin: 15% !important;
 }
 </style>
