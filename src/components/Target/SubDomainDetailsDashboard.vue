@@ -8,6 +8,7 @@
                     <p>Ip: <b>{{ loadedSubdomain.ipAddress }}</b></p>
                     <p>Agents: <b>{{ printAgent(loadedSubdomain.agent) }}</b></p>
                     <p>Ports: <b>{{ loadedSubdomain.ports.join(', ') }}</b></p>
+                    <p>Created: <b>{{ loadedSubdomain.added }}</b></p>
                     <div class="custom-control custom-checkbox form-check private-program-container" :class= "'check-color-' + loadedTarget.secondaryColor.substring(1)">
                         <input class="form-check-input custom-control-input" type="checkbox" id="is_alive" v-model="loadedSubdomain.isAlive">
                         <label class="form-check-label custom-control-label" for="is_alive">Is Alive</label>

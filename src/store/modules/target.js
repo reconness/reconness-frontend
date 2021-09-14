@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
@@ -5,6 +6,7 @@ export default ({
       {
         id: 1,
         name: 'My target 1',
+        transformedName: 'my-target-1',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '02/01/2020',
@@ -366,6 +368,7 @@ export default ({
       {
         id: 2,
         name: 'My target 2',
+        transformedName: 'my-target-2',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '21/01/2020',
@@ -630,6 +633,7 @@ export default ({
       {
         id: 3,
         name: 'My target 3',
+        transformedName: 'my-target-3',
         primaryColor: '#F96767',
         secondaryColor: '#FF4343',
         date: '21/02/2020',
@@ -695,6 +699,7 @@ export default ({
       {
         id: 4,
         name: 'My target 4',
+        transformedName: 'my-target-4',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '21/04/2020',
@@ -732,6 +737,7 @@ export default ({
       {
         id: 5,
         name: 'My target 5',
+        transformedName: 'my-target-5',
         primaryColor: '#3adb99',
         secondaryColor: '#16c465',
         date: '21/02/2018',
@@ -769,6 +775,7 @@ export default ({
       {
         id: 6,
         name: 'My target 6',
+        transformedName: 'my-target-6',
         // background: 'linear-gradient(130deg, #FF9966 0%, #f36a33 100%)',
         primaryColor: '#FF9966',
         secondaryColor: '#f36a33',
@@ -803,6 +810,7 @@ export default ({
       {
         id: 7,
         name: 'My target 7',
+        transformedName: 'my-target-7',
         // background: ' linear-gradient(160deg, #737be5 0%, #7159d3 100%)',
         primaryColor: '#737be5',
         secondaryColor: '#7159d3',
@@ -841,6 +849,7 @@ export default ({
       {
         id: 8,
         name: 'My target 8',
+        transformedName: 'my-target-8',
         // background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
@@ -878,6 +887,7 @@ export default ({
       {
         id: 9,
         name: 'My target 9',
+        transformedName: 'my-target-9',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '21/09/2020',
@@ -914,6 +924,7 @@ export default ({
       {
         id: 10,
         name: 'My target 10',
+        transformedName: 'my-target-10',
         primaryColor: '#3adb99',
         secondaryColor: '#16c465',
         date: '21/02/2020',
@@ -950,6 +961,7 @@ export default ({
       {
         id: 11,
         name: 'My target 11',
+        transformedName: 'my-target-11',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '20/01/2020',
@@ -1263,9 +1275,28 @@ export default ({
           JSON.parse(JSON.stringify(params.agentData))
         )
       }
+    },
+    updateTargets (state, targets) {
+      state.targetListStore.splice(0, state.targetListStore.length)
+      targets.forEach(target => {
+        state.targetListStore.push(target)
+      })
     }
   },
   actions: {
+    loadTargets ({ state, commit, getters }) {
+      if (state.authentication_token !== '') {
+        return axios.get('/targets')
+          .then(function (response) {
+            const targetsMapped = getters.mapTargets(response.data)
+            commit('updateTargets', targetsMapped)
+            return true
+          })
+          .catch(function () {
+            return false
+          })
+      }
+    }
   },
   modules: {
   },
@@ -1371,6 +1402,10 @@ export default ({
       } else {
         return []
       }
+    },
+    getTargetByTransformedName: (state) => (transformedName) => {
+      const target = state.targetListStore.find(item => item.transformedName === transformedName)
+      return target
     },
     filterRootDomainsByName: (state) => (data) => {
       let temporal = []
@@ -1493,6 +1528,43 @@ export default ({
           date: new Date('06/24/2020')
         }
       ]
+    },
+    mapTargets: (state, getters) => (targets) => {
+      const newTargets = []
+      let newTarget
+      targets.forEach(target => {
+        newTarget = {
+          id: target.id,
+          name: target.name,
+          transformedName: 'my-target-11',
+          primaryColor: '#03dced',
+          secondaryColor: '#0cb8e0',
+          date: '20/01/2020',
+          rootDomains: getters.mapRootDomains(target.rootDomains),
+          isPrivateProgram: target.isPrivate,
+          inScope: target.inScope,
+          outScope: target.outOfScope,
+          messages: []
+        }
+        newTargets.push(newTarget)
+      })
+      return newTargets
+    },
+    mapRootDomains: (state) => (rootDomains) => {
+      const newRootDomains = []
+      let newRootDomain
+      rootDomains.forEach(rootDomain => {
+        newRootDomain = {
+          id: rootDomain.id,
+          root: rootDomain.name,
+          date: '21/09/2018',
+          subdomain: [],
+          messages: [],
+          agent: []
+        }
+        newRootDomains.push(newRootDomain)
+      })
+      return newRootDomains
     }
   }
 })

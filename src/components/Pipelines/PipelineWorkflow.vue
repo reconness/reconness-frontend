@@ -20,10 +20,10 @@
                     :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
                     style="position: relative; left: 0px; top: -1px;"></div>
                     <div
-                    :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0, 'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
+                    :class="{ 'invisible': isLastItemOnAgentsListByIndex(index) || isNextItemTheLastInAgentsListByIndex(index), 'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
                     class="mt-3 margin-center abs-center border-top"
                     style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="index+1 !== associatedAgents.length" :class="{ 'invisible': index+1 === associatedAgents.length || Object.keys(associatedAgents[index+1]).length === 0 }" class="mt-3 black-circle">  </div>
+                    <div v-if="!isLastItemOnAgentsListByIndex(index)" :class="{ 'invisible': isLastItemOnAgentsListByIndex(index) || isNextItemTheLastInAgentsListByIndex(index) }" class="mt-3 black-circle">  </div>
 
                   <div v-if="this.$route.name === 'PipelineDetail'">
                     <div  class="workflow-tools info-box">
@@ -55,8 +55,8 @@
               <div class="line" v-if="this.getAgentBranch(index).length !== 0"></div>
                 <div  v-for="(sonAgent, sonAgentIndex) of this.getAgentBranch(index-1)"  :id="'branch' + sonAgentIndex" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
                   <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
-                     <div :class="{'invisible': sonAgentIndex+1 === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
-                    <div v-if="sonAgentIndex+1 !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
+                     <div :class="{'invisible': sonAgentIndex === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
+                    <div v-if="sonAgentIndex !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
 
                     <div class="info-box float-left abs-center w-75" :style ="{background:sonAgent.background}" style="position: relative; left: 7px; top: -89px;">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
@@ -146,10 +146,8 @@ export default {
       if (indexValue !== -1 && Object.keys(this.associatedAgents[indexValue]).length !== 0) {
         if (windowReziseWidth < 1200) {
           return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 1)
-        } else {
-          if (windowReziseWidth >= 1200) {
-            return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
-          }
+        } else if (windowReziseWidth >= 1200) {
+          return (this.AgentsPipelineList[indexValue].agentBranch).slice(0, 2)
         }
       }
       return []
@@ -157,6 +155,12 @@ export default {
     onEdit (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('agent/setIdAgent', selectedAgentId)
+    },
+    isLastItemOnAgentsListByIndex (index) {
+      return index + 1 === this.associatedAgents.length
+    },
+    isNextItemTheLastInAgentsListByIndex (index) {
+      return Object.keys(this.associatedAgents[index + 1]).length === 0
     }
   }
 }

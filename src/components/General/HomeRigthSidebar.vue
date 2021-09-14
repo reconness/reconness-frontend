@@ -21,7 +21,7 @@
           </span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
-          <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.name} }"  class="text-dark" >{{item.name}}</router-link>
+          <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.transformedName} }"  class="text-dark" >{{item.name}}</router-link>
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
             <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmation-modal">

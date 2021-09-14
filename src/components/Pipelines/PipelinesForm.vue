@@ -118,15 +118,13 @@ export default {
           this.setIdPipeline(-1)
           jQuery('#pipelinesModalFormSettings').modal('hide')
         }
-      } else {
-        if (!this.locationsContainNonExist() && !this.validators.blank.locations) {
-          this.removeBlankLocations()
-          this.addPipeline(this.pipeline)
-          this.pipeline.name = this.$defaultPipelineName()
-          this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId), pipelineName: this.pipeline.name } })
-          jQuery('#pipelinesModalFormSettings').modal('hide')
-          this.pipeline.agent = []
-        }
+      } else if (!this.locationsContainNonExist() && !this.validators.blank.locations) {
+        this.removeBlankLocations()
+        this.addPipeline(this.pipeline)
+        this.pipeline.name = this.$defaultPipelineName()
+        this.$router.push({ name: 'PipelineDetail', params: { id: parseInt(this.autoId), pipelineName: this.pipeline.name } })
+        jQuery('#pipelinesModalFormSettings').modal('hide')
+        this.pipeline.agent = []
       }
     },
     updatePipelineSettings (e) {
@@ -166,25 +164,9 @@ export default {
     locationsContainNonExist () {
       let founded = false
       let index = 0
-      let result = -1
       while (index < this.pipeline.locations.length && !founded) {
         const entityName = this.pipeline.locations[index].name
-        if (this.settings_data.type === this.$agentType.TARGET) {
-          result = this.filterTargetsByName({ name: entityName, strict: true }).length > 0
-          if (!result && !this.validators.blank) {
-            founded = true
-          }
-        } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
-          result = this.filterRootDomainsByName({ name: entityName, strict: true }).length > 0
-          if (!result && !this.validators.blank) {
-            founded = true
-          }
-        } else {
-          result = this.filterSubDomainsByName({ name: entityName, strict: true }).length > 0
-          if (!result && !this.validators.blank) {
-            founded = true
-          }
-        }
+        founded = this.filterEntityByName(entityName)
         index++
       }
       this.validators.exist.locations = founded
@@ -204,6 +186,44 @@ export default {
       this.settings_data.startingAgent = -1
       this.settings_data.id = -1
       this.settings_data.statusRun = this.$entityStatus.FINISHED
+    },
+    searchTargetByName (targetName) {
+      let founded = false
+      let result = []
+      result = this.filterTargetsByName({ name: targetName, strict: true }).length > 0
+      if (!result && !this.validators.blank) {
+        founded = true
+      }
+      return founded
+    },
+    searchRootDomainByName (rootDomainName) {
+      let founded = false
+      let result = []
+      result = this.filterRootDomainsByName({ name: rootDomainName, strict: true }).length > 0
+      if (!result && !this.validators.blank) {
+        founded = true
+      }
+      return founded
+    },
+    searchSubDomainByName (subDomainName) {
+      let founded = false
+      let result = []
+      result = this.filterSubDomainsByName({ name: subDomainName, strict: true }).length > 0
+      if (!result && !this.validators.blank) {
+        founded = true
+      }
+      return founded
+    },
+    filterEntityByName (entityName) {
+      let founded = false
+      if (this.settings_data.type === this.$agentType.TARGET) {
+        founded = this.searchTargetByName(entityName)
+      } else if (this.settings_data.type === this.$agentType.ROOTDOMAIN) {
+        founded = this.searchRootDomainByName(entityName)
+      } else {
+        founded = this.searchSubDomainByName(entityName)
+      }
+      return founded
     }
   }
 }

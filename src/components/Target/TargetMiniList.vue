@@ -1,25 +1,36 @@
 <template>
-    <div class="col-12 col-sm-4 col-xl-3 col-lgg-5" @mouseover="hoverCard( {id} )" @mouseout="hoverCard(-1)">
-        <div class="initial-info-box agent-mini-main-container rounded-corners">
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3" @mouseenter="hoverCard( {id} )" @mouseleave="hoverCard(-1)">
+        <div class="row">
+          <div class="col-10">
+        <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
         <input type="checkbox" :id="id" name="checkitem"  :checked="this.$isItemOnList(id, targetIdList)" >
         <label class="float-right" :for="id" v-show="check" @click="addListTargetId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="p-2">
         <div class="info-box">
-          <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco/></span>
+          <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
-           <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: name} }" class="text-body" >
+           <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: transformedName} }" class="text-body" >
             {{name}}</router-link>
           </span>
-          <nav class="nav">
-            <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Delete</a>
-            <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: name} }" class="nav-link active agent-mini-agent-details agent-mini-color-gray">Details </router-link>
-            <a class="nav-link agent-mini-agent-edit agent-mini-color-gray" href="#" @click="onEdit" data-toggle="modal" :data-id="id" data-target="#targetModalForm">Edit</a>
-          </nav>
-          </div>
-          <!-- /.info-box-content -->
-            </div></div>
+          <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Details</a>
+            <div class="d-flex target-mosaic-options">
+              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Settings</a>
+              <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="1">settings</span>
+            </div> <!-- /.d-flex target-mosaic-options -->
+          </div> <!-- /.info-box-content -->
+          </div> <!-- /.info-box -->
+          </div> <!-- /.p2 -->
             <!-- /.info-box-content -->
+        </div> <!-- ./initial-info-box agent-mini-main-container rounded-corners -->
+        </div>
+        <div class="col-2">
+          <transition name="slide-fade-cards">
+        <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
+          <span class="material-icons-outlined red-font-color">delete</span>
+        </div>
+        </transition>
+        </div>
         </div>
         <TargetConfirmation></TargetConfirmation>
         <TargetForm/>
@@ -43,13 +54,15 @@ export default {
     primaryColor: String,
     secondaryColor: String,
     id: Number,
-    rootDom: Array
+    rootDom: Array,
+    transformedName: String
   },
   data: function () {
     return {
       checkSelected: false,
       checkDeleted: -1,
-      selectedTargetName: ''
+      selectedTargetName: '',
+      selectedCard: -1
     }
   },
   mixins: [TargetMixin],
@@ -59,10 +72,11 @@ export default {
   methods: {
     ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
     hoverCard (selectedIndex) {
+      console.log(selectedIndex)
       this.selectedCard = selectedIndex
     },
     isSelected (cardIndex) {
-      return this.selectedCard === cardIndex
+      return parseInt(this.selectedCard.id) === parseInt(cardIndex)
     },
     onEdit (e) {
       this.setTargetId(e)
@@ -87,16 +101,11 @@ export default {
 .agent-mini-main-container{
     margin-bottom: 32px;
 }
-
-div.initial-info-box.agent-mini-main-container.rounded-corners{
-    width: 223px;
-}
-
 .agent-mini-main-container {
-transition: all .25s ease;
+/* transition: all .25s ease; */
 width:100%;
 }
-.agent-mini-main-container:hover {
+/* .agent-mini-main-container:hover {
 -webkit-transform:scale(1.25);
 -moz-transform:scale(1.25);
 -ms-transform:scale(1.25);
@@ -104,7 +113,7 @@ width:100%;
 transform:scale(1.05);
 transition: all .25s ease;
 z-index: 500;
-}
+} */
 
 .col-lgg-5 {
   min-height: 1px;
@@ -187,5 +196,16 @@ input[type="checkbox"]:checked + label:after {
 
 input[type="checkbox"] {
   display: none;
+}
+.target-mosaic-options .settings-ico {
+  font-size: 18px
+}
+.delete-btn-circular-container {
+  background-color: #fff;
+  height: 35px;
+  width: 35px;
+}
+.delete-btn-circular-container span {
+  margin: 15% !important;
 }
 </style>
