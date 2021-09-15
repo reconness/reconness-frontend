@@ -3,6 +3,7 @@
 </template>
 <script>
 export default {
+  name: 'TrashCanIco',
   props: {
     variableClass: {
       type: String,

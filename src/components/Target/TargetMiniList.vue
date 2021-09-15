@@ -24,18 +24,18 @@
             </div>
             <div class="col-1 color-action-column d-flex justify-content-center">
               <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @mouseover="toggleSettingsTooltip">settings</span>
-              <TrashCan class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column" @mouseover="toggleDeleteTooltip"/>
+              <TrashCanIco class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column" @mouseover="toggleDeleteTooltip"/>
             </div>
         </div>
     </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import TrashCan from '@/components/Icons/TrashCan.vue'
+import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 export default {
   name: 'TargetMiniList',
   components: {
-    TrashCan
+    TrashCanIco
   },
   computed: {
     ...mapState('target', ['targetListStore'])

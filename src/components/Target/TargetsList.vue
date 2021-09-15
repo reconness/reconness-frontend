@@ -13,9 +13,9 @@
            <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: transformedName} }" class="text-body" >
             {{name}}</router-link>
           </span>
-          <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Details</a>
+          <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modall">Details</a>
             <div class="d-flex target-mosaic-options">
-              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Settings</a>
+              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modall">Settings</a>
               <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="1">settings</span>
             </div> <!-- /.d-flex target-mosaic-options -->
           </div> <!-- /.info-box-content -->
@@ -27,7 +27,7 @@
         <div class="col-2">
           <transition name="slide-fade-cards">
         <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
-          <span class="material-icons-outlined red-font-color">delete</span>
+          <span class="material-icons-outlined red-font-color" data-toggle="modal" data-target="#message-box-modal">delete</span>
         </div>
         </transition>
         </div>
