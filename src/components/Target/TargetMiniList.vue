@@ -1,211 +1,72 @@
 <template>
-    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3" @mouseenter="hoverCard( {id} )" @mouseleave="hoverCard(-1)">
-        <div class="row">
-          <div class="col-10">
-        <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
-        <input type="checkbox" :id="id" name="checkitem"  :checked="this.$isItemOnList(id, targetIdList)" >
-        <label class="float-right" :for="id" v-show="check" @click="addListTargetId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
-        <div class="p-2">
-        <div class="info-box">
-          <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
-          <div class="info-box-content">
-          <span class="info-box-text domain-names-target">
-           <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: transformedName} }" class="text-body" >
-            {{name}}</router-link>
-          </span>
-          <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Details</a>
-            <div class="d-flex target-mosaic-options">
-              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Settings</a>
-              <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="1">settings</span>
-            </div> <!-- /.d-flex target-mosaic-options -->
-          </div> <!-- /.info-box-content -->
-          </div> <!-- /.info-box -->
-          </div> <!-- /.p2 -->
-            <!-- /.info-box-content -->
-        </div> <!-- ./initial-info-box agent-mini-main-container rounded-corners -->
+    <div class="col-12">
+        <div class="row header-bottom-line-shadow">
+            <div class="offset-sm-1"></div>
+            <div class="col-1 my-2 border-left">Color ID</div>
+            <div class="col-2 my-2 border-left">Name</div>
+            <div class="col-3 my-2 border-left">RootDomains</div>
+            <div class="col-1 my-2 border-left border-right">Actions</div>
         </div>
-        <div class="col-2">
-          <transition name="slide-fade-cards">
-        <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
-          <span class="material-icons-outlined red-font-color">delete</span>
+        <div v-for="target of targetListStore" :key="target.id" class="row border-bottom">
+            <div class="offset-sm-1"></div>
+            <div class="col-1 my-auto d-flex justify-content-center">
+                <div class="color-id-size" :style="{background: target.primaryColor}"></div>
+            </div>
+            <div class="col-2 my-auto d-flex justify-content-center">
+                <router-link class="black-text" :to="{ name: 'TargetDetail', params: {id: target.id, targetName: target.transformedName} }">
+                    {{target.name}}
+                </router-link>
+            </div>
+            <div class="col-3 my-2">
+              <router-link class="agent-mini-color-gray" v-for="rootDomain in target.rootDomains" :key="rootDomain.id" :to="{ name: 'RootDomainDetails', params: {idTarget: target.id , id: rootDomain.id, targetName: target.name,  rootdomainName: rootDomain.root } }">
+                  {{rootDomain.root}},
+              </router-link>
+            </div>
+            <div class="col-1 color-action-column d-flex justify-content-center">
+              <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @mouseover="toggleSettingsTooltip">settings</span>
+              <TrashCan class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column" @mouseover="toggleDeleteTooltip"/>
+            </div>
         </div>
-        </transition>
-        </div>
-        </div>
-        <TargetConfirmation></TargetConfirmation>
-        <TargetForm/>
-    </div><!-- /.col -->
+    </div>
 </template>
 <script>
-import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
-import { mapState, mapMutations } from 'vuex'
-import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
-import TargetForm from '@/components/Target/TargetForm.vue'
-import { TargetMixin } from '@/mixins/TargetMixin'
+import { mapState } from 'vuex'
+import TrashCan from '@/components/Icons/TrashCan.vue'
 export default {
   name: 'TargetMiniList',
   components: {
-    TargetConfirmation,
-    BullseyeArrowIco,
-    TargetForm
+    TrashCan
   },
-  props: {
-    name: String,
-    primaryColor: String,
-    secondaryColor: String,
-    id: Number,
-    rootDom: Array,
-    transformedName: String
-  },
-  data: function () {
-    return {
-      checkSelected: false,
-      checkDeleted: -1,
-      selectedTargetName: '',
-      selectedCard: -1
-    }
-  },
-  mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['check', 'targetIdList'])
-  },
-  methods: {
-    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
-    hoverCard (selectedIndex) {
-      console.log(selectedIndex)
-      this.selectedCard = selectedIndex
-    },
-    isSelected (cardIndex) {
-      return parseInt(this.selectedCard.id) === parseInt(cardIndex)
-    },
-    onEdit (e) {
-      this.setTargetId(e)
-      this.$store.commit('agent/setDetailsLinks', false)
-    },
-    setDetailsLink (e) {
-      const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setIdAgent', selectedAgentId)
-      this.$store.commit('agent/setDetailsLinks', true)
-    },
-    setTargetId (e) {
-      const selectedTargetId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('target/setIdTarget', selectedTargetId)
-    },
-    setTargetName (e) {
-      this.selectedTargetName = e.currentTarget.getAttribute('data-name')
-    }
+    ...mapState('target', ['targetListStore'])
   }
 }
 </script>
 <style scoped>
-.agent-mini-main-container{
-    margin-bottom: 32px;
-}
-.agent-mini-main-container {
-/* transition: all .25s ease; */
-width:100%;
-}
-/* .agent-mini-main-container:hover {
--webkit-transform:scale(1.25);
--moz-transform:scale(1.25);
--ms-transform:scale(1.25);
--o-transform:scale(1.25);
-transform:scale(1.05);
-transition: all .25s ease;
-z-index: 500;
-} */
-
-.col-lgg-5 {
-  min-height: 1px;
-  position: relative;
-}
-@media (min-width: 1400px) {
-  .col-lgg-5 {
-    float: left;
-        max-width: 20%;
-  }
-}
-
-.initial-info-box {
-    background: #fff;
-    min-height: 70px;
-    position: relative;
-    width: 100%;
-    box-shadow: -2px 17px 29px #eaeaea;
+.header-bottom-line-shadow {
+    background: #fbfbfb 0% 0% no-repeat padding-box;
     opacity: 1;
+    box-shadow: 0px 6px 10px #0000000F
 }
-.info-box {
-    box-shadow: none;
-    /* border-radius: .25rem; */
-    /* background: #fff; */
-    display: -ms-flexbox;
-    display: flex;
-    margin-bottom: 0rem;
-     min-height: 60px;
-     padding: .0rem;
-    position: relative;
-    width: 100%;
+.color-id-size {
+    width: 18px;
+    height: 18px;
 }
-
-.text-truncate {
-    max-width: 100px;
+.color-action-column {
+    background: rgba(0, 177, 255, 0.05);
 }
-
-.domain-names-list .material-icons{
-font-size: 17px;
+.icon-size-action-column {
+    font-size: 21px;
 }
-
-.info-box >span{
-  width: 56px;
-  height: 56px;
-  border-radius: 13px;
-  box-shadow: 3px 12px 23px #eae9e9;
-  opacity: 1;
+.icon-size-delete-action-column {
+    width: 21px;
+    height: 21px;
 }
-input[type="checkbox"] + label:before {
-  content: "";
-  width: 26px;
-  height: 26px;
-  float: right;
-  border: 2px solid #ccc;
-  background: #fff;
-  border-radius: .7rem;
-  position: absolute;
-  right: 0rem;
-  z-index: 2;
+.target-minilist-settings-ico:hover {
+    color: #00B1FF;
 }
-input[type="checkbox"]:checked + label:before {
-  border-color: #00B1FF;
+.target-minilist-trash-ico:hover {
+    fill: #FF4545
 }
 
-input[type="checkbox"]:checked + label:after {
-    content: "";
-    width: 12px;
-    height: 6px;
-    border: 4px solid #00B1FF;
-    float: right;
-    margin-right: -1.2em;
-    border-right: 0;
-    border-top: 0;
-    margin-top: .6em;
-    transform: rotate(-55deg);
-    position: absolute;
-    right: 1.6rem;
-    z-index: 2;
-}
-
-input[type="checkbox"] {
-  display: none;
-}
-.target-mosaic-options .settings-ico {
-  font-size: 18px
-}
-.delete-btn-circular-container {
-  background-color: #fff;
-  height: 35px;
-  width: 35px;
-}
-.delete-btn-circular-container span {
-  margin: 15% !important;
-}
 </style>

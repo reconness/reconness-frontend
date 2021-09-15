@@ -7,11 +7,13 @@
       <div class="container-fluid">
         <hr class="reset-margin-top" :class="{'mb-0': isOnTargetMinimalView}" />
         <div :class="{'content': !isOnTargetMinimalView}">
-          <TargetsList v-if="this.$store.state.target.isDefaultViewOnTarget"/>
+          <div class="row" v-if="this.$store.state.target.isDefaultViewOnTarget">
+            <TargetsList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains"/>
+          </div>
           <div class="row" v-else>
           <!-- <TargetMiniList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains">
           </TargetMiniList> -->
-          <TargetMiniList2/>
+          <TargetMiniList/>
           </div>
           <Toast :baseZIndex="200"/>
         </div>
@@ -27,15 +29,14 @@ import TargetsList from '@/components/Target/TargetsList.vue'
 import NavBarTwoTarget from '@/components/Target/NavBarTwoTarget.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 // import TargetMiniList from '@/components/Target/TargetMiniList.vue'
-import TargetMiniList2 from '@/components/Target/TargetMiniList2.vue'
+import TargetMiniList from '@/components/Target/TargetMiniList.vue'
 import Toast from 'primevue/toast'
 export default {
   name: 'TargetsListView',
   components: {
     TargetsList,
     NavBarTwoTarget,
-    // TargetMiniList,
-    TargetMiniList2,
+    TargetMiniList,
     Toast
   },
   computed: {

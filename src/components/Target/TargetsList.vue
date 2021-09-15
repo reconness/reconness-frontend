@@ -1,83 +1,73 @@
 <template>
-  <div class="row">
-    <div v-for="item of arrayFilterList" :key="item.id" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)"
-    class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
-      <div class="card text-white card-style  mb-3" v-bind:style ="{background: 'linear-gradient(160deg,'+item.primaryColor+' '+ '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-        <input type="checkbox" :id="item.id"  name="checkitem" :checked="this.$isItemOnList(item.id, targetIdList)">
-        <label :for="item.id" v-show="check"  @click="addListTargetId" :data-id="item.id" :data-name="item.name" ></label>
-        <div class="card-body  link-color" v-bind:style="{paddingTop:styleList}">
-          <div class="d-flex justify-content-between mb-4">
-             <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.transformedName} }">
-            <h1 class="card-title mt-2">{{item.name}}</h1>
-             </router-link>
-            <a href="#" class="mt-n2">  <BullseyeArrowIco/> </a>
-          </div>
-          <div class="card-body-inside">
-            <ul class="list-unstyled min-height" >
-              <li v-for="item2 of item.rootDomains.slice(- 3) " :key="item2.id">
-              <span  class="material-icons float-left mt-1"> chevron_right </span>
-              <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: item.id , id: item2.id, targetName: item.transformedName, rootdomainName: item2.root} }">
-               {{item2.root}}
-              </router-link>
-              </li>
-              <li v-if="item.rootDomains.length > 3">
-                <span class="target-item-text-style">... and {{item.rootDomains.length - 3}} rootdomains more</span>
-              </li>
-            </ul>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <div class="float-left mt-2">
-               <small class="font-italic font-color">| RootDomains: {{item.rootDomains.length}}</small>
-                  </div>
-              <div class="float-right">
-               <a href="#" class="btn btn-sm btn-info  btn-style ml-1" @click="setTargetId" data-toggle="modal" :data-id="item.id" data-target="#confirmation-modal">Delete</a>
-               <a href="#" class="btn btn-sm btn-info  btn-style ml-1" @click="onEdit" data-toggle="modal" :data-id="item.id" data-target="#targetModalForm">Edit</a>
-              </div>
-            </div>
-          </div>
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3" @mouseenter="hoverCard( {id} )" @mouseleave="hoverCard(-1)">
+        <div class="row">
+          <div class="col-10">
+        <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
+        <input type="checkbox" :id="id" name="checkitem"  :checked="this.$isItemOnList(id, targetIdList)" >
+        <label class="float-right" :for="id" v-show="check" @click="addListTargetId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
+        <div class="p-2">
+        <div class="info-box">
+          <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
+          <div class="info-box-content">
+          <span class="info-box-text domain-names-target">
+           <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: transformedName} }" class="text-body" >
+            {{name}}</router-link>
+          </span>
+          <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Details</a>
+            <div class="d-flex target-mosaic-options">
+              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Settings</a>
+              <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="1">settings</span>
+            </div> <!-- /.d-flex target-mosaic-options -->
+          </div> <!-- /.info-box-content -->
+          </div> <!-- /.info-box -->
+          </div> <!-- /.p2 -->
+            <!-- /.info-box-content -->
+        </div> <!-- ./initial-info-box agent-mini-main-container rounded-corners -->
         </div>
-      </div>
-    </div>
-    <div class="col-12">
-      <TargetConfirmation/>
-    </div>
-    <TargetForm/>
-  </div>
+        <div class="col-2">
+          <transition name="slide-fade-cards">
+        <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
+          <span class="material-icons-outlined red-font-color">delete</span>
+        </div>
+        </transition>
+        </div>
+        </div>
+        <TargetConfirmation></TargetConfirmation>
+        <TargetForm/>
+    </div><!-- /.col -->
 </template>
-
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
+import { mapState, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
-import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
-
 export default {
-  name: 'TargetsList',
+  name: 'TargetMiniList',
   components: {
+    TargetConfirmation,
     BullseyeArrowIco,
-    TargetForm,
-    TargetConfirmation
+    TargetForm
+  },
+  props: {
+    name: String,
+    primaryColor: String,
+    secondaryColor: String,
+    id: Number,
+    rootDom: Array,
+    transformedName: String
   },
   data: function () {
     return {
-      selectedCard: -1,
       checkSelected: false,
-      checkDeleted: -1
+      checkDeleted: -1,
+      selectedTargetName: '',
+      selectedCard: -1
     }
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['targetListStore', 'check', 'filterColour', 'styleList', 'targetIdList']),
-    ...mapGetters('target', ['filterByColor']),
-    arrayFilterList () {
-      if (this.filterColour === '') {
-        return this.targetListStore
-      } else {
-        return this.filterByColor(this.filterColour)
-      }
-    }
+    ...mapState('target', ['check', 'targetIdList'])
   },
   methods: {
     ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
@@ -85,126 +75,103 @@ export default {
       this.selectedCard = selectedIndex
     },
     isSelected (cardIndex) {
-      return this.selectedCard === cardIndex
+      return parseInt(this.selectedCard.id) === parseInt(cardIndex)
     },
     onEdit (e) {
       this.setTargetId(e)
       this.$store.commit('agent/setDetailsLinks', false)
     },
+    setDetailsLink (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$store.commit('agent/setDetailsLinks', true)
+    },
     setTargetId (e) {
       const selectedTargetId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('target/setIdTarget', selectedTargetId)
+    },
+    setTargetName (e) {
+      this.selectedTargetName = e.currentTarget.getAttribute('data-name')
     }
   }
 }
 </script>
 <style scoped>
-.font-color{
-    color: #ffffff;
-    opacity: 0.4;
+.agent-mini-main-container{
+    margin-bottom: 32px;
 }
-
-.card {
-transition: all .25s ease;
+.agent-mini-main-container {
+/* transition: all .25s ease; */
 width:100%;
 }
-.container-card:hover {
+/* .agent-mini-main-container:hover {
 -webkit-transform:scale(1.25);
 -moz-transform:scale(1.25);
 -ms-transform:scale(1.25);
 -o-transform:scale(1.25);
 transform:scale(1.05);
 transition: all .25s ease;
-}
+z-index: 500;
+} */
+
 .col-lgg-5 {
   min-height: 1px;
   position: relative;
 }
-
-@media (min-width: 1440px) { /*1320*/
+@media (min-width: 1400px) {
   .col-lgg-5 {
     float: left;
-    max-width: 20%;
-    padding: 17.5px !important;
-  }
-}
-@media (min-width: 2550px) {
-  .col-lgg-5 {
-    float: left;
-    max-width: 20%;
-    padding: 40.5px!important;
-  }
-    .widhtLine {
-    width: 50%;
+        max-width: 20%;
   }
 }
 
-.btn:hover {
-    background-color: rgba(49, 137, 231, 0) !important;
-    opacity: 0.6 !important;
-    border: 2px solid #FFFFFF !important;
-}
-
-.btn-info.focus, .btn-info:focus {
-    background-color: rgba(49, 137, 231, 0);
-    opacity: 0.6;
-    border: 2px solid #FFFFFF;
-}
-
-.list-unstyled a{
-    font-size: 14px;
+.initial-info-box {
+    background: #fff;
+    min-height: 70px;
+    position: relative;
+    width: 100%;
+    box-shadow: -2px 17px 29px #eaeaea;
     opacity: 1;
 }
+.info-box {
+    box-shadow: none;
+    /* border-radius: .25rem; */
+    /* background: #fff; */
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 0rem;
+     min-height: 60px;
+     padding: .0rem;
+    position: relative;
+    width: 100%;
+}
 
-ul li span{
-  font-size: 17px;
-  color: #FFFFFF;
+.text-truncate {
+    max-width: 100px;
 }
-.min-height{
-  min-height: 100px;
+
+.domain-names-list .material-icons{
+font-size: 17px;
 }
-.card-title{
-  font-size: 24px;
+
+.info-box >span{
+  width: 56px;
+  height: 56px;
+  border-radius: 13px;
+  box-shadow: 3px 12px 23px #eae9e9;
   opacity: 1;
-}
-
-@media (max-width: 1440px) {
-.card-title{
-  font-size: 20px;
-}
-}
-@media (max-width: 1024px) {
-.card-title{
-  font-size: 17px;
-}
-}
-@media (min-width: 992px) {
-.col-lg-3 {
-    padding: 10px;
-}
-}
-@media (min-width: 1440px) and (max-width: 1520px) {
-  small{
-    font-size: 50%;
-  }
-}
-@media (min-width: 768px) and (max-width: 1156px) {
-.col-lg-3 {
-    -ms-flex: 0 0 33.333333%;
-    flex: 0 0 33.333333%;
-    max-width: 33.333333%;
-    padding: 20px;
-}
 }
 input[type="checkbox"] + label:before {
   content: "";
   width: 26px;
   height: 26px;
   float: right;
- /* margin: 0.5em 0.5em 0 0;*/
   border: 2px solid #ccc;
   background: #fff;
   border-radius: .7rem;
+  position: absolute;
+  right: 0rem;
+  z-index: 2;
 }
 input[type="checkbox"]:checked + label:before {
   border-color: #00B1FF;
@@ -221,13 +188,23 @@ input[type="checkbox"]:checked + label:after {
     border-top: 0;
     margin-top: .6em;
     transform: rotate(-55deg);
+    position: absolute;
+    right: 1.6rem;
+    z-index: 2;
 }
 
 input[type="checkbox"] {
   display: none;
 }
-.target-item-text-style{
-  font-size: 14px;
-  opacity: 1;
+.target-mosaic-options .settings-ico {
+  font-size: 18px
+}
+.delete-btn-circular-container {
+  background-color: #fff;
+  height: 35px;
+  width: 35px;
+}
+.delete-btn-circular-container span {
+  margin: 15% !important;
 }
 </style>
