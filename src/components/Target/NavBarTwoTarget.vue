@@ -6,7 +6,7 @@
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex">
            <a href="#" class="color-blue" data-toggle="modal" data-target="#targetModalForm">
-            <span class="material-icons">control_point</span>
+            <span class="material-icons">add</span>
             <p class="float-right">New Target</p>
           </a>
         </li>

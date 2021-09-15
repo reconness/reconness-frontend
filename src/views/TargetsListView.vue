@@ -5,12 +5,13 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
-        <hr class="reset-margin-top" />
-        <div class="content">
+        <hr class="reset-margin-top" :class="{'mb-0': isOnTargetMinimalView}" />
+        <div :class="{'content': !isOnTargetMinimalView}">
           <TargetsList v-if="this.$store.state.target.isDefaultViewOnTarget"/>
           <div class="row" v-else>
-          <TargetMiniList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains">
-          </TargetMiniList>
+          <!-- <TargetMiniList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains">
+          </TargetMiniList> -->
+          <TargetMiniList2/>
           </div>
           <Toast :baseZIndex="200"/>
         </div>
@@ -25,14 +26,16 @@
 import TargetsList from '@/components/Target/TargetsList.vue'
 import NavBarTwoTarget from '@/components/Target/NavBarTwoTarget.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
-import TargetMiniList from '@/components/Target/TargetMiniList.vue'
+// import TargetMiniList from '@/components/Target/TargetMiniList.vue'
+import TargetMiniList2 from '@/components/Target/TargetMiniList2.vue'
 import Toast from 'primevue/toast'
 export default {
   name: 'TargetsListView',
   components: {
     TargetsList,
     NavBarTwoTarget,
-    TargetMiniList,
+    // TargetMiniList,
+    TargetMiniList2,
     Toast
   },
   computed: {
@@ -45,6 +48,12 @@ export default {
       } else {
         return this.filterByColor(this.filterColour)
       }
+    },
+    isOnTargetView () {
+      return this.$route.name === 'Targets'
+    },
+    isOnTargetMinimalView () {
+      return (this.isOnTargetView && !this.$store.state.target.isDefaultViewOnTarget)
     }
   },
   mounted () {
