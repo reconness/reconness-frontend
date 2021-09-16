@@ -21,17 +21,17 @@
                   </div>
                   <div class="col-12">
                     <div class="d-flex justify-content-center pl-2 pr-2">
-                      <p>Please, confirm the name of the target <b>My Target</b> before delete it</p>
+                      <p>Please, confirm the name of the target <b>{{selectedName}}</b> before delete it</p>
                     </div>
                   </div>
                   <div class="col-12">
-                    <input style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Target name">
+                    <input style="border-top: none; border-left: none; border-right: none;" class="form-control" v-model="nameTyped" placeholder="Target name">
                   </div>
                 </div>
                 </div> <!-- /.modal-body -->
               <div class="modal-footer dialog-without-lines-footer d-flex justify-content-center">
-                  <button type="button" class="btn message-box-btn message-box-btn-accept-fontcolor" @click="remove()">Delete</button>
-                  <button type="button" class="btn message-box-btn message-box-btn-cancel-fontcolor" data-dismiss="modal">Cancel</button>
+                  <button type="button" :disabled="!isSelectedEntityNameEqualToTypedText" class="btn message-box-btn message-box-btn-accept-fontcolor" @click="removeEntities()">Delete</button>
+                  <button type="button" class="btn message-box-btn message-box-btn-cancel-fontcolor" @click="clearReferencesToDelete()" data-dismiss="modal">Cancel</button>
               </div> <!-- /.modal-footer dialog-without-lines-footer -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -40,10 +40,78 @@
 </template>
 <script>
 import HelpIco from '@/components/Icons/HelpIco.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
+import jQuery from 'jquery'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'MessageBox',
   components: {
     HelpIco
+  },
+  data () {
+    return {
+      nameTyped: ''
+    }
+  },
+  mixins: [TargetMixin],
+  computed: {
+    ...mapState('target', ['entitiesToDelete']),
+    selectedName () {
+      if (this.isOnTargetView) {
+        if (this.isSingleSelection) {
+          return this.singleItemName
+        }
+      }
+      return ''
+    },
+    isSingleSelection () {
+      return this.entitiesToDelete.length === 1
+    },
+    isNotEmpty () {
+      return this.entitiesToDelete.length >= 1
+    },
+    singleItemName () {
+      if (this.isNotEmpty) {
+        return this.entitiesToDelete[0].name
+      }
+      return ''
+    },
+    isSelectedEntityNameEqualToTypedText () {
+      return this.nameTyped === this.selectedName
+    }
+  },
+  methods: {
+    ...mapMutations('target', ['clearEntitiesToDelete', 'updateTargetEliminationStatus', 'clearReferencesToDelete']),
+    removeEntities () {
+      if (this.$randomBooleanResult()) {
+        this.updateTargetEliminationStatusTemporarily(
+          this.$entityStatus.SUCCESS
+        )
+      } else {
+        this.updateTargetEliminationStatusTemporarily(
+          this.$entityStatus.FAILED
+        )
+      }
+      this.clearEntitiesToDelete()
+      jQuery('#message-box-modal').modal('hide')
+    },
+    setWaitingStatusOnTargetEliminationStatusAfterSeconds () {
+      const self = this
+      setTimeout(
+        function () {
+          self.updateTargetEliminationStatus(
+            self.$entityStatus.WAITING
+          )
+        },
+        5000
+      )
+    },
+    updateTargetEliminationStatusTemporarily (status) {
+      if (this.isOnTargetView) {
+        this.updateTargetEliminationStatus(status)
+        this.setWaitingStatusOnTargetEliminationStatusAfterSeconds()
+      }
+    }
   }
 }
 </script>

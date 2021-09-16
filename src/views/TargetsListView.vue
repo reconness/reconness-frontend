@@ -42,7 +42,7 @@ export default {
     MessageBox
   },
   computed: {
-    ...mapState('target', ['targetListStore', 'filterColour']),
+    ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus']),
     ...mapState('agent', ['isElementDeleted']),
     ...mapGetters('target', ['filterByColor']),
     arrayFilterList () {

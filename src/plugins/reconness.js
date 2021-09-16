@@ -92,7 +92,8 @@ export default {
         RUNNING: 1,
         FINISHED: 2,
         WAITING: 3,
-        FAILED: 4
+        FAILED: 4,
+        SUCCESS: 5
       }
     )
 

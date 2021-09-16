@@ -27,7 +27,7 @@
         <div class="col-2">
           <transition name="slide-fade-cards">
         <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
-          <span class="material-icons-outlined red-font-color" data-toggle="modal" data-target="#message-box-modal">delete</span>
+          <span @click="prepareToDelete" class="material-icons-outlined red-font-color" data-toggle="modal" data-target="#message-box-modal" :data-id="id" :data-name="name">delete</span>
         </div>
         </transition>
         </div>
@@ -70,7 +70,7 @@ export default {
     ...mapState('target', ['check', 'targetIdList'])
   },
   methods: {
-    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget']),
+    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'addEntityToDelete']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },
@@ -92,6 +92,17 @@ export default {
     },
     setTargetName (e) {
       this.selectedTargetName = e.currentTarget.getAttribute('data-name')
+    },
+    prepareToDelete (e) {
+      const targetName = e.currentTarget.getAttribute('data-name')
+      const targetId = e.currentTarget.getAttribute('data-id')
+      this.addEntityToDelete(
+        {
+          id: parseInt(targetId),
+          name: targetName,
+          type: this.$agentType.TARGET
+        }
+      )
     }
   }
 }
@@ -104,26 +115,16 @@ export default {
 /* transition: all .25s ease; */
 width:100%;
 }
-/* .agent-mini-main-container:hover {
--webkit-transform:scale(1.25);
--moz-transform:scale(1.25);
--ms-transform:scale(1.25);
--o-transform:scale(1.25);
-transform:scale(1.05);
-transition: all .25s ease;
-z-index: 500;
-} */
-
-.col-lgg-5 {
+/* .col-lgg-5 {
   min-height: 1px;
   position: relative;
-}
-@media (min-width: 1400px) {
+} */
+/* @media (min-width: 1400px) {
   .col-lgg-5 {
     float: left;
         max-width: 20%;
   }
-}
+} */
 
 .initial-info-box {
     background: #fff;

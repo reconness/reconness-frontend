@@ -1,4 +1,9 @@
 const TargetMixin = {
+  computed: {
+    isOnTargetView () {
+      return this.$route.name === 'Targets'
+    }
+  },
   methods: {
     addListTargetId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))

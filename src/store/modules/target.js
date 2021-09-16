@@ -1018,7 +1018,9 @@ export default ({
       status: -1
     },
     currentView: '',
-    countSubdomainList: 0
+    countSubdomainList: 0,
+    entitiesToDelete: [],
+    targetEliminationStatus: 3
   },
   mutations: {
     changeCounterSubdom (state, countSubd) {
@@ -1281,6 +1283,24 @@ export default ({
       targets.forEach(target => {
         state.targetListStore.push(target)
       })
+    },
+    addEntityToDelete (state, entity) {
+      state.entitiesToDelete.push(entity)
+    },
+    clearEntitiesToDelete (state) {
+      state.entitiesToDelete.forEach(entity => {
+        const index = state.targetListStore.findIndex(target => target.id === entity.id)
+        if (index !== -1) {
+          state.targetListStore.splice(index, 1)
+        }
+      })
+      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+    },
+    clearReferencesToDelete (state) {
+      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+    },
+    updateTargetEliminationStatus (state, status) {
+      state.targetEliminationStatus = status
     }
   },
   actions: {
