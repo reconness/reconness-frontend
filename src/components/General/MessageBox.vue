@@ -21,7 +21,7 @@
                   </div>
                   <div class="col-12">
                     <div class="d-flex justify-content-center pl-2 pr-2">
-                      <p>Please, confirm the name of the target <b>{{selectedName}}</b> before delete it</p>
+                      <p>Please, confirm the name of the {{this.getLowerNameOfEntityTypeDisplayed}} <b>{{selectedName}}</b> before delete it</p>
                     </div>
                   </div>
                   <div class="col-12">
@@ -56,6 +56,15 @@ export default {
   mixins: [TargetMixin],
   computed: {
     ...mapState('target', ['entitiesToDelete']),
+    entityTypeDisplayed () {
+      if (this.isOnTargetView) {
+        return this.$entityTypeData.TARGET
+      }
+      return ''
+    },
+    getLowerNameOfEntityTypeDisplayed () {
+      return this.entityTypeDisplayed.description.toLowerCase()
+    },
     selectedName () {
       if (this.isOnTargetView) {
         if (this.isSingleSelection) {
