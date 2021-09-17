@@ -92,17 +92,6 @@ export default {
     },
     setTargetName (e) {
       this.selectedTargetName = e.currentTarget.getAttribute('data-name')
-    },
-    prepareToDelete (e) {
-      const targetName = e.currentTarget.getAttribute('data-name')
-      const targetId = e.currentTarget.getAttribute('data-id')
-      this.addEntityToDelete(
-        {
-          id: parseInt(targetId),
-          name: targetName,
-          type: this.$agentType.TARGET
-        }
-      )
     }
   }
 }

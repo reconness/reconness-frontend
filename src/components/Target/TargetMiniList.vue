@@ -23,22 +23,27 @@
               </router-link>
             </div>
             <div class="col-1 color-action-column d-flex justify-content-center">
-              <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @mouseover="toggleSettingsTooltip">settings</span>
-              <TrashCanIco class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column" @mouseover="toggleDeleteTooltip"/>
+              <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico">settings</span>
+              <TrashCanIco @click="prepareToDelete" data-toggle="modal" data-target="#message-box-modal" :data-id="target.id" :data-name="target.name" class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column"/>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'TargetMiniList',
   components: {
     TrashCanIco
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('target', ['targetListStore'])
+  },
+  methods: {
+    ...mapMutations('target', ['addEntityToDelete'])
   }
 }
 </script>
