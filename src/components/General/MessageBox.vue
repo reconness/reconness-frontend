@@ -30,7 +30,7 @@
                 </div> <!-- /.modal-body -->
               <div class="modal-footer dialog-without-lines-footer d-flex justify-content-center">
                   <button type="button" :disabled="!isSelectedEntityNameEqualToTypedText" class="btn message-box-btn message-box-btn-accept-fontcolor" @click="removeEntities()">Delete</button>
-                  <button type="button" class="btn message-box-btn message-box-btn-cancel-fontcolor" @click="clearReferencesToDelete()" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn message-box-btn message-box-btn-cancel-fontcolor" @click="clearReferences()" data-dismiss="modal">Cancel</button>
               </div> <!-- /.modal-footer dialog-without-lines-footer -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -108,6 +108,7 @@ export default {
           targetName: this.getTargetName
         })
       }
+      this.clearInput()
       jQuery('#message-box-modal').modal('hide')
     },
     setWaitingStatusOnTargetEliminationStatusAfterSeconds () {
@@ -165,6 +166,13 @@ export default {
           this.$entityStatus.FAILED
         )
       }
+    },
+    clearInput () {
+      this.nameTyped = ''
+    },
+    clearReferences () {
+      this.clearReferencesToDelete()
+      this.clearInput()
     }
   }
 }
