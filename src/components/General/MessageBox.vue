@@ -12,8 +12,7 @@
                   </div>
                   <div class="col-12">
                     <div class="d-flex justify-content-center">
-                      <!-- PARAMETIZABLE -->
-                      <p class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete selected target?</p>
+                      <p class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete selected {{this.getLowerNameOfEntityTypeDisplayed}}?</p>
                     </div>
                   </div>
                   <div class="col-12">
@@ -59,17 +58,21 @@ export default {
     entityTypeDisplayed () {
       if (this.isOnTargetView) {
         return this.$entityTypeData.TARGET
+      } else if (this.isOnTargetDetailView) {
+        return this.$entityTypeData.ROOTDOMAIN
       }
       return ''
     },
     getLowerNameOfEntityTypeDisplayed () {
-      return this.entityTypeDisplayed.description.toLowerCase()
+      let entityDescription = this.entityTypeDisplayed.description
+      if (entityDescription) {
+        entityDescription = entityDescription.toLowerCase()
+      }
+      return entityDescription
     },
     selectedName () {
-      if (this.isOnTargetView) {
-        if (this.isSingleSelection) {
-          return this.singleItemName
-        }
+      if (this.isSingleSelection) {
+        return this.singleItemName
       }
       return ''
     },
@@ -87,21 +90,24 @@ export default {
     },
     isSelectedEntityNameEqualToTypedText () {
       return this.nameTyped === this.selectedName
+    },
+    getTargetName () {
+      return this.$route.params.targetName
     }
   },
   methods: {
-    ...mapMutations('target', ['clearEntitiesToDelete', 'updateTargetEliminationStatus', 'clearReferencesToDelete']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
     removeEntities () {
-      if (this.$randomBooleanResult()) {
-        this.updateTargetEliminationStatusTemporarily(
-          this.$entityStatus.SUCCESS
-        )
-      } else {
-        this.updateTargetEliminationStatusTemporarily(
-          this.$entityStatus.FAILED
-        )
+      if (this.isOnTargetView) {
+        this.processTarget()
+        this.clearTargetEntitiesToDelete()
       }
-      this.clearEntitiesToDelete()
+      if (this.isOnTargetDetailView) {
+        this.processRootDomain()
+        this.clearRootDomainEntitiesToDelete({
+          targetName: this.getTargetName
+        })
+      }
       jQuery('#message-box-modal').modal('hide')
     },
     setWaitingStatusOnTargetEliminationStatusAfterSeconds () {
@@ -115,10 +121,49 @@ export default {
         5000
       )
     },
+    setWaitingStatusOnRootDomainEliminationStatusAfterSeconds () {
+      const self = this
+      setTimeout(
+        function () {
+          self.updateRootDomainEliminationStatus(
+            self.$entityStatus.WAITING
+          )
+        },
+        5000
+      )
+    },
     updateTargetEliminationStatusTemporarily (status) {
       if (this.isOnTargetView) {
         this.updateTargetEliminationStatus(status)
         this.setWaitingStatusOnTargetEliminationStatusAfterSeconds()
+      }
+    },
+    updateRootDomainEliminationStatusTemporarily (status) {
+      if (this.isOnTargetDetailView) {
+        this.updateRootDomainEliminationStatus(status)
+        this.setWaitingStatusOnRootDomainEliminationStatusAfterSeconds()
+      }
+    },
+    processTarget () {
+      if (this.$randomBooleanResult()) {
+        this.updateTargetEliminationStatusTemporarily(
+          this.$entityStatus.SUCCESS
+        )
+      } else {
+        this.updateTargetEliminationStatusTemporarily(
+          this.$entityStatus.FAILED
+        )
+      }
+    },
+    processRootDomain () {
+      if (this.$randomBooleanResult()) {
+        this.updateRootDomainEliminationStatusTemporarily(
+          this.$entityStatus.SUCCESS
+        )
+      } else {
+        this.updateRootDomainEliminationStatusTemporarily(
+          this.$entityStatus.FAILED
+        )
       }
     }
   }

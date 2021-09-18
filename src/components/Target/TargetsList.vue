@@ -27,7 +27,7 @@
         <div class="col-2">
           <transition name="slide-fade-cards">
         <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
-          <span @click="prepareToDelete" class="material-icons-outlined red-font-color" data-toggle="modal" data-target="#message-box-modal" :data-id="id" :data-name="name">delete</span>
+          <span @click="prepareToDelete($event, this.$agentType.TARGET)" class="material-icons-outlined red-font-color" data-toggle="modal" data-target="#message-box-modal" :data-id="id" :data-name="name">delete</span>
         </div>
         </transition>
         </div>

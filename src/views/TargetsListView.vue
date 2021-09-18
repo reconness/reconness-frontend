@@ -13,9 +13,6 @@
           <div class="row" v-else>
           <TargetMiniList/>
           </div>
-          <div class="row">
-            <MessageBox />
-          </div>
           <Toast :baseZIndex="200"/>
         </div>
       </div>
@@ -30,7 +27,6 @@ import TargetsList from '@/components/Target/TargetsList.vue'
 import NavBarTwoTarget from '@/components/Target/NavBarTwoTarget.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import TargetMiniList from '@/components/Target/TargetMiniList.vue'
-import MessageBox from '@/components/General/MessageBox.vue'
 import Toast from 'primevue/toast'
 export default {
   name: 'TargetsListView',
@@ -38,8 +34,7 @@ export default {
     TargetsList,
     NavBarTwoTarget,
     TargetMiniList,
-    Toast,
-    MessageBox
+    Toast
   },
   computed: {
     ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus']),

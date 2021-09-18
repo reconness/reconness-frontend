@@ -150,6 +150,11 @@
     <div class="wrapper">
       <!-- Main content -->
       <router-view/>
+      <div class="container">
+        <div class="row">
+          <MessageBox />
+        </div>
+      </div>
     </div><!-- /.content-wrapper -->
   </div><!-- ./wrapper -->
 </template>
@@ -158,6 +163,7 @@
 import { mapState } from 'vuex'
 import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
+import MessageBox from '@/components/General/MessageBox.vue'
 export default {
   name: 'App',
   data: function () {
@@ -175,7 +181,8 @@ export default {
     }
   },
   components: {
-    BullseyeArrowIco
+    BullseyeArrowIco,
+    MessageBox
   },
   computed: {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),

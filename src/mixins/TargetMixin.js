@@ -2,6 +2,9 @@ const TargetMixin = {
   computed: {
     isOnTargetView () {
       return this.$route.name === 'Targets'
+    },
+    isOnTargetDetailView () {
+      return this.$route.name === 'TargetDetail'
     }
   },
   methods: {
@@ -14,14 +17,14 @@ const TargetMixin = {
         this.removebyIdTarget(selectedId)
       }
     },
-    prepareToDelete (e) {
-      const targetName = e.currentTarget.getAttribute('data-name')
-      const targetId = e.currentTarget.getAttribute('data-id')
+    prepareToDelete (e, entityType) {
+      const entityName = e.currentTarget.getAttribute('data-name')
+      const entityId = e.currentTarget.getAttribute('data-id')
       this.addEntityToDelete(
         {
-          id: parseInt(targetId),
-          name: targetName,
-          type: this.$agentType.TARGET
+          id: parseInt(entityId),
+          name: entityName,
+          type: entityType // this.$agentType.TARGET
         }
       )
     }
