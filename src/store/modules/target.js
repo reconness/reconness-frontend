@@ -1441,6 +1441,11 @@ export default ({
       const target = state.targetListStore.find(item => item.transformedName === transformedName)
       return target
     },
+    getTargetAndRootDomainByName: (state) => (entityNames) => {
+      const target = state.targetListStore.find(item => item.transformedName === entityNames.targetName)
+      const rootdomain = target.rootDomains.find(item => item.root === entityNames.rootDomainName)
+      return rootdomain
+    },
     filterRootDomainsByName: (state) => (data) => {
       let temporal = []
       state.targetListStore.forEach(element => {

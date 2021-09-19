@@ -77,7 +77,16 @@ export default {
     isFormValid () {
       return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
     },
-    ...mapGetters('target', ['checkIfSubdomainExistsByName'])
+    target () {
+      return this.getTargetByTransformedName(this.$route.params.targetName)
+    },
+    rootDomain () {
+      return this.getTargetAndRootDomainByName({
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      })
+    },
+    ...mapGetters('target', ['checkIfSubdomainExistsByName', 'getTargetByTransformedName', 'getTargetAndRootDomainByName'])
   },
   created: function () {
     this.subdomains.push({
@@ -133,8 +142,8 @@ export default {
       }
       if (!this.enableValidationMessageSubDomainBlankNameManual() && !this.enableValidationMessageSubDomainUniqueNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
+          idTarget: parseInt(this.target.id),
+          idRootDomain: parseInt(this.rootDomain.id),
           subdomainsItems: this.subdomains
         }
         this.addSubdomain(params)
@@ -223,11 +232,12 @@ export default {
       let index = 0
       const params = {
         name: '',
-        idtarget: parseInt(this.$route.params.idTarget),
-        idrootdomain: parseInt(this.$route.params.id)
+        idtarget: parseInt(this.target.id),
+        idrootdomain: parseInt(this.rootDomain.id)
       }
       while (index < this.subdomains.length && !founded) {
         params.name = this.subdomains[index].name
+        console.log(params)
         if (this.checkIfSubdomainExistsByName(params)) {
           this.validators.exist.subDomainName[index] = true
           founded = true
