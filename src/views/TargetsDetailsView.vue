@@ -39,13 +39,14 @@
                               {{item.root}}
                             </router-link>
                             </div>
-                            <TrashCanIco @click="prepareToDelete($event, this.$agentType.ROOTDOMAIN)" :variableClass="'target-details-trashcan'" data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.root"/>
+                            <TrashCanIco @click="prepareToDelete($event, this.$agentType.ROOTDOMAIN)" class="cursor-pointer target-details-trashcan" data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.root"/>
                           </li>
                         </ul>
                       </div> <!-- /.col-12 -->
                       <div class="col-12 border-top description-block mt-3">
-                        <span class="cursor-pointer target-details-add-root">Add Root Domain</span>
+                        <span class="cursor-pointer target-details-add-root" data-toggle="modal" data-target="#rootDomainInsertionForm">Add Root Domain</span>
                       </div>
+                      <RootDomainInsertionForm :gradient="LinearGradient"/>
                     </div> <!-- /.row -->
                   </div> <!-- /.col mt-3 pr-3 ml-1 pl-1 -->
                 </div>
@@ -134,6 +135,7 @@ import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import RootDomainInsertionForm from '@/components/Target/RootDomainInsertionForm.vue'
 export default {
   name: 'TargetsDetailsView',
   components: {
@@ -141,7 +143,8 @@ export default {
     TargetsHighestInteraction,
     NavBarTwoDetailTarget,
     FileImportIco,
-    TrashCanIco
+    TrashCanIco,
+    RootDomainInsertionForm
   },
   props: {
     id: String
@@ -276,10 +279,10 @@ export default {
     this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
     this.updateTarget()
+    this.updateLinearGradient()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
     this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor
 
@@ -322,6 +325,9 @@ export default {
       const transformedName = this.$route.params.targetName
       this.Target = this.getTargetByTransformedName(transformedName)
       this.idTargetLoadedWhenIdPropsIsNull = this.Target.id
+    },
+    updateLinearGradient () {
+      this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     }
   }
 }

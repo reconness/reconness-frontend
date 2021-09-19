@@ -1010,6 +1010,7 @@ export default ({
     isTargetDeleted: false,
     isTableList: true,
     idSubdomain: 55,
+    idRootdomain: 55,
     elementSelectedList: [],
     countElementSelected: 0,
     nameSubDomainOpened: '',
@@ -1219,6 +1220,13 @@ export default ({
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       roots.subdomain = roots.subdomain.concat(params.subdomainsItems)
     },
+    addRootDomain (state, params) {
+      for (let index = 0; index < params.rootdomainsItems.length; index++) {
+        params.rootdomainsItems[index].id = state.idRootdomain++
+      }
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      target.rootDomains = target.rootDomains.concat(params.rootdomainsItems)
+    },
     addSelectedList (state, ObjectIn) {
       state.elementSelectedList.push(ObjectIn)
     },
@@ -1410,6 +1418,14 @@ export default ({
       const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)
       const subdomain = roots.subdomain.find(subdItem => subdItem.name === params.name)
       if (subdomain) {
+        return true
+      }
+      return false
+    },
+    checkIfRootdomainExistsByName: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idtarget)
+      const roots = target.rootDomains.find(roots => roots.root === params.name)
+      if (roots) {
         return true
       }
       return false

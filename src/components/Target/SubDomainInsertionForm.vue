@@ -237,7 +237,6 @@ export default {
       }
       while (index < this.subdomains.length && !founded) {
         params.name = this.subdomains[index].name
-        console.log(params)
         if (this.checkIfSubdomainExistsByName(params)) {
           this.validators.exist.subDomainName[index] = true
           founded = true
