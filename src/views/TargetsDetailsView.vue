@@ -20,7 +20,7 @@
                         </blockquote>
                       </div>
                       <div class="col-12 d-flex justify-content-center">
-                        <div class="target-details-import-files border-radios-8px w-50 d-flex flex-column align-items-center m-3 border pt-2 pb-2">
+                        <div :title="import_message" data-toggle="tooltip" data-placement="bottom" class="target-details-import-files border-radios-8px w-50 d-flex flex-column align-items-center m-3 border pt-2 pb-2">
                           <FileImportIco />
                           <label for="export-target" class="mb-0 font-weight-normal"> Import </label>
                           <input type="file" id="export-target"/>
@@ -39,7 +39,9 @@
                               {{item.root}}
                             </router-link>
                             </div>
-                            <TrashCanIco @click="prepareToDelete($event, this.$agentType.ROOTDOMAIN)" class="cursor-pointer target-details-trashcan" data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.root"/>
+                            <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="target-details-trashcan">
+                              <TrashCanIco @click="prepareToDelete($event, this.$agentType.ROOTDOMAIN)" class="cursor-pointer w-100 h-100" data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.root"/>
+                            </span>
                           </li>
                         </ul>
                       </div> <!-- /.col-12 -->
@@ -136,6 +138,7 @@ import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import RootDomainInsertionForm from '@/components/Target/RootDomainInsertionForm.vue'
+import jQuery from 'jquery'
 export default {
   name: 'TargetsDetailsView',
   components: {
@@ -154,6 +157,7 @@ export default {
       Target: Object,
       LinearGradient: String,
       idTargetLoadedWhenIdPropsIsNull: Number,
+      import_message: 'Import a Root Domain from external file',
       optionsBar: {
         chart: {
           toolbar: { show: false },
@@ -291,6 +295,7 @@ export default {
       this.setIsElementDeleted(false)
     }
     this.setCurrentView(this.$route.name)
+    jQuery('[data-toggle="tooltip"]').tooltip()
   },
   methods: {
     ...mapMutations('agent', ['setIsElementDeleted']),

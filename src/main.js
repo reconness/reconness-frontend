@@ -13,7 +13,9 @@ import 'primevue/resources/themes/saga-blue/theme.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.min.css'
 import 'material-icons/iconfont/material-icons.css'
+import Popper from 'popper.js'
 
 axios.defaults.baseURL = `http://${process.env.VUE_APP_API_RECONNES_HOST}/api`
+Popper.Defaults.modifiers.computeStyle.gpuAcceleration = false
 
 createApp(App).use(store).use(router).use(PrimeVue).use(VueApexCharts).use(ToastService).use(Reconness).mount('#app')
