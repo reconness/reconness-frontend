@@ -45,6 +45,9 @@ a.brand-link{
 .black-text{
   color: #000000 !important;
 }
+.red-text{
+  color: #ff4545 !important;
+}
 .pipeline-run-play-container svg{
   width: 15px;
   height: 15px;

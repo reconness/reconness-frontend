@@ -121,11 +121,12 @@
                 </div>
               </div></div>
             </div>
-          </div>
+            </div> <!-- /.row -->
           </div>
         </div>
       </div>
     </div>
+    <BottomBar/>
   </div>
 </template>
 
@@ -139,6 +140,7 @@ import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import RootDomainInsertionForm from '@/components/Target/RootDomainInsertionForm.vue'
 import jQuery from 'jquery'
+import BottomBar from '@/components/General/BottomBar'
 export default {
   name: 'TargetsDetailsView',
   components: {
@@ -147,7 +149,8 @@ export default {
     NavBarTwoDetailTarget,
     FileImportIco,
     TrashCanIco,
-    RootDomainInsertionForm
+    RootDomainInsertionForm,
+    BottomBar
   },
   props: {
     id: String

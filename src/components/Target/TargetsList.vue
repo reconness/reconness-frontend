@@ -104,16 +104,6 @@ export default {
 /* transition: all .25s ease; */
 width:100%;
 }
-/* .col-lgg-5 {
-  min-height: 1px;
-  position: relative;
-} */
-/* @media (min-width: 1400px) {
-  .col-lgg-5 {
-    float: left;
-        max-width: 20%;
-  }
-} */
 
 .initial-info-box {
     background: #fff;
@@ -125,8 +115,6 @@ width:100%;
 }
 .info-box {
     box-shadow: none;
-    /* border-radius: .25rem; */
-    /* background: #fff; */
     display: -ms-flexbox;
     display: flex;
     margin-bottom: 0rem;

@@ -101,12 +101,13 @@ export default {
       if (this.isOnTargetView) {
         this.processTarget()
         this.clearTargetEntitiesToDelete()
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
       }
       if (this.isOnTargetDetailView) {
-        this.processRootDomain()
         this.clearRootDomainEntitiesToDelete({
           targetName: this.getTargetName
         })
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')

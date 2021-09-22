@@ -47,6 +47,7 @@
 </template>
 <script>
 import { mapMutations, mapGetters } from 'vuex'
+import { TargetMixin } from '@/mixins/TargetMixin'
 import jQuery from 'jquery'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
@@ -73,6 +74,7 @@ export default {
       }
     }
   },
+  mixins: [TargetMixin],
   computed: {
     isFormValid () {
       return (this.validators.url.rootDomainName || this.validators.exist.rootDomainName)
@@ -120,6 +122,7 @@ export default {
           rootdomainsItems: this.rootdomains
         }
         this.addRootDomain(params)
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
         this.validators.exist.rootDomainName.length = this.validators.exist.rootDomainName.length + 1
         jQuery('#rootDomainInsertionForm').modal('hide')
         this.resetForm()

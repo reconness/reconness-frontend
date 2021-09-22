@@ -1,3 +1,4 @@
+import { mapMutations } from 'vuex'
 const TargetMixin = {
   computed: {
     isOnTargetView () {
@@ -8,6 +9,7 @@ const TargetMixin = {
     }
   },
   methods: {
+    ...mapMutations('target', ['updateOperationStatusInfo']),
     addListTargetId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
       const selectedTargetName = e.currentTarget.getAttribute('data-name')
@@ -26,6 +28,23 @@ const TargetMixin = {
           name: entityName,
           type: entityType // this.$agentType.TARGET
         }
+      )
+    },
+    updateOperationStatus (status, message) {
+      this.updateOperationStatusInfo(
+        { status: status, message: message }
+      )
+      this.setWaitingOnOperationStatusAfterSeconds()
+    },
+    setWaitingOnOperationStatusAfterSeconds () {
+      const self = this
+      setTimeout(
+        function () {
+          self.updateOperationStatusInfo(
+            { status: self.$entityStatus.WAITING, message: '' }
+          )
+        },
+        5000
       )
     }
   }

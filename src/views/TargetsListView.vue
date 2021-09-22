@@ -17,9 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="w-100 h-50 d-flex justify-content-center left-aside">
-      <span class="font-weight-bold">241 - 300 de 1050 elementos</span>
-    </div>
+    <BottomBar/>
   </div>
 </template>
 <script>
@@ -28,13 +26,15 @@ import NavBarTwoTarget from '@/components/Target/NavBarTwoTarget.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import TargetMiniList from '@/components/Target/TargetMiniList.vue'
 import Toast from 'primevue/toast'
+import BottomBar from '@/components/General/BottomBar'
 export default {
   name: 'TargetsListView',
   components: {
     TargetsList,
     NavBarTwoTarget,
     TargetMiniList,
-    Toast
+    Toast,
+    BottomBar
   },
   computed: {
     ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus']),

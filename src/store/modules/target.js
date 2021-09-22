@@ -1022,7 +1022,11 @@ export default ({
     countSubdomainList: 0,
     entitiesToDelete: [],
     targetEliminationStatus: 3,
-    rootDomainEliminationStatus: 3
+    rootDomainEliminationStatus: 3,
+    operationStatus: {
+      status: 3,
+      message: ''
+    }
   },
   mutations: {
     changeCounterSubdom (state, countSubd) {
@@ -1323,6 +1327,10 @@ export default ({
     },
     updateRootDomainEliminationStatus (state, status) {
       state.rootDomainEliminationStatus = status
+    },
+    updateOperationStatusInfo (state, statusData) {
+      state.operationStatus.status = statusData.status
+      state.operationStatus.message = statusData.message
     }
   },
   actions: {
