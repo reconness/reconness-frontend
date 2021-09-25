@@ -671,6 +671,11 @@ textarea {
 .target-color-section{
   background-color: #f2f4f6
 }
+.private-program-container label::before{
+  border: 2px solid #00B1FF;
+  box-shadow: unset;
+  background-color: #ffffff
+}
 
 @media (max-width: 480px) {
    .agent-name-input {
