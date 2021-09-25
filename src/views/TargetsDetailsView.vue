@@ -424,9 +424,6 @@ blockquote > p{
 label {
   cursor: pointer;
 }
-.border-radios-8px{
-  border-radius: 8px
-}
 .target-details-trashcan{
   width: 10%;
   height: 10%;

@@ -989,3 +989,23 @@ div.pipeline_spacing .p-autocomplete-loader{
   padding-right: 20px;
   font-weight: 500;
 }
+
+.target-chips .p-chips .p-chips-multiple-container:not(.p-disabled).p-focus{
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: none;
+}
+
+.target-chips > div.p-chips > ul{
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+  border-radius: 0;
+}
+.target-chips .p-chips .p-chips-multiple-container .p-chips-input-token input {
+  font-size: 1rem !important;
+}
+.border-radios-8px{
+  border-radius: 8px
+}
