@@ -28,8 +28,12 @@
               </router-link>
             </div>
             <div class="col-1 color-action-column d-flex justify-content-center">
-              <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico">settings</span>
-              <TrashCanIco @click="prepareToDelete($event, this.$agentType.TARGET)" data-toggle="modal" data-target="#message-box-modal" :data-id="target.id" :data-name="target.name" class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column"/>
+              <span class="d-flex align-items-center mt-auto mb-auto" title="Settings" data-toggle="tooltip" data-placement="bottom">
+                <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @click="onEdit" data-toggle="modal" data-target="#targetModalForm" :data-id="target.id">settings</span>
+              </span>
+              <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="d-flex align-items-center mt-auto mb-auto">
+                <TrashCanIco @click="prepareToDelete($event, this.$agentType.TARGET)" data-toggle="modal" data-target="#message-box-modal" :data-id="target.id" :data-name="target.name" class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column"/>
+              </span>
             </div>
         </div>
     </div>
@@ -37,6 +41,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
+import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'TargetMiniList',
@@ -60,8 +65,18 @@ export default {
       deep: true
     }
   },
+  mounted () {
+    this.enableTooltips()
+  },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete'])
+    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    enableTooltips () {
+      jQuery('[data-toggle="tooltip"]').tooltip()
+    },
+    onEdit (e) {
+      this.setTargetId(e)
+      this.$store.commit('agent/setDetailsLinks', false)
+    }
   }
 }
 </script>
