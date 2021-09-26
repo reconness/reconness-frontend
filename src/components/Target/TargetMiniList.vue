@@ -8,7 +8,12 @@
             <div class="col-1 my-2 border-left border-right">Actions</div>
         </div>
         <div v-for="target of targetListStore" :key="target.id" class="row border-bottom">
-            <div class="offset-sm-1"></div>
+            <div class="col-1">
+                <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
+                  <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+target.id" :checked="this.$isItemOnList(target.id, entitiesToDelete)">
+                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+target.id"  :data-id="target.id" :data-name="target.name" @click="prepareToDeleteFromMultipleSelections"></label>
+                </div>
+            </div>
             <div class="col-1 my-auto d-flex justify-content-center">
                 <div class="color-id-size" :style="{background: target.primaryColor}"></div>
             </div>
@@ -40,10 +45,23 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['targetListStore'])
+    ...mapState('target', ['targetListStore', 'check', 'entitiesToDelete'])
+  },
+  watch: {
+    entitiesToDelete: {
+      handler: function () {
+        if (this.entitiesToDelete.length === 0) {
+          var checkboxes = document.getElementsByName('checkitem')
+          for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = false
+          }
+        }
+      },
+      deep: true
+    }
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete'])
+    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete'])
   }
 }
 </script>
@@ -72,6 +90,17 @@ export default {
 }
 .target-minilist-trash-ico:hover {
     fill: #FF4545
+}
+.target-mini-list label::before{
+    width: 18px;
+    height: 18px;
+    position: relative;
+    top: 0;
+}
+.target-mini-list label::after{
+    width: 18px;
+    height: 18px;
+    top: 0;
 }
 
 </style>

@@ -3,8 +3,8 @@
         <div class="row">
           <div class="col-10">
         <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
-        <input type="checkbox" :id="id" name="checkitem"  :checked="this.$isItemOnList(id, targetIdList)" >
-        <label class="float-right" :for="id" v-show="check" @click="addListTargetId" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
+        <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
+        <label class="float-right" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="p-2">
         <div class="info-box">
           <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
@@ -67,10 +67,10 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['check', 'targetIdList'])
+    ...mapState('target', ['check', 'targetIdList', 'entitiesToDelete'])
   },
   methods: {
-    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'addEntityToDelete']),
+    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'addEntityToDelete', 'removeTargetEntityToDelete']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },

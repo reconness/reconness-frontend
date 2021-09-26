@@ -1300,6 +1300,12 @@ export default ({
     addEntityToDelete (state, entity) {
       state.entitiesToDelete.push(entity)
     },
+    removeTargetEntityToDelete (state, idEntity) {
+      const index = state.entitiesToDelete.findIndex(target => target.id === idEntity)
+      if (index !== -1) {
+        state.entitiesToDelete.splice(index, 1)
+      }
+    },
     clearTargetEntitiesToDelete (state) {
       state.entitiesToDelete.forEach(entity => {
         const index = state.targetListStore.findIndex(target => target.id === entity.id)
@@ -1628,6 +1634,18 @@ export default ({
         newRootDomains.push(newRootDomain)
       })
       return newRootDomains
+    },
+    isEntityOnListToRemove: (state) => (idItem) => {
+      setTimeout(
+        function () {
+          const searchedElement = state.entitiesToDelete.find(item => parseInt(item.id) === parseInt(idItem))
+          if (searchedElement) {
+            return true
+          }
+          return false
+        },
+        1000
+      )
     }
   }
 })

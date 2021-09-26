@@ -46,6 +46,15 @@ const TargetMixin = {
         },
         5000
       )
+    },
+    prepareToDeleteFromMultipleSelections (e) {
+      const entityId = Number(e.currentTarget.getAttribute('data-id'))
+      const isCurrentCheckBoxChecked = document.getElementById('remove_customCheckbox' + entityId).checked
+      if (!isCurrentCheckBoxChecked) {
+        this.prepareToDelete(e, this.$agentType.TARGET)
+      } else {
+        this.removeTargetEntityToDelete(entityId)
+      }
     }
   }
 }

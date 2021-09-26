@@ -20,7 +20,8 @@
                   </div>
                   <div class="col-12">
                     <div class="d-flex justify-content-center pl-2 pr-2">
-                      <p>Please, confirm the name of the {{this.getLowerNameOfEntityTypeDisplayed}} <b>{{selectedName}}</b> before delete it</p>
+                      <p v-if="multipleItemsToDelete"> Please, confirm typing <b>yes</b> before delete the selected items</p>
+                      <p v-else>Please, confirm the name of the {{this.getLowerNameOfEntityTypeDisplayed}} <b>{{selectedName}}</b> before delete it</p>
                     </div>
                   </div>
                   <div class="col-12">
@@ -89,10 +90,17 @@ export default {
       return ''
     },
     isSelectedEntityNameEqualToTypedText () {
-      return this.nameTyped === this.selectedName
+      if (this.multipleItemsToDelete) {
+        return this.nameTyped === 'yes'
+      } else {
+        return this.nameTyped === this.selectedName
+      }
     },
     getTargetName () {
       return this.$route.params.targetName
+    },
+    multipleItemsToDelete () {
+      return this.entitiesToDelete.length > 1
     }
   },
   methods: {
