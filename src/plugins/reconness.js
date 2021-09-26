@@ -207,7 +207,8 @@ export default {
         successMessageForSubDomainDeletion: 'The subdomain has been deleted successfully',
         successMessageForRootDomainDeletion: 'The rootdomain has been deleted successfully',
         successMessageForRootDomainInsertion: 'The rootdomains has been inserted successfully',
-        successMessageForTargetInsertion: 'The target has been inserted successfully'
+        successMessageForTargetInsertion: 'The target has been inserted successfully',
+        successMessageForTargetEdition: 'The target has been edited successfully'
       }
     )
 

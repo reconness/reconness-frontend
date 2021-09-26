@@ -1,6 +1,5 @@
 <template>
     <div class="col-12">
-        <Toast :baseZIndex="200"/>
         <form>
         <div class="modal fade" id="targetModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -20,7 +19,8 @@
                         </div><!-- /.col-12 -->
                         <div class="col-4">
                           <div class="d-flex flex-row-reverse">
-                            <span class="title-target-admin-form agent-mini-color-gray mr-1">New Target</span>
+                            <span v-if="editable" class="title-target-admin-form agent-mini-color-gray mr-1">Settings</span>
+                            <span v-else class="title-target-admin-form agent-mini-color-gray mr-1">New Target</span>
                           </div>
                         </div>
                         <div class="col-12" v-if="validators.blank.name">
@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-12">
                           <div class="custom-control custom-checkbox form-check private-program-container">
-                            <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="target_customCheckbox" v-model="target.isPrivateProgram">
+                            <input class="form-check-input custom-control-input" type="checkbox" id="target_customCheckbox" v-model="target.isPrivateProgram">
                             <label class="form-check-label custom-control-label float-right" for="target_customCheckbox">Is Private Program?</label>
                           </div>
                         </div>
@@ -76,7 +76,8 @@
                             <span class="info-box-text domain-names-target">
                             {{target.name}}
                             </span>
-                            <span class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
+                            <span v-if="editable"  class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
+                            <span v-else class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                             </div> <!-- /.info-box-content -->
                           </div> <!-- /.info-box -->
                         </div>
@@ -118,9 +119,7 @@
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div style="border-top: none;" class="modal-footer">
-                  <button @click=" this.setIsDeletetFromForm(true)" v-if="this.editable" :disabled="this.$store.state.agent.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
-                  <button @click="onEdit()" v-if="this.$store.state.agent.fromDetailsLink" type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state.agent.fromDetailsLink" type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Accept</button>
+                  <button type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Accept</button>
                   <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -132,7 +131,6 @@
 <script>
 import jQuery from 'jquery'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
-import Toast from 'primevue/toast'
 import Chips from 'primevue/chips'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import { mapMutations, mapGetters } from 'vuex'
@@ -140,7 +138,6 @@ export default {
   name: 'TargetForm',
   components: {
     BullseyeArrowIco,
-    Toast,
     Chips
   },
   data () {
@@ -258,10 +255,10 @@ export default {
             this.target.id = parseInt(this.$store.getters['target/idTarget'])
             this.$store.commit('target/updateTarget', this.target)
             this.$store.commit('target/setIdTarget', -1)
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been updated successfully', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {
             this.$store.commit('target/setIdTarget', -1)
-            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAllPurpose)
           }
         } else {
           if (randomResult) {

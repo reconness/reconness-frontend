@@ -14,9 +14,9 @@
             {{name}}</router-link>
           </span>
           <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modall">Details</a>
-            <div class="d-flex target-mosaic-options">
-              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modall">Settings</a>
-              <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="1">settings</span>
+            <div class="d-flex target-mosaic-options align-items-center">
+              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="onEdit" href="#" data-toggle="modal"  :data-id="id" data-target="#targetModalForm">Settings</a>
+              <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#targetModalForm" :data-id="id">settings</span>
             </div> <!-- /.d-flex target-mosaic-options -->
           </div> <!-- /.info-box-content -->
           </div> <!-- /.info-box -->
@@ -176,6 +176,9 @@ input[type="checkbox"] {
 }
 .target-mosaic-options .settings-ico {
   font-size: 18px
+}
+.target-mosaic-options:hover a, .target-mosaic-options:hover span {
+  color: #00B1FF !important
 }
 .delete-btn-circular-container {
   background-color: #fff;
