@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@hennge/vue3-pagination": "^1.0.17",
     "@types/typography": "0.16.4",
     "apexcharts": "3.25.0",
     "axios": "0.21.4",
