@@ -61,7 +61,7 @@
                             <div class="col-lg-6">
                               <div class="row">
                                 <div class="col-lg-7">
-                                  <div style="position: relative;">
+                                  <div class="position-relative">
                                   <Chips ref="chips" id="category_item" v-model="resource.categories" placeholder="Categories" @keyup="getData(); isCategoriesMenuClosed=false" :addOnBlur="true"/>
                                   <div v-click-outside="closeMenu" class="dropdown-menu" v-if="search_data.length && !isCategoriesMenuClosed">
                                     <button class="dropdown-item" href="#" v-for="item in search_data" :key="item" @click="getName(item)">{{ item }}</button>
@@ -69,7 +69,7 @@
                                   </div>
                                 </div>
                                 <div class="col-lg-5">
-                                  <button style="height: 40px;" type="submit" class="btn button-clolour rounded btn-block" @click="addReference">Add</button></div>
+                                  <button type="submit" class="btn button-clolour rounded btn-block height-40px" @click="addReference">Add</button></div>
                                 </div><!--./col-lg-5-->
                               </div><!--./row -->
                             </div><!--./col-lg-6 -->
@@ -80,13 +80,13 @@
                           <hr v-if="this.resources.length > 0"/>
                           <div class="row" v-for="item of resources"  :key="item.id">
                             <div class="col-lg-6">
-                              <a style="color: #007bff;" :href="item.url" class="form-control url-input without-bordered-lines">{{item.url}}</a>
+                              <a :href="item.url" class="reference-text-color form-control url-input without-bordered-lines">{{item.url}}</a>
                             </div>
                             <div class="col-lg-4">
                               <input :value="item.categories.toString()" class="form-control url-input without-bordered-lines">
                             </div>
                             <div class="col-lg-2">
-                              <button data-target="#simple-confirmation-modal" @click="setSelectedReference" data-toggle="modal" style="font-size: 14px;" :data-id="item.id" type="button" class="btn btn-primary btn-block btn-danger delete_btn rounded-corners">Delete</button>
+                              <button data-target="#simple-confirmation-modal" @click="setSelectedReference" data-toggle="modal" :data-id="item.id" type="button" class="btn btn-primary btn-block btn-danger delete_btn font-size-14px rounded-corners">Delete</button>
                             </div>
                           </div>
                         </div>
@@ -297,7 +297,9 @@ blockquote {
 .button-clolour{
   color: #00b1ff;
 }
-
+.font-size-14px{
+  font-size: 14px
+}
 .p-chips{
   width: 100%;
   border-radius: 12px !important;
@@ -318,6 +320,12 @@ blockquote {
 .dropdown-menu{
   display: inherit !important;
   width: 100%;
+}
+.height-40px{
+  height: 40px;
+}
+.reference-text-color{
+  color: #007bff;
 }
 
 @media (min-width: 2560px) {
