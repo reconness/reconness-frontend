@@ -39,6 +39,9 @@ a.brand-link{
 .blue-text{
   color: #00B1FF !important;
 }
+.dark-gray-text{
+  color: #707070 !important;
+}
 .white-text{
   color: #ffffff !important;
 }
@@ -231,12 +234,6 @@ div.image img{
 
 .rounded-corners{
   border-radius: 18px !important;
-}
-
-.box-contained{
-  /* width: 10rem;
-  height: 10rem;
-  border-radius: 10px; */
 }
 
 .navbar-nav.ml-auto.right-navbar .img-circle {
@@ -1008,4 +1005,19 @@ div.pipeline_spacing .p-autocomplete-loader{
 }
 .Page{
   font-weight: 400;
+}
+.target-detail-popover-reference .p-overlaypanel .p-overlaypanel-content{
+  padding: 0;
+}
+.target-details-root-links:hover a{
+  color: #00B1FF;
+}
+.target-details-root-links:hover span{
+  color: #00B1FF !important;
+}
+.p-overlaypanel .p-overlaypanel-content{
+  padding: 0 !important;
+}
+.p-overlaypanel{
+  border-radius: 18px !important;
 }

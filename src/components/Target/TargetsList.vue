@@ -6,14 +6,17 @@
         <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
         <label class="float-right" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections" :data-id="id" :data-name="name" style="margin-bottom: .0rem"></label>
         <div class="p-2">
-        <div class="info-box">
+        <div class="info-box target-detail-popover-reference">
           <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
            <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: transformedName} }" class="text-body" >
             {{name}}</router-link>
           </span>
-          <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="setTargetId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modall">Details</a>
+          <a class="nav-link target-detail-popover active agent-mini-agent-details pt-0 pb-0 black-text border-right-0 cursor-pointer" @click="showDetailsPopover" :data-id="id" :data-name="name">Details</a>
+            <OverlayPanel ref="op" :dismissable="false">
+              <DetailsTargetPopover/>
+            </OverlayPanel>
             <div class="d-flex target-mosaic-options align-items-center">
               <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" @click="onEdit" href="#" data-toggle="modal"  :data-id="id" data-target="#targetModalForm">Settings</a>
               <span class="material-icons cursor-pointer settings-ico" @click="onEdit" data-toggle="modal" data-target="#targetModalForm" :data-id="id">settings</span>
@@ -38,16 +41,20 @@
 </template>
 <script>
 import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
+import DetailsTargetPopover from '@/components/Target/DetailsTargetPopover'
 import { mapState, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'TargetMiniList',
   components: {
     TargetConfirmation,
     BullseyeArrowIco,
-    TargetForm
+    TargetForm,
+    OverlayPanel,
+    DetailsTargetPopover
   },
   props: {
     name: String,
@@ -92,6 +99,10 @@ export default {
     },
     setTargetName (e) {
       this.selectedTargetName = e.currentTarget.getAttribute('data-name')
+    },
+    showDetailsPopover (e) {
+      this.setTargetId(e)
+      this.$refs.op.toggle(e)
     }
   }
 }
@@ -176,6 +187,9 @@ input[type="checkbox"] {
 }
 .target-mosaic-options .settings-ico {
   font-size: 18px
+}
+a.target-detail-popover:hover{
+  color: #00B1FF !important
 }
 .target-mosaic-options:hover a, .target-mosaic-options:hover span {
   color: #00B1FF !important

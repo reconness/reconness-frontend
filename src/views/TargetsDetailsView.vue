@@ -437,12 +437,6 @@ label {
 .target-details-import-files:hover label{
   color: #00B1FF;
 }
-.target-details-root-links:hover a{
-  color: #00B1FF;
-}
-.target-details-root-links:hover span{
-  color: #00B1FF !important;
-}
 span.target-details-add-root:hover{
   color: #00B1FF;
 }
