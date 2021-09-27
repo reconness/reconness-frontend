@@ -1009,3 +1009,11 @@ div.pipeline_spacing .p-autocomplete-loader{
 .border-radios-8px{
   border-radius: 14px
 }
+.Page-active{
+  color: #00B1FF !important;
+  background-color: unset !important;
+  font-weight: 600 !important;
+}
+.Page{
+  font-weight: 400;
+}

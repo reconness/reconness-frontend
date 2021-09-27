@@ -14,6 +14,7 @@ import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.min.css'
 import 'material-icons/iconfont/material-icons.css'
 import Popper from 'popper.js'
+import '@hennge/vue3-pagination/dist/vue3-pagination.css'
 
 axios.defaults.baseURL = `http://${process.env.VUE_APP_API_RECONNES_HOST}/api`
 Popper.Defaults.modifiers.computeStyle.gpuAcceleration = false
