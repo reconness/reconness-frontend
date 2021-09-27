@@ -33,7 +33,6 @@ export default {
     ...mapState('target', ['idTarget']),
     ...mapGetters('target', ['getTargetById']),
     getTarget () {
-      console.log(this.getTargetById(parseInt(this.idTarget)))
       return this.getTargetById(parseInt(this.idTarget))
     }
   }
