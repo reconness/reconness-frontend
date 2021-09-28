@@ -6,6 +6,16 @@ const TargetMixin = {
     },
     isOnTargetDetailView () {
       return this.$route.name === 'TargetDetail'
+    },
+    arrayFilterList () {
+      if (this.filterColour === '') {
+        return this.targetListStore
+      } else {
+        return this.filterByColor(this.filterColour)
+      }
+    },
+    filteredTargetList () {
+      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
     }
   },
   methods: {

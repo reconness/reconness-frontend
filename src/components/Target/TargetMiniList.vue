@@ -51,17 +51,7 @@ export default {
   mixins: [TargetMixin],
   computed: {
     ...mapState('target', ['targetListStore', 'check', 'filterColour', 'entitiesToDelete', 'paginator']),
-    ...mapGetters('target', ['filterByColor']),
-    arrayFilterList () {
-      if (this.filterColour === '') {
-        return this.targetListStore
-      } else {
-        return this.filterByColor(this.filterColour)
-      }
-    },
-    filteredTargetList () {
-      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
-    }
+    ...mapGetters('target', ['filterByColor'])
   },
   watch: {
     entitiesToDelete: {
@@ -72,13 +62,6 @@ export default {
             checkboxes[i].checked = false
           }
         }
-      },
-      deep: true
-    },
-    paginator: {
-      handler: function (paginationData) {
-        this.startIndex = paginationData.startIndex
-        this.endIndex = paginationData.endIndex
       },
       deep: true
     }

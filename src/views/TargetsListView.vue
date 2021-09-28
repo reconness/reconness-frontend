@@ -27,6 +27,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 import TargetMiniList from '@/components/Target/TargetMiniList.vue'
 import Toast from 'primevue/toast'
 import BottomBar from '@/components/General/BottomBar'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'TargetsListView',
   components: {
@@ -36,25 +37,16 @@ export default {
     Toast,
     BottomBar
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus', 'paginator']),
     ...mapState('agent', ['isElementDeleted']),
     ...mapGetters('target', ['filterByColor']),
-    arrayFilterList () {
-      if (this.filterColour === '') {
-        return this.targetListStore
-      } else {
-        return this.filterByColor(this.filterColour)
-      }
-    },
     isOnTargetView () {
       return this.$route.name === 'Targets'
     },
     isOnTargetMinimalView () {
       return (this.isOnTargetView && !this.$store.state.target.isDefaultViewOnTarget)
-    },
-    filteredTargetList () {
-      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
     }
   },
   mounted () {
