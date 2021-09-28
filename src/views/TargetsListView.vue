@@ -8,7 +8,7 @@
         <hr class="reset-margin-top" :class="{'mb-0': isOnTargetMinimalView}" />
         <div :class="{'content': !isOnTargetMinimalView}">
           <div class="row" v-if="this.$store.state.target.isDefaultViewOnTarget">
-            <TargetsList v-for="target of arrayFilterList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains"/>
+            <TargetsList v-for="target of filteredTargetList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains"/>
           </div>
           <div class="row" v-else>
           <TargetMiniList/>
@@ -36,8 +36,14 @@ export default {
     Toast,
     BottomBar
   },
+  data () {
+    return {
+      startIndex: 0,
+      endIndex: 0
+    }
+  },
   computed: {
-    ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus']),
+    ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus', 'paginator']),
     ...mapState('agent', ['isElementDeleted']),
     ...mapGetters('target', ['filterByColor']),
     arrayFilterList () {
@@ -52,6 +58,18 @@ export default {
     },
     isOnTargetMinimalView () {
       return (this.isOnTargetView && !this.$store.state.target.isDefaultViewOnTarget)
+    },
+    filteredTargetList () {
+      return this.arrayFilterList.slice(this.startIndex, this.endIndex)
+    }
+  },
+  watch: {
+    paginator: {
+      handler: function (paginationData) {
+        this.startIndex = paginationData.startIndex
+        this.endIndex = paginationData.endIndex
+      },
+      deep: true
     }
   },
   mounted () {

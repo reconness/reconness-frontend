@@ -1023,9 +1023,15 @@ export default ({
     entitiesToDelete: [],
     targetEliminationStatus: 3,
     rootDomainEliminationStatus: 3,
+    // General Store
     operationStatus: {
       status: 3,
       message: ''
+    },
+    paginator: {
+      page: 0,
+      startIndex: 0,
+      endIndex: 0
     }
   },
   mutations: {
@@ -1337,6 +1343,11 @@ export default ({
     updateOperationStatusInfo (state, statusData) {
       state.operationStatus.status = statusData.status
       state.operationStatus.message = statusData.message
+    },
+    updatePaginator (state, paginatorData) {
+      state.paginator.page = paginatorData.page
+      state.paginator.startIndex = paginatorData.startIndex
+      state.paginator.endIndex = paginatorData.endIndex
     }
   },
   actions: {
