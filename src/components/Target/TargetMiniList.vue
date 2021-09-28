@@ -7,7 +7,7 @@
             <div class="col-3 my-2 border-left">RootDomains</div>
             <div class="col-1 my-2 border-left border-right">Actions</div>
         </div>
-        <div v-for="target of targetListStore" :key="target.id" class="row border-bottom">
+        <div v-for="target of filteredTargetList" :key="target.id" class="row border-bottom">
             <div class="col-1">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
                   <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+target.id" :checked="this.$isItemOnList(target.id, entitiesToDelete)">
@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
@@ -50,7 +50,18 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['targetListStore', 'check', 'entitiesToDelete'])
+    ...mapState('target', ['targetListStore', 'check', 'filterColour', 'entitiesToDelete', 'paginator']),
+    ...mapGetters('target', ['filterByColor']),
+    arrayFilterList () {
+      if (this.filterColour === '') {
+        return this.targetListStore
+      } else {
+        return this.filterByColor(this.filterColour)
+      }
+    },
+    filteredTargetList () {
+      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
+    }
   },
   watch: {
     entitiesToDelete: {
@@ -61,6 +72,13 @@ export default {
             checkboxes[i].checked = false
           }
         }
+      },
+      deep: true
+    },
+    paginator: {
+      handler: function (paginationData) {
+        this.startIndex = paginationData.startIndex
+        this.endIndex = paginationData.endIndex
       },
       deep: true
     }

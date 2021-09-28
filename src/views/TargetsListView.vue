@@ -36,12 +36,6 @@ export default {
     Toast,
     BottomBar
   },
-  data () {
-    return {
-      startIndex: 0,
-      endIndex: 0
-    }
-  },
   computed: {
     ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus', 'paginator']),
     ...mapState('agent', ['isElementDeleted']),
@@ -60,16 +54,7 @@ export default {
       return (this.isOnTargetView && !this.$store.state.target.isDefaultViewOnTarget)
     },
     filteredTargetList () {
-      return this.arrayFilterList.slice(this.startIndex, this.endIndex)
-    }
-  },
-  watch: {
-    paginator: {
-      handler: function (paginationData) {
-        this.startIndex = paginationData.startIndex
-        this.endIndex = paginationData.endIndex
-      },
-      deep: true
+      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
     }
   },
   mounted () {
