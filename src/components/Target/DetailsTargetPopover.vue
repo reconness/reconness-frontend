@@ -14,14 +14,15 @@
             </div>
         </div>
         <!-- /.card-body -->
-        <!-- <div class="card-footer d-flex justify-content-end">
-            <span class="red-text">Delete</span>
-        </div> -->
+        <div class="card-footer d-flex justify-content-end">
+            <span class="red-text cursor-pointer" @click="prepareToDelete($event, this.$agentType.TARGET)" data-toggle="modal" data-target="#message-box-modal" :data-id="getTarget.id" :data-name="getTarget.name">Delete</span>
+        </div>
         <!-- /.card-footer-->
     </div>
 </template>
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'DetailsTargetPopover',
   data () {
@@ -29,12 +30,16 @@ export default {
       target: {}
     }
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('target', ['idTarget']),
     ...mapGetters('target', ['getTargetById']),
     getTarget () {
       return this.getTargetById(parseInt(this.idTarget))
     }
+  },
+  methods: {
+    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete'])
   }
 }
 </script>
