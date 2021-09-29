@@ -12,7 +12,7 @@
               <div class="modal-body">
                 <!-- PARAMETERIZABLE -->
                   <p>Please, confirm the name of the Agent <b>{{selectedAgentName}}</b> before delete it</p>
-                  <input autofocus required v-model="nameTyped" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Agent Name">
+                  <input autofocus required v-model="nameTyped" class="form-control border-top-0; border-left-0 border-right-0" placeholder="Agent Name">
               </div>
               <div class="modal-footer dialog-without-lines-footer">
                   <button :disabled="nameTyped !== selectedAgentName" type="button" class="btn btn-primary btn-danger delete_btn" @click="removeAgent(this.nameTyped)">Delete</button>
