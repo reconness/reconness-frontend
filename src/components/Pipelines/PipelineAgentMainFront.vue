@@ -174,9 +174,6 @@ export default {
 }
 </script>
 <style scoped>
-.pam-container{
-  left: 7px; top: -4px;
-}
 .info-box{
   overflow: hidden;
   text-overflow: ellipsis;

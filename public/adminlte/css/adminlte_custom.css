@@ -1035,3 +1035,7 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .opacity-02{
   opacity:0.2 !important
 }
+.pam-container{
+  left: 7px;
+  top: -4px;
+}

@@ -1,6 +1,6 @@
 <template>
-  <div class="info-box float-left abs-center w-75"
-        :style ="{background:sonAgent.background}" style="position: absolute; left: 7px; top: -4px;">
+  <div class="position-absolute info-box float-left abs-center w-75 pam-container"
+        :style ="{background:sonAgent.background}">
         <div class="info-box-content border-right w-75">
             <span class="white-text responsive-fontsize">{{sonAgent.name }}</span>
             <div class="pipeline-run-play-container">
