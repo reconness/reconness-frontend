@@ -25,7 +25,7 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <input style="border-top: none; border-left: none; border-right: none;" class="form-control" v-model="nameTyped" placeholder="Target name">
+                    <input class="form-control zero-borders" v-model="nameTyped" placeholder="Target name">
                   </div>
                 </div>
                 </div> <!-- /.modal-body -->
