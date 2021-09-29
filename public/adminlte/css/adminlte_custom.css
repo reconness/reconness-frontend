@@ -1029,3 +1029,6 @@ div.pipeline_spacing .p-autocomplete-loader{
   border-left: none;
   border-right: none;
 }
+.border-top-none{
+  border-top: none !important;
+}

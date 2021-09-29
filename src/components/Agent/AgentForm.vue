@@ -714,10 +714,6 @@ label[for='uploadimage']{
   border-radius: 7px;
 }
 
-.border-top-none{
-  border-top: none;
-}
-
 input.agent-name-input:hover{
   background-color: #afd9e647;
 }
