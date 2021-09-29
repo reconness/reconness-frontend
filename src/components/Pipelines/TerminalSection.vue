@@ -51,9 +51,6 @@ export default {
 }
 </script>
 <style scoped>
-.vertical-align-bottom{
-  vertical-align: bottom;
-}
 .terminal-container{
   height: 370px;
   background: #ffffff 0% 0% no-repeat padding-box;

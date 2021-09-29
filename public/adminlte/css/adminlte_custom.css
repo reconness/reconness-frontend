@@ -1050,3 +1050,6 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .execarea-borderline-colorless{
   border: 1px solid;
 }
+.vertical-align-bottom{
+  vertical-align: bottom;
+}
