@@ -15,7 +15,7 @@
                     <a href="https://raw.githubusercontent.com/reconness/reconness-agents/master/Dockerfile" class="blue-text">Download Dockerfile</a>
                 </div>
                 <div class="modal-footer dialog-without-lines-footer">
-                    <button @click="installer" type="button" data-dismiss="modal" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Install</button>
+                    <button @click="installer" type="button" data-dismiss="modal" class="blue-text agent-border btn create-agent-buttons-main-action">Install</button>
                 </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
