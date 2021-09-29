@@ -714,12 +714,6 @@ label[for='uploadimage']{
   border-radius: 7px;
 }
 
-.zero-borders{
-  border-top: none;
-  border-left: none;
-  border-right: none;
-}
-
 .border-top-none{
   border-top: none;
 }

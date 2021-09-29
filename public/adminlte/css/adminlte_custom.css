@@ -1021,3 +1021,8 @@ div.pipeline_spacing .p-autocomplete-loader{
 .p-overlaypanel{
   border-radius: 18px !important;
 }
+.zero-borders{
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
