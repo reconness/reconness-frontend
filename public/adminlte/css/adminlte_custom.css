@@ -1018,10 +1018,10 @@ div.pipeline_spacing .p-autocomplete-loader{
 .target-details-root-links:hover span{
   color: #00B1FF !important;
 }
-.p-overlaypanel .p-overlaypanel-content{
+div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
   padding: 0 !important;
 }
-.p-overlaypanel{
+.p-overlaypanel.target-list-popover{
   border-radius: 18px !important;
 }
 .zero-borders{
