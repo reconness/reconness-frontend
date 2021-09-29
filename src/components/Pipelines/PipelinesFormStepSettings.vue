@@ -11,11 +11,11 @@
                   <div v-if="showInputPipelineName" class="d-flex ml-3 mt-2 mr-2">
                     <h1 v-if="this.settings_data.name === ''" class="domain-names-list" @click="showInputPipelineName = false;">My Pipeline</h1>
                     <h1 v-else class="domain-names-list" @click="showInputPipelineName = false;">{{ settings_data.name }}</h1>
-                    <span style="font-size: 18px;" class="material-icons float-right cursor-pointer" @click="showInputPipelineName = false;"> open_in_new</span>
+                    <span class="font-size-18px material-icons float-right cursor-pointer" @click="showInputPipelineName = false;"> open_in_new</span>
                   </div>
                   <div v-else class="d-flex ml-3 mt-2 mr-2">
-                    <input style="font-size: 18px; width: 75%;" v-model="settings_data.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}"
-                      class="form-control agent-placeholder agent-name-input" placeholder="My Pipeline"
+                    <input v-model="settings_data.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}"
+                      class="font-size-18px w-75 form-control agent-placeholder agent-name-input" placeholder="My Pipeline"
                       @focus="isPencilVisible=true" @blur="onBlurExecute" @mouseover="isPencilVisible=true"
                       @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true"
                       @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false; editPipeline()" />
@@ -23,7 +23,7 @@
                   </div>
                   <div class="row pl-2 mt-2">
                     <div class="col-9 p-0">
-                      <div class="card card-custom-container  pr-0 d-flex" style="position: relative;">
+                      <div class="card card-custom-container  pr-0 d-flex position-relative">
                         <img src="@/assets/pipeline_setting_diagram.png" class="m-2"/>
                       </div>
                     </div>
@@ -63,7 +63,7 @@
           <p class="float-right blue-text mb-1">Search</p>
             <div v-for="(item, index) in settings_data.locations" :key="item.entity.id" class="input-searcher-container">
               <AutoCompleteLocations :selectedType="settings_data.type" v-model="item.entity.name"/>
-              <div style="height: 0;">
+              <div class="h-0">
                 <span v-if="index>0" @click="removeLocation" class="pipe-circle-minus-properties cursor-pointer" :data-index="index">
                   <MinusCircleIco/>
                 </span>
@@ -97,8 +97,8 @@
                       <div class="event-settings d-flex flex-column">
                         <span class="material-icons cursor-pointer blue-text close-icon-pipeline-setting" :data-index-x="index" :data-index-y="0" @click="removeEvent">close</span>
                         <span class="calendar-edit cursor-pointer" :data-index-x="index" :data-index-y="0" @click="selectEvent">
-                        <CalendarEditIco :style="'fill: #ff4545'" v-if="index === eventSelectionX && 0 === eventSelectionY"/>
-                        <CalendarEditIco :style="'fill: #00B1FF'" v-else/>
+                        <CalendarEditIco class="fill-with-red" v-if="index === eventSelectionX && 0 === eventSelectionY"/>
+                        <CalendarEditIco class="fill-with-blue" v-else/>
                         </span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
@@ -115,7 +115,7 @@
                           <Calendar v-model="settings_data.calendars[index*2].time" :inline="true" hourFormat="12" :timeOnly="true"/>
                         </div>
                         <div>
-                          <hr style="border: 0.5px solid #F1F3F5;"/>
+                          <hr class="border-line-gray"/>
                           <span class="float-left pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
                             <select class="form-control float-right" v-model="settings_data.calendars[index*2].repeat">
@@ -133,10 +133,10 @@
                       <div class="event-settings d-flex flex-column">
                         <span class="material-icons close-icon-pipeline-setting cursor-pointer blue-text" :data-index-x="index" :data-index-y="1" @click="removeEvent">close</span>
                         <span class="calendar-edit cursor-pointer" v-if="index === eventSelectionX && eventSelectionY === 1" :data-index-x="index" :data-index-y="1" @click="selectEvent">
-                        <CalendarEditIco :style="'fill: #ff4545'"/>
+                        <CalendarEditIco class="fill-with-red"/>
                         </span>
                         <span class="calendar-edit cursor-pointer" v-else :data-index-x="index" :data-index-y="1" @click="selectEvent">
-                        <CalendarEditIco :style="'fill: #00B1FF'"/>
+                        <CalendarEditIco class="fill-with-blue"/>
                         </span>
                         <div class="d-inline-flex justify-content-between">
                           <div class="d-inline-flex">
@@ -153,7 +153,7 @@
                           <Calendar v-model="settings_data.calendars[index*2+1].time" :inline="true" hourFormat="12" :timeOnly="true"/>
                         </div>
                         <div>
-                          <hr style="border: 0.5px solid #F1F3F5;"/>
+                          <hr class="border-line-red"/>
                           <span class="float-left pipeline-setting-repeat">Repeat</span>
                           <div class="form-group">
                             <select class="form-control float-right" v-model="settings_data.calendars[index*2+1].repeat">
@@ -603,5 +603,11 @@ div.event-settings hr{
   position: absolute;
   top: 2%;
   right: 15%;
+}
+.h-0{
+  height: 0;
+}
+border-line-gray{
+  border: 0.5px solid #F1F3F5;
 }
 </style>

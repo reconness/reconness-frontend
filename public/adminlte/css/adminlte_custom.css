@@ -60,11 +60,9 @@ a.brand-link{
   fill: #ffffff;
 }
 
-
-/*
-.search-component span{
-  font-size: 18px;
-}*/
+.font-size-18px{
+  font-size: 18px !important;
+}
 
 .search-box-container{
   border-bottom: 1px solid rgba(0, 0, 0, 0.55);
@@ -1038,4 +1036,10 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .pam-container{
   left: 7px;
   top: -4px;
+}
+.fill-with-red{
+  fill: #ff4545 !important
+}
+.fill-with-blue{
+  fill: #00B1FF !important
 }
