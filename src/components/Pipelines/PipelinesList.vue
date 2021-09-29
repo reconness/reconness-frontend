@@ -15,7 +15,7 @@
           </div>
            <div class="row pl-2 mt-2">
               <div class="col-10 p-0">
-              <div class="card card-custom-container pt-4 pb-4  pr-0 pl-4" style="position: relative;">
+              <div class="card card-custom-container pt-4 pb-4  pr-0 pl-4 position-relative">
                 <PipelineWorkflow :AgentsPipelineList= 'item.agent'/>
               </div></div>
                <div class="col abs-center ">
