@@ -15,7 +15,7 @@
         <span class="border container-circular-bar">
         <div class="circular-bar-container border pipeline-run-terminal">
         <CircleProgress v-if="agent.status !== this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(agent.primaryColor)" fill-color="#ffffff"/>
-        <span v-else class="agent-info-done-ico material-icons white-text">done</span>
+        <span v-else class="opacity-02 material-icons white-text">done</span>
         </div>
     </span>
     </span>
@@ -259,8 +259,5 @@ export default {
 }
 .progress{
   height: 5px !important;
-}
-.agent-info-done-ico{
-  opacity:0.2 !important
 }
 </style>

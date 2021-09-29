@@ -24,7 +24,7 @@
                                       <span class="border container-circular-bar">
                                         <div class="circular-bar-container border">
                                           <CircleProgress v-if="showCircleProgressBar" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(primaryColor)" fill-color="#ffffff"/>
-                                          <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
+                                          <span v-else class="opacity-02 material-icons white-text">done</span>
                                         </div>
                                       </span>
                                     </span>
