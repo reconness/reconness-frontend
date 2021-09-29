@@ -369,11 +369,4 @@ div.pipeline-run-line {
 .output-container{
   font-size: 13px;
 }
-.execution-area-divider{
-  left: 0px;
-  top: -1px;
-}
-.execarea-borderline-colorless{
-  border: 1px solid;
-}
 </style>

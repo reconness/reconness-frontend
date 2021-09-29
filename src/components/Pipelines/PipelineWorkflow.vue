@@ -3,44 +3,41 @@
 <div class="row" :class="{'force-scroll': this.$route.name === 'PipelineDetail'}">
     <div v-if="this.$route.name === 'PipelineDetail' &&
     (Object.keys(this.AgentsPipelineList).length === 0 ||  this.AgentsPipelineList[0].id !== this.startingAgentId)" class="col-3 p-0">
-                  <div class="info-box-background w-85 float-left abs-center" style="position: relative; left: 0px; top: -1px;">
+                  <div class="info-box-background w-85 float-left abs-center position-relative execution-area-divider">
                     <span data-toggle="modal" data-target="#pipelinesModalForm"
                     @click="this.$store.commit('pipelines/changeValueStartPoint', true)"
                     class="cursor-pointer"> Add starting agent</span>
                   </div>
-                  <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}"  class="mt-3 margin-center abs-center border-top w-15"  style="color:black!important;border: 1px solid; float:left"> </div>
+                  <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}"  class="mt-3 margin-center abs-center border-top w-15 black-text execarea-borderline-colorless float-left"> </div>
                   <div  :class="{'invisible': Object.keys(this.AgentsPipelineList).length === 0}" class="mt-3 black-circle">  </div>
     </div>
 
     <div v-for="(fatherAgent,index) of associatedAgents" :key="fatherAgent.id"
-                  :class="{'col-4' : this.$route.name === 'Pipelines', 'col-3': this.$route.name === 'PipelineDetail', 'p-0': true}"
-                  style="position: relative;">
+                  :class="{'col-4' : this.$route.name === 'Pipelines', 'col-3': this.$route.name === 'PipelineDetail', 'p-0': true}" class="position-relative">
                   <div :class="{'invisible': this.$isObjectEmpty(fatherAgent)}" @mouseenter="showAdd( index )" @mouseleave="hideAdd(index)">
-                    <div class="info-box-background float-left"
-                    :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
-                    style="position: relative; left: 0px; top: -1px;"></div>
+                    <div class="info-box-background float-left position-relative execution-area-divider"
+                    :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"></div>
                     <div
                     :class="{ 'invisible': isLastItemOnAgentsListByIndex(index) || isNextItemTheLastInAgentsListByIndex(index), 'w-15' : this.$route.name === 'Pipelines', 'w-25': this.$route.name === 'PipelineDetail'}"
-                    class="mt-3 margin-center abs-center border-top"
-                    style="color:black!important;border: 1px solid; float:left"> </div>
+                    class="execarea-borderline-colorless mt-3 margin-center abs-center border-top float-left black-text"></div>
                     <div v-if="!isLastItemOnAgentsListByIndex(index)" :class="{ 'invisible': isLastItemOnAgentsListByIndex(index) || isNextItemTheLastInAgentsListByIndex(index) }" class="mt-3 black-circle">  </div>
 
                   <div v-if="this.$route.name === 'PipelineDetail'">
                     <div  class="workflow-tools info-box">
                      <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: fatherAgent.id, idSon: -1})"><a>cancel</a></span>
-                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
+                      <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons red-text" @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: fatherAgent.id, idSon: -1})"><a>cancel</a></span>
+                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" class="blue-text cursor-pointer material-icons">add_circle</span>
                       <span class="material-icons cursor-pointer" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="fatherAgent.id">settings</span>
                     </div>
                     </div>
                       <button :id="'b' + index"  data-toggle="modal" data-target="#pipelinesModalForm"
-                      style="color: #00B1FF;" class="invisible  add-border btn create-agent-buttons-main-action"
+                      class="blue-text invisible  add-border btn create-agent-buttons-main-action"
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
                   </div>
 
-                    <div class="info-box float-left abs-center" :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
-                    :style ="{background:fatherAgent.background}" style="position: absolute; left: 7px; top: -4px;">
+                    <div class="pam-container info-box float-left abs-center position-absolute" :class="{'w-85' : this.$route.name === 'Pipelines', 'w-75': this.$route.name === 'PipelineDetail'}"
+                    :style ="{background:fatherAgent.background}">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
                         <span class="info-box-text  text-custom agent-mini-agent-name">{{fatherAgent.name }}</span>
                         <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="fatherAgent.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
@@ -53,12 +50,12 @@
 
             <div v-if="this.$route.name === 'PipelineDetail'">
               <div class="line" v-if="this.getAgentBranch(index).length !== 0"></div>
-                <div  v-for="(sonAgent, sonAgentIndex) of this.getAgentBranch(index-1)"  :id="'branch' + sonAgentIndex" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
-                  <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
-                     <div :class="{'invisible': sonAgentIndex === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
+                <div  v-for="(sonAgent, sonAgentIndex) of this.getAgentBranch(index-1)"  :id="'branch' + sonAgentIndex" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0 position-relative">
+                  <div class="info-box-background float-left w-75 position-relative execution-area-divider"></div>
+                     <div :class="{'invisible': sonAgentIndex === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top black-text execarea-borderline-colorless float-left"> </div>
                     <div v-if="sonAgentIndex !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
 
-                    <div class="info-box float-left abs-center w-75" :style ="{background:sonAgent.background}" style="position: relative; left: 7px; top: -89px;">
+                    <div class="info-box float-left abs-center w-75 position-relative pipeworkflow-agent-cont" :style ="{background:sonAgent.background}">
                       <div class="info-box-content mt-2 mb-2 pl-0 pr-1 border-right">
                         <span class="info-box-text  text-custom agent-mini-agent-name">{{sonAgent.name }}</span>
                         <a href="#" @click="setDetailsLink" data-toggle="modal" :data-id="sonAgent.id" data-target="#exampleModalCenter" data-backdrop="false"><small class="small-text">Details</small></a>
@@ -69,8 +66,8 @@
                     </div>
                     <div  class="workflow-tools info-box">
                      <div class="info-box-content">
-                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: sonAgent.id})">cancel</span>
-                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', index-1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
+                      <span data-toggle="modal" data-target="#confirmation-modal" class="cursor-pointer material-icons red-text" @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: this.AgentsPipelineList[index-1].id, idSon: sonAgent.id})">cancel</span>
+                      <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', index-1)" class="blue-text cursor-pointer material-icons">add_circle</span>
                       <span class="material-icons cursor-pointer"  data-toggle="modal" data-target="#agentConfiguration" :data-id="sonAgent.id" @click="onEdit">settings</span>
                     </div>
                     </div>
@@ -166,6 +163,11 @@ export default {
 }
 </script>
 <style scoped>
+
+.pipeworkflow-agent-cont{
+  left: 7px;
+  top: -89px;
+}
 
 .info-box{
   overflow: hidden;

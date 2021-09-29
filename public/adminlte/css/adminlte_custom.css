@@ -1043,3 +1043,10 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .fill-with-blue{
   fill: #00B1FF !important
 }
+.execution-area-divider{
+  left: 0px;
+  top: -1px;
+}
+.execarea-borderline-colorless{
+  border: 1px solid;
+}
