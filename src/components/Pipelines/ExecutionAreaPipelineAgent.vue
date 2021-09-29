@@ -1,26 +1,23 @@
 <template>
   <div class="row force-scroll mt-4">
-    <div v-for="(fatherAgent,index) of associatedAgents" :key="fatherAgent.id" class="col-5 col-lg-4 col-xl-3"
-      :class="{'p-0': true}"
-      style="position: relative;">
+    <div v-for="(fatherAgent,index) of associatedAgents" :key="fatherAgent.id" class="col-5 col-lg-4 col-xl-3 position-relative"
+      :class="{'p-0': true}">
       <div :class="{'invisible': this.$isObjectEmpty(fatherAgent)}">
-        <div class="info-box-background float-left w-65"
-          style="position: relative; left: 0px; top: -1px;">
+        <div class="execution-area-divider position-relative info-box-background float-left w-65">
         </div>
         <div :class="{ 'invisible': isNextElementLastItem(index)}"
-          class="mt-3 margin-center abs-center border-top w-35"
-          style="color:black!important;border: 1px solid; float:left"> </div>
+          class="mt-3 margin-center execarea-borderline-colorless abs-center border-top black-text w-35 float-left"> </div>
           <div v-if="index !== associatedAgents.length" :class="{ 'invisible': isNextElementLastItem(index) }" class="mt-3 black-circle">  </div>
           <div>
           <div  class="workflow-tools info-box invisible">
             <div class="info-box-content">
-              <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons" style="color: #ff4545 " @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: fatherAgent.id, idSon: -1})"><a>cancel</a></span>
-              <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" style="color: #00B1FF" class="cursor-pointer material-icons">add_circle</span>
+              <span data-toggle="modal" data-target="#confirmation-modal" :class="{'disabled' : (this.AgentsPipelineList).length === 1}" class="cursor-pointer material-icons red-text" @click="this.$store.commit('pipelines/changeValueToDelete', {idFather: fatherAgent.id, idSon: -1})"><a>cancel</a></span>
+              <span data-toggle="modal" data-target="#pipelinesModalForm" @click="this.$store.commit('pipelines/changeIsBranchFather', -1)" class="blue-text cursor-pointer material-icons">add_circle</span>
               <span class="material-icons cursor-pointer" @click="onEdit" data-toggle="modal" data-target="#agentConfiguration" :data-id="fatherAgent.id">settings</span>
             </div>
           </div>
           <button :id="'b' + index"  data-toggle="modal" data-target="#pipelinesModalForm"
-                      style="color: #00B1FF;" class="invisible  add-border btn create-agent-buttons-main-action"
+                      class="blue-text invisible  add-border btn create-agent-buttons-main-action"
                       data-dismiss="modal"  @click="this.$store.commit('pipelines/changeIsBranchFather', index)">Add +
                     </button>
         </div>
@@ -28,9 +25,9 @@
         <div>
           <div>
           <div class="pipeline-run-line" v-if="this.getAgentBranch(index).length !== 0"></div>
-            <div  v-for="(sonAgent, sonAgentIndex) of this.getAgentBranch(index-1)"  :id="'branch' + sonAgentIndex" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0" style="position: relative;" >
-              <div class="info-box-background float-left w-75" style="position: relative; left: 0px; top: -1px;"></div>
-                <div :class="{'invisible': sonAgentIndex === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top" style="color:black!important;border: 1px solid; float:left"> </div>
+            <div  v-for="(sonAgent, sonAgentIndex) of this.getAgentBranch(index-1)"  :id="'branch' + sonAgentIndex" :key="sonAgent.id" class= "agent-branch col-lg-12 col-xl-6 float-left p-0 position-relative">
+              <div class="info-box-background float-left w-75 position-relative execution-area-divider"></div>
+                <div :class="{'invisible': sonAgentIndex === this.getAgentBranch(index-1).length}" class="mt-3 w-25 margin-center abs-center border-top black-text execarea-borderline-colorless float-left"> </div>
                   <div v-if="sonAgentIndex !== this.getAgentBranch(index-1).length"  class="mt-3 black-circle">  </div>
                       <PipelineAgentSecondaryFront :index="sonAgentIndex" :sonAgent="sonAgent" :pipeline="pipeline"/>
                   </div>
@@ -371,5 +368,12 @@ div.pipeline-run-line {
 }
 .output-container{
   font-size: 13px;
+}
+.execution-area-divider{
+  left: 0px;
+  top: -1px;
+}
+.execarea-borderline-colorless{
+  border: 1px solid;
 }
 </style>
