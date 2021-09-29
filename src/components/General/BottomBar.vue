@@ -87,9 +87,6 @@ export default {
 }
 </script>
 <style scoped>
-.font-size-15{
-  font-size: 15px
-}
 .paginator-page-input{
   width: 4% !important;
   height: 1.5rem;

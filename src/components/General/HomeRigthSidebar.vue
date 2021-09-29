@@ -30,7 +30,7 @@
           </div>
           </span>
             <span class="domain-names-list text-truncate">
-              <span  class="material-icons float-left mt-1" style="font-size: 15px;"> chevron_right </span>
+              <span  class="material-icons float-left mt-1 font-size-15"> chevron_right </span>
              <small>Root domains: {{item.rootDomains.length}}</small>
             </span>
           </div><!-- /.info-box-content -->
