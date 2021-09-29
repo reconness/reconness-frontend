@@ -1,6 +1,6 @@
 <template>
-    <div class="info-box float-left abs-center w-65"
-          :style ="{background:fatherAgent.background}" style="position: absolute; left: 7px; top: -4px;">
+    <div class="info-box float-left abs-center w-65 position-absolute pam-container"
+          :style ="{background:fatherAgent.background}">
           <div class="row w-100">
             <div class="info-box-content border-right w-50">
               <span class="white-text">{{fatherAgent.name }}</span>
@@ -174,6 +174,9 @@ export default {
 }
 </script>
 <style scoped>
+.pam-container{
+  left: 7px; top: -4px;
+}
 .info-box{
   overflow: hidden;
   text-overflow: ellipsis;
