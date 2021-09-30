@@ -9,7 +9,7 @@
         <div class="content">
           <div class="row">
            <div class="col-12 col-lg-4">
-           <div class="card card-style box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}" style= "border:dotted .1rem transparent;">
+           <div class="card card-style box border-dotted-1rem" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}">
               <div class="card-body p-0">
                 <div class="row">
                   <div class="col-5 border-right">
@@ -78,7 +78,7 @@
                     <blockquote class="blockquote-style"  v-bind:style ="{borderImage:LinearGradient}">
                     <p class="card-text float-right">Latest new things found in the Root Domain</p>
                     </blockquote>
-                    <i class="material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}" style="font-size:26px">event</i>
+                    <i class="font-size-26px material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}">event</i>
                 </div>
                 <div v-for="novelty in getLatestThingsFoundedInRootDomains" :key="novelty" class="d-flex justify-content-between item-list">
                   <p class="mb-0"> New port opened<br> in subdomain <em> {{novelty.entity}} </em> </p>
@@ -100,7 +100,7 @@
                     </blockquote>
                 </div>
                 <div class="col-3">
-                <span class = "number float-right" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}" style= "background-clip: content-box, border-box;">
+                <span class = "number float-right background-clip-content-box-border-box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}">
                 <div v-bind:style ="{background:LinearGradient}">43</div>
                 </span>
                </div>
@@ -342,6 +342,15 @@ export default {
 </script>
 
 <style scoped>
+.background-clip-content-box-border-box{
+  background-clip: content-box, border-box;
+}
+.font-size-26px{
+  font-size:26px
+}
+.border-dotted-1rem{
+  border:dotted .1rem transparent;
+}
 .blockquote-style {
   background: none;
   border-left: 4px solid;
