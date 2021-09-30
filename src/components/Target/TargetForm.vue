@@ -82,30 +82,30 @@
                           </div> <!-- /.info-box -->
                         </div>
                         <div class="col-12 text-center mt-2">
-                          <h3 style="font-weight: bold;" class="card-title disable-float mt-4">
+                          <h3 class="font-weight-bold card-title disable-float mt-4">
                                 Pick a Color
                                 </h3>
-                            <div style="padding-left: 0px; width: 100%;" class="agent-containers target-combo-box-size target-color-section">
-                            <div style="padding-left: 0;" class="combo-box-left-padding">
+                            <div class="pl-0 w-100 agent-containers target-combo-box-size target-color-section">
+                            <div class="pl-0 combo-box-left-padding">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-4">
                                       <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" style="background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" class="blue-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" style="background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" class="violet-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" style="background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" class="red-btn-backg btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" style="background: #ff8650 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" class="orange-btn-backg btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                   <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" style="background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box" class="btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" class="green-btn-back btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
                                   </div>
                                 </div>
                             </div>
@@ -118,9 +118,9 @@
                     </div>
                 </div><!-- /.row -->
                 </div><!-- /.modal-body -->
-                <div style="border-top: none;" class="modal-footer">
-                  <button type="button" :disabled="isFormValid" @click="addTarget(this.target)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Accept</button>
-                  <button @click="close()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+                <div class="border-top-none modal-footer">
+                  <button type="button" :disabled="isFormValid" @click="addTarget(this.target)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                  <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
             </div>

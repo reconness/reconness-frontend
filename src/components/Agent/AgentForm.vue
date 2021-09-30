@@ -528,9 +528,6 @@ export default {
   height: 54px
 }
 
-.border-bottom-none{
-  border-bottom: none;
-}
 .padding-right-10px{
   padding-right: 10px;
 }
@@ -721,21 +718,6 @@ input.agent-name-input:hover{
   opacity: none;
 }
 
-.blue-btn-backg{
-  background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box
-}
-.violet-btn-backg{
-  background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box
-}
-.orange-btn-backg{
-  background: #ff8650 0% 0% no-repeat padding-box
-}
-.green-btn-back{
-  background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box
-}
-.red-btn-backg{
-  background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box
-}
 .bordered-input-name-withfocus{
   border-top: 2px solid #00B1FF;
   border-right: 2px solid #00B1FF;
