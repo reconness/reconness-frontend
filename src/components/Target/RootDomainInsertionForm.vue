@@ -80,9 +80,9 @@ export default {
       return (this.validators.url.rootDomainName || this.validators.exist.rootDomainName)
     },
     target () {
-      return this.getTargetByTransformedName(this.$route.params.targetName)
+      return this.getTargetByName(this.$route.params.targetName)
     },
-    ...mapGetters('target', ['checkIfRootdomainExistsByName', 'getTargetByTransformedName', 'getTargetAndRootDomainByName'])
+    ...mapGetters('target', ['checkIfRootdomainExistsByName', 'getTargetByName', 'getTargetAndRootDomainByName'])
   },
   created: function () {
     this.rootdomains.push({

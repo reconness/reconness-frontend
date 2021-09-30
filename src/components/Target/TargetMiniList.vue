@@ -18,7 +18,7 @@
                 <div class="color-id-size" :style="{background: target.primaryColor}"></div>
             </div>
             <div class="col-2 my-auto d-flex justify-content-center">
-                <router-link class="black-text" :to="{ name: 'TargetDetail', params: {id: target.id, targetName: target.transformedName} }">
+                <router-link class="black-text" :to="{ name: 'TargetDetail', params: {id: target.id, targetName: target.name} }">
                     {{target.name}}
                 </router-link>
             </div>

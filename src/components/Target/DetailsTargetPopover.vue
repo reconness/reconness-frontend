@@ -8,7 +8,7 @@
         <div class="card-body">
             <div v-for="rootdomain in getTarget.rootDomains" :key="rootdomain.id" class="d-flex target-details-root-links">
                 <span  class="material-icons font-size-16px mt-1 dark-gray-text"> chevron_right </span>
-                <router-link class="dark-gray-text" :to="{ name: 'RootDomainDetails', params: {idTarget: getTarget.id , id: rootdomain.id, targetName: getTarget.transformedName, rootdomainName: rootdomain.root} }">
+                <router-link class="dark-gray-text" :to="{ name: 'RootDomainDetails', params: {idTarget: getTarget.id , id: rootdomain.id, targetName: getTarget.name, rootdomainName: rootdomain.root} }">
                     {{rootdomain.root}}
                 </router-link>
             </div>

@@ -8,7 +8,7 @@
         <hr class="reset-margin-top" :class="{'mb-0': isOnTargetMinimalView}" />
         <div :class="{'content': !isOnTargetMinimalView}">
           <div class="row" v-if="this.$store.state.target.isDefaultViewOnTarget">
-            <TargetsList v-for="target of filteredTargetList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :transformedName="target.transformedName" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains"/>
+            <TargetsList v-for="target of filteredTargetList" :key="target.id" :id="target.id" :name="target.name" :primaryColor="target.primaryColor" :secondaryColor= "target.secondaryColor" :rootDom="target.rootDomains"/>
           </div>
           <div class="row" v-else>
           <TargetMiniList/>

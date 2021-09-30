@@ -96,7 +96,7 @@ export default {
       var params = { idTarget: parseInt(this.$route.params.idTarget), idRootDomain: parseInt(this.$route.params.id) }
       this.$store.commit('target/removeRootDomain', params)
       this.setIsElementDeleted(true)
-      this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget, targetName: this.getTargetById(parseInt(this.$route.params.idTarget)).transformedName } })
+      this.$router.push({ name: 'TargetDetail', params: { id: this.$route.params.idTarget, targetName: this.getTargetById(parseInt(this.$route.params.idTarget)).name } })
     },
     removeSubDomainAndRedirectToRootDomainDetails: function () {
       this.$store.commit('target/removeSubDomain', { idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), nameSubd: this.nameTyped })
@@ -106,8 +106,8 @@ export default {
           idRootDomain: parseInt(this.$route.params.id)
         }
       ).root
-      const transformedName = this.getTargetById(parseInt(this.$route.params.idTarget)).transformedName
-      this.$router.push({ name: 'RootDomainDetails', params: { idTarget: parseInt(this.$route.params.idTarget), id: parseInt(this.$route.params.id), targetName: transformedName, rootdomainName: nameRootDomain } })
+      const nameOfTarget = this.getTargetById(parseInt(this.$route.params.idTarget)).name
+      this.$router.push({ name: 'RootDomainDetails', params: { idTarget: parseInt(this.$route.params.idTarget), id: parseInt(this.$route.params.id), targetName: nameOfTarget, rootdomainName: nameRootDomain } })
       this.setIsElementDeleted(true)
     },
     removeSubDomainAndShowNotificationOnFinish: function () {

@@ -78,7 +78,7 @@ export default {
       return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
     },
     target () {
-      return this.getTargetByTransformedName(this.$route.params.targetName)
+      return this.getTargetByName(this.$route.params.targetName)
     },
     rootDomain () {
       return this.getTargetAndRootDomainByName({
@@ -86,7 +86,7 @@ export default {
         rootDomainName: this.$route.params.rootdomainName
       })
     },
-    ...mapGetters('target', ['checkIfSubdomainExistsByName', 'getTargetByTransformedName', 'getTargetAndRootDomainByName'])
+    ...mapGetters('target', ['checkIfSubdomainExistsByName', 'getTargetByName', 'getTargetAndRootDomainByName'])
   },
   created: function () {
     this.subdomains.push({

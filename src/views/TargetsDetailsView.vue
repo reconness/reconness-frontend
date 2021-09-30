@@ -35,7 +35,7 @@
                           <li v-for="item of Target.rootDomains" :key="item.id" class="d-flex justify-content-between align-items-center">
                             <div class="target-details-root-links">
                             <span  class="material-icons font-size-16px mt-1 black-text"> chevron_right </span>
-                            <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.transformedName, rootdomainName: item.root} }">
+                            <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.name, rootdomainName: item.root} }">
                               {{item.root}}
                             </router-link>
                             </div>
@@ -268,7 +268,7 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByTransformedName']),
+    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),
     ...mapState('target', ['rootDomainEliminationStatus']),
     getTargetId () {
@@ -330,8 +330,8 @@ export default {
       }
     },
     updateTargetWhenUrlAccessedDirectly () {
-      const transformedName = this.$route.params.targetName
-      this.Target = this.getTargetByTransformedName(transformedName)
+      const nameOfTarget = this.$route.params.targetName
+      this.Target = this.getTargetByName(nameOfTarget)
       this.idTargetLoadedWhenIdPropsIsNull = this.Target.id
     },
     updateLinearGradient () {

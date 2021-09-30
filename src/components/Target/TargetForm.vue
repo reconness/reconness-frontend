@@ -152,8 +152,7 @@ export default {
         inScope: '',
         outScope: '',
         primaryColor: '#737be5',
-        secondaryColor: '#7159d3',
-        transformedName: ''
+        secondaryColor: '#7159d3'
       },
       rootDomainsTextItems: [],
       isVisibleTopSection: true,
@@ -182,7 +181,8 @@ export default {
         }
       },
       nextTargetSequence: 30,
-      showNameInput: false
+      showNameInput: false,
+      transformedName: 'my-target'
     }
   },
   mixins: [TargetMixin],
@@ -221,7 +221,7 @@ export default {
       }
     },
     'target.name': function (value) {
-      this.target.transformedName = this.$convertSpacesToHyphensByString(value).toLowerCase()
+      this.transformedName = this.$convertSpacesToHyphensByString(value).toLowerCase()
     }
   },
   methods: {
@@ -253,6 +253,7 @@ export default {
         if (this.editable) {
           if (randomResult) {
             this.target.id = parseInt(this.$store.getters['target/idTarget'])
+            this.target.name = this.transformedName
             this.$store.commit('target/updateTarget', this.target)
             this.$store.commit('target/setIdTarget', -1)
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
@@ -263,6 +264,7 @@ export default {
         } else {
           if (randomResult) {
             this.target.id = this.nextTargetSequence++
+            this.target.name = this.transformedName
             this.$store.commit('target/addTarget', this.target)
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetInsertion)
           } else {
