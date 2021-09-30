@@ -604,10 +604,7 @@ div.event-settings hr{
   top: 2%;
   right: 15%;
 }
-.h-0{
-  height: 0;
-}
-border-line-gray{
+.border-line-gray{
   border: 0.5px solid #F1F3F5;
 }
 </style>
