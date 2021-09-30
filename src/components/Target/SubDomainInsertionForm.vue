@@ -12,7 +12,7 @@
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container mt-2">
                                   <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" :id="'subd-form-input-' + index">
-                                  <div style="height: 0;">
+                                  <div class="h-0">
                                     <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-show="index>0">
                                       <MinusCircleIco/>
                                     </span>
