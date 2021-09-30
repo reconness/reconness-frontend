@@ -9,7 +9,7 @@
         <div class="content">
           <AgentsList v-if="this.$store.state.agent.isDefaultViewOnAgent"></AgentsList>
           <div class="row" v-else>
-            <AgentMiniView v-for="agent of arrayFilterList" :key="agent.id" :id="agent.id" :name="agent.name" :background="agent.background"></AgentMiniView>
+            <AgentMiniList2/>
           </div>
           <AgentConfirmation></AgentConfirmation>
          </div>
@@ -21,7 +21,8 @@
 
 <script>
 import AgentsList from '@/components/Agent/AgentsList.vue'
-import AgentMiniView from '@/components/Agent/AgentMiniView.vue'
+// import AgentMiniView from '@/components/Agent/AgentMiniView.vue'
+import AgentMiniList2 from '@/components/Agent/AgentMiniList2.vue'
 import NavBarTwo from '@/components/General/NavBarTwo.vue'
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
@@ -30,7 +31,8 @@ import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'AgentListView',
   components: {
-    AgentMiniView,
+    // AgentMiniView,
+    AgentMiniList2,
     AgentConfirmation,
     AgentsList,
     NavBarTwo,

@@ -4,35 +4,39 @@
             <div class="offset-sm-1"></div>
             <div class="col-1 my-2 border-left">Color ID</div>
             <div class="col-2 my-2 border-left">Name</div>
-            <div class="col-3 my-2 border-left">RootDomains</div>
-            <div class="col-1 my-2 border-left border-right">Actions</div>
+            <div class="col-2 my-2 border-left">Created By</div>
+            <div class="col-3 my-2 border-left">Category</div>
+            <div class="col-2 my-2 border-left">Agent Type</div>
+            <div class="col-1 my-2 border-left">Actions</div>
         </div>
-        <div v-for="target of filteredTargetList" :key="target.id" class="row border-bottom">
+        <div v-for="agent of agentListStore" :key="agent.id" class="row border-bottom">
             <div class="col-1">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
-                  <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+target.id" :checked="this.$isItemOnList(target.id, entitiesToDelete)">
-                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+target.id"  :data-id="target.id" :data-name="target.name" @click="prepareToDeleteFromMultipleSelections"></label>
+                  <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+ agent.id" :checked="this.$isItemOnList(agent.id, entitiesToDelete)">
+                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+ agent.id"  :data-id="agent.id" :data-name="agent.name" @click="prepareToDeleteFromMultipleSelections"></label>
                 </div>
             </div>
             <div class="col-1 my-auto d-flex justify-content-center">
-                <div class="color-id-size" :style="{background: target.primaryColor}"></div>
+                <div class="color-id-size" :style="{background: agent.primaryColor}"></div>
             </div>
             <div class="col-2 my-auto d-flex">
-                <router-link class="black-text" :to="{ name: 'TargetDetail', params: {id: target.id, targetName: target.name} }">
-                    {{target.name}}
-                </router-link>
+                {{agent.name}}
+            </div>
+            <div class="col-2 my-2 agent-mini-color-gray">
+              John Connor
             </div>
             <div class="col-3 my-2">
-              <router-link class="agent-mini-color-gray" v-for="rootDomain in target.rootDomains" :key="rootDomain.id" :to="{ name: 'RootDomainDetails', params: {idTarget: target.id , id: rootDomain.id, targetName: target.name,  rootdomainName: rootDomain.root } }">
-                  {{rootDomain.root}},
-              </router-link>
+              Category
+            </div>
+            <div class="col-2 my-2">
+              Agent type
             </div>
             <div class="col-1 color-action-column d-flex justify-content-center">
               <span class="d-flex align-items-center mt-auto mb-auto" title="Settings" data-toggle="tooltip" data-placement="bottom">
-                <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @click="onEdit" data-toggle="modal" data-target="#targetModalForm" :data-id="target.id">settings</span>
+                <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @click="onEdit" data-toggle="modal" data-target="#targetModalForm" :data-id="agent.id">settings</span>
               </span>
               <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="d-flex align-items-center mt-auto mb-auto">
-                <TrashCanIco @click="prepareToDelete($event, this.$agentType.TARGET)" data-toggle="modal" data-target="#message-box-modal" :data-id="target.id" :data-name="target.name" class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column"/>
+                <TrashCanIco @click="prepareToDelete($event, this.$agentType.TARGET)" data-toggle="modal" data-target="#message-box-modal" :data-id="agent.id" :data-name="agent.name" class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column"/>
               </span>
             </div>
         </div>
@@ -50,6 +54,7 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
+    ...mapState('agent', ['agentListStore']),
     ...mapState('target', ['targetListStore', 'check', 'filterColour', 'entitiesToDelete', 'paginator']),
     ...mapGetters('target', ['filterByColor'])
   },
