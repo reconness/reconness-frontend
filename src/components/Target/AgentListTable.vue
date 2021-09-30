@@ -160,9 +160,6 @@ export default {
 }
 </script>
 <style scoped>
-.color-rgb-0-177-255{
-  color: rgb(0, 177, 255);
-}
 .agent-border {
     border: 1px solid #e3e5e8;
     border-radius: 12px;
