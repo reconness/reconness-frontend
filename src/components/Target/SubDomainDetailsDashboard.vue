@@ -60,7 +60,7 @@
                         <label class="form-check-label custom-control-label" for="is_main_portal">Is main Portal</label>
                     </div>
                     <div class="mt-5">
-                        <button type="button" style="color: #00B1FF;" class="subdomain-border btn create-agent-buttons-main-action">Save</button>
+                        <button type="button" class="blue-text subdomain-border btn create-agent-buttons-main-action">Save</button>
                         <button type="button" class="agent-border btn create-agent-buttons-main-action btn-danger delete_btn ml-4" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false" @click="updateConfirm(loadedSubdomain.name)">Delete</button>
                     </div>
                  </div>
