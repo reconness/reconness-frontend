@@ -28,7 +28,6 @@ import AgentMiniList2 from '@/components/Agent/AgentMiniList2.vue'
 import NavBarTwo from '@/components/General/NavBarTwo.vue'
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
-import { mapState, mapGetters } from 'vuex'
 import BottomBar from '@/components/General/BottomBar'
 
 export default {
@@ -47,16 +46,6 @@ export default {
   },
   mixins: [AgentMixin],
   computed: {
-    ...mapState('agent', ['agentListStore']),
-    ...mapState('agent', ['filterColour']),
-    ...mapGetters('agent', ['filterByColor']),
-    arrayFilterList () {
-      if (this.filterColour === '') {
-        return this.agentListStore
-      } else {
-        return this.filterByColor(this.filterColour)
-      }
-    },
     isOnAgentMinimalView () {
       return (this.isOnAgentView && !this.$store.state.target.isDefaultViewOnAgent)
     }

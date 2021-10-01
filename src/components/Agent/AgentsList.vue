@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div v-for="item of arrayFilterList" :key="item.id" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)"
+    <div v-for="item of filteredAgentList" :key="item.id" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)"
     class="col-12 col-md-4 col-lg-3 col-lgg-5 container-card">
       <div class="card text-white card-style  mb-3" v-bind:style ="{background:item.background}">
         <input type="checkbox" :id="item.id" :checked="this.$isItemOnList(item.id, agentIdList)" name="checkitem" ><label :for="item.id" v-show="check" @click="addListAgentId" :data-id="item.id" :data-name="item.name" ></label>
@@ -68,6 +68,7 @@ export default {
   computed: {
     ...mapState('agent', ['agentListStore', 'check', 'filterColour', 'styleList', 'agentIdList']),
     ...mapGetters('agent', ['filterByColor']),
+    ...mapState('target', ['paginator']),
     arrayFilterList () {
       if (this.filterColour === '') {
         return this.agentListStore

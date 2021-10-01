@@ -2,6 +2,16 @@ const AgentMixin = {
   computed: {
     isOnAgentView () {
       return this.$route.name === 'Agent'
+    },
+    arrayFilterList () {
+      if (this.filterColour === '') {
+        return this.agentListStore
+      } else {
+        return this.filterByColor(this.filterColour)
+      }
+    },
+    filteredAgentList () {
+      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
     }
   },
   methods: {
