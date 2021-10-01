@@ -7,9 +7,11 @@
       <div class="container-fluid">
         <hr class="reset-margin-top" :class="{'mb-0': isOnAgentMinimalView}"/>
         <div :class="{'content': !isOnAgentMinimalView}">
-          <AgentsList v-if="this.$store.state.agent.isDefaultViewOnAgent"></AgentsList>
+          <div class="row" v-if="this.$store.state.agent.isDefaultViewOnAgent">
+              <AgentsList v-for="agent of filteredAgentList" :key="agent.id" :id="agent.id" :name="agent.name" :background="agent.background"/>
+          </div>
           <div class="row" v-else>
-            <AgentMiniList2/>
+            <AgentMiniList/>
           </div>
           <AgentConfirmation></AgentConfirmation>
          </div>
@@ -22,21 +24,20 @@
 
 <script>
 import AgentsList from '@/components/Agent/AgentsList.vue'
-// import AgentMiniView from '@/components/Agent/AgentMiniView.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
-import AgentMiniList2 from '@/components/Agent/AgentMiniList2.vue'
+import AgentMiniList from '@/components/Agent/AgentMiniList.vue'
 import NavBarTwo from '@/components/General/NavBarTwo.vue'
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
+import { mapState, mapGetters } from 'vuex'
 import BottomBar from '@/components/General/BottomBar'
 
 export default {
   name: 'AgentListView',
   components: {
-    // AgentMiniView,
-    AgentMiniList2,
-    AgentConfirmation,
     AgentsList,
+    AgentMiniList,
+    AgentConfirmation,
     NavBarTwo,
     AgentForm,
     BottomBar
@@ -46,8 +47,11 @@ export default {
   },
   mixins: [AgentMixin],
   computed: {
+    ...mapState('agent', ['filterColour', 'agentListStore']),
+    ...mapGetters('agent', ['filterByColor']),
+    ...mapState('target', ['paginator']),
     isOnAgentMinimalView () {
-      return (this.isOnAgentView && !this.$store.state.target.isDefaultViewOnAgent)
+      return (this.isOnAgentView && !this.$store.state.agent.isDefaultViewOnAgent)
     }
   }
 }

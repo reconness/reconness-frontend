@@ -52,7 +52,7 @@ import jQuery from 'jquery'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 export default {
-  name: 'TargetMiniList',
+  name: 'AgentMiniList',
   components: {
     TrashCanIco,
     AccountCogIco
