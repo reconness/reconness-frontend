@@ -42,9 +42,6 @@ export default {
     ...mapState('target', ['targetListStore', 'filterColour', 'targetEliminationStatus', 'paginator']),
     ...mapState('agent', ['isElementDeleted']),
     ...mapGetters('target', ['filterByColor']),
-    isOnTargetView () {
-      return this.$route.name === 'Targets'
-    },
     isOnTargetMinimalView () {
       return (this.isOnTargetView && !this.$store.state.target.isDefaultViewOnTarget)
     }

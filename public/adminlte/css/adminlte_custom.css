@@ -1043,6 +1043,9 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .fill-with-blue{
   fill: #00B1FF !important
 }
+.fill-with-dark-gray{
+  fill: #707070 !important
+}
 .execution-area-divider{
   left: 0px;
   top: -1px;

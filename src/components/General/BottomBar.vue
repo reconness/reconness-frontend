@@ -1,7 +1,7 @@
 <template>
 <div class="w-100 h-50 pt-2 left-aside pb-2 mt-3 pr-3 d-flex">
   <div class="d-flex justify-content-center align-items-center w-100">
-    <span class="border-right pr-2 mr-3 font-size-15">{{showPageNumberFromOne}} - {{numberEndRange}} from {{targetsAmount}}</span>
+    <span class="border-right pr-2 mr-3 font-size-15">{{showPageNumberFromOne}} - {{numberEndRange}} from {{entitiesAmount}}</span>
     <div>
       <v-pagination v-model="page" :pages="numberOfPages" @update:modelValue="updatePaginatorInStore"/>
     </div>
@@ -16,6 +16,8 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
+import { AgentMixin } from '@/mixins/AgentMixin'
+import { TargetMixin } from '@/mixins/TargetMixin'
 import VPagination from '@hennge/vue3-pagination'
 export default {
   name: 'BottomBar',
@@ -28,8 +30,10 @@ export default {
       numberElementsInGroup: 3
     }
   },
+  mixins: [AgentMixin, TargetMixin],
   computed: {
     ...mapState('target', ['operationStatus', 'targetListStore']),
+    ...mapState('agent', ['agentListStore']),
     showStatusBar () {
       return this.operationStatus.status !== this.$entityStatus.WAITING
     },
@@ -39,11 +43,15 @@ export default {
     failedOperation () {
       return this.operationStatus.status === this.$entityStatus.FAILED
     },
-    targetsAmount () {
-      return this.targetListStore.length
+    entitiesAmount () {
+      if (this.isOnTargetView) {
+        return this.targetListStore.length
+      } else {
+        return this.agentListStore.length
+      }
     },
     numberOfPages () {
-      return Math.ceil(this.targetsAmount / this.numberElementsInGroup)
+      return Math.ceil(this.entitiesAmount / this.numberElementsInGroup)
     },
     numberStartsRange () {
       if (this.activateThePager) {
@@ -53,7 +61,7 @@ export default {
     },
     numberEndRange () {
       if (this.page === this.numberOfPages) {
-        return this.targetsAmount
+        return this.entitiesAmount
       }
       if (this.activateThePager) {
         return this.page * this.numberElementsInGroup

@@ -22,14 +22,17 @@
             <div class="col-2 my-auto d-flex">
                 {{agent.name}}
             </div>
-            <div class="col-2 my-2 agent-mini-color-gray">
-              John Connor
+            <div class="col-2 my-2">
+              <div class="d-inline-flex">
+                <AccountCogIco class="fill-with-dark-gray"/>
+                <span class="ml-1 agent-mini-color-gray">User</span>
+              </div>
             </div>
             <div class="col-3 my-2">
-              Category
+              <span class="agent-mini-color-gray">Category</span>
             </div>
             <div class="col-2 my-2">
-              Agent type
+              <span class="agent-mini-color-gray">{{this.$getEntityTypeById(parseInt(agent.type)).description}}</span>
             </div>
             <div class="col-1 color-action-column d-flex justify-content-center">
               <span class="d-flex align-items-center mt-auto mb-auto" title="Settings" data-toggle="tooltip" data-placement="bottom">
@@ -47,10 +50,12 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 export default {
   name: 'TargetMiniList',
   components: {
-    TrashCanIco
+    TrashCanIco,
+    AccountCogIco
   },
   mixins: [TargetMixin],
   computed: {

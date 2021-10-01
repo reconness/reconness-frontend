@@ -1,4 +1,9 @@
 const AgentMixin = {
+  computed: {
+    isOnAgentView () {
+      return this.$route.name === 'Agent'
+    }
+  },
   methods: {
     addListAgentId (e) {
       const selectedId = Number(e.currentTarget.getAttribute('data-id'))
