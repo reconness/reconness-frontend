@@ -35,12 +35,10 @@
         </transition>
         </div>
         </div>
-        <TargetConfirmation></TargetConfirmation>
         <TargetForm/>
     </div><!-- /.col -->
 </template>
 <script>
-import TargetConfirmation from '@/components/Target/TargetConfirmation.vue'
 import DetailsTargetPopover from '@/components/Target/DetailsTargetPopover'
 import { mapState, mapMutations } from 'vuex'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
@@ -50,7 +48,6 @@ import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'TargetMiniList',
   components: {
-    TargetConfirmation,
     BullseyeArrowIco,
     TargetForm,
     OverlayPanel,
@@ -183,22 +180,5 @@ input[type="checkbox"]:checked + label:after {
 
 input[type="checkbox"] {
   display: none;
-}
-.target-mosaic-options .settings-ico {
-  font-size: 18px
-}
-a.target-detail-popover:hover{
-  color: #00B1FF !important
-}
-.target-mosaic-options:hover a, .target-mosaic-options:hover span {
-  color: #00B1FF !important
-}
-.delete-btn-circular-container {
-  background-color: #fff;
-  height: 35px;
-  width: 35px;
-}
-.delete-btn-circular-container span {
-  margin: 15% !important;
 }
 </style>

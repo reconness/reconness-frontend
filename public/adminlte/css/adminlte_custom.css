@@ -1083,3 +1083,21 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .border-top-none{
   border-top: none !important;
 }
+
+.target-mosaic-options .settings-ico {
+  font-size: 18px
+}
+a.target-detail-popover:hover{
+  color: #00B1FF !important
+}
+.target-mosaic-options:hover a, .target-mosaic-options:hover span {
+  color: #00B1FF !important
+}
+.delete-btn-circular-container {
+  background-color: #fff;
+  height: 35px;
+  width: 35px;
+}
+.delete-btn-circular-container span {
+  margin: 15% !important;
+}

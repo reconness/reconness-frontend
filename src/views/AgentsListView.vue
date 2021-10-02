@@ -8,7 +8,7 @@
         <hr class="reset-margin-top" :class="{'mb-0': isOnAgentMinimalView}"/>
         <div :class="{'content': !isOnAgentMinimalView}">
           <div class="row" v-if="this.$store.state.agent.isDefaultViewOnAgent">
-              <AgentsList v-for="agent of filteredAgentList" :key="agent.id" :id="agent.id" :name="agent.name" :background="agent.background"/>
+              <AgentsList v-for="agent of filteredAgentList" :key="agent.id" :id="agent.id" :name="agent.name" :primaryColor="agent.primaryColor" :secondaryColor="agent.secondaryColor"/>
           </div>
           <div class="row" v-else>
             <AgentMiniList/>

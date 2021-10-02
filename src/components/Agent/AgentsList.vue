@@ -1,55 +1,78 @@
 <template>
-    <div class="col-12 col-sm-4 col-xl-3" @mouseover="hoverCard( {id} )" @mouseout="hoverCard(-1)">
-        <div class="initial-info-box agent-mini-main-container rounded-corners">
-          <input type="checkbox" :id="id" name="checkitem"  :checked="this.$isItemOnList(id, agentIdList)" ><label class="float-right mb-0" :for="id" v-show="check" @click="addListAgentId" :data-id="id" :data-name="name"></label>
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3" @mouseenter="hoverCard( {id} )" @mouseleave="hoverCard(-1)">
+        <div class="row">
+          <div class="col-10">
+        <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
+        <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
+        <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections" :data-id="id" :data-name="name"></label>
         <div class="p-2">
-        <div class="info-box ">
-          <span class="info-box-icon" :style ="{background:background}"><AccountCogIco/></span>
-            <div class="info-box-content">
-                <span class="info-box-text agent-mini-agent-name cursor-pointer" @click="setDetailsLink" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">{{ name }}</span>
-                <nav class="nav">
-                    <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setAgentId" href="#" data-toggle="modal"  :data-id="id" data-target="#confirmation-modal">Delete</a>
-                    <a class="nav-link active agent-mini-agent-details agent-mini-color-gray" @click="setDetailsLink" href="#" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Details</a>
-                    <a class="nav-link agent-mini-agent-edit agent-mini-color-gray" href="#" @click="onEdit" data-toggle="modal" :data-id="id" data-target="#exampleModalCenter">Edit</a>
-                </nav>
-            </div></div></div>
+        <div class="info-box target-detail-popover-reference">
+          <div class="info-box-content">
+            <span class="text-body info-box-text domain-names-target">
+              {{name}}
+            </span>
+            <a class="nav-link target-detail-popover active agent-mini-agent-details pt-0 pb-0 black-text border-right-0 cursor-pointer">Details</a>
+            <!-- <OverlayPanel class="target-list-popover" ref="op" :dismissable="false"> -->
+              <!-- <DetailsTargetPopover/> -->
+            <!-- </OverlayPanel> -->
+            <div class="d-flex target-mosaic-options align-items-center">
+              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0">Settings</a>
+              <span class="material-icons cursor-pointer settings-ico">settings</span>
+            </div> <!-- /.d-flex target-mosaic-options -->
+          </div> <!-- /.info-box-content -->
+          <span class="info-box-icon" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
+            <AccountCogIco class="w-50 h-50"/>
+          </span>
+          </div> <!-- /.info-box -->
+          </div> <!-- /.p2 -->
             <!-- /.info-box-content -->
+        </div> <!-- ./initial-info-box agent-mini-main-container rounded-corners -->
         </div>
-            <AgentConfirmation></AgentConfirmation>
+        <div class="col-2">
+          <transition name="slide-fade-cards">
+        <div v-if="isSelected(id)" class="mt-4 cursor-pointer delete-btn-circular-container rounded-circle">
+          <span @click="prepareToDelete($event, this.$agentType.TARGET)" class="material-icons-outlined red-font-color" data-toggle="modal" data-target="#message-box-modal" :data-id="id" :data-name="name">delete</span>
+        </div>
+        </transition>
+        </div>
+        </div>
     </div><!-- /.col -->
 </template>
 <script>
-import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentsList',
   components: {
-    AgentConfirmation,
     AccountCogIco
   },
   props: {
     name: String,
-    background: String,
+    primaryColor: String,
+    secondaryColor: String,
     id: Number
   },
   data: function () {
     return {
       checkSelected: false,
-      checkDeleted: -1
+      checkDeleted: -1,
+      selectedTargetName: '',
+      selectedCard: -1
     }
   },
   mixins: [AgentMixin],
   computed: {
-    ...mapState('agent', ['check', 'agentIdList'])
+    ...mapState('agent', ['check', 'agentIdList']),
+    ...mapState('target', ['entitiesToDelete'])
   },
   methods: {
+    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },
     isSelected (cardIndex) {
-      return this.selectedCard === cardIndex
+      return parseInt(this.selectedCard.id) === parseInt(cardIndex)
     },
     setAgentId (e) {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
@@ -108,16 +131,8 @@ div.initial-info-box.agent-mini-main-container.rounded-corners{
 }
 
 .agent-mini-main-container {
-transition: all .25s ease;
+/* transition: all .25s ease; */
 width:100%;
-}
-.agent-mini-main-container:hover {
--webkit-transform:scale(1.25);
--moz-transform:scale(1.25);
--ms-transform:scale(1.25);
--o-transform:scale(1.25);
-transform:scale(1.05);
-transition: all .25s ease;
 }
 
 input[type="checkbox"] + label:before {
@@ -181,11 +196,5 @@ input[type="checkbox"] {
   border-radius: 13px;
   box-shadow: 3px 12px 23px #eae9e9;
   opacity: 1;
-}
-div.agent-mini-main-container svg {
-    fill: #ffffff;
-    width: 28px;
-    height: 28px;
-    opacity: 0.2;
 }
 </style>

@@ -60,7 +60,7 @@ export default ({
       {
         name: 'Agent 4',
         primaryColor: '#ff8650',
-        secondaryColor: '',
+        secondaryColor: '#ff8650',
         background: '#ff8650 0% 0% no-repeat padding-box',
         id: 4,
         repository: 'repository4.com',
