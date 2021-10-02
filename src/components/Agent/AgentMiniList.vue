@@ -60,7 +60,7 @@ export default {
   mixins: [AgentMixin],
   computed: {
     ...mapState('agent', ['agentListStore', 'filterColour', 'check']),
-    ...mapState('target', ['paginator']),
+    ...mapState('target', ['entitiesToDelete', 'paginator']),
     ...mapGetters('agent', ['filterByColor'])
   },
   watch: {

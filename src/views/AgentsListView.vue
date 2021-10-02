@@ -51,7 +51,7 @@ export default {
     ...mapGetters('agent', ['filterByColor']),
     ...mapState('target', ['paginator']),
     isOnAgentMinimalView () {
-      return (this.isOnAgentView && !this.$store.state.agent.isDefaultViewOnAgent)
+      return (this.$isOnAgentView && !this.$store.state.agent.isDefaultViewOnAgent)
     }
   }
 }

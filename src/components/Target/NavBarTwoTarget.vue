@@ -130,7 +130,7 @@
             <div class="dropdown-divider" v-show= "check" ></div>
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
             <span :class="{'isLinkDisabled' : targetIdList.length <= 0}">
-              <a class="dropdown-item " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Targets</a>
+              <a class="dropdown-item " v-show= "check" href="#" v-bind:style ="{color:colorDelete}">Delete Targets</a>
             </span>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>

@@ -19,7 +19,7 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-          <span :class="{'isLinkDisabled' : agentIdList.length <= 0}"><a class="nav-link pos" v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveAgents">Delete Agents</a></span>
+          <span :class="{'isLinkDisabled' : entitiesToDelete.length <= 0}"><a class="nav-link pos" v-show= "check" href="#" v-bind:style ="{color:colorDelete}" data-toggle="modal" data-target="#message-box-modal">Delete Agents</a></span>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">
@@ -134,8 +134,8 @@
             <a class="dropdown-item" v-show= "check" @click="close()">Cancel</a>
             <div class="dropdown-divider" v-show= "check" ></div>
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-            <span :class="{'isLinkDisabled' : agentIdList.length <= 0}">
-            <a class="dropdown-item" v-show= "check" href="#" @click="onBashRemoveAgents" v-bind:style ="{color:colorDelete}">Delete Agents</a>
+            <span :class="{'isLinkDisabled' : entitiesToDelete.length <= 0}">
+            <a class="dropdown-item" v-show= "check" href="#" v-bind:style ="{color:colorDelete}" data-toggle="modal" data-target="#message-box-modal">Delete Agents</a>
             </span>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
@@ -258,6 +258,7 @@ export default {
   },
   computed: {
     ...mapState('agent', ['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
+    ...mapState('target', ['entitiesToDelete']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }

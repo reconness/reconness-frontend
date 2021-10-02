@@ -42,7 +42,7 @@
 import HelpIco from '@/components/Icons/HelpIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import jQuery from 'jquery'
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   name: 'MessageBox',
   components: {
@@ -61,6 +61,8 @@ export default {
         return this.$entityTypeData.TARGET
       } else if (this.isOnTargetDetailView) {
         return this.$entityTypeData.ROOTDOMAIN
+      } else if (this.$isOnAgentView) {
+        return this.$entityTypeData.AGENT
       }
       return ''
     },
@@ -105,6 +107,7 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
+    ...mapActions('agent', ['clearAgentEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView) {
         this.processTarget()
@@ -116,6 +119,10 @@ export default {
           targetName: this.getTargetName
         })
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+      }
+      if (this.$isOnAgentView) {
+        this.clearAgentEntitiesToDelete()
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')

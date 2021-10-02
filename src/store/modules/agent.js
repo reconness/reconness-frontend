@@ -372,5 +372,16 @@ export default ({
     daysWithMostInteractionsLastWeek (state) {
       return [22, 30, 70, 77, 42, 20, 50]
     }
+  },
+  actions: {
+    clearAgentEntitiesToDelete ({ state, commit, rootState }) {
+      rootState.target.entitiesToDelete.forEach(entity => {
+        const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
+        if (index !== -1) {
+          state.agentListStore.splice(index, 1)
+        }
+      })
+      commit('target/clearReferencesToDelete', null, { root: true })
+    }
   }
 })
