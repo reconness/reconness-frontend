@@ -10,7 +10,7 @@
                   <div class="ml-4 mt-4">
                     <span v-if="is_terminal_open" class="font-weight-bold">Terminal</span>
                     <span v-else class="font-weight-bold">Logs</span>
-                    <span @click="is_terminal_open = !is_terminal_open" class="material-icons blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
+                    <span @click="is_terminal_open = !is_terminal_open" class="material-icons blue-text cursor-pointer vertical-align-bottom"> chevron_right </span>
                   </div>
                   <v-ace-editor v-model:value="script" lang="csharp" style="height:260px; width:90%" theme="monokai"/>
                 </div>

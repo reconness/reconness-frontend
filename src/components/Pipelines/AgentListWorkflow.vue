@@ -25,8 +25,8 @@
               </div>
             </div>
             <div class="modal-footer" >
-               <button @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
-               <button @click="cancel()" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
+               <button @click="save(this.routeName)" :class="{'isLinkDisabled' : statusButton}" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
+               <button @click="cancel()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">CANCEL</button>
             </div>
           </div>
         </div>

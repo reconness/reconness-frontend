@@ -9,14 +9,14 @@
                 </div>
                 <div class="modal-body">
                   <!-- PARAMETERIZABLE -->
-                    <input style="margin-bottom: 20px;" v-model="terminalOutput" class="form-control agent-placeholder form-input-without-lines" placeholder="Terminal one line output">
-                    <span class="info-box-text"><b style="padding-right: 10px;">Script</b><a href="https://docs.reconness.com/agents/debug-agent" class="blue-text">Learn more</a></span>
+                    <input v-model="terminalOutput" class="mb-4 form-control agent-placeholder form-input-without-lines" placeholder="Terminal one line output">
+                    <span class="info-box-text"><b class="pr-2">Script</b><a href="https://docs.reconness.com/agents/debug-agent" class="blue-text">Learn more</a></span>
                     <v-ace-editor v-model:value="terminalInput" lang="csharp" style="height:300px; margin-top: 6px;" theme="monokai"/>
                     <p class="script-result">{{ executionResult }}</p>
                 </div>
                 <div class="modal-footer dialog-without-lines-footer">
                     <button @click="executeCode" :disabled="btnValidations" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn">Run</button>
-                    <button @click="clearContent" type="submit" data-dismiss="modal" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Done</button>
+                    <button @click="clearContent" type="submit" data-dismiss="modal" class="blue-text agent-border btn create-agent-buttons-main-action">Done</button>
                 </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

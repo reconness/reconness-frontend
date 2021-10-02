@@ -9,33 +9,48 @@
         <div class="content">
           <div class="row">
            <div class="col-12 col-lg-4">
-           <div class="card card-style box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}" style= "border:dotted .1rem transparent;">
+           <div class="card card-style box border-dotted-1rem" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}">
               <div class="card-body p-0">
                 <div class="row">
                   <div class="col-5 border-right">
-                    <blockquote class="blockquote-style ml-4 mt-3" v-bind:style ="{borderImage:LinearGradient}">
-                      <p> Root Domains</p>
-                    </blockquote>
+                    <div class="row">
+                      <div class="col-12">
+                        <blockquote class="blockquote-style ml-3 mt-3" v-bind:style ="{borderImage:LinearGradient}">
+                          <p> Root Domains</p>
+                        </blockquote>
+                      </div>
+                      <div class="col-12 d-flex justify-content-center">
+                        <div :title="import_message" data-toggle="tooltip" data-placement="bottom" class="target-details-import-files border-radios-8px w-50 d-flex flex-column align-items-center m-3 border pt-2 pb-2">
+                          <FileImportIco />
+                          <label for="export-target" class="mb-0 font-weight-normal"> Import </label>
+                          <input type="file" id="export-target"/>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="col mt-3 pr-3 ml-1 pl-1">
-                    <ul class="list-unstyled min-height" >
-                      <li v-for="item of Target.rootDomains" :key="item.id">
-                        <span v-bind:style ="{background:LinearGradient}"  class="material-icons mt-1 gradient-style icon-color-style"> chevron_right </span>
-                        <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.transformedName, rootdomainName: item.root} }">
-                          {{item.root}}
-                          <span v-bind:style ="{background:LinearGradient}"
-                            class="material-icons mt-2 float-right icon-color-style gradient-style"> open_in_new
-                          </span>
-                        </router-link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col border-top mr-2 ml-2 m-0 description-block">
-                    <label for="import" class="domain-names-list"> Import Root Domains</label>
-                    <input type="file" id="import" style="display:none"/>
-                  </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <ul class="list-unstyled min-height" >
+                          <li v-for="item of Target.rootDomains" :key="item.id" class="d-flex justify-content-between align-items-center">
+                            <div class="target-details-root-links">
+                            <span  class="material-icons font-size-16px mt-1 black-text"> chevron_right </span>
+                            <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.name, rootdomainName: item.root} }">
+                              {{item.root}}
+                            </router-link>
+                            </div>
+                            <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="target-details-trashcan">
+                              <TrashCanIco @click="prepareToDelete($event, this.$agentType.ROOTDOMAIN)" class="cursor-pointer w-100 h-100" data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.root"/>
+                            </span>
+                          </li>
+                        </ul>
+                      </div> <!-- /.col-12 -->
+                      <div class="col-12 border-top description-block mt-3">
+                        <span class="cursor-pointer target-details-add-root" data-toggle="modal" data-target="#rootDomainInsertionForm">Add Root Domain</span>
+                      </div>
+                      <RootDomainInsertionForm :gradient="LinearGradient"/>
+                    </div> <!-- /.row -->
+                  </div> <!-- /.col mt-3 pr-3 ml-1 pl-1 -->
                 </div>
               </div>
               </div>
@@ -63,7 +78,7 @@
                     <blockquote class="blockquote-style"  v-bind:style ="{borderImage:LinearGradient}">
                     <p class="card-text float-right">Latest new things found in the Root Domain</p>
                     </blockquote>
-                    <i class="material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}" style="font-size:26px">event</i>
+                    <i class="font-size-26px material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}">event</i>
                 </div>
                 <div v-for="novelty in getLatestThingsFoundedInRootDomains" :key="novelty" class="d-flex justify-content-between item-list">
                   <p class="mb-0"> New port opened<br> in subdomain <em> {{novelty.entity}} </em> </p>
@@ -85,7 +100,7 @@
                     </blockquote>
                 </div>
                 <div class="col-3">
-                <span class = "number float-right" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}" style= "background-clip: content-box, border-box;">
+                <span class = "number float-right background-clip-content-box-border-box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}">
                 <div v-bind:style ="{background:LinearGradient}">43</div>
                 </span>
                </div>
@@ -106,11 +121,12 @@
                 </div>
               </div></div>
             </div>
-          </div>
+            </div> <!-- /.row -->
           </div>
         </div>
       </div>
     </div>
+    <BottomBar/>
   </div>
 </template>
 
@@ -119,12 +135,22 @@ import { mapGetters, mapMutations, mapState } from 'vuex'
 import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
 import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
+import FileImportIco from '@/components/Icons/FileImportIco.vue'
+import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
+import RootDomainInsertionForm from '@/components/Target/RootDomainInsertionForm.vue'
+import jQuery from 'jquery'
+import BottomBar from '@/components/General/BottomBar'
 export default {
   name: 'TargetsDetailsView',
   components: {
     DaysHighestInteraction,
     TargetsHighestInteraction,
-    NavBarTwoDetailTarget
+    NavBarTwoDetailTarget,
+    FileImportIco,
+    TrashCanIco,
+    RootDomainInsertionForm,
+    BottomBar
   },
   props: {
     id: String
@@ -134,6 +160,7 @@ export default {
       Target: Object,
       LinearGradient: String,
       idTargetLoadedWhenIdPropsIsNull: Number,
+      import_message: 'Import a Root Domain from external file',
       optionsBar: {
         chart: {
           toolbar: { show: false },
@@ -239,9 +266,11 @@ export default {
       }
     }
   },
+  mixins: [TargetMixin],
   computed: {
-    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByTransformedName']),
+    ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),
+    ...mapState('target', ['rootDomainEliminationStatus']),
     getTargetId () {
       if (this.isIdPropsUndefined) {
         return this.Target.id
@@ -257,10 +286,10 @@ export default {
     this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
     this.updateTarget()
+    this.updateLinearGradient()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
     this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor
 
@@ -269,10 +298,11 @@ export default {
       this.setIsElementDeleted(false)
     }
     this.setCurrentView(this.$route.name)
+    jQuery('[data-toggle="tooltip"]').tooltip()
   },
   methods: {
     ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['setCurrentView']),
+    ...mapMutations('target', ['setCurrentView', 'addEntityToDelete']),
     updateOpenPortsInGraph () {
       this.optionsBar.xaxis.categories = this.getOpenPorts
     },
@@ -300,15 +330,27 @@ export default {
       }
     },
     updateTargetWhenUrlAccessedDirectly () {
-      const transformedName = this.$route.params.targetName
-      this.Target = this.getTargetByTransformedName(transformedName)
+      const nameOfTarget = this.$route.params.targetName
+      this.Target = this.getTargetByName(nameOfTarget)
       this.idTargetLoadedWhenIdPropsIsNull = this.Target.id
+    },
+    updateLinearGradient () {
+      this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     }
   }
 }
 </script>
 
 <style scoped>
+.background-clip-content-box-border-box{
+  background-clip: content-box, border-box;
+}
+.font-size-26px{
+  font-size:26px
+}
+.border-dotted-1rem{
+  border:dotted .1rem transparent;
+}
 .blockquote-style {
   background: none;
   border-left: 4px solid;
@@ -379,4 +421,32 @@ blockquote > p{
 .donut-legend .text-right{
   font-size: 24px;
   }
+.font-size-16px{
+  font-size: 16px;
+}
+#export-target {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+  display: none;
+}
+label {
+  cursor: pointer;
+}
+.target-details-trashcan{
+  width: 10%;
+  height: 10%;
+}
+.target-details-trashcan:hover{
+  fill: #FF4545
+}
+.target-details-import-files:hover svg{
+  fill: #00B1FF;
+}
+.target-details-import-files:hover label{
+  color: #00B1FF;
+}
+span.target-details-add-root:hover{
+  color: #00B1FF;
+}
 </style>

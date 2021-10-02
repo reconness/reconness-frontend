@@ -1,6 +1,6 @@
 <template>
-    <div class="info-box float-left abs-center w-65"
-          :style ="{background:fatherAgent.background}" style="position: absolute; left: 7px; top: -4px;">
+    <div class="info-box float-left abs-center w-65 position-absolute pam-container"
+          :style ="{background:fatherAgent.background}">
           <div class="row w-100">
             <div class="info-box-content border-right w-50">
               <span class="white-text">{{fatherAgent.name }}</span>
@@ -17,7 +17,7 @@
               <span class="border container-circular-bar">
                 <div class="circular-bar-container border pipeline-run-execution">
                   <CircleProgress v-if="fatherAgent.status !== this.$entityStatus.FINISHED" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(fatherAgent.primaryColor)" fill-color="#ffffff"/>
-                  <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
+                  <span v-else class="opacity-02 material-icons white-text">done</span>
                 </div>
               </span>
             </span> <!-- ./ info-box-icon process_status_panel container-container-circular-bar -->

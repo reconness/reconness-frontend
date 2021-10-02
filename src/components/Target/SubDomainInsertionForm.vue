@@ -12,7 +12,7 @@
                             <div class="form-container">
                                 <div v-for="(item, index) in subdomains" :key="item" class="subdomain-form-container mt-2">
                                   <input :data-index="index" v-model="item.name" @keyup.enter="createSubdomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New subdomain" @blur="enableValidationMessageSubDomainBlankName" @keyup="enableValidations" :id="'subd-form-input-' + index">
-                                  <div style="height: 0;">
+                                  <div class="h-0">
                                     <span @click="removeSubdomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-show="index>0">
                                       <MinusCircleIco/>
                                     </span>
@@ -77,7 +77,16 @@ export default {
     isFormValid () {
       return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
     },
-    ...mapGetters('target', ['checkIfSubdomainExistsByName'])
+    target () {
+      return this.getTargetByName(this.$route.params.targetName)
+    },
+    rootDomain () {
+      return this.getTargetAndRootDomainByName({
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      })
+    },
+    ...mapGetters('target', ['checkIfSubdomainExistsByName', 'getTargetByName', 'getTargetAndRootDomainByName'])
   },
   created: function () {
     this.subdomains.push({
@@ -133,8 +142,8 @@ export default {
       }
       if (!this.enableValidationMessageSubDomainBlankNameManual() && !this.enableValidationMessageSubDomainUniqueNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
+          idTarget: parseInt(this.target.id),
+          idRootDomain: parseInt(this.rootDomain.id),
           subdomainsItems: this.subdomains
         }
         this.addSubdomain(params)
@@ -223,8 +232,8 @@ export default {
       let index = 0
       const params = {
         name: '',
-        idtarget: parseInt(this.$route.params.idTarget),
-        idrootdomain: parseInt(this.$route.params.id)
+        idtarget: parseInt(this.target.id),
+        idrootdomain: parseInt(this.rootDomain.id)
       }
       while (index < this.subdomains.length && !founded) {
         params.name = this.subdomains[index].name

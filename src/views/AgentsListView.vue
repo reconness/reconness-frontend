@@ -3,52 +3,55 @@
   <!-- Contains navs-bar -->
   <NavBarTwo></NavBarTwo>
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper screen-height">
       <div class="container-fluid">
-        <hr class="reset-margin-top" />
-        <div class="content">
-          <AgentsList v-if="this.$store.state.agent.isDefaultViewOnAgent"></AgentsList>
+        <hr class="reset-margin-top" :class="{'mb-0': isOnAgentMinimalView}"/>
+        <div :class="{'content': !isOnAgentMinimalView}">
+          <div class="row" v-if="this.$store.state.agent.isDefaultViewOnAgent">
+              <AgentsList v-for="agent of filteredAgentList" :key="agent.id" :id="agent.id" :name="agent.name" :primaryColor="agent.primaryColor" :secondaryColor="agent.secondaryColor"/>
+          </div>
           <div class="row" v-else>
-            <AgentMiniView v-for="agent of arrayFilterList" :key="agent.id" :id="agent.id" :name="agent.name" :background="agent.background"></AgentMiniView>
+            <AgentMiniList/>
           </div>
           <AgentConfirmation></AgentConfirmation>
          </div>
       </div>
     </div>
+    <BottomBar/>
     <AgentForm></AgentForm>
   </div>
 </template>
 
 <script>
 import AgentsList from '@/components/Agent/AgentsList.vue'
-import AgentMiniView from '@/components/Agent/AgentMiniView.vue'
+import { AgentMixin } from '@/mixins/AgentMixin'
+import AgentMiniList from '@/components/Agent/AgentMiniList.vue'
 import NavBarTwo from '@/components/General/NavBarTwo.vue'
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
 import { mapState, mapGetters } from 'vuex'
+import BottomBar from '@/components/General/BottomBar'
 
 export default {
   name: 'AgentListView',
   components: {
-    AgentMiniView,
-    AgentConfirmation,
     AgentsList,
+    AgentMiniList,
+    AgentConfirmation,
     NavBarTwo,
-    AgentForm
+    AgentForm,
+    BottomBar
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Agents', true)
   },
+  mixins: [AgentMixin],
   computed: {
-    ...mapState('agent', ['agentListStore']),
-    ...mapState('agent', ['filterColour']),
+    ...mapState('agent', ['filterColour', 'agentListStore']),
     ...mapGetters('agent', ['filterByColor']),
-    arrayFilterList () {
-      if (this.filterColour === '') {
-        return this.agentListStore
-      } else {
-        return this.filterByColor(this.filterColour)
-      }
+    ...mapState('target', ['paginator']),
+    isOnAgentMinimalView () {
+      return (this.$isOnAgentView && !this.$store.state.agent.isDefaultViewOnAgent)
     }
   }
 }

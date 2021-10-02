@@ -5,8 +5,7 @@ export default ({
     targetListStore: [
       {
         id: 1,
-        name: 'My target 1',
-        transformedName: 'my-target-1',
+        name: 'my-target-1',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '02/01/2020',
@@ -367,8 +366,7 @@ export default ({
       },
       {
         id: 2,
-        name: 'My target 2',
-        transformedName: 'my-target-2',
+        name: 'my-target-2',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '21/01/2020',
@@ -632,8 +630,7 @@ export default ({
       },
       {
         id: 3,
-        name: 'My target 3',
-        transformedName: 'my-target-3',
+        name: 'my-target-3',
         primaryColor: '#F96767',
         secondaryColor: '#FF4343',
         date: '21/02/2020',
@@ -698,8 +695,7 @@ export default ({
       },
       {
         id: 4,
-        name: 'My target 4',
-        transformedName: 'my-target-4',
+        name: 'my-target-4',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '21/04/2020',
@@ -736,8 +732,7 @@ export default ({
       },
       {
         id: 5,
-        name: 'My target 5',
-        transformedName: 'my-target-5',
+        name: 'my-target-5',
         primaryColor: '#3adb99',
         secondaryColor: '#16c465',
         date: '21/02/2018',
@@ -774,8 +769,7 @@ export default ({
       },
       {
         id: 6,
-        name: 'My target 6',
-        transformedName: 'my-target-6',
+        name: 'my-target-6',
         // background: 'linear-gradient(130deg, #FF9966 0%, #f36a33 100%)',
         primaryColor: '#FF9966',
         secondaryColor: '#f36a33',
@@ -809,8 +803,7 @@ export default ({
       },
       {
         id: 7,
-        name: 'My target 7',
-        transformedName: 'my-target-7',
+        name: 'my-target-7',
         // background: ' linear-gradient(160deg, #737be5 0%, #7159d3 100%)',
         primaryColor: '#737be5',
         secondaryColor: '#7159d3',
@@ -848,8 +841,7 @@ export default ({
       },
       {
         id: 8,
-        name: 'My target 8',
-        transformedName: 'my-target-8',
+        name: 'my-target-8',
         // background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
@@ -886,8 +878,7 @@ export default ({
       },
       {
         id: 9,
-        name: 'My target 9',
-        transformedName: 'my-target-9',
+        name: 'my-target-9',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '21/09/2020',
@@ -923,8 +914,7 @@ export default ({
       },
       {
         id: 10,
-        name: 'My target 10',
-        transformedName: 'my-target-10',
+        name: 'my-target-10',
         primaryColor: '#3adb99',
         secondaryColor: '#16c465',
         date: '21/02/2020',
@@ -960,8 +950,7 @@ export default ({
       },
       {
         id: 11,
-        name: 'My target 11',
-        transformedName: 'my-target-11',
+        name: 'my-target-11',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '20/01/2020',
@@ -1010,6 +999,7 @@ export default ({
     isTargetDeleted: false,
     isTableList: true,
     idSubdomain: 55,
+    idRootdomain: 55,
     elementSelectedList: [],
     countElementSelected: 0,
     nameSubDomainOpened: '',
@@ -1018,7 +1008,20 @@ export default ({
       status: -1
     },
     currentView: '',
-    countSubdomainList: 0
+    countSubdomainList: 0,
+    entitiesToDelete: [],
+    targetEliminationStatus: 3,
+    rootDomainEliminationStatus: 3,
+    // General Store
+    operationStatus: {
+      status: 3,
+      message: ''
+    },
+    paginator: {
+      page: 0,
+      startIndex: 0,
+      endIndex: 0
+    }
   },
   mutations: {
     changeCounterSubdom (state, countSubd) {
@@ -1216,6 +1219,13 @@ export default ({
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       roots.subdomain = roots.subdomain.concat(params.subdomainsItems)
     },
+    addRootDomain (state, params) {
+      for (let index = 0; index < params.rootdomainsItems.length; index++) {
+        params.rootdomainsItems[index].id = state.idRootdomain++
+      }
+      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      target.rootDomains = target.rootDomains.concat(params.rootdomainsItems)
+    },
     addSelectedList (state, ObjectIn) {
       state.elementSelectedList.push(ObjectIn)
     },
@@ -1281,6 +1291,52 @@ export default ({
       targets.forEach(target => {
         state.targetListStore.push(target)
       })
+    },
+    addEntityToDelete (state, entity) {
+      state.entitiesToDelete.push(entity)
+    },
+    removeTargetEntityToDelete (state, idEntity) {
+      const index = state.entitiesToDelete.findIndex(target => target.id === idEntity)
+      if (index !== -1) {
+        state.entitiesToDelete.splice(index, 1)
+      }
+    },
+    clearTargetEntitiesToDelete (state) {
+      state.entitiesToDelete.forEach(entity => {
+        const index = state.targetListStore.findIndex(target => target.id === entity.id)
+        if (index !== -1) {
+          state.targetListStore.splice(index, 1)
+        }
+      })
+      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+    },
+    clearRootDomainEntitiesToDelete (state, entities) {
+      state.entitiesToDelete.forEach(entity => {
+        const target = state.targetListStore.find(target => target.name === entities.targetName)
+        const rootsIndex = target.rootDomains.findIndex(roots => roots.id === entity.id)
+        if (rootsIndex !== -1) {
+          target.rootDomains.splice(rootsIndex, 1)
+        }
+      })
+      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+    },
+    clearReferencesToDelete (state) {
+      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+    },
+    updateTargetEliminationStatus (state, status) {
+      state.targetEliminationStatus = status
+    },
+    updateRootDomainEliminationStatus (state, status) {
+      state.rootDomainEliminationStatus = status
+    },
+    updateOperationStatusInfo (state, statusData) {
+      state.operationStatus.status = statusData.status
+      state.operationStatus.message = statusData.message
+    },
+    updatePaginator (state, paginatorData) {
+      state.paginator.page = paginatorData.page
+      state.paginator.startIndex = paginatorData.startIndex
+      state.paginator.endIndex = paginatorData.endIndex
     }
   },
   actions: {
@@ -1380,6 +1436,14 @@ export default ({
       }
       return false
     },
+    checkIfRootdomainExistsByName: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.id === params.idtarget)
+      const roots = target.rootDomains.find(roots => roots.root === params.name)
+      if (roots) {
+        return true
+      }
+      return false
+    },
     filterTargetsByName: (state) => (data) => {
       if (data.name !== '') {
         let temporal = []
@@ -1403,9 +1467,14 @@ export default ({
         return []
       }
     },
-    getTargetByTransformedName: (state) => (transformedName) => {
-      const target = state.targetListStore.find(item => item.transformedName === transformedName)
+    getTargetByName: (state) => (targetName) => {
+      const target = state.targetListStore.find(item => item.name === targetName)
       return target
+    },
+    getTargetAndRootDomainByName: (state) => (entityNames) => {
+      const target = state.targetListStore.find(item => item.name === entityNames.targetName)
+      const rootdomain = target.rootDomains.find(item => item.root === entityNames.rootDomainName)
+      return rootdomain
     },
     filterRootDomainsByName: (state) => (data) => {
       let temporal = []
@@ -1536,7 +1605,6 @@ export default ({
         newTarget = {
           id: target.id,
           name: target.name,
-          transformedName: 'my-target-11',
           primaryColor: '#03dced',
           secondaryColor: '#0cb8e0',
           date: '20/01/2020',
@@ -1565,6 +1633,18 @@ export default ({
         newRootDomains.push(newRootDomain)
       })
       return newRootDomains
+    },
+    isEntityOnListToRemove: (state) => (idItem) => {
+      setTimeout(
+        function () {
+          const searchedElement = state.entitiesToDelete.find(item => parseInt(item.id) === parseInt(idItem))
+          if (searchedElement) {
+            return true
+          }
+          return false
+        },
+        1000
+      )
     }
   }
 })

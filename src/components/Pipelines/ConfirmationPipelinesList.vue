@@ -19,7 +19,7 @@
                 </select>
                 <!-- PARAMETERIZABLE -->
                   <p class="mt-3 mb-0" >Please, type "yes" to confirm the delete action</p>
-                  <input autofocus required v-model="nameTyped" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="">
+                  <input autofocus required v-model="nameTyped" class="zero-borders form-control" placeholder="">
               </div>
               <div class="modal-footer dialog-without-lines-footer">
                   <button :disabled="nameTyped !== 'yes'" type="button" class="btn btn-primary btn-danger delete_btn" @click="remove()">Delete</button>

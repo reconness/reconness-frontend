@@ -9,7 +9,7 @@
            <button type="button" class="btn btn-light margin-right"> <span v-show="button_module" class="material-icons">view_module</span>
             <span v-show="button_vert" class="material-icons">more_vert</span>
               </button>
-             <p style="margin-top: 0.3rem;" class="float-right loc"><strong>{{viewloc}}</strong></p>
+             <p class="mt-03 float-right loc"><strong>{{viewloc}}</strong></p>
             </a>
         </li>
       </ul>
@@ -68,7 +68,7 @@
       <!-- Brand Logo -->
        <router-link :to="{name: 'Home'}">
       <a href="#" class="brand-link">
-        <img src="/adminlte/img/reconnes/logo2x.png" v-show="hide_logo" alt="ReconNess Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="/adminlte/img/reconnes/logo2x.png" v-show="hide_logo" alt="ReconNess Logo" class="brand-image img-circle elevation-3 opacity-08">
         <div class="text-center">
           <span class="brand-text"><strong>Recon</strong></span><span>Ness</span>
         </div>
@@ -88,7 +88,7 @@
               <router-link :to="{name: 'Targets'}" >
               <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation('Targets'), this.$store.commit('target/setIsDefaultViewOnTarget', true)" v-bind:class="{'nav2': styleTargetState}">
                 <BullseyeArrowIco/>
-                <p style="vertical-align: 0px;">Targets </p>
+                <p class="vertical-align-0">Targets </p>
               </a>
             </router-link>
             </li>
@@ -150,6 +150,11 @@
     <div class="wrapper">
       <!-- Main content -->
       <router-view/>
+      <div class="container">
+        <div class="row">
+          <MessageBox />
+        </div>
+      </div>
     </div><!-- /.content-wrapper -->
   </div><!-- ./wrapper -->
 </template>
@@ -158,6 +163,7 @@
 import { mapState } from 'vuex'
 import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
+import MessageBox from '@/components/General/MessageBox.vue'
 export default {
   name: 'App',
   data: function () {
@@ -175,7 +181,8 @@ export default {
     }
   },
   components: {
-    BullseyeArrowIco
+    BullseyeArrowIco,
+    MessageBox
   },
   computed: {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
@@ -241,6 +248,15 @@ export default {
 </script>
 
 <style scoped>
+.vertical-align-0{
+  vertical-align: 0px;
+}
+.opacity-08{
+  opacity: .8 !important
+}
+.mt-03{
+  margin-top: 0.3rem !important;
+}
 .left-aside {
     background: rgba(245, 246, 247, 0.9) 0% 0% no-repeat padding-box;
 }

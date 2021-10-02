@@ -18,8 +18,8 @@
             </div>
             <div class="modal-footer border-0 d-flex justify-content-between flex-row-reverse">
               <div>
-               <button @click="save(this.routeName)" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action mr-2" :disabled="locationsContainNonExist() && !validators.blank.locations">DONE</button>
-               <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
+               <button @click="save(this.routeName)" class="blue-text agent-border btn create-agent-buttons-main-action mr-2" :disabled="locationsContainNonExist() && !validators.blank.locations">DONE</button>
+               <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal" @click="close()">CANCEL</button>
               </div>
               <div>
                 <p  v-if="validators.exist.locations && !validators.blank.locations" :class="{invalid: validators.exist.locations}" class="ml-5">You must select a location from the list</p>

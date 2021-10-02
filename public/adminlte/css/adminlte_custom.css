@@ -36,9 +36,14 @@ a.brand-link{
 .search-component input{
   background-color: #f2f4f6;  
 }
-
 .blue-text{
   color: #00B1FF !important;
+}
+.dark-gray-text{
+  color: #707070 !important;
+}
+.font-size-15{
+  font-size: 15px
 }
 .white-text{
   color: #ffffff !important;
@@ -46,17 +51,18 @@ a.brand-link{
 .black-text{
   color: #000000 !important;
 }
+.red-text{
+  color: #ff4545 !important;
+}
 .pipeline-run-play-container svg{
   width: 15px;
   height: 15px;
   fill: #ffffff;
 }
 
-
-/*
-.search-component span{
-  font-size: 18px;
-}*/
+.font-size-18px{
+  font-size: 18px !important;
+}
 
 .search-box-container{
   border-bottom: 1px solid rgba(0, 0, 0, 0.55);
@@ -74,17 +80,9 @@ ul.app-description li{
   margin-top: 10px;
 }
 
-/* aside p {
-  color: #000000;
-} */
-
 .brand-link span{
   color: #000000;
 }
-
-/* ul.right-navbar li{
-  padding-left: 10px;
-} */
 
 ul.right-navbar li a{
   padding-left: 0px;
@@ -237,12 +235,6 @@ div.image img{
 
 .rounded-corners{
   border-radius: 18px !important;
-}
-
-.box-contained{
-  /* width: 10rem;
-  height: 10rem;
-  border-radius: 10px; */
 }
 
 .navbar-nav.ml-auto.right-navbar .img-circle {
@@ -973,4 +965,139 @@ div.pipeline_spacing .p-autocomplete-loader{
 }
 .pipeline-run-execution .vue3-circular-progressbar svg{
   margin-bottom: 0;
+}
+.tooltip .arrow {
+  visibility: hidden;
+}
+
+.tooltip > .tooltip-inner {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: 500;
+}
+
+.target-chips .p-chips .p-chips-multiple-container:not(.p-disabled).p-focus{
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: none;
+}
+
+.target-chips > div.p-chips > ul{
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+  border-radius: 0;
+}
+.target-chips .p-chips .p-chips-multiple-container .p-chips-input-token input {
+  font-size: 1rem !important;
+}
+.border-radios-8px{
+  border-radius: 14px
+}
+.Page-active{
+  color: #00B1FF !important;
+  background-color: unset !important;
+  font-weight: 600 !important;
+}
+.Page{
+  font-weight: 400;
+}
+.target-detail-popover-reference .p-overlaypanel .p-overlaypanel-content{
+  padding: 0;
+}
+.target-details-root-links:hover a{
+  color: #00B1FF;
+}
+.target-details-root-links:hover span{
+  color: #00B1FF !important;
+}
+div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
+  padding: 0 !important;
+}
+.p-overlaypanel.target-list-popover{
+  border-radius: 18px !important;
+}
+.zero-borders{
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.border-top-none{
+  border-top: none !important;
+}
+.opacity-02{
+  opacity:0.2 !important
+}
+.pam-container{
+  left: 7px;
+  top: -4px;
+}
+.fill-with-red{
+  fill: #ff4545 !important
+}
+.fill-with-blue{
+  fill: #00B1FF !important
+}
+.fill-with-dark-gray{
+  fill: #707070 !important
+}
+.execution-area-divider{
+  left: 0px;
+  top: -1px;
+}
+.execarea-borderline-colorless{
+  border: 1px solid;
+}
+.vertical-align-bottom{
+  vertical-align: bottom;
+}
+.h-0{
+  height: 0;
+}
+.color-rgb-0-177-255{
+  color: rgb(0, 177, 255);
+}
+.blue-btn-backg{
+  background: transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box
+}
+.violet-btn-backg{
+  background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box
+}
+.orange-btn-backg{
+  background: #ff8650 0% 0% no-repeat padding-box
+}
+.green-btn-back{
+  background: transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box
+}
+.red-btn-backg{
+  background: transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box
+}
+.border-bottom-none{
+  border-bottom: none !important;
+}
+.border-top-none{
+  border-top: none !important;
+}
+
+.target-mosaic-options .settings-ico {
+  font-size: 18px
+}
+a.target-detail-popover:hover{
+  color: #00B1FF !important
+}
+.target-mosaic-options:hover a, .target-mosaic-options:hover span {
+  color: #00B1FF !important
+}
+.delete-btn-circular-container {
+  background-color: #fff;
+  height: 35px;
+  width: 35px;
+}
+.delete-btn-circular-container span {
+  margin: 15% !important;
 }

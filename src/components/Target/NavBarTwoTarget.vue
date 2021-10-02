@@ -22,8 +22,8 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
-          <span :class="{'isLinkDisabled' : targetIdList.length <= 0}">
-            <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Targets</a>
+          <span :class="{'isLinkDisabled' : entitiesToDelete.length <= 0}">
+            <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" data-toggle="modal" data-target="#message-box-modal">Delete Targets</a>
           </span>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
@@ -130,7 +130,7 @@
             <div class="dropdown-divider" v-show= "check" ></div>
             <a class="dropdown-item" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
             <span :class="{'isLinkDisabled' : targetIdList.length <= 0}">
-              <a class="dropdown-item " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemoveTargets">Delete Targets</a>
+              <a class="dropdown-item " v-show= "check" href="#" v-bind:style ="{color:colorDelete}">Delete Targets</a>
             </span>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
@@ -194,7 +194,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList']),
+    ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList', 'entitiesToDelete']),
     arrayUniqueColours () {
       return [...new Set(this.targetListStore.map(item => 'linear-gradient(160deg,' + item.primaryColor + ' ' + '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'))]
     }
@@ -213,7 +213,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget']),
+    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget', 'clearReferencesToDelete']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -267,6 +267,7 @@ export default {
       }
       this.nameTyped = ''
       this.cancelIdTarget()
+      this.clearReferencesToDelete()
     }
   }
 }

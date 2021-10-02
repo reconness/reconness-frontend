@@ -30,8 +30,8 @@
           <p class="m-2"> Never</p>
           </div>
           <div class="col-2 border border-right-radius text-center">
-              <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-              <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" style="color: rgb(0, 177, 255);" class="agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+              <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
+              <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
           </div>
           <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
         </div>

@@ -24,7 +24,7 @@
                                       <span class="border container-circular-bar">
                                         <div class="circular-bar-container border">
                                           <CircleProgress v-if="showCircleProgressBar" :percent="progressValue" :size="30" :border-width="3" :border-bg-width="3" :empty-color="this.$getEmptyCircularProgressBarColor(primaryColor)" fill-color="#ffffff"/>
-                                          <span style="opacity:0.2" v-else class="material-icons white-text">done</span>
+                                          <span v-else class="opacity-02 material-icons white-text">done</span>
                                         </div>
                                       </span>
                                     </span>
@@ -46,7 +46,7 @@
                                             <div class="align_left-ordered_columns agent-terminal-fade">
                                               <span class="font-weight-bold black-text" v-if="isAgentInfoOpenedForTerminal">Terminal</span>
                                               <span class="font-weight-bold black-text" v-else>Logs</span>
-                                              <span @click="setIsAgentInfoOpenedForTerminal(!isAgentInfoOpenedForTerminal)" class="material-icons ml-2 blue-text cursor-pointer" style="vertical-align: bottom;"> chevron_right </span>
+                                              <span @click="setIsAgentInfoOpenedForTerminal(!isAgentInfoOpenedForTerminal)" class="material-icons ml-2 blue-text cursor-pointer vertical-align-bottom"> chevron_right </span>
                                             </div>
                                             </div>
                                         </div>
@@ -56,8 +56,8 @@
                             <div class="col-12">
                                 <v-ace-editor v-model:value="terminal_ouput" lang="csharp" :readonly="true" style="height:300px" theme="monokai"/>
                                 <div class="d-flex flex-row-reverse mt-3">
-                                  <button v-if="this.$route.name !== 'PipelineRunView'" @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
-                                  <button v-else @click="closeWindow" style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
+                                  <button v-if="this.$route.name !== 'PipelineRunView'" @click="closeWindow" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">STOP</button>
+                                  <button v-else @click="closeWindow" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">DONE</button>
                                 </div>
                                 <div class="text-center">
                                   <span class="material-icons cursor-pointer" @click="minimizeWindow" @mouseover="toggle">keyboard_arrow_down</span>

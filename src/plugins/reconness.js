@@ -92,7 +92,8 @@ export default {
         RUNNING: 1,
         FINISHED: 2,
         WAITING: 3,
-        FAILED: 4
+        FAILED: 4,
+        SUCCESS: 5
       }
     )
 
@@ -119,8 +120,9 @@ export default {
     app.config.globalProperties.$entityTypeData = Object.freeze(
       {
         TARGET: { id: 1, description: 'Target' },
-        ROOTDOMAIN: { id: 1, description: 'RootDomain' },
-        SUBDOMAIN: { id: 1, description: 'SubDomain' }
+        ROOTDOMAIN: { id: 2, description: 'RootDomain' },
+        SUBDOMAIN: { id: 3, description: 'SubDomain' },
+        AGENT: { id: 4, description: 'Agent' }
       }
     )
 
@@ -203,12 +205,21 @@ export default {
         successSumary: 'Success',
         errorMessageForAllPurpose: 'An error occured during the removal process',
         successMessageForTargetDeletion: 'The target has been deleted successfully',
-        successMessageForSubDomainDeletion: 'The subdomain has been deleted successfully'
+        successMessageForSubDomainDeletion: 'The subdomain has been deleted successfully',
+        successMessageForRootDomainDeletion: 'The rootdomain has been deleted successfully',
+        successMessageForRootDomainInsertion: 'The rootdomains has been inserted successfully',
+        successMessageForTargetInsertion: 'The target has been inserted successfully',
+        successMessageForTargetEdition: 'The target has been edited successfully',
+        successMessageForAgentDeletion: 'The agent has been deleted successfully'
       }
     )
 
     app.config.globalProperties.$convertSpacesToHyphensByString = function (text) {
       return text.trim().replace(/\s+/g, '-')
+    }
+
+    app.config.globalProperties.$isOnAgentView = function () {
+      return this.$route.name === 'Agent'
     }
   }
 }

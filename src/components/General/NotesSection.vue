@@ -4,8 +4,8 @@
         <div class="p-3 control-sidebar-content-target-details overflow-auto note-container">
             <input class="form-control target-input-borders" placeholder="Write your comments here..." v-model="note">
             <CommentIco/>
-            <button :disabled="note === ''" style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendNotes">Send</button>
-            <button style="height: 1.7rem;" class="custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0" @click="note = ''">Cancel</button>
+            <button :disabled="note === ''" class="msg-actions-btn custom-comments btn float-right btn-sm mt-2 px-3 border-right rounded-0" @click="sendNotes">Send</button>
+            <button class="msg-actions-btn custom-comments btn float-right btn-sm mt-2 px-3 border-left border-right rounded-0" @click="note = ''">Cancel</button>
         </div>
 
         <div class="sidebar-list comments-list">
@@ -43,13 +43,13 @@
                   </p>
                 </div>
                 <div class="col-9">
-                  <i style="color: #c2c7d0;">{{note.sender}} / {{new Date(note.sendDate).toISOString().substring(0, 10)}}</i>
+                  <i class="note-sender-color">{{note.sender}} / {{new Date(note.sendDate).toISOString().substring(0, 10)}}</i>
                 </div>
                 <div class="col-3">
-                  <a class="float-right" @click="setSelectedNote" href="#" data-target="#note-confirmation-modal" :data-id="note.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
+                  <a class="float-right mr-2" @click="setSelectedNote" href="#" data-target="#note-confirmation-modal" :data-id="note.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
                 </div>
                 <div class="col-12">
-                  <hr style="width: 84%;">
+                  <hr class="note-separator">
                 </div>
               </div>
             </div>
@@ -277,9 +277,6 @@ export default {
 }
 </script>
 <style>
-/* .p-overlaypanel .p-overlaypanel-content {
-    padding: 0rem!important;
-} */
 .icon-right{
   padding-left: 24% !important;
   margin-bottom: auto;
@@ -354,8 +351,6 @@ div.sidebar-list.comments-list i{
   font-weight: normal;
 }
 aside.control-sidebar-dark.main-notes-container {
-  /* width: 48%; */
-  /*width: 23%;usar media queries*/
   width: 350px;
   height: 100%
 }
@@ -375,5 +370,14 @@ aside.control-sidebar-dark.main-notes-container {
 .comment-font-style {
   font-size: 14px;
   font-weight: normal ;
+}
+.msg-actions-btn{
+  height: 1.7rem;
+}
+.note-sender-color{
+  color: #c2c7d0 !important;
+}
+.note-separator{
+  width: 84%;
 }
 </style>

@@ -14,8 +14,8 @@
                     </p>
                 </div>
                 <div class="modal-footer dialog-without-lines-footer">
-                    <button @click="installer" type="button" data-dismiss="modal" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Ok</button>
-                    <button type="button" data-dismiss="modal" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action">Cancel</button>
+                    <button @click="installer" type="button" data-dismiss="modal" class="blue-text agent-border btn create-agent-buttons-main-action">Ok</button>
+                    <button type="button" data-dismiss="modal" class="blue-text agent-border btn create-agent-buttons-main-action">Cancel</button>
                 </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

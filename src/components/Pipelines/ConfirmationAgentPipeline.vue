@@ -13,7 +13,7 @@
               </div>
               <div class="modal-body">
                   <p>Please, confirm if you want to remove agent <b>{{getNamePipeline}}</b> from the pipeline's workflow</p>
-                  <input autofocus required v-model="nameTyped" style="border-top: none; border-left: none; border-right: none;" class="form-control" placeholder="Agent Name">
+                  <input autofocus required v-model="nameTyped" class="zero-borders form-control" placeholder="Agent Name">
             </div>
               <div class="modal-footer dialog-without-lines-footer">
                   <button :disabled="nameTyped !== getNamePipeline"

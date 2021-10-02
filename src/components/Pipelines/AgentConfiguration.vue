@@ -9,7 +9,7 @@
                             </button>
                             <div class="d-flex justify-content-between">
                               <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2">{{ agentName }}</p>
-                              <p style="margin-top: 4%;" class="agent-mini-color-gray">Configuration</p>
+                              <p  class="mt-4 agent-mini-color-gray">Configuration</p>
                             </div>
                             <div class="row">
                               <div class="col-12">
@@ -25,9 +25,9 @@
                               </div>
                             </div>
                         </div>
-                        <div style="border-top: none;" class="modal-footer">
-                          <button type="button" style="color: #00B1FF;" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Done</button>
-                          <button style="color: #FF4545;" type="button" class="agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+                        <div class="border-top-none modal-footer">
+                          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Done</button>
+                          <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
