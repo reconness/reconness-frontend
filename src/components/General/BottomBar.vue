@@ -1,14 +1,14 @@
 <template>
 <div class="w-100 h-50 pt-2 left-aside pb-2 mt-3 pr-3 d-flex">
   <div class="d-flex justify-content-center align-items-center w-100">
-    <span class="border-right pr-2 mr-3 font-size-15">{{showPageNumberFromOne}} - {{numberEndRange}} from {{entitiesAmount}}</span>
-    <div>
+    <span v-if="!isOnTargetDetailView" class="border-right pr-2 mr-3 font-size-15">{{showPageNumberFromOne}} - {{numberEndRange}} from {{entitiesAmount}}</span>
+    <div v-if="!isOnTargetDetailView">
       <v-pagination v-model="page" :pages="numberOfPages" @update:modelValue="updatePaginatorInStore"/>
     </div>
-    <span class="border-left pl-2 ml-3 font-size-15">Go to page</span>
-    <input type="number" min="0" step="1" class="form-control w-25 ml-2 paginator-page-input" v-model="page"/>
+    <span v-if="!isOnTargetDetailView" class="border-left pl-2 ml-3 font-size-15">Go to page</span>
+    <input v-if="!isOnTargetDetailView" type="number" min="0" step="1" class="form-control w-25 ml-2 paginator-page-input" v-model="manualPageEntered" @keyup.enter="validateEnteredPage"/>
   </div>
-  <div class="d-flex justify-content-end">
+  <div class="d-flex justify-content-end w-100 position-absolute">
     <span v-if="showStatusBar" :class="{'blue-text': successOperation, 'red-text': failedOperation}" class="material-icons mr-2">check</span>
     <span v-if="showStatusBar">{{operationStatus.message}}</span>
   </div>
@@ -27,7 +27,8 @@ export default {
   data () {
     return {
       page: 0,
-      numberElementsInGroup: 3
+      numberElementsInGroup: 3,
+      manualPageEntered: 1
     }
   },
   mixins: [AgentMixin, TargetMixin],
@@ -73,6 +74,9 @@ export default {
     },
     activateThePager () {
       return this.page > 0
+    },
+    isEnteredPageValid () {
+      return this.manualPageEntered >= 1 && this.manualPageEntered <= this.numberOfPages
     }
   },
   mounted () {
@@ -90,13 +94,18 @@ export default {
         startIndex: parseInt(this.numberStartsRange),
         endIndex: parseInt(this.numberEndRange)
       })
+    },
+    validateEnteredPage () {
+      if (this.isEnteredPageValid) {
+        this.page = this.manualPageEntered
+      }
     }
   }
 }
 </script>
 <style scoped>
 .paginator-page-input{
-  width: 4% !important;
+  width: 5% !important;
   height: 1.5rem;
   background-color: #f4f6f9;
 }
