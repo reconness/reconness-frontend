@@ -65,6 +65,10 @@ const TargetMixin = {
       } else {
         this.removeTargetEntityToDelete(entityId)
       }
+    },
+    setTargetId (e) {
+      const selectedTargetId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('target/setIdTarget', selectedTargetId)
     }
   }
 }

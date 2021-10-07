@@ -34,13 +34,13 @@
                         <ul class="list-unstyled min-height" >
                           <li v-for="item of Target.rootDomains" :key="item.id" class="d-flex justify-content-between align-items-center">
                             <div class="target-details-root-links">
-                            <span  class="material-icons font-size-16px mt-1 black-text"> chevron_right </span>
+                            <span  class="material-icons font-size-16px mt-1 black-text cursor-pointer"> chevron_right </span>
                             <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.name, rootdomainName: item.root} }">
                               {{item.root}}
                             </router-link>
                             </div>
                             <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="target-details-trashcan">
-                              <TrashCanIco @click="prepareToDelete($event, this.$agentType.ROOTDOMAIN)" class="cursor-pointer w-100 h-100" data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.root"/>
+                              <TrashCanIco @click="prepareToDelete($event, this.$agentType.ROOTDOMAIN)" class="cursor-pointer trash-size" data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.root"/>
                             </span>
                           </li>
                         </ul>
@@ -448,5 +448,9 @@ label {
 }
 span.target-details-add-root:hover{
   color: #00B1FF;
+}
+
+.trash-size{
+  width: 15px
 }
 </style>

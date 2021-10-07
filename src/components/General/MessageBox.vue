@@ -113,14 +113,12 @@ export default {
         this.processTarget()
         this.clearTargetEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
-      }
-      if (this.isOnTargetDetailView) {
+      } else if (this.isOnTargetDetailView) {
         this.clearRootDomainEntitiesToDelete({
           targetName: this.getTargetName
         })
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
-      }
-      if (this.$isOnAgentView) {
+      } else if (this.$isOnAgentView) {
         this.clearAgentEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
       }

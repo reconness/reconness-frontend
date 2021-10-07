@@ -74,10 +74,6 @@ export default {
     isSelected (cardIndex) {
       return parseInt(this.selectedCard.id) === parseInt(cardIndex)
     },
-    setAgentId (e) {
-      const selectedAgentId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('agent/setIdAgent', selectedAgentId)
-    },
     onEdit (e) {
       this.setAgentId(e)
       this.$store.commit('agent/setDetailsLinks', false)

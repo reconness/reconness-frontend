@@ -182,7 +182,8 @@ export default {
       },
       nextTargetSequence: 30,
       showNameInput: false,
-      transformedName: 'my-target'
+      transformedName: 'my-target',
+      typedOnNameInput: false
     }
   },
   mixins: [TargetMixin],
@@ -196,13 +197,13 @@ export default {
     },
     ...mapGetters('target', ['checkIfTargetExistsByName']),
     targetNameContainsHyphens () {
-      return this.target.name.indexOf('-') > -1
+      return this.target.name.indexOf('-') > -1 && this.typedOnNameInput
     }
   },
   watch: {
     loadSelectedTarget: function (value) {
       if (value !== undefined) {
-        this.target.name = value.name
+        this.target.name = this.$convertHyphensToSpacesByString(value.name)
         this.target.primaryColor = value.primaryColor
         this.target.secondaryColor = value.secondaryColor
         this.target.id = value.id
@@ -283,6 +284,7 @@ export default {
       this.$store.commit('agent/setDetailsLinks', false)
     },
     resetTargetForm () {
+      this.typedOnNameInput = false
       this.showNameInput = false
       this.target = {
         name: 'My target',
@@ -314,6 +316,7 @@ export default {
       }
     },
     enableValidationMessageName () {
+      this.typedOnNameInput = true
       if (this.target.name === '') {
         this.validators.blank.name = true
       } else {

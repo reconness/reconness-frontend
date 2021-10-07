@@ -1011,7 +1011,7 @@ div.pipeline_spacing .p-autocomplete-loader{
   padding: 0;
 }
 .target-details-root-links:hover a{
-  color: #00B1FF;
+  color: #00B1FF !important;
 }
 .target-details-root-links:hover span{
   color: #00B1FF !important;
@@ -1100,4 +1100,12 @@ a.target-detail-popover:hover{
 }
 .delete-btn-circular-container span {
   margin: 15% !important;
+}
+.chevron-line-height-1-7rem{
+  line-height: 1.7rem !important;
+}
+.modal-backdrop{
+  background: transparent;
+  backdrop-filter: blur(1px);
+  filter: blur(1px);
 }

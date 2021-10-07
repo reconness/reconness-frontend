@@ -89,10 +89,6 @@ export default {
       this.$store.commit('agent/setIdAgent', selectedAgentId)
       this.$store.commit('agent/setDetailsLinks', true)
     },
-    setTargetId (e) {
-      const selectedTargetId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('target/setIdTarget', selectedTargetId)
-    },
     setTargetName (e) {
       this.selectedTargetName = e.currentTarget.getAttribute('data-name')
     },

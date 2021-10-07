@@ -5,7 +5,6 @@
             <div class="col-1 my-2 border-left">Color ID</div>
             <div class="col-2 my-2 border-left">Name</div>
             <div class="col-2 my-2 border-left">Created By</div>
-            <div class="col-3 my-2 border-left">Category</div>
             <div class="col-2 my-2 border-left">Agent Type</div>
             <div class="col-1 my-2 border-left">Actions</div>
         </div>
@@ -27,9 +26,6 @@
                 <AccountCogIco class="fill-with-dark-gray"/>
                 <span class="ml-1 agent-mini-color-gray">User</span>
               </div>
-            </div>
-            <div class="col-3 my-2">
-              <span class="agent-mini-color-gray">Category</span>
             </div>
             <div class="col-2 my-2">
               <span class="agent-mini-color-gray">{{this.$getEntityTypeById(parseInt(agent.type)).description}}</span>
@@ -85,7 +81,7 @@ export default {
       jQuery('[data-toggle="tooltip"]').tooltip()
     },
     onEdit (e) {
-      this.setTargetId(e)
+      this.setAgentId(e)
       this.$store.commit('agent/setDetailsLinks', false)
     }
   }
