@@ -40,6 +40,10 @@ const AgentMixin = {
       } else {
         this.removeTargetEntityToDelete(entityId)
       }
+    },
+    setAgentId (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
     }
   }
 }

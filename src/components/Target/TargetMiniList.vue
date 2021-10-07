@@ -1,6 +1,6 @@
 <template>
     <div class="col-12">
-        <div class="row header-bottom-line-shadow">
+        <div class="row header-bottom-line-shadow" style="position: sticky !important;">
             <div class="offset-sm-1"></div>
             <div class="col-1 my-2 border-left">Color ID</div>
             <div class="col-2 my-2 border-left">Name</div>
@@ -23,8 +23,8 @@
                 </router-link>
             </div>
             <div class="col-3 my-2">
-              <router-link class="agent-mini-color-gray" v-for="rootDomain in target.rootDomains" :key="rootDomain.id" :to="{ name: 'RootDomainDetails', params: {idTarget: target.id , id: rootDomain.id, targetName: target.name,  rootdomainName: rootDomain.root } }">
-                  {{rootDomain.root}},
+              <router-link class="agent-mini-color-gray target-detail-popover" v-for="(rootDomain, index) in target.rootDomains" :key="rootDomain.id" :to="{ name: 'RootDomainDetails', params: {idTarget: target.id , id: rootDomain.id, targetName: target.name,  rootdomainName: rootDomain.root } }">
+                  {{rootDomain.root}}{{showArraySeparatorByIndexAndList(index, target.rootDomains)}}
               </router-link>
             </div>
             <div class="col-1 color-action-column d-flex justify-content-center">
@@ -77,6 +77,12 @@ export default {
     onEdit (e) {
       this.setTargetId(e)
       this.$store.commit('agent/setDetailsLinks', false)
+    },
+    showArraySeparatorByIndexAndList (index, itemsList) {
+      if ((itemsList.length - 1) === index) {
+        return ''
+      }
+      return ', '
     }
   }
 }

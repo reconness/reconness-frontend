@@ -8,7 +8,7 @@
     <span v-if="!isOnTargetDetailView" class="border-left pl-2 ml-3 font-size-15">Go to page</span>
     <input v-if="!isOnTargetDetailView" type="number" min="0" step="1" class="form-control w-25 ml-2 paginator-page-input" v-model="manualPageEntered" @keyup.enter="validateEnteredPage"/>
   </div>
-  <div class="d-flex justify-content-end w-100 position-absolute">
+  <div class="d-flex justify-content-end w-100 position-absolute pr-3">
     <span v-if="showStatusBar" :class="{'blue-text': successOperation, 'red-text': failedOperation}" class="material-icons mr-2">check</span>
     <span v-if="showStatusBar">{{operationStatus.message}}</span>
   </div>
@@ -105,7 +105,7 @@ export default {
 </script>
 <style scoped>
 .paginator-page-input{
-  width: 5% !important;
+  width: 45px !important;
   height: 1.5rem;
   background-color: #f4f6f9;
 }

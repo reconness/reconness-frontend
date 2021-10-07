@@ -81,7 +81,7 @@ export default {
       jQuery('[data-toggle="tooltip"]').tooltip()
     },
     onEdit (e) {
-      this.setTargetId(e)
+      this.setAgentId(e)
       this.$store.commit('agent/setDetailsLinks', false)
     }
   }
