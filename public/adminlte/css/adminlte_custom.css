@@ -1104,3 +1104,8 @@ a.target-detail-popover:hover{
 .chevron-line-height-1-7rem{
   line-height: 1.7rem !important;
 }
+.modal-backdrop{
+  background: transparent;
+  backdrop-filter: blur(1px);
+  filter: blur(1px);
+}
