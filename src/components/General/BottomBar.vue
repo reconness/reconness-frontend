@@ -3,7 +3,7 @@
   <div class="d-flex justify-content-center align-items-center w-100">
     <span v-if="!isOnTargetDetailView" class="border-right pr-2 mr-3 font-size-15">{{showPageNumberFromOne}} - {{numberEndRange}} from {{entitiesAmount}}</span>
     <div v-if="!isOnTargetDetailView">
-      <v-pagination v-model="page" :pages="numberOfPages" @update:modelValue="updatePaginatorInStore"/>
+      <v-pagination v-model="page" :pages="numberOfPages" @update:modelValue="updatePaginatorInStore(page)"/>
     </div>
     <span v-if="!isOnTargetDetailView" class="border-left pl-2 ml-3 font-size-15">Go to page</span>
     <input v-if="!isOnTargetDetailView" type="number" min="0" step="1" class="form-control w-25 ml-2 paginator-page-input" v-model="manualPageEntered" @keyup.enter="validateEnteredPage"/>
@@ -19,6 +19,7 @@ import { mapState, mapMutations } from 'vuex'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import VPagination from '@hennge/vue3-pagination'
+import jQuery from 'jquery'
 export default {
   name: 'BottomBar',
   components: {
@@ -85,20 +86,30 @@ export default {
       startIndex: parseInt(this.numberStartsRange),
       endIndex: parseInt(this.numberEndRange)
     })
+    this.paintFirstButtonOfPaginatorPage()
   },
   methods: {
     ...mapMutations('target', ['updatePaginator']),
-    updatePaginatorInStore () {
+    updatePaginatorInStore (page) {
       this.updatePaginator({
         page: this.page,
         startIndex: parseInt(this.numberStartsRange),
         endIndex: parseInt(this.numberEndRange)
       })
+      if (page > 1) {
+        this.removePaintFirstButtonOfPaginatorPage()
+      }
     },
     validateEnteredPage () {
       if (this.isEnteredPageValid) {
         this.page = this.manualPageEntered
       }
+    },
+    paintFirstButtonOfPaginatorPage () {
+      jQuery('.Pagination :button').first().addClass('Page-active')
+    },
+    removePaintFirstButtonOfPaginatorPage () {
+      jQuery('.Pagination :button').first().removeClass('Page-active')
     }
   }
 }
