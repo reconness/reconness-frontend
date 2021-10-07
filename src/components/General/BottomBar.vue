@@ -29,7 +29,7 @@ export default {
     return {
       page: 0,
       numberElementsInGroup: 3,
-      manualPageEntered: 1
+      manualPageEntered: null
     }
   },
   mixins: [AgentMixin, TargetMixin],
@@ -103,6 +103,9 @@ export default {
     validateEnteredPage () {
       if (this.isEnteredPageValid) {
         this.page = this.manualPageEntered
+      }
+      if (this.page > 1) {
+        this.removePaintFirstButtonOfPaginatorPage()
       }
     },
     paintFirstButtonOfPaginatorPage () {
