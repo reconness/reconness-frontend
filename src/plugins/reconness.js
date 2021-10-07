@@ -218,6 +218,10 @@ export default {
       return text.trim().replace(/\s+/g, '-')
     }
 
+    app.config.globalProperties.$convertHyphensToSpacesByString = function (text) {
+      return text.trim().replace(/-/g, ' ')
+    }
+
     app.config.globalProperties.$isOnAgentView = function () {
       return this.$route.name === 'Agent'
     }

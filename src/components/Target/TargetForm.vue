@@ -203,7 +203,7 @@ export default {
   watch: {
     loadSelectedTarget: function (value) {
       if (value !== undefined) {
-        this.target.name = value.name
+        this.target.name = this.$convertHyphensToSpacesByString(value.name)
         this.target.primaryColor = value.primaryColor
         this.target.secondaryColor = value.secondaryColor
         this.target.id = value.id
