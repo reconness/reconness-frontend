@@ -56,3 +56,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.content-wrapper{
+  max-height: 100vh !important;
+  min-height: 75vh !important;
+}
+</style>
