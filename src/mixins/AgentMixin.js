@@ -36,7 +36,7 @@ const AgentMixin = {
       const entityId = Number(e.currentTarget.getAttribute('data-id'))
       const isCurrentCheckBoxChecked = document.getElementById('remove_customCheckbox' + entityId).checked
       if (!isCurrentCheckBoxChecked) {
-        this.prepareToDelete(e, this.$agentType.TARGET)
+        this.prepareToDelete(e, this.$agentType.AGENT)
       } else {
         this.removeTargetEntityToDelete(entityId)
       }
