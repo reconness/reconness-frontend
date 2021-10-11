@@ -60,7 +60,10 @@ export default {
       if (this.isOnTargetView) {
         return this.$entityTypeData.TARGET
       } else if (this.isOnTargetDetailView) {
-        return this.$entityTypeData.ROOTDOMAIN
+        if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
+          return this.$entityTypeData.ROOTDOMAIN
+        }
+        return this.$entityTypeData.TARGET
       } else if (this.$isOnAgentView) {
         return this.$entityTypeData.AGENT
       }
@@ -103,6 +106,9 @@ export default {
     },
     multipleItemsToDelete () {
       return this.entitiesToDelete.length > 1
+    },
+    entitiesToRemoveContainArootDomain () {
+      return this.entitiesToDelete[0].type === this.$entityTypeData.ROOTDOMAIN.id
     }
   },
   methods: {
@@ -114,10 +120,14 @@ export default {
         this.clearTargetEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
       } else if (this.isOnTargetDetailView) {
-        this.clearRootDomainEntitiesToDelete({
-          targetName: this.getTargetName
-        })
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
+          this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        } else {
+          this.redirectToTargetsList()
+          this.clearTargetEntitiesToDelete()
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
+        }
       } else if (this.$isOnAgentView) {
         this.clearAgentEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
@@ -187,6 +197,9 @@ export default {
     clearReferences () {
       this.clearReferencesToDelete()
       this.clearInput()
+    },
+    redirectToTargetsList () {
+      this.$router.push({ name: 'Targets' })
     }
   }
 }
