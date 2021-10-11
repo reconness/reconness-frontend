@@ -12,7 +12,7 @@
             <div class="col-1">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
                   <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+ agent.id" :checked="this.$isItemOnList(agent.id, entitiesToDelete)">
-                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+ agent.id"  :data-id="agent.id" :data-name="agent.name" @click="prepareToDeleteFromMultipleSelections"></label>
+                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+ agent.id"  :data-id="agent.id" :data-name="agent.name" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.AGENT.id)"></label>
                 </div>
             </div>
             <div class="col-1 my-auto d-flex justify-content-center">

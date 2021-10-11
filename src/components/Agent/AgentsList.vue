@@ -4,7 +4,7 @@
           <div class="col-10">
         <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
         <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
-        <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections" :data-id="id" :data-name="name"></label>
+        <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.AGENT.id)" :data-id="id" :data-name="name"></label>
         <div class="p-2">
         <div class="info-box target-detail-popover-reference">
           <div class="info-box-content">
