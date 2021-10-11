@@ -147,11 +147,16 @@ export default {
       } else if (this.$isOnRootDomainView()) {
         if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
           this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
         } else {
           this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
           this.redirectToTargetDetails()
           this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
         }
+      } else if (this.$isOnSubDomainView()) {
+        this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
+        this.redirectToRootDomainDetails()
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')
@@ -225,6 +230,10 @@ export default {
     redirectToTargetDetails: function () {
       const urlParameters = { targetName: this.getTargetName }
       this.$router.push({ name: 'TargetDetail', params: urlParameters })
+    },
+    redirectToRootDomainDetails: function () {
+      const urlParameters = { targetName: this.getTargetName, rootdomainName: this.getRootDomainName }
+      this.$router.push({ name: 'RootDomainDetails', params: urlParameters })
     }
   }
 }
