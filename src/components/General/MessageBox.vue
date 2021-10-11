@@ -65,9 +65,14 @@ export default {
         }
         return this.$entityTypeData.TARGET
       } else if (this.$isOnRootDomainView()) {
+        if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
+          return this.$entityTypeData.SUBDOMAIN
+        }
         return this.$entityTypeData.ROOTDOMAIN
       } else if (this.$isOnAgentView()) {
         return this.$entityTypeData.AGENT
+      } else if (this.$isOnSubDomainView()) {
+        return this.$entityTypeData.SUBDOMAIN
       }
       return ''
     },
@@ -106,15 +111,21 @@ export default {
     getTargetName () {
       return this.$route.params.targetName
     },
+    getRootDomainName () {
+      return this.$route.params.rootdomainName
+    },
     multipleItemsToDelete () {
       return this.entitiesToDelete.length > 1
     },
     entitiesToRemoveContainArootDomain () {
       return this.entitiesToDelete[0].type === this.$entityTypeData.ROOTDOMAIN.id
+    },
+    entitiesToRemoveContainAsubDomain () {
+      return this.entitiesToDelete[0].type === this.$entityTypeData.SUBDOMAIN.id
     }
   },
   methods: {
-    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView) {
@@ -134,9 +145,13 @@ export default {
         this.clearAgentEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
       } else if (this.$isOnRootDomainView()) {
-        this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
-        this.removeRootDomainAndRedirectToTargetDetails()
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
+          this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+        } else {
+          this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
+          this.redirectToTargetDetails()
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        }
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')
@@ -207,7 +222,7 @@ export default {
     redirectToTargetsList () {
       this.$router.push({ name: 'Targets' })
     },
-    removeRootDomainAndRedirectToTargetDetails: function () {
+    redirectToTargetDetails: function () {
       const urlParameters = { targetName: this.getTargetName }
       this.$router.push({ name: 'TargetDetail', params: urlParameters })
     }

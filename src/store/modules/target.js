@@ -1320,6 +1320,17 @@ export default ({
       })
       state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
     },
+    clearSubDomainEntitiesToDelete (state, entities) {
+      state.entitiesToDelete.forEach(entity => {
+        const target = state.targetListStore.find(target => target.name === entities.targetName)
+        const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
+        const subDomainIndex = rootdomain.subdomain.findIndex(subdomain => subdomain.id === entity.id)
+        if (subDomainIndex !== -1) {
+          rootdomain.subdomain.splice(subDomainIndex, 1)
+        }
+      })
+      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+    },
     clearReferencesToDelete (state) {
       state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
     },
