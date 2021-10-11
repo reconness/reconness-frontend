@@ -7,6 +7,9 @@ const TargetMixin = {
     isOnTargetDetailView () {
       return this.$route.name === 'TargetDetail'
     },
+    isOnRootDetailsView () {
+      return this.$route.name === 'RootDomainDetails'
+    },
     arrayFilterList () {
       if (this.filterColour === '') {
         return this.targetListStore

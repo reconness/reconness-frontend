@@ -64,7 +64,9 @@ export default {
           return this.$entityTypeData.ROOTDOMAIN
         }
         return this.$entityTypeData.TARGET
-      } else if (this.$isOnAgentView) {
+      } else if (this.$isOnRootDomainView()) {
+        return this.$entityTypeData.ROOTDOMAIN
+      } else if (this.$isOnAgentView()) {
         return this.$entityTypeData.AGENT
       }
       return ''
@@ -128,9 +130,13 @@ export default {
           this.clearTargetEntitiesToDelete()
           this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
         }
-      } else if (this.$isOnAgentView) {
+      } else if (this.$isOnAgentView()) {
         this.clearAgentEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+      } else if (this.$isOnRootDomainView()) {
+        this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
+        this.removeRootDomainAndRedirectToTargetDetails()
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')
@@ -200,6 +206,10 @@ export default {
     },
     redirectToTargetsList () {
       this.$router.push({ name: 'Targets' })
+    },
+    removeRootDomainAndRedirectToTargetDetails: function () {
+      const urlParameters = { targetName: this.getTargetName }
+      this.$router.push({ name: 'TargetDetail', params: urlParameters })
     }
   }
 }

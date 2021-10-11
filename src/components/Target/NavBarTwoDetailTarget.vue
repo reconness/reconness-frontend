@@ -37,7 +37,7 @@
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete" :data-id="getTargetId" :data-name="this.$route.params.targetName">Delete Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="updateConfirm()" >Delete Root Domain</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getTargetId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <label for="export-target" class="nav-link pos mb-0"> Export Target </label>

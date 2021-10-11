@@ -225,5 +225,9 @@ export default {
     app.config.globalProperties.$isOnAgentView = function () {
       return this.$route.name === 'Agent'
     }
+    
+    app.config.globalProperties.$isOnRootDomainView = function () {
+      return this.$route.name === 'RootDomainDetails'
+    }
   }
 }
