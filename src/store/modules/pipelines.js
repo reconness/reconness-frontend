@@ -629,6 +629,17 @@ export default {
       })
     }
   },
+  actions: {
+    clearPipelineEntitiesToDelete ({ state, commit, rootState }) {
+      rootState.target.entitiesToDelete.forEach(entity => {
+        const index = state.pipelinesListStore.findIndex(pipeline => pipeline.id === entity.id)
+        if (index !== -1) {
+          state.pipelinesListStore.splice(index, 1)
+        }
+      })
+      commit('target/clearReferencesToDelete', null, { root: true })
+    }
+  },
   getters: {
     getPipelineById: (state) => (id) => {
       return state.pipelinesListStore.find(pipeline => pipeline.id === id)

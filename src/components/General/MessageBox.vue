@@ -73,6 +73,8 @@ export default {
         return this.$entityTypeData.AGENT
       } else if (this.$isOnSubDomainView()) {
         return this.$entityTypeData.SUBDOMAIN
+      } else if (this.$isOnPipelineView()) {
+        return this.$entityTypeData.PIPELINE
       }
       return ''
     },
@@ -127,6 +129,7 @@ export default {
   methods: {
     ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
+    ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView) {
         this.processTarget()
@@ -157,6 +160,9 @@ export default {
         this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
         this.redirectToRootDomainDetails()
+      } else if (this.$isOnPipelineView()) {
+        this.clearPipelineEntitiesToDelete()
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')
