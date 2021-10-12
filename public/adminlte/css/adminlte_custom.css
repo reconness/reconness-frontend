@@ -408,7 +408,7 @@ button .material-icons, a .material-icons{
   bottom: calc(3.5rem + 1px);
   position: absolute;
   top: 1px;
-  z-index: 2000;
+  z-index: 1019;
 }
 
 .control-sidebar-content h5{
@@ -1108,4 +1108,9 @@ a.target-detail-popover:hover{
   background: transparent;
   backdrop-filter: blur(1px);
   filter: blur(1px);
+}
+.sticky-top {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1020;
 }
