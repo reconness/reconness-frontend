@@ -122,7 +122,8 @@ export default {
         TARGET: { id: 1, description: 'Target' },
         ROOTDOMAIN: { id: 2, description: 'RootDomain' },
         SUBDOMAIN: { id: 3, description: 'SubDomain' },
-        AGENT: { id: 4, description: 'Agent' }
+        AGENT: { id: 4, description: 'Agent' },
+        PIPELINE: { id: 5, description: 'Pipeline' }
       }
     )
 
@@ -210,7 +211,9 @@ export default {
         successMessageForRootDomainInsertion: 'The rootdomains has been inserted successfully',
         successMessageForTargetInsertion: 'The target has been inserted successfully',
         successMessageForTargetEdition: 'The target has been edited successfully',
-        successMessageForAgentDeletion: 'The agent has been deleted successfully'
+        successMessageForAgentDeletion: 'The agent has been deleted successfully',
+        successMessageForPipelineDeletion: 'The pipeline has been deleted successfully'
+
       }
     )
 
@@ -224,6 +227,18 @@ export default {
 
     app.config.globalProperties.$isOnAgentView = function () {
       return this.$route.name === 'Agent'
+    }
+
+    app.config.globalProperties.$isOnRootDomainView = function () {
+      return this.$route.name === 'RootDomainDetails'
+    }
+
+    app.config.globalProperties.$isOnSubDomainView = function () {
+      return this.$route.name === 'SubDomainDetails'
+    }
+
+    app.config.globalProperties.$isOnPipelineView = function () {
+      return this.$route.name === 'Pipelines'
     }
   }
 }

@@ -61,7 +61,7 @@
                     </div>
                     <div class="mt-5">
                         <button type="button" class="blue-text subdomain-border btn create-agent-buttons-main-action">Save</button>
-                        <button type="button" class="agent-border btn create-agent-buttons-main-action btn-danger delete_btn ml-4" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false" @click="updateConfirm(loadedSubdomain.name)">Delete</button>
+                        <button type="button" class="agent-border btn create-agent-buttons-main-action btn-danger delete_btn ml-4" data-toggle="modal" data-backdrop="false" data-target="#message-box-modal" :data-id="loadedSubdomain.id" :data-name="loadedSubdomain.name" @click="prepareToDelete($event, this.$entityTypeData.SUBDOMAIN.id)">Delete</button>
                     </div>
                  </div>
                 </div>
@@ -70,7 +70,8 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+import { TargetMixin } from '@/mixins/TargetMixin'
 
 export default {
   name: 'SubDomainDetailsDashboard',
@@ -80,6 +81,7 @@ export default {
       loadedTarget: {}
     }
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapGetters('target', ['getSubDomain', 'getTargetById'])
   },
@@ -92,6 +94,7 @@ export default {
     this.loadedTarget = this.getTargetById(parseInt(this.$route.params.idTarget))
   },
   methods: {
+    ...mapMutations('target', ['addEntityToDelete']),
     updateConfirm (itemName) {
       return this.$store.commit('agent/confirm', { name: itemName, route: 'subdomains' })
     },

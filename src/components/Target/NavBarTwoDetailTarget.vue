@@ -34,10 +34,10 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!showRootDomains">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" v-on:click="updateConfirm()" >Delete Target</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete" :data-id="getTargetId" :data-name="this.$route.params.targetName">Delete Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#confirmation-modal" v-on:click="updateConfirm()" >Delete Root Domain</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getTargetId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <label for="export-target" class="nav-link pos mb-0"> Export Target </label>
@@ -143,12 +143,14 @@
      </div>
 </template>
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapGetters } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
 import NotesBtn from '@/components/General/NotesBtn.vue'
 import NotesSection from '@/components/General/NotesSection.vue'
 import Confirmation from '@/components/Target/Confirmation.vue'
 import NoteConfirmation from '@/components/Target/NoteConfirmation.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
+
 export default {
   name: 'NavBarTwoDetailTarget',
   components: {
@@ -158,6 +160,7 @@ export default {
     NotesSection,
     NoteConfirmation
   },
+  mixins: [TargetMixin],
   props: {
     TargetName: String,
     gradient: String,
@@ -174,10 +177,18 @@ export default {
   },
   computed: {
     ...mapState('target', ['targetListStore']),
-    ...mapState('agent', ['isNotesSectionOpened'])
+    ...mapState('agent', ['isNotesSectionOpened']),
+    ...mapGetters('target', ['filterByColor', 'getTargetByName']),
+    getTargetId () {
+      const searchedTarget = this.getTargetByName(this.$route.params.targetName)
+      if (searchedTarget) {
+        return this.getTargetByName(this.$route.params.targetName).id
+      }
+      return undefined
+    }
   },
   methods: {
-    ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),
+    ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc', 'addEntityToDelete']),
     orderByCalendar: function () {
       this.targetListStore.find(item => item.id === parseInt(this.$route.params.id)).rootDomains.sort(this.$orderByCalendarSplitting)
     },

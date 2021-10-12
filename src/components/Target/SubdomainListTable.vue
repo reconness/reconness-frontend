@@ -55,7 +55,7 @@
      <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="unselectedAll()"> Unselected All</div>
      <div class="col border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> </div>
      <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> <a>Export</a></div>
-     <div data-toggle="modal" data-target="#confirmationList-modal" :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}">
+     <div data-toggle="modal" data-target="#message-box-modal" :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}">
        <a>Delete</a></div>
      <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="done()"> Done</div>
   </div>
@@ -134,17 +134,16 @@
         </div>
         <div class="abs-center mx-auto">
           <span class="material-icons icon-color-style gradient-style delete-hover"
-          data-toggle="modal" data-target="#confirmation-modal"
+          data-toggle="modal" data-target="#message-box-modal" :data-id="item.id" :data-name="item.name"
           v-bind:style ="{background: '#B3B3B3', opacity:0.5}" @mouseover="toggle"
           aria:haspopup="true" aria-controls="overlay_panel"
-          :data-name="item.name" @click="updateConfirm(item.name)"
-          >delete</span>
+          @click="prepareToDelete($event, this.$entityTypeData.SUBDOMAIN.id)">delete</span>
         </div>
     </div>
     <div class="col-2 border-right-radius abs-center border p-0 custom-control-container-rounded" v-else>
       <div class="roundedOne" :class="'check-color-' + color.substring(1)">
-        <input type="checkbox" class="custom-control-input-rounded" :id="'customCheckbox' + item.id" name="checkbox-dinamic" @click="selectRow(item.id, item.name)">
-        <label class="custom-control-label-rounded" :for="'customCheckbox' + item.id" ></label>
+        <input type="checkbox" class="custom-control-input-rounded" :id="'remove_customCheckbox' + item.id" name="checkbox-dinamic" @click="selectRow(item.id, item.name)">
+        <label class="custom-control-label-rounded" :for="'remove_customCheckbox' + item.id" :data-id="item.id" :data-name="item.name" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.SUBDOMAIN.id)"></label>
       </div>
     </div>
 </div></div>
@@ -176,6 +175,7 @@ import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
@@ -215,9 +215,11 @@ export default {
       isFilterResultEmpty: false
     }
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapGetters('target', ['getSubdomainSize']),
-    ...mapState('agent', ['isElementDeleted'])
+    ...mapState('agent', ['isElementDeleted']),
+    ...mapState('target', ['entitiesToDelete'])
   },
   mounted () {
     if (this.isElementDeleted) {
@@ -233,7 +235,7 @@ export default {
       return this.$store.commit('agent/confirm', { name: itemName, route: 'subdomains' })
     },
     selectRow (id, name) {
-      if (document.getElementById('customCheckbox' + id).checked) {
+      if (document.getElementById('remove_customCheckbox' + id).checked) {
         document.getElementById('row' + id).style.background = 'rgb(242, 244, 246)'
         this.$store.commit('target/addSelectedList', { idTarget: parseInt(this.$route.params.idTarget), idRoot: this.rootDomain.id, idSubdom: id, nameSubdom: name })
         this.$store.commit('target/addCountElementSelected')
@@ -359,7 +361,8 @@ export default {
         this.isFilterResultEmpty = false
       }
     },
-    ...mapMutations('agent', ['setIsElementDeleted'])
+    ...mapMutations('agent', ['setIsElementDeleted']),
+    ...mapMutations('target', ['addEntityToDelete'])
   }
 }
 </script>

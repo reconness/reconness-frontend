@@ -60,9 +60,21 @@ export default {
       if (this.isOnTargetView) {
         return this.$entityTypeData.TARGET
       } else if (this.isOnTargetDetailView) {
+        if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
+          return this.$entityTypeData.ROOTDOMAIN
+        }
+        return this.$entityTypeData.TARGET
+      } else if (this.$isOnRootDomainView()) {
+        if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
+          return this.$entityTypeData.SUBDOMAIN
+        }
         return this.$entityTypeData.ROOTDOMAIN
-      } else if (this.$isOnAgentView) {
+      } else if (this.$isOnAgentView()) {
         return this.$entityTypeData.AGENT
+      } else if (this.$isOnSubDomainView()) {
+        return this.$entityTypeData.SUBDOMAIN
+      } else if (this.$isOnPipelineView()) {
+        return this.$entityTypeData.PIPELINE
       }
       return ''
     },
@@ -101,26 +113,56 @@ export default {
     getTargetName () {
       return this.$route.params.targetName
     },
+    getRootDomainName () {
+      return this.$route.params.rootdomainName
+    },
     multipleItemsToDelete () {
       return this.entitiesToDelete.length > 1
+    },
+    entitiesToRemoveContainArootDomain () {
+      return this.entitiesToDelete[0].type === this.$entityTypeData.ROOTDOMAIN.id
+    },
+    entitiesToRemoveContainAsubDomain () {
+      return this.entitiesToDelete[0].type === this.$entityTypeData.SUBDOMAIN.id
     }
   },
   methods: {
-    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
+    ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView) {
         this.processTarget()
         this.clearTargetEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
       } else if (this.isOnTargetDetailView) {
-        this.clearRootDomainEntitiesToDelete({
-          targetName: this.getTargetName
-        })
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
-      } else if (this.$isOnAgentView) {
+        if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
+          this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        } else {
+          this.redirectToTargetsList()
+          this.clearTargetEntitiesToDelete()
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
+        }
+      } else if (this.$isOnAgentView()) {
         this.clearAgentEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+      } else if (this.$isOnRootDomainView()) {
+        if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
+          this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
+        } else {
+          this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
+          this.redirectToTargetDetails()
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        }
+      } else if (this.$isOnSubDomainView()) {
+        this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
+        this.redirectToRootDomainDetails()
+      } else if (this.$isOnPipelineView()) {
+        this.clearPipelineEntitiesToDelete()
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')
@@ -187,6 +229,17 @@ export default {
     clearReferences () {
       this.clearReferencesToDelete()
       this.clearInput()
+    },
+    redirectToTargetsList () {
+      this.$router.push({ name: 'Targets' })
+    },
+    redirectToTargetDetails: function () {
+      const urlParameters = { targetName: this.getTargetName }
+      this.$router.push({ name: 'TargetDetail', params: urlParameters })
+    },
+    redirectToRootDomainDetails: function () {
+      const urlParameters = { targetName: this.getTargetName, rootdomainName: this.getRootDomainName }
+      this.$router.push({ name: 'RootDomainDetails', params: urlParameters })
     }
   }
 }

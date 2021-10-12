@@ -19,7 +19,7 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()">Edit List</a>
-          <span :class="{'isLinkDisabled' : entitiesToDelete.length <= 0}"><a class="nav-link pos" v-show= "check" href="#" v-bind:style ="{color:colorDelete}" data-toggle="modal" data-target="#message-box-modal">Delete Agents</a></span>
+          <span :class="{'isLinkDisabled' : entitiesToDelete.length <= 0}"><a class="nav-link pos" v-show= "check" href="#" :class="{'red-text':entitiesToDelete.length > 0}" data-toggle="modal" data-target="#message-box-modal">Delete Agents</a></span>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
           <a class="nav-link float-left" data-toggle="dropdown" href="#" role="button">

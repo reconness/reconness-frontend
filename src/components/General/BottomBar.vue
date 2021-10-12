@@ -1,5 +1,5 @@
 <template>
-<div class="w-100 h-50 pt-2 left-aside pb-2 mt-3 pr-3 d-flex">
+<div class="w-100 pt-2 h-8vh left-aside pb-2 mt-3 pr-3 d-flex position-sticky bottom-0" style="height: 35px !important">
   <div class="d-flex justify-content-center align-items-center w-100">
     <span v-if="!isOnTargetDetailView" class="border-right pr-2 mr-3 font-size-15">{{showPageNumberFromOne}} - {{numberEndRange}} from {{entitiesAmount}}</span>
     <div v-if="!isOnTargetDetailView">
@@ -128,8 +128,13 @@ input::-webkit-inner-spin-button{
   -webkit-appearance: none;
   margin: 0
 }
-
 input[type=number]{
   -moz-appearance: textfield
+}
+.bottom-0{
+  bottom: 0 !important;
+}
+.h-8vh{
+  height: 8vh !important
 }
 </style>

@@ -7,6 +7,9 @@ const TargetMixin = {
     isOnTargetDetailView () {
       return this.$route.name === 'TargetDetail'
     },
+    isOnRootDetailsView () {
+      return this.$route.name === 'RootDomainDetails'
+    },
     arrayFilterList () {
       if (this.filterColour === '') {
         return this.targetListStore
@@ -57,11 +60,11 @@ const TargetMixin = {
         5000
       )
     },
-    prepareToDeleteFromMultipleSelections (e) {
+    prepareToDeleteFromMultipleSelections (e, entityType) {
       const entityId = Number(e.currentTarget.getAttribute('data-id'))
       const isCurrentCheckBoxChecked = document.getElementById('remove_customCheckbox' + entityId).checked
       if (!isCurrentCheckBoxChecked) {
-        this.prepareToDelete(e, this.$agentType.TARGET)
+        this.prepareToDelete(e, entityType)
       } else {
         this.removeTargetEntityToDelete(entityId)
       }

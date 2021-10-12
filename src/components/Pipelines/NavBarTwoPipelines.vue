@@ -18,8 +18,8 @@
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" href="#" v-show= "!check" v-on:click="editList()" >Edit List</a>
-           <span :class="{'isLinkDisabled' : pipelinesIdList.length <= 0}">
-            <a class="nav-link pos " v-show= "check" href="#" v-bind:style ="{color:colorDelete}" @click="onBashRemovePipelines">Delete Pipelines</a>
+           <span :class="{'isLinkDisabled' : entitiesToDelete.length <= 0}">
+            <a class="nav-link pos " v-show= "check" href="#" :class="{'red-text':entitiesToDelete.length > 0}" data-toggle="modal" data-target="#message-box-modal">Delete Pipelines</a>
           </span>
         </li>
         <li class="nav-item dropdown border-right d-none d-sm-block">
@@ -89,7 +89,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('pipelines', ['pipelinesListStore', 'check', 'colorDelete', 'pipelinesIdList'])
+    ...mapState('pipelines', ['pipelinesListStore', 'check', 'colorDelete', 'pipelinesIdList']),
+    ...mapState('target', ['entitiesToDelete'])
   },
   methods: {
     ...mapMutations('pipelines', ['editList', 'cancelIdPipelines']),
