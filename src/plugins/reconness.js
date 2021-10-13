@@ -205,6 +205,8 @@ export default {
         errorSummary: 'Error',
         successSumary: 'Success',
         errorMessageForAllPurpose: 'An error occured during the removal process',
+        errorMessageForInsertionPurpose: 'An error occured during the insertion process',
+        errorMessageForEditionPurpose: 'An error occured during the edition process',
         successMessageForTargetDeletion: 'The target has been deleted successfully',
         successMessageForSubDomainDeletion: 'The subdomain has been deleted successfully',
         successMessageForRootDomainDeletion: 'The rootdomain has been deleted successfully',
