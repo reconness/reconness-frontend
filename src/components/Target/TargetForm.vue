@@ -260,7 +260,7 @@ export default {
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {
             this.$store.commit('target/setIdTarget', -1)
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAllPurpose)
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
           }
         } else {
           if (randomResult) {
@@ -269,7 +269,7 @@ export default {
             this.$store.commit('target/addTarget', this.target)
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetInsertion)
           } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAllPurpose)
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
           }
         }
         this.resetTargetForm()
