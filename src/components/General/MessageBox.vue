@@ -140,9 +140,7 @@ export default {
           this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
           this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
         } else {
-          this.redirectToTargetsList()
-          this.clearTargetEntitiesToDelete()
-          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
+          this.clearTargetRedirectToTargetListAndUpdateOperationStatus()
         }
       } else if (this.$isOnAgentView()) {
         this.clearAgentEntitiesToDelete()
@@ -152,14 +150,10 @@ export default {
           this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
           this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
         } else {
-          this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
-          this.redirectToTargetDetails()
-          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+          this.clearRootdomainsRedirectToTargetDetailsAndUpdateOperationStatus()
         }
       } else if (this.$isOnSubDomainView()) {
-        this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
-        this.redirectToRootDomainDetails()
+        this.clearSubdomainsRedirectToRootDomainAndUpdateOperationStatus()
       } else if (this.$isOnPipelineView()) {
         this.clearPipelineEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
@@ -240,6 +234,21 @@ export default {
     redirectToRootDomainDetails: function () {
       const urlParameters = { targetName: this.getTargetName, rootdomainName: this.getRootDomainName }
       this.$router.push({ name: 'RootDomainDetails', params: urlParameters })
+    },
+    clearTargetRedirectToTargetListAndUpdateOperationStatus: function () {
+      this.redirectToTargetsList()
+      this.clearTargetEntitiesToDelete()
+      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
+    },
+    clearSubdomainsRedirectToRootDomainAndUpdateOperationStatus: function () {
+      this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
+      this.redirectToRootDomainDetails()
+    },
+    clearRootdomainsRedirectToTargetDetailsAndUpdateOperationStatus: function () {
+      this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
+      this.redirectToTargetDetails()
+      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
     }
   }
 }
