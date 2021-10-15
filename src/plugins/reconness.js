@@ -134,6 +134,14 @@ export default {
       }
     )
 
+    app.config.globalProperties.$installedByUser = function (value) {
+      return value === this.$entitySource.USER.id
+    }
+
+    app.config.globalProperties.$installedBySystem = function (value) {
+      return value === this.$entitySource.SYSTEM.id
+    }
+
     app.config.globalProperties.$compilationResponse = Object.freeze(
       {
         success: { description: 'Compiled successfully' },

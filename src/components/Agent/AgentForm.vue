@@ -267,7 +267,8 @@ export default {
         creationDate: new Date().toString(),
         image: '',
         status: this.$entityStatus.FINISHED,
-        lastRun: null
+        lastRun: null,
+        createdBy: this.$entitySource.USER.id
       },
       colorpickerData: '',
       isVisibleTopSection: true,
@@ -323,6 +324,7 @@ export default {
         this.agent.script = value.script
         this.editable = true
         this.agent.id = value.id
+        this.agent.createdBy = value.createdBy
       } else {
         this.resetAgentForm()
         this.agent.script = ''
@@ -396,7 +398,8 @@ export default {
         creationDate: new Date().toString(),
         image: '',
         lastRun: null,
-        status: this.$entityStatus.FINISHED
+        status: this.$entityStatus.FINISHED,
+        createdBy: this.$entitySource.USER.id
       }
       this.validators = {
         blank: {

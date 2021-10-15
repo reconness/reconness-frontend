@@ -21,7 +21,8 @@
             </div> <!-- /.d-flex target-mosaic-options -->
           </div> <!-- /.info-box-content -->
           <span class="info-box-icon" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-            <AccountCogIco class="w-50 h-50"/>
+            <AccountCogIco v-if="this.$installedByUser(createdBy)" class="w-50 h-50"/>
+            <ApplicationCogIco v-else-if="this.$installedBySystem(createdBy)" class="w-50 h-50"/>
           </span>
           </div> <!-- /.info-box -->
           </div> <!-- /.p2 -->
@@ -41,17 +42,20 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'AgentsList',
   components: {
-    AccountCogIco
+    AccountCogIco,
+    ApplicationCogIco
   },
   props: {
     name: String,
     primaryColor: String,
     secondaryColor: String,
-    id: String
+    id: Number,
+    createdBy: Number
   },
   data: function () {
     return {

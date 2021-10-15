@@ -7,7 +7,7 @@ export default ({
         name: 'Agent 1',
         primaryColor: '#03DCED',
         secondaryColor: '#0cb8e0',
-        createdBy: 1,
+        createdBy: 2,
         id: 1,
         repository: 'repository1.com',
         target: 'target 1',
