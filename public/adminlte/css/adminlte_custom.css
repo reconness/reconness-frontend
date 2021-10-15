@@ -417,12 +417,12 @@ button .material-icons, a .material-icons{
 
 .sidebar-list {
     box-shadow: 0 0 0px rgba(0,0,0,.125), 0 0px 1px rgba(0,0,0,.1);
-    background: rgba(227, 228, 230, 0.28);
+    background: #ffffff;
     min-height: 40px;
     padding: .5rem;
     width: 93%;
     margin: 10px;
-    border-radius: .9rem;
+    border-radius: .3rem;
     overflow: hidden;
 }
 
