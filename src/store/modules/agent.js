@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
@@ -6,7 +7,6 @@ export default ({
         name: 'Agent 1',
         primaryColor: '#03DCED',
         secondaryColor: '#0cb8e0',
-        background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
         id: 1,
         repository: 'repository1.com',
         target: 'target 1',
@@ -24,7 +24,6 @@ export default ({
         name: 'Agent 2',
         primaryColor: '#737be5',
         secondaryColor: '#7159d3',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
         id: 2,
         repository: 'repository2.com',
         target: 'target 2',
@@ -42,7 +41,6 @@ export default ({
         name: 'Agent 3',
         primaryColor: '#03DCED',
         secondaryColor: '#0cb8e0',
-        background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
         id: 3,
         repository: 'repository3.com',
         target: 'target 3',
@@ -61,7 +59,6 @@ export default ({
         name: 'Agent 4',
         primaryColor: '#ff8650',
         secondaryColor: '#ff8650',
-        background: '#ff8650 0% 0% no-repeat padding-box',
         id: 4,
         repository: 'repository4.com',
         target: 'target 4',
@@ -79,7 +76,6 @@ export default ({
         name: 'Agent 5',
         primaryColor: '#F96767',
         secondaryColor: '#FF4343',
-        background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
         id: 5,
         repository: 'repository5.com',
         target: 'target 5',
@@ -97,7 +93,6 @@ export default ({
         name: 'Agent 6',
         primaryColor: '#F96767',
         secondaryColor: '#FF4343',
-        background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
         id: 6,
         repository: 'repository6.com',
         target: 'target 6',
@@ -115,7 +110,6 @@ export default ({
         name: 'Agent 7',
         primaryColor: '#3adb99',
         secondaryColor: '#16c465',
-        background: 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box',
         id: 7,
         repository: 'repository7.com',
         target: 'target 7',
@@ -133,7 +127,6 @@ export default ({
         name: 'Agent 8',
         primaryColor: '#F96767',
         secondaryColor: '#FF4343',
-        background: 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box',
         id: 8,
         repository: 'repository8.com',
         target: 'target 8',
@@ -343,6 +336,12 @@ export default ({
     },
     setIsDefaultViewOnAgent (state, value) {
       state.isDefaultViewOnAgent = value
+    },
+    updateAgents (state, agents) {
+      state.agentListStore.splice(0, state.agentListStore.length)
+      agents.forEach(agent => {
+        state.agentListStore.push(agent)
+      })
     }
   },
   getters: {
@@ -371,6 +370,41 @@ export default ({
     },
     daysWithMostInteractionsLastWeek (state) {
       return [22, 30, 70, 77, 42, 20, 50]
+    },
+    getEntityTypeByDescription: (state) => (descriptionEntity) => {
+      const transformedDescription = descriptionEntity.toLowerCase()
+      if (transformedDescription === 'target') {
+        return 1
+      } else if (transformedDescription === 'rootdomain') {
+        return 2
+      } else {
+        return 3
+      }
+    },
+    mapAgents: (state, getters) => (agents) => {
+      const newAgents = []
+      let newAgent
+      agents.forEach(agent => {
+        newAgent = {
+          name: agent.name,
+          primaryColor: '#03DCED',
+          secondaryColor: '#0cb8e0',
+          id: agent.id,
+          repository: agent.repository,
+          target: '',
+          command: agent.command,
+          type: getters.getEntityTypeByDescription(agent.agentType),
+          isAliveTrigger: agent.triggerSubdomainIsAlive,
+          isHttpOpenTrigger: agent.triggerSubdomainHasHttpOrHttpsOpen,
+          script: agent.script,
+          image: '',
+          date: '21/01/2020',
+          installedFrom: '',
+          lastRun: new Date(agent.lastRun)
+        }
+        newAgents.push(newAgent)
+      })
+      return newAgents
     }
   },
   actions: {
@@ -382,6 +416,20 @@ export default ({
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
+    },
+    loadAgents ({ state, commit, getters }) {
+      if (state.authentication_token !== '') {
+        return axios.get('/agents')
+          .then(function (response) {
+            console.log(response.data)
+            const agentsMapped = getters.mapAgents(response.data)
+            commit('updateAgents', agentsMapped)
+            return true
+          })
+          .catch(function () {
+            return false
+          })
+      }
     }
   }
 })

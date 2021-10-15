@@ -158,6 +158,7 @@ export default {
     authentication_token: function (value) {
       if (value !== '') {
         this.loadResources()
+        this.loadAgents()
       }
     }
   },
@@ -170,6 +171,7 @@ export default {
   methods: {
     ...mapActions('auth', ['login']),
     ...mapActions('referent', ['loadResources', 'addResource']),
+    ...mapActions('agent', ['loadAgents']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('referent/setSelectedResource', selectedId)

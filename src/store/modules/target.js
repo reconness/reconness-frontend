@@ -770,7 +770,6 @@ export default ({
       {
         id: 6,
         name: 'my-target-6',
-        // background: 'linear-gradient(130deg, #FF9966 0%, #f36a33 100%)',
         primaryColor: '#FF9966',
         secondaryColor: '#f36a33',
         date: '21/01/2020',
@@ -804,7 +803,6 @@ export default ({
       {
         id: 7,
         name: 'my-target-7',
-        // background: ' linear-gradient(160deg, #737be5 0%, #7159d3 100%)',
         primaryColor: '#737be5',
         secondaryColor: '#7159d3',
         date: '21/06/2020',
@@ -842,7 +840,6 @@ export default ({
       {
         id: 8,
         name: 'my-target-8',
-        // background: ' linear-gradient(135deg, #03dced 0%, #0cb8e0 100%)',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
         date: '21/02/2018',

@@ -147,6 +147,20 @@ export default {
       }
     }
 
+    app.config.globalProperties.$getEntityTypeByDescription = function (descriptionEntity) {
+      const transformedDescription = descriptionEntity.toLowerCase()
+      switch (transformedDescription) {
+        case 'target':
+          return this.$entityTypeData.TARGET
+        case 'rootdomain':
+          return this.$entityTypeData.ROOTDOMAIN
+        case 'subdomain':
+          return this.$entityTypeData.SUBDOMAIN
+        default:
+          return null
+      }
+    }
+
     app.config.globalProperties.$isObjectEmpty = function (item) {
       return Object.keys(item).length === 0
     }
