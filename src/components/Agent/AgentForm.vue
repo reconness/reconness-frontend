@@ -62,7 +62,7 @@
                         </div><!-- /.col-12 -->
                     </div>
                     <div class="col-12 col-sm-4">
-                        <div v-bind:style="{background: agent.background}" class="card text-white card-style  mb-3 agentform-default-color-box height200px">
+                        <div v-bind:style="{background: 'linear-gradient(135deg,'+agent.primaryColor+' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}" class="card text-white card-style  mb-3 agentform-default-color-box height200px">
                                 <div class="card-body link-color">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title postal-title">{{agent.name}}</h3>
@@ -252,7 +252,8 @@ export default {
     return {
       agent: {
         name: '',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3',
         repository: '',
         target: '',
         command: '',
@@ -334,19 +335,24 @@ export default {
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
     setBlueColor: function () {
-      this.agent.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#03DCED'
+      this.agent.secondaryColor = '#0cb8e0'
     },
     setVioletColor: function () {
-      this.agent.background = 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#737be5'
+      this.agent.secondaryColor = '#7159d3'
     },
     setRedColor: function () {
-      this.agent.background = 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#F96767'
+      this.agent.secondaryColor = '#FF4343'
     },
     setOrangeColor: function () {
-      this.agent.background = '#ff8650 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#FF9966'
+      this.agent.secondaryColor = '#f36a33'
     },
     setGreenColor: function () {
-      this.agent.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#3adb99'
+      this.agent.secondaryColor = '#16c465'
     },
     addAgent () {
       this.enableValidationMessages()
@@ -508,7 +514,9 @@ export default {
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.agent.systemColors
-      this.agent.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      this.agent.primaryColor = randomColor.primaryColor
+      this.agent.secondaryColor = randomColor.secondaryColor
     },
     verifyPencilStatus () {
       if (this.isPencilVisibleAndClick) {
