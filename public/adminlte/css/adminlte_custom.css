@@ -1117,3 +1117,6 @@ a.target-detail-popover:hover{
 html {
   overflow-y: scroll;
 }
+.border-radius-8px{
+  border-radius: 8px;
+}

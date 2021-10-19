@@ -429,7 +429,6 @@ export default ({
       if (state.authentication_token !== '') {
         return axios.get('/agents')
           .then(function (response) {
-            console.log(response.data)
             const agentsMapped = getters.mapAgents(response.data)
             commit('updateAgents', agentsMapped)
             return true
