@@ -158,7 +158,6 @@ export default {
     authentication_token: function (value) {
       if (value !== '') {
         this.loadResources()
-        this.loadAgents()
       }
     }
   },
