@@ -4,9 +4,9 @@
         <div class="modal fade" id="targetModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content agent-containers">
-                <div class="modal-body">
-                <div class="row" id="middle-section">
-                    <div class="col-12">
+              <div class="modal-header remove-flex">
+                <div class="row">
+                  <div class="col-12">
                       <div class="row">
                         <div class="col-8">
                           <div class="d-flex">
@@ -34,6 +34,10 @@
                         </div>
                       </div>
                     </div>
+                </div>
+              </div>
+                <div class="modal-body ligth-gray-background">
+                <div class="row" id="middle-section">
                     <div class="col-12 col-sm-8">
                         <div class="col-12 target-chips mt-3">
                           <Chips placeholder="Root Domain" v-model="rootDomainsTextItems" @add="addItemToRootDomains" @remove="removeItemToRootDomains" :allowDuplicate="false" :addOnBlur="true" @keyup="checkSeparator" id="chips_el" :separator="','"/>
@@ -45,8 +49,7 @@
                             <span :class="{invalid: validators.url.rootDomains}">Invalid character. Please enter a valid URL or press Enter or Space key to add a new root domain</span>
                         </div>
                         <div class="col-12">
-                          <!-- <label class="target-inputs-separator">Bug Bounty Program URL</label> -->
-                          <input placeholder="Bug Bounty Program URL" :readonly="this.$store.state.agent.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageBugBountyUrl" class="form-control border-right-0 border-top-0 border-left-0 mt-3">
+                          <input placeholder="Bug Bounty Program URL" :readonly="this.$store.state.agent.fromDetailsLink" v-model="target.bugBountyUrl" @keyup="enableValidationMessageBugBountyUrl" class="ligth-gray-background form-control border-right-0 border-top-0 border-left-0 mt-3">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.url.bugBountyUrl">
                             <span :class="{invalid: validators.url.bugBountyUrl}">The field bug bounty is not a valid URL</span>
@@ -59,11 +62,11 @@
                         </div>
                         <div class="col-12">
                           <label class="target-inputs-separator"><b>In Scope</b></label>
-                          <textarea class="form-control target-input-borders" rows="3" v-model="target.inScope" />
+                          <textarea class="ligth-gray-background form-control target-input-borders" rows="3" v-model="target.inScope" />
                         </div>
                         <div class="col-12">
                           <label class="target-inputs-separator"><b>Out of Scope</b></label>
-                          <textarea class="form-control target-input-borders" rows="3" v-model="target.outScope" @keyup="enableValidationMessageOutScope"/>
+                          <textarea class="ligth-gray-background form-control target-input-borders" rows="3" v-model="target.outScope" @keyup="enableValidationMessageOutScope"/>
                         </div>
                     </div>
                     <div class="col-12 col-sm-4 pt-1">
@@ -437,6 +440,9 @@ export default {
 }
 </script>
 <style>
+  .remove-flex{
+    display: initial !important;
+  }
     .targetform-action{
         bottom: -28%;
         position: absolute;
@@ -649,13 +655,10 @@ textarea {
 
 .p-chips{
   width: 100%;
-  /* border-radius: 12px !important; */
   opacity: 1;
-  /* border: 1px solid #f1f3f5; */
   background: #fffffF 0% 0% no-repeat padding-box;
   font-size: 14px;
   color: #000000;
-  /* min-height: calc(1.8125rem + 2px); */
 }
 .title-target-admin-form{
   font-size: 24px
@@ -676,7 +679,7 @@ textarea {
 .private-program-container label::before{
   border: 2px solid #00B1FF;
   box-shadow: unset;
-  background-color: #ffffff
+  background-color: #fbfbfb
 }
 
 @media (max-width: 480px) {

@@ -992,6 +992,7 @@ div.pipeline_spacing .p-autocomplete-loader{
   border-right: 0px;
   border-top: 0px;
   border-radius: 0;
+  background-color: #FBFBFB;
 }
 .target-chips .p-chips .p-chips-multiple-container .p-chips-input-token input {
   font-size: 1rem !important;
@@ -1068,7 +1069,7 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .violet-btn-backg{
   background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box
 }
-.orange-btn-backg{
+.orange-btn-backg, .orange-btn-backg:hover{
   background: #ff8650 0% 0% no-repeat padding-box
 }
 .green-btn-back{
@@ -1119,4 +1120,7 @@ html {
 }
 .border-radius-8px{
   border-radius: 8px;
+}
+.ligth-gray-background{
+  background-color: #FBFBFB;
 }

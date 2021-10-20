@@ -789,7 +789,7 @@ textarea {
 .private-program-container label::before{
   border: 2px solid #00B1FF;
   box-shadow: unset;
-  background-color: #ffffff
+  background-color: #fbfbfb
 }
 
 .learn-more-border-line{
