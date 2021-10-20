@@ -440,9 +440,6 @@ export default {
 }
 </script>
 <style>
-  .remove-flex{
-    display: initial !important;
-  }
     .targetform-action{
         bottom: -28%;
         position: absolute;

@@ -4,8 +4,8 @@
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content agent-containers">
-              <div class="modal-body">
-                <div class="row" id="middle-section">
+              <div class="modal-header remove-flex">
+                <div class="row">
                   <div class="col-12">
                     <div class="row">
                       <div class="col-8">
@@ -25,10 +25,14 @@
                       </div>
                     </div><!-- /.row -->
                   </div>
+                </div>
+              </div>
+              <div class="modal-body ligth-gray-background">
+                <div class="row" id="middle-section">
                   <div class="col-12 col-sm-8" v-if="isVisibleTopSection">
                     <div class="col-12">
                       <div class="d-flex justify-content-between">
-                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="form-control zero-borders mt-4 w-75" placeholder="Repository">
+                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="ligth-gray-background form-control zero-borders mt-4 w-75" placeholder="Repository">
                         <div class="d-flex flex-row justify-content-end file-import-container mt-2">
                           <div class="mr-2 logo d-flex flex-column">
                             <span>Add</span>
@@ -45,13 +49,13 @@
                       <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
                     </div>
                         <div class="col-12">
-                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="form-control zero-borders" placeholder="Target">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="ligth-gray-background form-control zero-borders" placeholder="Target">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.target">
                           <span :class="{invalid: validators.blank.target}">The field target is required</span>
                         </div>
                         <div class="col-12">
-                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="form-control zero-borders  mt-1" placeholder="Command">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="ligth-gray-background form-control zero-borders  mt-1" placeholder="Command">
                         </div>
                         <div class="col-12" v-if="validators.blank.command">
                           <span :class="{invalid: validators.blank.command}">The field command is required</span>
@@ -61,7 +65,7 @@
                         </div><!-- /.col-12 -->
                         <div class="row show multi-collapse">
                     <div class="col-12 col-md-6">
-                        <div class="card agent-containers agent-type-container combo-box-size">
+                        <div class="card agent-containers agent-type-container ligth-gray-background combo-box-size">
                             <div class="card-header border-bottom-none">
                               <div class="middle-settings-agent">
                                   <h3 class="card-title font-weight-bold">
@@ -88,7 +92,7 @@
                         </div><!-- /.card-->
                         </div><!-- /.col-12-->
                     <div class="col-12 col-md-6">
-                        <div class="card agent-containers combo-box-size">
+                        <div class="card agent-containers combo-box-size ligth-gray-background">
                             <div class="card-header border-bottom-none">
                             <div class="middle-settings-agent">
                                 <h3 class="card-title font-weight-bold">

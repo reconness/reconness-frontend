@@ -1124,3 +1124,12 @@ html {
 .ligth-gray-background{
   background-color: #FBFBFB;
 }
+.remove-flex{
+  display: initial !important;
+}
+#targetModalForm input:focus, #targetModalForm textarea:focus{
+  background-color: #FBFBFB;
+}
+#exampleModalCenter input:focus, #exampleModalCenter textarea:focus{
+  background-color: #FBFBFB;
+}
