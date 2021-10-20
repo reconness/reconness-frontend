@@ -27,13 +27,25 @@
                   </div>
                   <div class="col-12 col-sm-8" v-if="isVisibleTopSection">
                     <div class="col-12">
-                      <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="form-control zero-borders mt-4" placeholder="Repository">
+                      <div class="d-flex justify-content-between">
+                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="form-control zero-borders mt-4 w-75" placeholder="Repository">
+                        <div class="d-flex flex-row justify-content-end file-import-container mt-2">
+                          <div class="mr-2 logo d-flex flex-column">
+                            <span>Add</span>
+                            <span>your logo</span>
+                          </div>
+                          <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
+                          <label for="uploadimage">
+                            <FileCodeIco/>
+                          </label>
+                        </div><!-- /.d-flex -->
+                      </div>
                     </div><!-- /.col-12 -->
                     <div class="col-12" v-if="validators.blank.repository">
                       <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
                     </div>
                         <div class="col-12">
-                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="form-control zero-borders mt-1" placeholder="Target">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="form-control zero-borders" placeholder="Target">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.target">
                           <span :class="{invalid: validators.blank.target}">The field target is required</span>
@@ -118,7 +130,10 @@
                                 <span v-if="editable"  class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
                                 <span v-else class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                               </div> <!-- /.info-box-content -->
-                              <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor+' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><AccountCogIco class="w-75 h-75"/></span>
+                              <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor+' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
+                                <AccountCogIco v-if="!agent.image" class="w-75 h-75"/>
+                                <img v-if="agent.image" class="logo-image w-75 h-75" :src="agent.image">
+                              </span>
                             </div> <!-- /.info-box -->
                           </div>
                           <div class="col-12 text-center mt-2">
@@ -213,16 +228,16 @@
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-// import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
-// import Toast from 'primevue/toast'
+import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
 import { mapMutations } from 'vuex'
+import { TargetMixin } from '@/mixins/TargetMixin'
+
 export default {
   name: 'AgentForm',
   components: {
     VAceEditor,
-    AccountCogIco
-    // FileCodeIco,
-    // Toast
+    AccountCogIco,
+    FileCodeIco
   },
   props: {
     readOnly: {
@@ -275,6 +290,7 @@ export default {
       showNameInput: false
     }
   },
+  mixins: [TargetMixin],
   computed: {
     isValid () {
       if (this.agent.name !== '' &&
@@ -346,18 +362,17 @@ export default {
             this.agent.id = parseInt(this.$store.getters['agent/idAgent'])
             this.$store.commit('agent/updateAgent', this.agent)
             this.$store.commit('agent/setIdAgent', -1)
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {
             this.$store.commit('agent/setIdAgent', -1)
-            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
           }
         } else {
           if (randomResult) {
-            // this.agent.id = this.nextAgentSequence++
             this.$store.commit('agent/addAgent', this.agent)
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {
-            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
           }
         }
         this.resetAgentForm()
@@ -668,6 +683,11 @@ label[for='uploadimage']{
   max-height: 1.2rem;
   width: 1.2rem;
   max: 1.2rem;
+}
+.logo{
+  text-align: right;
+  opacity: 1;
+  font-size: 14px;
 }
 .form-control {
   border-radius: 0rem;

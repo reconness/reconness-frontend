@@ -16,8 +16,8 @@
               <!-- <DetailsTargetPopover/> -->
             <!-- </OverlayPanel> -->
             <div class="d-flex target-mosaic-options align-items-center">
-              <a class="nav-link active agent-mini-agent-details pt-0 pb-0 black-text border-right-0">Settings</a>
-              <span class="material-icons cursor-pointer settings-ico">settings</span>
+              <a class="nav-link cursor-pointer active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" data-toggle="modal" @click="onEdit"  :data-id="id" data-target="#exampleModalCenter">Settings</a>
+              <span class="material-icons cursor-pointer settings-ico" @click="onEdit"  data-toggle="modal"  :data-id="id" data-target="#exampleModalCenter">settings</span>
             </div> <!-- /.d-flex target-mosaic-options -->
           </div> <!-- /.info-box-content -->
           <span class="info-box-icon" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">

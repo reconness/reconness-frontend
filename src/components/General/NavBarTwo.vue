@@ -6,7 +6,7 @@
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex">
            <a href="#" class="color-blue" data-toggle="modal" data-target="#exampleModalCenter">
-            <span class="material-icons">control_point</span>
+            <span class="material-icons font-weight-bold">add</span>
             <p class="float-right">New Agent</p>
           </a>
           <a class="btn btn-sm btn-style btn-outline-primary ml-2" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
