@@ -243,8 +243,9 @@ export default {
         successMessageForTargetInsertion: 'The target has been inserted successfully',
         successMessageForTargetEdition: 'The target has been edited successfully',
         successMessageForAgentDeletion: 'The agent has been deleted successfully',
-        successMessageForPipelineDeletion: 'The pipeline has been deleted successfully'
-
+        successMessageForPipelineDeletion: 'The pipeline has been deleted successfully',
+        successMessageForAgentInstallation: 'The agent was installed successfully',
+        errorMessageForAgentInstallation: 'An error ocurred during installation'
       }
     )
 

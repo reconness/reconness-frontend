@@ -310,9 +310,12 @@ export default ({
     },
     addAgentFromInstaller (state, idInstaller) {
       const installer = state.agentsInstallers.find(item => item.id === parseInt(idInstaller))
+      const predefinedColors = state.systemColors
+      const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
       const transformedAgent = {
         name: installer.name,
-        background: 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box',
+        primaryColor: randomColor.primaryColor,
+        secondaryColor: randomColor.secondaryColor,
         id: state.agentListStore.length + 1,
         repository: 'installer-repository.com',
         target: 'target-installer',
@@ -323,7 +326,8 @@ export default ({
         script: '',
         image: '',
         date: new Date(),
-        installedFrom: idInstaller
+        installedFrom: idInstaller,
+        createdBy: 2
       }
       state.agentListStore.push(transformedAgent)
     },
