@@ -14,7 +14,7 @@
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
          <a href="#"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-        <a href="#" data-toggle="modal" data-target="#confirmation-modal"  @click="updateConfirm('')"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: color}">delete</span> Delete All Subdomains</a></li>
+        <a href="#" data-toggle="modal" data-target="#message-box-modal"  @click="removeAllSubDomains()"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: color}">delete</span> Delete All Subdomains</a></li>
       </ul>
     </nav>
     <div class="row mt-4">
@@ -361,8 +361,16 @@ export default {
         this.isFilterResultEmpty = false
       }
     },
+    removeAllSubDomains () {
+      this.updateRemoveAllOption(true)
+      this.addEntityToDelete({
+        id: parseInt(this.rootDomain.subdomain[0].id),
+        name: this.rootDomain.subdomain[0].name,
+        type: this.$entityTypeData.SUBDOMAIN.id // this.$agentType.TARGET
+      })
+    },
     ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['addEntityToDelete'])
+    ...mapMutations('target', ['addEntityToDelete', 'updateRemoveAllOption'])
   }
 }
 </script>

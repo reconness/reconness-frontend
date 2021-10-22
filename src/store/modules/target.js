@@ -1018,7 +1018,8 @@ export default ({
       page: 0,
       startIndex: 0,
       endIndex: 0
-    }
+    },
+    removeAll: false
   },
   mutations: {
     changeCounterSubdom (state, countSubd) {
@@ -1328,6 +1329,12 @@ export default ({
       })
       state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
     },
+    clearAllSubDomainEntitiesToDelete (state, entities) {
+      const target = state.targetListStore.find(target => target.name === entities.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
+      rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
+      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+    },
     clearReferencesToDelete (state) {
       state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
     },
@@ -1345,6 +1352,9 @@ export default ({
       state.paginator.page = paginatorData.page
       state.paginator.startIndex = paginatorData.startIndex
       state.paginator.endIndex = paginatorData.endIndex
+    },
+    updateRemoveAllOption (state, value) {
+      state.removeAll = value
     }
   },
   actions: {

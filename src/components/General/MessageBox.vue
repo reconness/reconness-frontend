@@ -12,7 +12,8 @@
                   </div>
                   <div class="col-12">
                     <div class="d-flex justify-content-center">
-                      <p class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete selected {{this.getLowerNameOfEntityTypeDisplayed}}?</p>
+                      <p v-if="removeAll" class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete all {{this.getLowerNameOfEntityTypeDisplayed}}s?</p>
+                      <p v-else class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete selected {{this.getLowerNameOfEntityTypeDisplayed}}?</p>
                     </div>
                   </div>
                   <div class="col-12">
@@ -55,7 +56,7 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['entitiesToDelete']),
+    ...mapState('target', ['entitiesToDelete', 'removeAll']),
     entityTypeDisplayed () {
       if (this.isOnTargetView) {
         return this.$entityTypeData.TARGET
@@ -117,7 +118,7 @@ export default {
       return this.$route.params.rootdomainName
     },
     multipleItemsToDelete () {
-      return this.entitiesToDelete.length > 1
+      return this.entitiesToDelete.length > 1 || this.removeAll
     },
     entitiesToRemoveContainArootDomain () {
       return this.entitiesToDelete[0].type === this.$entityTypeData.ROOTDOMAIN.id
@@ -127,7 +128,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     removeEntities () {
@@ -147,8 +148,13 @@ export default {
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
       } else if (this.$isOnRootDomainView()) {
         if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
-          this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
-          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
+          if (this.removeAll) {
+            this.clearAllSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+            this.updateRemoveAllOption(false)
+          } else {
+            this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
+          }
         } else {
           this.clearRootdomainsRedirectToTargetDetailsAndUpdateOperationStatus()
         }
@@ -223,6 +229,9 @@ export default {
     clearReferences () {
       this.clearReferencesToDelete()
       this.clearInput()
+      if (this.removeAll) {
+        this.updateRemoveAllOption(false)
+      }
     },
     redirectToTargetsList () {
       this.$router.push({ name: 'Targets' })
