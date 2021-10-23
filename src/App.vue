@@ -88,7 +88,7 @@
               <router-link :to="{name: 'Targets'}" >
               <a href="#" class="nav-link" id ='targetNav'  v-on:click="addLocation('Targets'), this.$store.commit('target/setIsDefaultViewOnTarget', true)" v-bind:class="{'nav2': styleTargetState}">
                 <BullseyeArrowIco/>
-                <p class="vertical-align-0">Targets </p>
+                <p class="align-top">Targets </p>
               </a>
             </router-link>
             </li>

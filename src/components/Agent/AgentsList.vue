@@ -11,10 +11,10 @@
             <span class="text-body info-box-text domain-names-target">
               {{name}}
             </span>
-            <a class="nav-link target-detail-popover active agent-mini-agent-details pt-0 pb-0 black-text border-right-0 cursor-pointer">Details</a>
-            <!-- <OverlayPanel class="target-list-popover" ref="op" :dismissable="false"> -->
-              <!-- <DetailsTargetPopover/> -->
-            <!-- </OverlayPanel> -->
+            <a class="nav-link target-detail-popover active agent-mini-agent-details pt-0 pb-0 black-text border-right-0 cursor-pointer" @click="showDetailsPopover" :data-id="id">Details</a>
+            <OverlayPanel class="target-list-popover" ref="op" :dismissable="false">
+              <DetailsAgentPopover/>
+            </OverlayPanel>
             <div class="d-flex target-mosaic-options align-items-center">
               <a class="nav-link cursor-pointer active agent-mini-agent-details pt-0 pb-0 black-text border-right-0" data-toggle="modal" @click="onEdit"  :data-id="id" data-target="#exampleModalCenter">Settings</a>
               <span class="material-icons cursor-pointer settings-ico" @click="onEdit"  data-toggle="modal"  :data-id="id" data-target="#exampleModalCenter">settings</span>
@@ -44,11 +44,15 @@ import { mapState, mapMutations } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
+import DetailsAgentPopover from '@/components/Agent/DetailsAgentPopover'
+import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'AgentsList',
   components: {
     AccountCogIco,
-    ApplicationCogIco
+    ApplicationCogIco,
+    DetailsAgentPopover,
+    OverlayPanel
   },
   props: {
     name: String,
@@ -86,6 +90,11 @@ export default {
       const selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('agent/setIdAgent', selectedAgentId)
       this.$store.commit('agent/setDetailsLinks', true)
+    },
+    showDetailsPopover (e) {
+      const selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('agent/setIdAgent', selectedAgentId)
+      this.$refs.op.toggle(e)
     }
   }
 }
