@@ -9,11 +9,13 @@
             <span class="material-icons font-weight-bold">add</span>
             <p class="float-right">New Agent</p>
           </a>
-          <a class="btn btn-sm btn-style btn-outline-primary ml-2" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
         </li>
       </ul>
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item nav-margin d-none d-sm-block border-right">
+          <a class="nav-link pos navbar-option blue-text" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
+        </li>
         <li class="nav-item nav-margin d-none d-sm-block">
           <a class="nav-link pos navbar-option blue-text" href="#" data-toggle="modal" data-target="#wordlistModal">Wordlist</a>
         </li>
