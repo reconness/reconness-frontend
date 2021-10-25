@@ -14,6 +14,9 @@
       </ul>
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item nav-margin d-none d-sm-block">
+          <a class="nav-link pos navbar-option blue-text" href="#" data-toggle="modal" data-target="#wordlistModal">Wordlist</a>
+        </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos " v-show= "check" href="#" @click="close()">Cancel</a>
         </li>
@@ -224,7 +227,8 @@
       <Toast :baseZIndex="200"/>
   </div>
   <ConfirmDeleteList></ConfirmDeleteList>
-     </div>
+  <Wordlist/>
+  </div>
 </template>
 
 <script>
@@ -238,6 +242,7 @@ import OverlayPanel from 'primevue/overlaypanel'
 import ConfirmDeleteList from '@/components/General/ConfirmDeleteList.vue'
 import jQuery from 'jquery'
 import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
+import Wordlist from '@/components/General/Wordlist.vue'
 export default {
   name: 'NavBarTwo',
   components: {
@@ -248,7 +253,8 @@ export default {
     Toast,
     OverlayPanel,
     ConfirmDeleteList,
-    LocalMallIco
+    LocalMallIco,
+    Wordlist
   },
   data: function () {
     return {

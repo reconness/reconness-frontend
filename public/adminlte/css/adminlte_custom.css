@@ -294,8 +294,8 @@ padding-left: 9px;
   border: 1px solid #dad2d2;
 } 
 
-.navbar-light .border-right .nav-link {
-  color: #000000; 
+.navbar-light .border-right .nav-link, .navbar-option {
+  color: #000000;
   font-size: 14px;
   font-weight: 600;
   padding: 8px;
@@ -345,8 +345,7 @@ background-color: rgba(230, 233, 237, 0.4);
 border-color: rgba(221, 221, 221, 0.03);
 color: #000000;
 padding: 0.1rem;
-border-radius: 0.4rem;;
-/*width: 26px;*/
+border-radius: 0.4rem;
 height: 30px;
 }
 
@@ -371,17 +370,12 @@ body{
 	font-weight: 600;
 }
 .header-style{
-    /*padding: .5rem .5rem;*/
     text-align: left;
 }
 
 .pad{
 	padding-top:20px;
 }
-/*
-button .material-icons, a .material-icons{
-	font-size: 20px;
-}*/
 
 .img-icon-nav{
 	vertical-align: baseline;
