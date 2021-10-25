@@ -1135,3 +1135,7 @@ html {
 .background-color-white{
   background-color: #ffffff;
 }
+
+.overflow-y-auto{
+  overflow-y: auto !important;
+}

@@ -37,6 +37,7 @@
                   <div class="col-4 border-right border-bottom pb-1"><span class="font-weight-bold">Path</span></div>
                   <div class="col-3 border-bottom pb-1"><span class="font-weight-bold">Actions</span></div>
                 </div>
+                <div class=" wordlist-data-container overflow-y-auto w-100">
                 <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
                   <div class="col-2"><span>{{wordlistItem.filename}}</span></div>
                   <div class="col-2"><span>{{wordlistItem.count}}</span></div>
@@ -48,6 +49,7 @@
                       <button @click="removeWordListItem(wordlistItem.id)" type="button" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -171,5 +173,9 @@ label {
 .wordlist-btn-size{
   width: 80px;
   height: 40px;
+}
+.wordlist-data-container{
+  height: 265px;
+  overflow-x: hidden
 }
 </style>
