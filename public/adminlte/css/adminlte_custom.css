@@ -1127,3 +1127,11 @@ html {
 #exampleModalCenter input:focus, #exampleModalCenter textarea:focus{
   background-color: #FBFBFB;
 }
+
+.box-shadow{
+  box-shadow: -2px 17px 29px #eaeaea;
+}
+
+.background-color-white{
+  background-color: #ffffff;
+}

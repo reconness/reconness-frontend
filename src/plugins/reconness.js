@@ -127,6 +127,14 @@ export default {
       }
     )
 
+    app.config.globalProperties.$wordlistType = Object.freeze(
+      {
+        SUBDOMAIN_ENUM: 1,
+        DIRECTORIES_ENUM: 2,
+        DNS_RESOLVERS: 3
+      }
+    )
+
     app.config.globalProperties.$entitySource = Object.freeze(
       {
         USER: { id: 1, description: 'Usuario' },

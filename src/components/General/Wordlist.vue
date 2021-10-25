@@ -21,15 +21,15 @@
         <div class="modal-body ligth-gray-background">
           <div class="row" id="middle-section">
             <div class="col-12">
-              <span class="pills-border-gray p-1 rounded">Subdomains Enum</span>
-              <span class="pills-border-gray p-1 ml-4 rounded">Directories Enum</span>
-              <span class="pills-border-gray p-1 ml-4 rounded">DNS Resolvers</span>
+              <span @click="setSubdomainEnumSelected" class="pills-border-gray p-2 rounded cursor-pointer" :class="{'box-shadow': isSubdomainEnumSelected, 'background-color-white': isSubdomainEnumSelected}">Subdomains Enum</span>
+              <span @click="setDirectoryEnumSelected" class="pills-border-gray p-2 ml-4 rounded cursor-pointer" :class="{'box-shadow': isDirectoryEnumSelected, 'background-color-white': isDirectoryEnumSelected}">Directories Enum</span>
+              <span @click="setDnsResolverSelected" class="pills-border-gray p-2 ml-4 rounded cursor-pointer" :class="{'box-shadow': isDnsResolverSelected, 'background-color-white': isDnsResolverSelected}">DNS Resolvers</span>
             </div>
             <div class="col-12">
               <input type="file" id="wordlists-files" placeholder="Add Subdomain Enum Files"/>
             </div>
             <div class="col-12">
-              <div class="wordlist-files-container wordlist-container-size border px-2 py-1 mt-3">
+              <div class="wordlist-files-container wordlist-container-size border px-2 py-1 mt-4">
                 <div class="row">
                   <div class="col-2 border-bottom pb-1"><span class="font-weight-bold">Filename</span></div>
                   <div class="col-2 border-left border-right border-bottom pb-1"><span class="font-weight-bold">Count</span></div>
@@ -37,7 +37,7 @@
                   <div class="col-4 border-right border-bottom pb-1"><span class="font-weight-bold">Path</span></div>
                   <div class="col-3 border-bottom pb-1"><span class="font-weight-bold">Actions</span></div>
                 </div>
-                <div class="row pt-3" v-for="wordlistItem of wordlists" :key="wordlistItem.id">
+                <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
                   <div class="col-2"><span>{{wordlistItem.filename}}</span></div>
                   <div class="col-2"><span>{{wordlistItem.count}}</span></div>
                   <div class="col-1"><span>{{wordlistItem.size}}</span></div>
@@ -45,7 +45,7 @@
                   <div class="col-3">
                     <div class="d-flex justify-content-between">
                       <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded">Edit</button>
-                      <button type="button" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
+                      <button @click="removeWordListItem(wordlistItem.id)" type="button" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -63,12 +63,40 @@
 </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'WordList',
+  data: function () {
+    return {
+      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM
+    }
+  },
   computed: {
     ...mapState('wordlist', ['wordlists']),
-    ...mapGetters('wordlist', ['getWordListByType'])
+    isSubdomainEnumSelected () {
+      return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM
+    },
+    isDirectoryEnumSelected () {
+      return this.selectedPill === this.$wordlistType.DIRECTORIES_ENUM
+    },
+    isDnsResolverSelected () {
+      return this.selectedPill === this.$wordlistType.DNS_RESOLVERS
+    },
+    getWordListByType () {
+      return this.wordlists.filter(item => item.type === this.selectedPill)
+    }
+  },
+  methods: {
+    ...mapMutations('wordlist', ['removeWordListItem']),
+    setSubdomainEnumSelected () {
+      this.selectedPill = this.$wordlistType.SUBDOMAIN_ENUM
+    },
+    setDirectoryEnumSelected () {
+      this.selectedPill = this.$wordlistType.DIRECTORIES_ENUM
+    },
+    setDnsResolverSelected () {
+      this.selectedPill = this.$wordlistType.DNS_RESOLVERS
+    }
   }
 }
 </script>

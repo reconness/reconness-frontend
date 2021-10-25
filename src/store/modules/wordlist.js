@@ -21,18 +21,21 @@ export default ({
       {
         id: 3,
         filename: 'default3.txt',
-        type: 3,
+        type: 2,
         count: 1265,
         size: '19kb',
         path: '/app/Content/wordlists/dir_enum'
       }
     ]
   },
-  mutations: {},
-  actions: {},
-  getters: {
-    getWordListByType: (state) => (type) => {
-      return state.wordlists.find(wordlist => wordlist.type === type)
+  mutations: {
+    removeWordListItem (state, idWordlist) {
+      const index = state.wordlists.findIndex(wordlist => wordlist.id === idWordlist)
+      if (index !== -1) {
+        state.wordlists.splice(index, 1)
+      }
     }
-  }
+  },
+  actions: {},
+  getters: {}
 })
