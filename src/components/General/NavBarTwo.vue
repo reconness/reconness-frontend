@@ -6,14 +6,19 @@
       <ul class="navbar-nav d-none d-sm-block">
         <li class="nav-item d-flex">
            <a href="#" class="color-blue" data-toggle="modal" data-target="#exampleModalCenter">
-            <span class="material-icons">control_point</span>
+            <span class="material-icons font-weight-bold">add</span>
             <p class="float-right">New Agent</p>
           </a>
-          <a class="btn btn-sm btn-style btn-outline-primary ml-2" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
         </li>
       </ul>
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item nav-margin d-none d-sm-block border-right">
+          <a class="nav-link pos navbar-option blue-text" href="#" data-toggle="modal" data-target="#debug-modal" role="button">Debug</a>
+        </li>
+        <li class="nav-item nav-margin d-none d-sm-block">
+          <a class="nav-link pos navbar-option blue-text" href="#" data-toggle="modal" data-target="#wordlistModal">Wordlist</a>
+        </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos " v-show= "check" href="#" @click="close()">Cancel</a>
         </li>
@@ -180,7 +185,6 @@
       <aside class="control-sidebar-dark" @mouseleave="mouseleave" id="marketplace-agent">
         <!-- Control sidebar content goes here -->
         <div class="p-3 control-sidebar-content">
-            <LocalMallIco custom-class="float-left mr-1"/>
             <h5>Marketplace</h5>
         </div>
 
@@ -193,15 +197,22 @@
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" :data-agent="agentInstaller.name" :data-description="agentInstaller.description">Details</a>
+                    <a href="#" class="sidebar-right marketplace-detail-option float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" :data-agent="agentInstaller.name" :data-description="agentInstaller.description">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Install</a>
-                  <a v-if="agentInstaller.installed" href="#" class="float-right" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Uninstall</a>
+                  <a v-if="!agentInstaller.installed" href="#" class="float-right marketplace-installer-option" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Install</a>
+                  <a v-if="agentInstaller.installed" href="#" class="float-right marketplace-installer-option" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Uninstall</a>
                 </dd>
               </dl>
             </dd>
+          </dl>
+        </div>
+        <div class="sidebar-list">
+          <dl class="row">
+            <dt class="col-12">
+              <p class="text-center">{{ agentsInstallers.length }} Agents</p>
+            </dt>
           </dl>
         </div>
         <OverlayPanel :baseZIndex=1000 ref="op" appendTo="body" id="overlay_panel">
@@ -218,7 +229,8 @@
       <Toast :baseZIndex="200"/>
   </div>
   <ConfirmDeleteList></ConfirmDeleteList>
-     </div>
+  <Wordlist/>
+  </div>
 </template>
 
 <script>
@@ -232,6 +244,7 @@ import OverlayPanel from 'primevue/overlaypanel'
 import ConfirmDeleteList from '@/components/General/ConfirmDeleteList.vue'
 import jQuery from 'jquery'
 import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
+import Wordlist from '@/components/General/Wordlist.vue'
 export default {
   name: 'NavBarTwo',
   components: {
@@ -242,7 +255,8 @@ export default {
     Toast,
     OverlayPanel,
     ConfirmDeleteList,
-    LocalMallIco
+    LocalMallIco,
+    Wordlist
   },
   data: function () {
     return {
@@ -381,5 +395,11 @@ li.nav-item.border-right.d-none.d-sm-block svg.local-mall-ico {
 .router-link-exact-active  button{
   background-color:#00B1FF;
   color: #fff;
+}
+a.sidebar-right.marketplace-detail-option:hover{
+  color: #000000
+}
+a.marketplace-installer-option:hover{
+  color: #00b1ff
 }
 </style>

@@ -127,6 +127,29 @@ export default {
       }
     )
 
+    app.config.globalProperties.$wordlistType = Object.freeze(
+      {
+        SUBDOMAIN_ENUM: 1,
+        DIRECTORIES_ENUM: 2,
+        DNS_RESOLVERS: 3
+      }
+    )
+
+    app.config.globalProperties.$entitySource = Object.freeze(
+      {
+        USER: { id: 1, description: 'User' },
+        SYSTEM: { id: 2, description: 'System' }
+      }
+    )
+
+    app.config.globalProperties.$installedByUser = function (value) {
+      return value === this.$entitySource.USER.id
+    }
+
+    app.config.globalProperties.$installedBySystem = function (value) {
+      return value === this.$entitySource.SYSTEM.id
+    }
+
     app.config.globalProperties.$compilationResponse = Object.freeze(
       {
         success: { description: 'Compiled successfully' },
@@ -141,6 +164,20 @@ export default {
         case 2:
           return this.$entityTypeData.ROOTDOMAIN
         case 3:
+          return this.$entityTypeData.SUBDOMAIN
+        default:
+          return null
+      }
+    }
+
+    app.config.globalProperties.$getEntityTypeByDescription = function (descriptionEntity) {
+      const transformedDescription = descriptionEntity.toLowerCase()
+      switch (transformedDescription) {
+        case 'target':
+          return this.$entityTypeData.TARGET
+        case 'rootdomain':
+          return this.$entityTypeData.ROOTDOMAIN
+        case 'subdomain':
           return this.$entityTypeData.SUBDOMAIN
         default:
           return null
@@ -214,8 +251,9 @@ export default {
         successMessageForTargetInsertion: 'The target has been inserted successfully',
         successMessageForTargetEdition: 'The target has been edited successfully',
         successMessageForAgentDeletion: 'The agent has been deleted successfully',
-        successMessageForPipelineDeletion: 'The pipeline has been deleted successfully'
-
+        successMessageForPipelineDeletion: 'The pipeline has been deleted successfully',
+        successMessageForAgentInstallation: 'The agent was installed successfully',
+        errorMessageForAgentInstallation: 'An error ocurred during installation'
       }
     )
 

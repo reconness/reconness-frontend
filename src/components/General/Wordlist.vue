@@ -1,0 +1,181 @@
+<template>
+<div class="col-12">
+  <div class="modal fade" id="wordlistModal" tabindex="-1" role="dialog" aria-labelledby="wordlistModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content agent-containers">
+        <div class="modal-header remove-flex">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12">
+                  <div class="d-flex">
+                    <div class="d-flex align-items-center">
+                      <span class="agent-name-input flex-fill pl-2">Wordlist</span>
+                    </div>
+                  </div><!-- /.d-flex -->
+                </div><!-- /.col-12 -->
+              </div><!-- /.row -->
+            </div><!-- /.col-12 -->
+          </div><!-- /.row -->
+        </div><!-- /.modal-header -->
+        <div class="modal-body ligth-gray-background">
+          <div class="row" id="middle-section">
+            <div class="col-12">
+              <span @click="setSubdomainEnumSelected" class="pills-border-gray p-2 rounded cursor-pointer" :class="{'box-shadow': isSubdomainEnumSelected, 'background-color-white': isSubdomainEnumSelected}">Subdomains Enum</span>
+              <span @click="setDirectoryEnumSelected" class="pills-border-gray p-2 ml-4 rounded cursor-pointer" :class="{'box-shadow': isDirectoryEnumSelected, 'background-color-white': isDirectoryEnumSelected}">Directories Enum</span>
+              <span @click="setDnsResolverSelected" class="pills-border-gray p-2 ml-4 rounded cursor-pointer" :class="{'box-shadow': isDnsResolverSelected, 'background-color-white': isDnsResolverSelected}">DNS Resolvers</span>
+            </div>
+            <div class="col-12">
+              <div class="form-group mt-4">
+                <div class="custom-file">
+                  <input type="file" id="wordlists-files" placeholder="Add Subdomain Enum Files"/>
+                  <label class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add Subdomain Enum Files</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="wordlist-files-container wordlist-container-size border px-2 py-1 mt-2">
+                <div class="row">
+                  <div class="col-2 border-bottom pb-1"><span class="font-weight-bold">Filename</span></div>
+                  <div class="col-2 border-left border-right border-bottom pb-1"><span class="font-weight-bold">Count</span></div>
+                  <div class="col-1 border-right border-bottom pb-1"><span class="font-weight-bold">Size</span></div>
+                  <div class="col-4 border-right border-bottom pb-1"><span class="font-weight-bold">Path</span></div>
+                  <div class="col-3 border-bottom pb-1"><span class="font-weight-bold">Actions</span></div>
+                </div>
+                <div class=" wordlist-data-container overflow-y-auto w-100">
+                <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
+                  <div class="col-2"><span>{{wordlistItem.filename}}</span></div>
+                  <div class="col-2"><span>{{wordlistItem.count}}</span></div>
+                  <div class="col-1"><span>{{wordlistItem.size}}</span></div>
+                  <div class="col-4"><span class="text-break">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
+                  <div class="col-3">
+                    <div class="d-flex justify-content-between">
+                      <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded">Edit</button>
+                      <button @click="removeWordListItem(wordlistItem.id)" type="button" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.row -->
+        </div>
+        <div class="border-top-none modal-footer">
+          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+          <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+<script>
+import { mapState, mapMutations } from 'vuex'
+export default {
+  name: 'WordList',
+  data: function () {
+    return {
+      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM
+    }
+  },
+  computed: {
+    ...mapState('wordlist', ['wordlists']),
+    isSubdomainEnumSelected () {
+      return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM
+    },
+    isDirectoryEnumSelected () {
+      return this.selectedPill === this.$wordlistType.DIRECTORIES_ENUM
+    },
+    isDnsResolverSelected () {
+      return this.selectedPill === this.$wordlistType.DNS_RESOLVERS
+    },
+    getWordListByType () {
+      return this.wordlists.filter(item => item.type === this.selectedPill)
+    }
+  },
+  methods: {
+    ...mapMutations('wordlist', ['removeWordListItem']),
+    setSubdomainEnumSelected () {
+      this.selectedPill = this.$wordlistType.SUBDOMAIN_ENUM
+    },
+    setDirectoryEnumSelected () {
+      this.selectedPill = this.$wordlistType.DIRECTORIES_ENUM
+    },
+    setDnsResolverSelected () {
+      this.selectedPill = this.$wordlistType.DNS_RESOLVERS
+    }
+  }
+}
+</script>
+<style scoped>
+.agent-border{
+  border: 1px solid #F1F3F5;
+  border-radius: 12px;
+  width: 90px;
+  height: 47px;
+}
+
+.input.invalid input {
+    border: 1px solid red;
+}
+
+.invalid {
+  color: red;
+}
+.agent-name-input {
+  width: 50%;
+}
+
+.form-control {
+  border-radius: 0rem;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: transparent;
+    opacity: 1;
+}
+
+div.private-program-container label {
+  color: #00B1FF;
+}
+
+label {
+  color: #495057;
+  font-size: 18px;
+  font-weight: 100 !important;
+  font-size: 1.1rem;
+}
+.target-color-section{
+  background-color: #f2f4f6
+}
+.private-program-container label::before{
+  border: 2px solid #00B1FF;
+  box-shadow: unset;
+  background-color: #fbfbfb
+}
+.pills-border-gray{
+  border: 1px solid #e5e9ec
+}
+.wordlist-container-size{
+  height: 300px;
+}
+.break-word{
+  word-break: break-all;
+}
+.wordlist-btn-size{
+  width: 80px;
+  height: 40px;
+}
+.wordlist-data-container{
+  height: 265px;
+  overflow-x: hidden
+}
+label.wordlists-files-label::after{
+  background-color: #FBFBFB;
+  color: #B3B3B3 !important
+}
+label.wordlists-files-label{
+  font-size: 1rem !important;
+  border: 1px solid #dee2e6!important;
+}
+</style>

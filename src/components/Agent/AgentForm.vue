@@ -1,97 +1,71 @@
 <template>
     <div class="col-12">
-        <Toast :baseZIndex="200"/>
         <form>
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content agent-containers">
-                <div class="modal-body">
+              <div class="modal-header remove-flex">
+                <div class="row">
+                  <div class="col-12">
                     <div class="row">
-                        <div class="col-12 collapse multi-collapse" id="top-section">
-                        <div class="d-flex float-left flex-row agent-name-container">
-                            <input v-model="agent.name" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input width65" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="this.$store.state.agent.fromDetailsLink">
-                            <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-secondary">edit</span>
+                      <div class="col-8">
+                        <div class="d-flex">
+                          <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
+                            <input v-if="showNameInput" v-model="agent.name" :placeholder="agent.name" @keyup="enableValidationMessageName" class="form-control agent-placeholder w-100 agent-name-input" :readonly="this.$store.state.agent.fromDetailsLink">
+                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2">{{agent.name}}</span>
+                            <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
+                          </div>
                         </div><!-- /.d-flex -->
-                    </div><!-- /.col-12 -->
+                      </div><!-- /.col-12 -->
+                      <div class="col-4">
+                        <div class="d-flex flex-row-reverse">
+                          <span v-if="editable" class="title-target-admin-form agent-mini-color-gray mr-1">Settings</span>
+                          <span v-else class="title-target-admin-form agent-mini-color-gray mr-1">New Agent</span>
+                        </div>
+                      </div>
+                    </div><!-- /.row -->
+                  </div>
                 </div>
-                <div class="row show multi-collapse" id="middle-section">
-                    <div class="col-12 col-sm-8">
-                        <div class="col-12">
-                        <div class="d-flex flex-row" v-bind:class="{ 'justify-content-end': isPencilVisible}">
-                            <input  v-model="agent.name" @keyup="enableValidationMessageName" v-bind:class="{ 'bordered-input-name-withfocus': isPencilVisibleAndClick}" class="form-control agent-placeholder agent-name-input" placeholder="My agent" @focus="isPencilVisible=true" @blur="isPencilVisible=false;isPencilVisibleAndClick=false" @mouseover="isPencilVisible=true" @mouseleave="verifyPencilStatus" @click="isPencilVisible=true; isPencilVisibleAndClick=true" @keyup.enter="isPencilVisible=false; isPencilVisibleAndClick=false" :readonly="this.$store.state.agent.fromDetailsLink">
-                            <span v-show="isPencilVisible" class="material-icons blue-text pencil-align-main">edit</span>
-                        </div><!-- /.d-flex -->
-                        </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="validators.blank.name">
-                            <span :class="{invalid: validators.blank.name}">The field agent is required</span>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex flex-row justify-content-end file-import-container">
-                            <span class="mr-2 logo">
-                            Add
-                            <br>
-                            your logo
-                            </span>
-                            <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
-                            <label for="uploadimage">
+              </div>
+              <div class="modal-body ligth-gray-background">
+                <div class="row" id="middle-section">
+                  <div class="col-12 col-sm-8" v-if="isVisibleTopSection">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between">
+                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="ligth-gray-background form-control zero-borders mt-4 w-75" placeholder="Repository">
+                        <div class="d-flex flex-row justify-content-end file-import-container mt-2">
+                          <div class="mr-2 logo d-flex flex-column">
+                            <span>Add</span>
+                            <span>your logo</span>
+                          </div>
+                          <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
+                          <label for="uploadimage">
                             <FileCodeIco/>
-
-                            </label>
+                          </label>
                         </div><!-- /.d-flex -->
-                        </div>
+                      </div>
+                    </div><!-- /.col-12 -->
+                    <div class="col-12" v-if="validators.blank.repository">
+                      <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
+                    </div>
                         <div class="col-12">
-                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="form-control zero-borders" placeholder="Repository">
-                        </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="validators.blank.repository">
-                            <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
-                        </div>
-                        <div class="col-12">
-                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="form-control zero-borders" placeholder="Target">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="ligth-gray-background form-control zero-borders" placeholder="Target">
                         </div><!-- /.col-12 -->
                         <div class="col-12" v-if="validators.blank.target">
                           <span :class="{invalid: validators.blank.target}">The field target is required</span>
                         </div>
                         <div class="col-12">
-                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="form-control zero-borders" placeholder="Command">
+                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="ligth-gray-background form-control zero-borders  mt-1" placeholder="Command">
                         </div>
                         <div class="col-12" v-if="validators.blank.command">
                           <span :class="{invalid: validators.blank.command}">The field command is required</span>
                         </div>
                         <div class="col-12">
-                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" class="mb-3 blue-text float-right">Learn more</a>
+                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" class="mb-3 blue-text d-flex justify-content-end">Learn more</a>
                         </div><!-- /.col-12 -->
-                    </div>
-                    <div class="col-12 col-sm-4">
-                        <div v-bind:style="{background: agent.background}" class="card text-white card-style  mb-3 agentform-default-color-box height200px">
-                                <div class="card-body link-color">
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="card-title postal-title">{{agent.name}}</h3>
-                                    <AccountCogIco v-if="!agent.image"/>
-                                    <img v-if="agent.image" class="logo-image" :src="agent.image">
-                                </div>
-                                <hr />
-                                <div class="card-body-inside">
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a href="#">>...</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="row">
-                                    <div
-                                     class="col-12 height54px">
-                                        <span v-if="this.$store.state.agent.fromDetailsLink && !readOnly" class="float-right text-white agentform-action">Agent Details...</span>
-                                        <span v-else-if="editable" class="float-right text-white agentform-action">Editing Agent...</span>
-                                        <span v-else class="float-right text-white agentform-action">Creating Agent...</span>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                    </div>
-                </div><!-- /.row -->
-                <div class="row show multi-collapse">
-                    <div class="col-12 col-md-4">
-                        <div class="card agent-containers combo-box-size">
+                        <div class="row show multi-collapse">
+                    <div class="col-12 col-md-6">
+                        <div class="card agent-containers agent-type-container ligth-gray-background combo-box-size">
                             <div class="card-header border-bottom-none">
                               <div class="middle-settings-agent">
                                   <h3 class="card-title font-weight-bold">
@@ -117,8 +91,8 @@
                             </div><!-- /.card-body -->
                         </div><!-- /.card-->
                         </div><!-- /.col-12-->
-                    <div class="col-12 col-md-4">
-                        <div class="card agent-containers combo-box-size">
+                    <div class="col-12 col-md-6">
+                        <div class="card agent-containers combo-box-size ligth-gray-background">
                             <div class="card-header border-bottom-none">
                             <div class="middle-settings-agent">
                                 <h3 class="card-title font-weight-bold">
@@ -137,42 +111,7 @@
                                 <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
                                 </div>
                                 <div class="form-check text-right more-option-padding">
-                                <a href="#" @click="showBottomSection" aria-controls="top-section triggers-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span class="form-check-label blue-text">More Options</span></a>
-                                </div>
-                            </div>
-                            </div><!-- /.card-body -->
-                        </div><!-- /.card-->
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <div class="pl-0 card agent-containers combo-box-size">
-                            <div class="card-header border-bottom-none">
-                            <div class="middle-settings-agent">
-                                <h3 class="card-title font-weight-bold">
-                                Pick a Color
-                                </h3>
-                            </div>
-                            </div><!-- /.card-header -->
-                            <div class="pl-0 combo-box-left-padding">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block agentform-color-components agentform-color-components-align image-button"></button>
-                                  </div>
-                                  <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" class="btn blue-btn-backg btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
-                                  </div>
-                                  <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" class="btn violet-btn-backg btn-block btn-default agentform-color-components agentform-color-components-align btn-colors-size"></button>
-                                  </div>
-                                  <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" class="red-btn-backg btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
-                                  </div>
-                                  <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" class="orange-btn-backg btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
-                                  </div>
-                                  <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" class="green-btn-back btn btn-block btn-default agentform-color-spacing-bottom agentform-color-components agentform-color-components-align btn-colors-size"></button>
-                                  </div>
+                                <a href="#" @click="showMiddleSection"><span class="form-check-label blue-text">More Options</span></a>
                                 </div>
                             </div>
                             </div><!-- /.card-body -->
@@ -182,23 +121,67 @@
                           <span :class="{invalid: validators.blank.type}">The field agent type is required</span>
                         </div>
                 </div>
-                <div class="row" v-show="isVisibleMiddleSection">
-                    <div class="col-12">
-                    <div class="info-box my-3 agent-containers min-height-auto">
-                        <div class="info-box-content">
-                        <span class="info-box-text padding-right-10px"><b class="padding-right-10px">Script</b><a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a></span><a href="#" @click="showMiddleSection" aria-controls="top-section middle-section bottom-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span v-show="arrow_up" class="material-icons learn-more-arrow-up">keyboard_arrow_up</span><span v-show="arrow_down" class="learn-more-arrow-down material-icons">keyboard_arrow_down</span></a>
+                    </div><!-- /.col-12 col-sm-8 -->
+                    <div class="col-12 col-sm-4 pt-1" v-if="isVisibleTopSection">
+                      <div class="target-color-section mt-4 pt-3 border-radios-8px pl-2 pr-2">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="info-box">
+                              <div class="info-box-content info-box-content-custom ml-2 mt-2">
+                                <span class="info-box-text domain-names-target">
+                                  {{agent.name}}
+                                </span>
+                                <span v-if="editable"  class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
+                                <span v-else class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
+                              </div> <!-- /.info-box-content -->
+                              <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor+' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
+                                <AccountCogIco v-if="!agent.image" class="w-75 h-75"/>
+                                <img v-if="agent.image" class="logo-image w-75 h-75" :src="agent.image">
+                              </span>
+                            </div> <!-- /.info-box -->
+                          </div>
+                          <div class="col-12 text-center mt-2">
+                            <h3 class="font-weight-bold card-title disable-float mt-4">
+                              Pick a Color
+                            </h3>
+                            <div class="pl-0 w-100 agent-containers target-combo-box-size target-color-section">
+                              <div class="pl-0 combo-box-left-padding">
+                                <div class="form-group">
+                                  <div class="row">
+                                    <div class="col-4">
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
+                                    </div>
+                                    <div class="col-4">
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" class="blue-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    </div>
+                                    <div class="col-4">
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" class="violet-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    </div>
+                                    <div class="col-4">
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" class="red-btn-backg btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    </div>
+                                    <div class="col-4">
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" class="orange-btn-backg btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    </div>
+                                    <div class="col-4">
+                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" class="green-btn-back btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div><!-- /.card-body -->
+                            </div><!-- /.card-->
+                          </div>
                         </div>
-                        <!-- /.info-box-content -->
+                      </div>
                     </div>
-                    </div><!-- /.col-12 -->
-                    <div  v-if="!isVisibleBottomSection" id="bottom-section" class="col-12 collapse multi-collapse">
-                      <v-ace-editor v-model:value="agent.script" lang="csharp" style="height:300px" theme="monokai"/>
-                    </div><!-- #bottom-section -->
-                </div><!-- /.row -->
-                <div class="row" v-show="isVisibleBottomSection">
-                  <div class="col-12">
-                    <div id="triggers-section" class="collapse multi-collapse">
-                      <div class="my-2"><b class="triggers-label-space">Triggers</b><a href="#" @click="showTopSection" aria-controls="top-section triggers-section" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"><span class="material-icons triggers-label-arrow-space">keyboard_arrow_down</span></a></div>
+                  <div v-if="isVisibleMiddleSection" class="col-12">
+                    <div id="triggers-section">
+                      <div class="mt-4 mb-2 mx-2 d-flex justify-content-between">
+                        <b class="triggers-label-space">Triggers</b>
+                        <a href="#" @click="showTopSection">
+                          <span class="material-icons line-height-1-7 triggers-label-arrow-space">keyboard_arrow_down</span>
+                        </a>
+                      </div>
                       <div class="triggers-border-container combo-box-left-padding rounded-corners triggers-more-options-area-size">
                         <div class="form-group triggers-options-space">
                             <div class="custom-control custom-checkbox form-check">
@@ -213,12 +196,30 @@
                       </div><!-- /.combo-box-left-padding -->
                     </div><!-- #triggers-section -->
                   </div><!-- /.col-12 -->
-                </div><!-- /.row -->
+                  </div><!-- /.row -->
+                  <div class="row" v-if="isVisibleTopSection || isVisibleBottomSection">
+                    <div class="col-12">
+                      <div :class="{'mt-4': isVisibleBottomSection}" class="my-3 agent-containers min-height-auto">
+                        <div class="info-box-content d-flex px-2 border-radius-8px justify-content-between learn-more-border-line">
+                          <span class="info-box-text">
+                            <b class="mr-2">Script</b>
+                            <a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a>
+                          </span>
+                          <a href="#" @click="showBottomSection">
+                            <span v-show="arrow_up" class="material-icons learn-more-arrow-up">keyboard_arrow_up</span>
+                            <span v-show="arrow_down" class="learn-more-arrow-down material-icons">keyboard_arrow_down</span>
+                          </a>
+                        </div>
+                        <!-- /.info-box-content -->
+                      </div>
+                    </div><!-- /.col-12 -->
+                    <div v-if="isVisibleBottomSection"  id="bottom-section" class="col-12">
+                      <v-ace-editor v-model:value="agent.script" lang="csharp" class="mt-4" style="height:300px" theme="monokai"/>
+                    </div>
+                  </div><!-- /.row -->
                 </div><!-- /.modal-body -->
-                <div class="modal-footer border-top-none">
-                  <button @click="setIsDeletetFromForm(true)" v-if="this.editable && !readOnly" :disabled="this.$store.state.agent.fromDetailsLink" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn delete-left-align" data-target="#confirmation-modal" data-toggle="modal" data-backdrop="false">Delete</button>
-                  <button @click="onEdit()" v-if="this.$store.state.agent.fromDetailsLink && !readOnly" type="button" class="actions-btn-color agent-border btn create-agent-buttons-main-action">Edit</button>
-                  <button v-if="!this.$store.state.agent.fromDetailsLink && !readOnly" type="button" :disabled="isFormValid" @click="addAgent(this.agent)" class="actions-btn-color agent-border btn create-agent-buttons-main-action">Done</button>
+                <div class="border-top-none modal-footer">
+                  <button type="button" :disabled="isFormValid" @click="addAgent(this.agent)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -232,15 +233,15 @@ import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
-import Toast from 'primevue/toast'
 import { mapMutations } from 'vuex'
+import { TargetMixin } from '@/mixins/TargetMixin'
+
 export default {
   name: 'AgentForm',
   components: {
     VAceEditor,
     AccountCogIco,
-    FileCodeIco,
-    Toast
+    FileCodeIco
   },
   props: {
     readOnly: {
@@ -251,8 +252,9 @@ export default {
   data () {
     return {
       agent: {
-        name: '',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
+        name: 'My Agent',
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3',
         repository: '',
         target: '',
         command: '',
@@ -267,16 +269,17 @@ export default {
         creationDate: new Date().toString(),
         image: '',
         status: this.$entityStatus.FINISHED,
-        lastRun: null
+        lastRun: null,
+        createdBy: this.$entitySource.USER.id
       },
       colorpickerData: '',
       isVisibleTopSection: true,
-      isVisibleMiddleSection: true,
+      isVisibleMiddleSection: false,
       isVisibleBottomSection: false,
       middleSection: 'collapse',
       editable: false,
-      arrow_down: true,
-      arrow_up: false,
+      arrow_down: false,
+      arrow_up: true,
       isPencilVisible: false,
       isPencilVisibleAndClick: false,
       validators: {
@@ -287,9 +290,11 @@ export default {
           command: false
         }
       },
-      nextAgentSequence: 30
+      nextAgentSequence: 30,
+      showNameInput: false
     }
   },
+  mixins: [TargetMixin],
   computed: {
     isValid () {
       if (this.agent.name !== '' &&
@@ -323,6 +328,7 @@ export default {
         this.agent.script = value.script
         this.editable = true
         this.agent.id = value.id
+        this.agent.createdBy = value.createdBy
       } else {
         this.resetAgentForm()
         this.agent.script = ''
@@ -332,19 +338,24 @@ export default {
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
     setBlueColor: function () {
-      this.agent.background = 'transparent linear-gradient(160deg,#03DCED 0%, #0cb8e0 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#03DCED'
+      this.agent.secondaryColor = '#0cb8e0'
     },
     setVioletColor: function () {
-      this.agent.background = 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#737be5'
+      this.agent.secondaryColor = '#7159d3'
     },
     setRedColor: function () {
-      this.agent.background = 'transparent linear-gradient(160deg,#F96767 0%, #FF4343 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#F96767'
+      this.agent.secondaryColor = '#FF4343'
     },
     setOrangeColor: function () {
-      this.agent.background = '#ff8650 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#FF9966'
+      this.agent.secondaryColor = '#f36a33'
     },
     setGreenColor: function () {
-      this.agent.background = 'transparent linear-gradient(135deg,#3adb99 0%, #16c465 100%) 0% 0% no-repeat padding-box'
+      this.agent.primaryColor = '#3adb99'
+      this.agent.secondaryColor = '#16c465'
     },
     addAgent () {
       this.enableValidationMessages()
@@ -355,18 +366,17 @@ export default {
             this.agent.id = parseInt(this.$store.getters['agent/idAgent'])
             this.$store.commit('agent/updateAgent', this.agent)
             this.$store.commit('agent/setIdAgent', -1)
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been updated successfully', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {
             this.$store.commit('agent/setIdAgent', -1)
-            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
           }
         } else {
           if (randomResult) {
-            // this.agent.id = this.nextAgentSequence++
             this.$store.commit('agent/addAgent', this.agent)
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent has been inserted successfully', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {
-            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the update process', life: 3000 })
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
           }
         }
         this.resetAgentForm()
@@ -382,7 +392,7 @@ export default {
     },
     resetAgentForm () {
       this.agent = {
-        name: '',
+        name: 'My Agent',
         background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
         repository: '',
         target: '',
@@ -396,7 +406,8 @@ export default {
         creationDate: new Date().toString(),
         image: '',
         lastRun: null,
-        status: this.$entityStatus.FINISHED
+        status: this.$entityStatus.FINISHED,
+        createdBy: this.$entitySource.USER.id
       }
       this.validators = {
         blank: {
@@ -469,20 +480,25 @@ export default {
       this.isVisibleTopSection = false
     },
     showBottomSection () {
-      this.disableMiddleSection()
-      this.enableBottomSection()
-      this.disableTopSection()
+      if (this.isVisibleTopSection) {
+        this.disableMiddleSection()
+        this.enableBottomSection()
+        this.disableTopSection()
+      } else {
+        this.disableBottomSection()
+        this.enableTopSection()
+      }
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
     },
     showMiddleSection () {
       this.enableMiddleSection()
       this.disableBottomSection()
-      this.enableTopSection()
-      this.arrow_down = !this.arrow_down
-      this.arrow_up = !this.arrow_up
+      this.disableTopSection()
     },
     showTopSection () {
       this.enableTopSection()
-      this.enableMiddleSection()
+      this.disableMiddleSection()
     },
     setData (nameExt) {
       this.agent.name = nameExt
@@ -505,7 +521,9 @@ export default {
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.agent.systemColors
-      this.agent.background = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
+      this.agent.primaryColor = randomColor.primaryColor
+      this.agent.secondaryColor = randomColor.secondaryColor
     },
     verifyPencilStatus () {
       if (this.isPencilVisibleAndClick) {
@@ -516,42 +534,39 @@ export default {
     },
     onEdit () {
       this.$store.commit('agent/setDetailsLinks', false)
+    },
+    switchNameInput () {
+      this.showNameInput = !this.showNameInput
     }
   }
 }
 </script>
 <style>
-.height200px{
-  height: 200px
-}
-.height54px{
-  height: 54px
-}
-
-.padding-right-10px{
-  padding-right: 10px;
-}
-
-.middle-settings-agent{
-  overflow: hidden;
-  padding-bottom: 9px;
-  border-bottom: 1px solid rgba(0,0,0,.125);
-}
-
-    .agentform-action{
+  .agent-type-container{
+    height: 159px
+  }
+    .targetform-action{
         bottom: -28%;
         position: absolute;
         right: 8%;
         font-size: .875rem;
     }
 
-    .agentform-color-components{
+    .target-form-color-components{
         width: 30px;
         height: 30px;
+        margin-top: 23px !important;
     }
 
-    .agentform-color-spacing-bottom{
-        margin-top: 18px !important;
+    .custom-control-input:checked~.custom-control-label::before {
+      color: #fff;
+      border-color: #00B1FF;
+      background-color: #00B1FF;
+      box-shadow: none;
+    }
+
+    .target-form-color-spacing-bottom{
+        margin-top: 44% !important;
     }
 
     .agentform-color-components-align{
@@ -572,6 +587,7 @@ export default {
         width: 90px;
         height: 47px;
     }
+
     .input.invalid input {
         border: 1px solid red;
     }
@@ -580,12 +596,8 @@ export default {
         color: red;
     }
 
-    .combo-box-size{
-        height: 153px;
-    }
-
-    .min-height-auto{
-      min-height: auto;
+    .target-combo-box-size{
+        height: 144px;
     }
 
     .combo-box-left-padding{
@@ -620,16 +632,9 @@ export default {
       margin-left: 1.5rem;
     }
 
-    .triggers-border-container{
-      border: 1px solid #EFE6E6;
-    }
-
     .triggers-label-space {
       margin-left: 1.5rem;
       margin-bottom: 0.5rem;
-    }
-    .triggers-label-arrow-space{
-      position: absolute; right: 1rem; top: 0;
     }
 
     .triggers-options-space {
@@ -670,14 +675,6 @@ div.file-import-container svg {
   height: 50px;
 }
 
-.learn-more-arrow-up{
-  position: absolute; right: 1rem; top: .5rem;
-}
-
-.learn-more-arrow-down{
-  position: absolute; right: 1rem; top: 0.4rem;
-}
-
 label[for='uploadimage']{
   transition: all .5s;
   cursor: pointer;
@@ -711,20 +708,14 @@ label[for='uploadimage']{
   border-radius: 7px;
 }
 
-input.agent-name-input:hover{
+/* input.agent-name-input:hover{
   background-color: #afd9e647;
-}
-.opacity-none{
-  opacity: none;
-}
+} */
 
 .bordered-input-name-withfocus{
   border-top: 2px solid #00B1FF;
   border-right: 2px solid #00B1FF;
   border-bottom: 2px solid #00B1FF;
-}
-.actions-btn-color{
-  color: #00B1FF;
 }
 
 .bordered-input-name-withoutfocus{
@@ -737,8 +728,86 @@ input.agent-name-input:hover{
     background-color: transparent;
     opacity: 1;
 }
-.width65{
-  width: 65%
+
+.target-input-borders {
+  border-radius: 0.8rem
+}
+
+.target-inputs-separator {
+  margin-top: 14px;
+}
+
+.private-program-container {
+  /* float: right; */
+}
+
+div.private-program-container label {
+  color: #00B1FF;
+}
+
+label {
+  color: #495057;
+  font-size: 18px;
+  font-weight: 100 !important;
+  font-size: 1.1rem;
+}
+
+textarea {
+  resize: none;;
+}
+
+.disable-float{
+  float: none !important;
+}
+
+.triggers-border-container{
+  border: 1px solid #EFE6E6;
+}
+
+.p-chips{
+  width: 100%;
+  /* border-radius: 12px !important; */
+  opacity: 1;
+  /* border: 1px solid #f1f3f5; */
+  background: #fffffF 0% 0% no-repeat padding-box;
+  font-size: 14px;
+  color: #000000;
+  /* min-height: calc(1.8125rem + 2px); */
+}
+.title-target-admin-form{
+  font-size: 24px
+}
+.info-box >span{
+  width: 56px;
+  height: 56px;
+  border-radius: 13px;
+  box-shadow: 3px 12px 23px #eae9e9;
+  opacity: 1;
+}
+.info-box-content-custom{
+  justify-content: unset !important
+}
+.target-color-section{
+  background-color: #f2f4f6
+}
+.private-program-container label::before{
+  border: 2px solid #00B1FF;
+  box-shadow: unset;
+  background-color: #fbfbfb
+}
+
+.learn-more-border-line{
+  border: 1px solid #F1F3F5
+}
+
+.middle-settings-agent{
+  overflow: hidden;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.line-height-1-7{
+  line-height: 1.7rem;
 }
 
 @media (max-width: 480px) {

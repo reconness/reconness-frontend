@@ -294,8 +294,8 @@ padding-left: 9px;
   border: 1px solid #dad2d2;
 } 
 
-.navbar-light .border-right .nav-link {
-  color: #000000; 
+.navbar-light .border-right .nav-link, .navbar-option {
+  color: #000000;
   font-size: 14px;
   font-weight: 600;
   padding: 8px;
@@ -345,8 +345,7 @@ background-color: rgba(230, 233, 237, 0.4);
 border-color: rgba(221, 221, 221, 0.03);
 color: #000000;
 padding: 0.1rem;
-border-radius: 0.4rem;;
-/*width: 26px;*/
+border-radius: 0.4rem;
 height: 30px;
 }
 
@@ -371,17 +370,12 @@ body{
 	font-weight: 600;
 }
 .header-style{
-    /*padding: .5rem .5rem;*/
     text-align: left;
 }
 
 .pad{
 	padding-top:20px;
 }
-/*
-button .material-icons, a .material-icons{
-	font-size: 20px;
-}*/
 
 .img-icon-nav{
 	vertical-align: baseline;
@@ -417,12 +411,12 @@ button .material-icons, a .material-icons{
 
 .sidebar-list {
     box-shadow: 0 0 0px rgba(0,0,0,.125), 0 0px 1px rgba(0,0,0,.1);
-    background: rgba(227, 228, 230, 0.28);
+    background: #ffffff;
     min-height: 40px;
     padding: .5rem;
     width: 93%;
     margin: 10px;
-    border-radius: .9rem;
+    border-radius: .3rem;
     overflow: hidden;
 }
 
@@ -508,7 +502,7 @@ font-weight: 600;
 } */
 
 .agent-mini-color-gray{
-  color: #B3B3B3;
+  color: #B3B3B3 !important;
 }
 
 .targets-title{
@@ -992,6 +986,7 @@ div.pipeline_spacing .p-autocomplete-loader{
   border-right: 0px;
   border-top: 0px;
   border-radius: 0;
+  background-color: #FBFBFB;
 }
 .target-chips .p-chips .p-chips-multiple-container .p-chips-input-token input {
   font-size: 1rem !important;
@@ -1068,7 +1063,7 @@ div.p-overlaypanel.target-list-popover .p-overlaypanel-content{
 .violet-btn-backg{
   background: transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box
 }
-.orange-btn-backg{
+.orange-btn-backg, .orange-btn-backg:hover{
   background: #ff8650 0% 0% no-repeat padding-box
 }
 .green-btn-back{
@@ -1116,4 +1111,31 @@ a.target-detail-popover:hover{
 }
 html {
   overflow-y: scroll;
+}
+.border-radius-8px{
+  border-radius: 8px;
+}
+.ligth-gray-background{
+  background-color: #FBFBFB;
+}
+.remove-flex{
+  display: initial !important;
+}
+#targetModalForm input:focus, #targetModalForm textarea:focus{
+  background-color: #FBFBFB;
+}
+#exampleModalCenter input:focus, #exampleModalCenter textarea:focus{
+  background-color: #FBFBFB;
+}
+
+.box-shadow{
+  box-shadow: -2px 17px 29px #eaeaea;
+}
+
+.background-color-white{
+  background-color: #ffffff;
+}
+
+.overflow-y-auto{
+  overflow-y: auto !important;
 }

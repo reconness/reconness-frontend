@@ -22,9 +22,13 @@
                 {{agent.name}}
             </div>
             <div class="col-2 my-2">
-              <div class="d-inline-flex">
+              <div v-if="this.$installedByUser(agent.createdBy)" class="d-inline-flex">
                 <AccountCogIco class="fill-with-dark-gray"/>
-                <span class="ml-1 agent-mini-color-gray">User</span>
+                <span class="ml-1 agent-mini-color-gray agent-minilist-source-size-user-ico">User</span>
+              </div>
+              <div v-else-if="this.$installedBySystem(agent.createdBy)" class="d-inline-flex">
+                <ApplicationCogIco class="fill-with-dark-gray agent-minilist-source-size-ico"/>
+                <span class="ml-1 agent-mini-color-gray">System</span>
               </div>
             </div>
             <div class="col-2 my-2">
@@ -32,7 +36,7 @@
             </div>
             <div class="col-1 color-action-column d-flex justify-content-center">
               <span class="d-flex align-items-center mt-auto mb-auto" title="Settings" data-toggle="tooltip" data-placement="bottom">
-                <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @click="onEdit" data-toggle="modal" data-target="#targetModalForm" :data-id="agent.id">settings</span>
+                <span class="target-minilist-settings-ico cursor-pointer material-icons my-auto icon-size-action-column target-minilist-settings-ico" @click="onEdit" data-toggle="modal" data-target="#exampleModalCenter" :data-id="agent.id">settings</span>
               </span>
               <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="d-flex align-items-center mt-auto mb-auto">
                 <TrashCanIco @click="prepareToDelete($event, this.$agentType.TARGET)" data-toggle="modal" data-target="#message-box-modal" :data-id="agent.id" :data-name="agent.name" class="target-minilist-trash-ico cursor-pointer material-icons my-auto ml-2 icon-size-delete-action-column"/>
@@ -47,11 +51,13 @@ import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 export default {
   name: 'AgentMiniList',
   components: {
     TrashCanIco,
-    AccountCogIco
+    AccountCogIco,
+    ApplicationCogIco
   },
   mixins: [AgentMixin],
   computed: {
@@ -123,6 +129,12 @@ export default {
     width: 18px;
     height: 18px;
     top: 0;
+}
+.agent-minilist-source-size-ico {
+    width: 19px
+}
+.agent-minilist-source-size-user-ico {
+    width: 22px
 }
 
 </style>
