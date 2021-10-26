@@ -26,10 +26,15 @@
               <span @click="setDnsResolverSelected" class="pills-border-gray p-2 ml-4 rounded cursor-pointer" :class="{'box-shadow': isDnsResolverSelected, 'background-color-white': isDnsResolverSelected}">DNS Resolvers</span>
             </div>
             <div class="col-12">
-              <input type="file" id="wordlists-files" placeholder="Add Subdomain Enum Files"/>
+              <div class="form-group mt-4">
+                <div class="custom-file">
+                  <input type="file" id="wordlists-files" placeholder="Add Subdomain Enum Files"/>
+                  <label class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add Subdomain Enum Files</label>
+                </div>
+              </div>
             </div>
             <div class="col-12">
-              <div class="wordlist-files-container wordlist-container-size border px-2 py-1 mt-4">
+              <div class="wordlist-files-container wordlist-container-size border px-2 py-1 mt-2">
                 <div class="row">
                   <div class="col-2 border-bottom pb-1"><span class="font-weight-bold">Filename</span></div>
                   <div class="col-2 border-left border-right border-bottom pb-1"><span class="font-weight-bold">Count</span></div>
@@ -104,34 +109,21 @@ export default {
 </script>
 <style scoped>
 .agent-border{
-        border: 1px solid #F1F3F5;
-        border-radius: 12px;
-        width: 90px;
-        height: 47px;
-    }
-
-    .input.invalid input {
-        border: 1px solid red;
-    }
-
-    .invalid {
-        color: red;
-    }
-input[type="file"]{
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow:hidden;
-  position:absolute;
-  z-index: -1;
+  border: 1px solid #F1F3F5;
+  border-radius: 12px;
+  width: 90px;
+  height: 47px;
 }
 
-label[for='uploadimage']{
-  transition: all .5s;
-  cursor: pointer;
+.input.invalid input {
+    border: 1px solid red;
+}
+
+.invalid {
+  color: red;
 }
 .agent-name-input {
-   width: 50%;
+  width: 50%;
 }
 
 .form-control {
@@ -177,5 +169,13 @@ label {
 .wordlist-data-container{
   height: 265px;
   overflow-x: hidden
+}
+label.wordlists-files-label::after{
+  background-color: #FBFBFB;
+  color: #B3B3B3 !important
+}
+label.wordlists-files-label{
+  font-size: 1rem !important;
+  border: 1px solid #dee2e6!important;
 }
 </style>

@@ -502,7 +502,7 @@ font-weight: 600;
 } */
 
 .agent-mini-color-gray{
-  color: #B3B3B3;
+  color: #B3B3B3 !important;
 }
 
 .targets-title{

@@ -137,8 +137,8 @@ export default {
 
     app.config.globalProperties.$entitySource = Object.freeze(
       {
-        USER: { id: 1, description: 'Usuario' },
-        SYSTEM: { id: 2, description: 'Sistema' }
+        USER: { id: 1, description: 'User' },
+        SYSTEM: { id: 2, description: 'System' }
       }
     )
 
