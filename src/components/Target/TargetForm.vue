@@ -73,8 +73,9 @@
                       <div class="target-color-section mt-4 pt-3 border-radios-8px pl-2 pr-2">
                       <div class="row">
                         <div class="col-12">
-                          <div class="info-box">
-                            <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+target.primaryColor+' '+ '0%,' + target.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco class="w-75 h-75"/></span>
+                          <div class="info-box d-flex infobox-radius infobox-padding-bordered">
+                            <div class="w-100 infobox-radius d-flex infobox-border-line infobox-padding-bordered d-flex align-items-center">
+                            <span class="color-sample-area ml-1 info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+target.primaryColor+' '+ '0%,' + target.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco class="w-75 h-75"/></span>
                             <div class="info-box-content info-box-content-custom ml-2">
                             <span class="info-box-text domain-names-target">
                             {{target.name}}
@@ -82,6 +83,7 @@
                             <span v-if="editable"  class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
                             <span v-else class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                             </div> <!-- /.info-box-content -->
+                            </div>
                           </div> <!-- /.info-box -->
                         </div>
                         <div class="col-12 text-center mt-2">
@@ -446,7 +448,11 @@ export default {
         right: 8%;
         font-size: .875rem;
     }
-
+    .color-sample-area{
+      width: 56px !important;
+      height: 56px !important;
+      border-radius: 13px !important
+    }
     .target-form-color-components{
         width: 30px;
         height: 30px;
