@@ -1142,3 +1142,13 @@ html {
 .w-60px{
   width: 60px;
 }
+
+.infobox-padding-bordered{
+  padding: 4px !important
+}
+.infobox-radius{
+  border-radius: 8px !important;
+}
+.infobox-border-line{
+  border: 2px solid #e5e9ec;
+}

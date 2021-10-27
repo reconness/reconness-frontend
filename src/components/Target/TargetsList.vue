@@ -2,11 +2,11 @@
     <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3" @mouseenter="hoverCard( {id} )" @mouseleave="hoverCard(-1)">
         <div class="row">
           <div class="col-10">
-        <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
+        <div class="initial-info-box agent-mini-main-container infobox-radius w-100">
         <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
         <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.TARGET.id)" :data-id="id" :data-name="name"></label>
-        <div class="p-2">
-        <div class="info-box target-detail-popover-reference">
+          <div class="infobox-padding-bordered infobox-radius">
+        <div class="info-box target-detail-popover-reference infobox-border-line infobox-radius infobox-padding-bordered">
           <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
