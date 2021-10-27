@@ -1,14 +1,14 @@
 <template>
     <div class="col-12">
         <div class="row header-bottom-line-shadow" style="position: sticky !important;">
-            <div class="offset-sm-1"></div>
+            <div class="w-60px"></div>
             <div class="col-1 my-2 border-left">Color ID</div>
             <div class="col-2 my-2 border-left">Name</div>
             <div class="col-3 my-2 border-left">RootDomains</div>
             <div class="col-1 my-2 border-left border-right">Actions</div>
         </div>
         <div v-for="target of filteredTargetList" :key="target.id" class="row border-bottom">
-            <div class="col-1">
+            <div class="w-60px">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
                   <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+target.id" :checked="this.$isItemOnList(target.id, entitiesToDelete)">
                   <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+target.id"  :data-id="target.id" :data-name="target.name" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.TARGET.id)"></label>
@@ -118,11 +118,11 @@ export default {
     height: 18px;
     position: relative;
     top: 0;
+    margin-left: 25%
 }
 .target-mini-list label::after{
     width: 18px;
     height: 18px;
     top: 0;
 }
-
 </style>

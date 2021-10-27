@@ -8,7 +8,7 @@
             <div class="col-2 my-2 border-left">Agent Type</div>
             <div class="col-1 my-2 border-left border-right">Actions</div>
         </div>
-        <div v-for="agent of filteredAgentList" :key="agent.id" class="row border-bottom items-minilist-content">
+        <div v-for="agent of filteredAgentList" :key="agent.id" class="row border-bottom">
             <div class="w-60px">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
                   <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+ agent.id" :checked="this.$isItemOnList(agent.id, entitiesToDelete)">
@@ -124,6 +124,7 @@ export default {
     height: 18px;
     position: relative;
     top: 0;
+    margin-left: 25%
 }
 .target-mini-list label::after{
     width: 18px;
@@ -136,11 +137,4 @@ export default {
 .agent-minilist-source-size-user-ico {
     width: 22px
 }
-.w-60px{
-  width: 60px;
-}
-div.items-minilist-content label::before{
-  margin-left: 25%
-}
-
 </style>

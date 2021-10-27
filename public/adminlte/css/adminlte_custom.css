@@ -1139,3 +1139,6 @@ html {
 .overflow-y-auto{
   overflow-y: auto !important;
 }
+.w-60px{
+  width: 60px;
+}
