@@ -1,15 +1,15 @@
 <template>
     <div class="col-12">
         <div class="row header-bottom-line-shadow">
-            <div class="offset-sm-1"></div>
+            <div class="w-60px"></div>
             <div class="col-1 my-2 border-left">Color ID</div>
             <div class="col-2 my-2 border-left">Name</div>
             <div class="col-2 my-2 border-left">Created By</div>
             <div class="col-2 my-2 border-left">Agent Type</div>
-            <div class="col-1 my-2 border-left">Actions</div>
+            <div class="col-1 my-2 border-left border-right">Actions</div>
         </div>
-        <div v-for="agent of filteredAgentList" :key="agent.id" class="row border-bottom">
-            <div class="col-1">
+        <div v-for="agent of filteredAgentList" :key="agent.id" class="row border-bottom items-minilist-content">
+            <div class="w-60px">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
                   <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+ agent.id" :checked="this.$isItemOnList(agent.id, entitiesToDelete)">
                   <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+ agent.id"  :data-id="agent.id" :data-name="agent.name" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.AGENT.id)"></label>
@@ -135,6 +135,12 @@ export default {
 }
 .agent-minilist-source-size-user-ico {
     width: 22px
+}
+.w-60px{
+  width: 60px;
+}
+div.items-minilist-content label::before{
+  margin-left: 25%
 }
 
 </style>
