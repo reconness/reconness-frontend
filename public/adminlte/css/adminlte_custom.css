@@ -1152,3 +1152,7 @@ html {
 .infobox-border-line{
   border: 2px solid #e5e9ec;
 }
+.modal-open{
+  padding: 0 !important;
+  overflow-y: auto;
+}
