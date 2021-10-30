@@ -5,19 +5,26 @@
           <div class="row">
               <div class="col-12">
                 <div class="pt-3 d-flex justify-content-center flex-column mb-3">
-                  <span class="black-text font-weight-bold m-auto">Forgot password</span>
+                  <span class="black-text font-weight-bold m-auto">Reset Password</span>
                   <hr class="login-welcome-blue-line"/>
                 </div>
               </div>
               <div class="col-12">
-                  <p class="text-center">Enter your number or email address below and our system will send you a confirmation code</p>
+                  <p class="text-center mt-2">Enter the confirmation code and our system will let you reset your password</p>
+              </div>
+              <div class="col-12">
+                <div class="pt-2 d-flex flex-column align-items-center">
+                  <input v-model="confirmation_code" placeholder="confirmation code" class="mb-2 ph-center login-input w-75 form-control">
+                </div>
+              </div>
+              <div class="col-12">
+                  <p class="text-center mx-2 mt-2">Please provide a new password and we'll redirect you to the login page</p>
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
-                  <input v-model="user.email" placeholder="email" class="mb-2 ph-center login-input w-75 form-control">
-                  <span class="blue-text">O</span>
-                  <input v-model="user.phone" placeholder="phone number" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">ENTER</button>
+                  <input v-model="user.password" placeholder="password" class="mb-2 ph-center login-input w-75 form-control">
+                  <input v-model="confirm_password" placeholder="confirm password" class="ph-center login-input w-75 form-control mt-2">
+                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">SUBMIT</button>
                 </div>
               </div>
               <div class="col-12">
@@ -36,9 +43,10 @@ export default {
   name: 'ForgotPasswordForm',
   data () {
     return {
+      confirmation_code: '',
       user: {
-        email: '',
-        phone: ''
+        username: '',
+        password: ''
       }
     }
   },
