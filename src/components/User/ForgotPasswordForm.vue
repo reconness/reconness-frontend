@@ -8,23 +8,24 @@
           <div class="row">
               <div class="col-12">
                 <div class="pt-3 d-flex justify-content-center flex-column mb-3">
-                  <span class="black-text font-weight-bold m-auto">SIGN IN</span>
+                  <span class="black-text font-weight-bold m-auto">FORGOT PASSWORD</span>
                   <hr class="login-welcome-blue-line"/>
                 </div>
               </div>
               <div class="col-12">
-                  <span>LOGO O GRAVATAR</span>
+                  <p class="text-center">Enter your number or email address below and our system will send you a confirmation code</p>
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
-                  <input v-model="user.username" placeholder="username" class="ph-center login-input w-75 form-control">
-                  <input v-model="user.password" placeholder="password" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">LOGIN</button>
+                  <input v-model="user.username" placeholder="email" class="mb-2 ph-center login-input w-75 form-control">
+                  <span class="blue-text">O</span>
+                  <input v-model="user.password" placeholder="phone number" class="ph-center login-input w-75 form-control mt-2">
+                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">ENTER</button>
                 </div>
               </div>
               <div class="col-12">
                   <div class="bottom-border-radius-12px mt-5 login-bottom-section d-flex justify-content-center ligth-gray-background">
-                      <span @click="goToForgotPasswordForm" class="cursor-pointer blue-text my-3">Forgot Password?</span>
+                      <span @click="goToLoginForm" class="cursor-pointer blue-text my-3">Back to login</span>
                   </div>
               </div>
           </div>
@@ -35,7 +36,7 @@
 <script>
 import { mapMutations } from 'vuex'
 export default {
-  name: 'LogInForm',
+  name: 'ForgotPasswordForm',
   data () {
     return {
       user: {
@@ -45,7 +46,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('auth', ['goToForgotPasswordForm'])
+    ...mapMutations('auth', ['goToLoginForm'])
   }
 }
 </script>
