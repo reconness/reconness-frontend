@@ -8,9 +8,9 @@
       </div>
     </div>
     <div class="row">
-          <LogInForm v-if="showLoginForm"/>
-          <ForgotPasswordForm v-else-if="showForgottenPasswordForm"/>
-          <ResetPasswordForm v-else-if="showResetPasswordForm"/>
+          <LogInForm v-if="showLoginForm" class="mt-5"/>
+          <ForgotPasswordForm v-else-if="showForgottenPasswordForm" class="mt-5"/>
+          <ResetPasswordForm v-else-if="showResetPasswordForm" class="mt-5"/>
     </div>
   </div>
 </template>
@@ -34,6 +34,7 @@ export default {
 <style>
   body{
     background: red url('~@/assets/wallpaper.jpg') top left no-repeat;
+    background-size: cover
   }
   .reconness-logo{
     font-size: 1.4rem;

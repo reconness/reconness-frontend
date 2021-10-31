@@ -58,10 +58,10 @@ export default {
     border: 1px solid #e5e9ec;
     border-radius: 12px;
     opacity: 1;
-    width: 25vw;
+    width: 350px;
 }
 .login-main-container{
-    height: 100vh;
+    height: 100%;
 }
 .login-welcome-line{
   display: block;

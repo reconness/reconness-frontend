@@ -1,6 +1,6 @@
 <template>
     <div class="col-12">
-        <div class="login-main-container d-flex align-items-center flex-column justify-content-center">
+        <div class="login-main-container mt-4 d-flex align-items-center flex-column justify-content-center">
       <div class="login-container">
           <div class="row">
               <div class="col-12">
@@ -63,10 +63,10 @@ export default {
     border: 1px solid #e5e9ec;
     border-radius: 12px;
     opacity: 1;
-    width: 25vw;
+    width: 350px;
 }
 .login-main-container{
-    height: 100vh;
+    height: 100%;
 }
 .login-welcome-line{
   display: block;
