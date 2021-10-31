@@ -21,7 +21,7 @@
                   <p class="text-center mx-2 mt-2">Please provide a new password and we'll redirect you to the login page</p>
               </div>
               <div class="col-12">
-                <div class="pt-4 d-flex flex-column align-items-center">
+                <div class="d-flex flex-column align-items-center">
                   <input v-model="user.password" placeholder="password" class="mb-2 ph-center login-input w-75 form-control">
                   <input v-model="confirm_password" placeholder="confirm password" class="ph-center login-input w-75 form-control mt-2">
                   <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">SUBMIT</button>
@@ -44,6 +44,7 @@ export default {
   data () {
     return {
       confirmation_code: '',
+      confirm_password: '',
       user: {
         username: '',
         password: ''
@@ -81,7 +82,7 @@ export default {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 2px solid #00B1FF;
+  border-top: 3px solid #00B1FF;
   width: 45px;
   margin-bottom: unset;
   margin-top: unset;

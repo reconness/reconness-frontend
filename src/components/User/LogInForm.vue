@@ -13,7 +13,9 @@
                 </div>
               </div>
               <div class="col-12">
-                  <span>LOGO O GRAVATAR</span>
+                <div class="avatar_container d-flex justify-content-center">
+                  <span class="material-icons text-blue">account_circle</span>
+                </div>
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
@@ -75,7 +77,7 @@ export default {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 2px solid #00B1FF;
+  border-top: 3px solid #00B1FF;
   width: 45px;
   margin-bottom: unset;
   margin-top: unset;
@@ -101,5 +103,8 @@ export default {
 .bottom-border-radius-12px{
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px
+}
+div.avatar_container span.material-icons {
+  font-size: 8rem
 }
 </style>

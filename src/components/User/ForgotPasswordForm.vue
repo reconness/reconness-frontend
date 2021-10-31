@@ -17,7 +17,7 @@
                   <input v-model="user.email" placeholder="email" class="mb-2 ph-center login-input w-75 form-control">
                   <span class="blue-text">O</span>
                   <input v-model="user.phone" placeholder="phone number" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">ENTER</button>
+                  <button type="button" @click="goToResetPasswordForm" class="mt-4 btn btn-block login-button w-50pc white-text">ENTER</button>
                 </div>
               </div>
               <div class="col-12">
@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('auth', ['goToLoginForm'])
+    ...mapMutations('auth', ['goToLoginForm', 'goToResetPasswordForm'])
   }
 }
 </script>
@@ -73,7 +73,7 @@ export default {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 2px solid #00B1FF;
+  border-top: 3px solid #00B1FF;
   width: 45px;
   margin-bottom: unset;
   margin-top: unset;
