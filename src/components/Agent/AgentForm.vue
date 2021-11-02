@@ -134,8 +134,9 @@
                                 <span v-if="editable"  class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
                                 <span v-else class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                               </div> <!-- /.info-box-content -->
-                              <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor+' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-                                <AccountCogIco v-if="!agent.image" class="w-75 h-75"/>
+                              <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor +' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
+                                <AccountCogIco v-if="!agent.image && this.$installedByUser(agent.createdBy)" class="w-75 h-75"/>
+                                <ApplicationCogIco v-if="!agent.image && this.$installedBySystem(agent.createdBy)" class="w-75 h-75"/>
                                 <img v-if="agent.image" class="logo-image w-75 h-75" :src="agent.image">
                               </span>
                             </div> <!-- /.info-box -->
@@ -235,13 +236,15 @@ import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
 import { mapMutations } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 
 export default {
   name: 'AgentForm',
   components: {
     VAceEditor,
     AccountCogIco,
-    FileCodeIco
+    FileCodeIco,
+    ApplicationCogIco
   },
   props: {
     readOnly: {
@@ -329,6 +332,8 @@ export default {
         this.editable = true
         this.agent.id = value.id
         this.agent.createdBy = value.createdBy
+        this.agent.primaryColor = value.primaryColor
+        this.agent.secondaryColor = value.secondaryColor
       } else {
         this.resetAgentForm()
         this.agent.script = ''
