@@ -129,9 +129,9 @@ export default {
 
     app.config.globalProperties.$wordlistType = Object.freeze(
       {
-        SUBDOMAIN_ENUM: 1,
-        DIRECTORIES_ENUM: 2,
-        DNS_RESOLVERS: 3
+        SUBDOMAIN_ENUM: { id: 1, description: 'Subdomain Enum' },
+        DIRECTORIES_ENUM: { id: 2, description: 'Directories Enum' },
+        DNS_RESOLVERS: { id: 3, description: 'DNS Resolvers' }
       }
     )
 

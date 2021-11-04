@@ -28,8 +28,8 @@
             <div class="col-12">
               <div class="form-group mt-4">
                 <div class="custom-file">
-                  <input type="file" id="wordlists-files" placeholder="Add Subdomain Enum Files"/>
-                  <label class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add Subdomain Enum Files</label>
+                  <input type="file" id="wordlists-files" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
+                  <label class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add {{this.getWordListEnumByType.description }} Files</label>
                 </div>
               </div>
             </div>
@@ -50,7 +50,7 @@
                   <div class="col-4"><span class="text-break">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
                   <div class="col-3">
                     <div class="d-flex justify-content-between">
-                      <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded">Edit</button>
+                      <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
                       <button @click="removeWordListItem(wordlistItem.id)" type="button" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                     </div>
                   </div>
@@ -61,7 +61,7 @@
           </div><!-- /.row -->
         </div>
         <div class="border-top-none modal-footer">
-          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Accept</button>
           <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
         </div>
       </div>
@@ -75,34 +75,43 @@ export default {
   name: 'WordList',
   data: function () {
     return {
-      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM
+      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id
     }
   },
   computed: {
     ...mapState('wordlist', ['wordlists']),
     isSubdomainEnumSelected () {
-      return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM
+      return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM.id
     },
     isDirectoryEnumSelected () {
-      return this.selectedPill === this.$wordlistType.DIRECTORIES_ENUM
+      return this.selectedPill === this.$wordlistType.DIRECTORIES_ENUM.id
     },
     isDnsResolverSelected () {
-      return this.selectedPill === this.$wordlistType.DNS_RESOLVERS
+      return this.selectedPill === this.$wordlistType.DNS_RESOLVERS.id
     },
     getWordListByType () {
       return this.wordlists.filter(item => item.type === this.selectedPill)
+    },
+    getWordListEnumByType () {
+      if (this.isSubdomainEnumSelected) {
+        return this.$wordlistType.SUBDOMAIN_ENUM
+      } else if (this.isDirectoryEnumSelected) {
+        return this.$wordlistType.DIRECTORIES_ENUM
+      } else {
+        return this.$wordlistType.DNS_RESOLVERS
+      }
     }
   },
   methods: {
     ...mapMutations('wordlist', ['removeWordListItem']),
     setSubdomainEnumSelected () {
-      this.selectedPill = this.$wordlistType.SUBDOMAIN_ENUM
+      this.selectedPill = this.$wordlistType.SUBDOMAIN_ENUM.id
     },
     setDirectoryEnumSelected () {
-      this.selectedPill = this.$wordlistType.DIRECTORIES_ENUM
+      this.selectedPill = this.$wordlistType.DIRECTORIES_ENUM.id
     },
     setDnsResolverSelected () {
-      this.selectedPill = this.$wordlistType.DNS_RESOLVERS
+      this.selectedPill = this.$wordlistType.DNS_RESOLVERS.id
     }
   }
 }
@@ -163,7 +172,7 @@ label {
   word-break: break-all;
 }
 .wordlist-btn-size{
-  width: 80px;
+  width: 83px;
   height: 40px;
 }
 .wordlist-data-container{
@@ -177,5 +186,8 @@ label.wordlists-files-label::after{
 label.wordlists-files-label{
   font-size: 1rem !important;
   border: 1px solid #dee2e6!important;
+}
+button.wordlist-download-btn{
+  padding: unset !important
 }
 </style>
