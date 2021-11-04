@@ -201,7 +201,7 @@ export default {
       showNameInput: false,
       transformedName: 'my-target',
       typedOnNameInput: false,
-      isRandomColorSelected: false
+      isRandomColorSelected: true
     }
   },
   mixins: [TargetMixin],
@@ -236,6 +236,7 @@ export default {
   watch: {
     loadSelectedTarget: function (value) {
       if (value !== undefined) {
+        this.isRandomColorSelected = false
         this.target.name = this.$convertHyphensToSpacesByString(value.name)
         this.target.primaryColor = value.primaryColor
         this.target.secondaryColor = value.secondaryColor
@@ -324,6 +325,7 @@ export default {
     resetTargetForm () {
       this.typedOnNameInput = false
       this.showNameInput = false
+      this.isRandomColorSelected = true
       this.target = {
         name: 'My target',
         primaryColor: '#737be5',

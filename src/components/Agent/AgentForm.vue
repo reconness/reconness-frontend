@@ -307,7 +307,7 @@ export default {
       },
       nextAgentSequence: 30,
       showNameInput: false,
-      isRandomColorSelected: false
+      isRandomColorSelected: true
     }
   },
   mixins: [TargetMixin],
@@ -348,6 +348,7 @@ export default {
   watch: {
     loadSelectedAgent: function (value) {
       if (value !== undefined) {
+        this.isRandomColorSelected = false
         this.agent.name = value.name
         this.agent.background = value.background
         this.agent.repository = value.repository
@@ -429,6 +430,7 @@ export default {
       this.$store.commit('agent/setDetailsLinks', false)
     },
     resetAgentForm () {
+      this.isRandomColorSelected = true
       this.agent = {
         name: 'My Agent',
         background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
