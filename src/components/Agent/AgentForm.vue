@@ -145,27 +145,39 @@
                             <h3 class="font-weight-bold card-title disable-float mt-4">
                               Pick a Color
                             </h3>
-                            <div class="pl-0 w-100 agent-containers target-combo-box-size target-color-section">
+                            <div class="mt-4 pl-0 w-100 agent-containers target-combo-box-size target-color-section">
                               <div class="pl-0 combo-box-left-padding">
                                 <div class="form-group">
                                   <div class="row">
                                     <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
+                                      <div :class="{'color-selection-container-border': isRandomColorSelected}" class="d-flex m-auto color-selection-container random-color-selection-container">
+                                        <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRandomColor" class="agent-colorpicker btn btn-block target-form-color-components agentform-color-components-align image-button"></button>
+                                      </div>
                                     </div>
                                     <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" class="blue-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <div :class="{'color-selection-container-border': isBlueColorSelected && !isRandomColorSelected}" class="m-auto color-selection-container">
+                                        <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setBlueColor" class="blue-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      </div>
                                     </div>
                                     <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" class="violet-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      <div :class="{'color-selection-container-border': isVioletColorSelected && !isRandomColorSelected}" class="m-auto color-selection-container">
+                                        <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setVioletColor" class="violet-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      </div>
                                     </div>
-                                    <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" class="red-btn-backg btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    <div class="col-4 pt-3">
+                                      <div :class="{'color-selection-container-border': isRedColorSelected && !isRandomColorSelected}" class="m-auto color-selection-container">
+                                        <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setRedColor" class="red-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      </div>
                                     </div>
-                                    <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" class="orange-btn-backg btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    <div class="col-4 pt-3">
+                                      <div :class="{'color-selection-container-border': isOrangeColorSelected && !isRandomColorSelected}" class="m-auto color-selection-container">
+                                        <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setOrangeColor" class="orange-btn-backg btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      </div>
                                     </div>
-                                    <div class="col-4">
-                                      <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" class="green-btn-back btn btn-block btn-default target-form-color-spacing-bottom target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                    <div class="col-4 pt-3">
+                                      <div :class="{'color-selection-container-border': isGreenColorSelected && !isRandomColorSelected}" class="m-auto color-selection-container">
+                                        <button :disabled="this.$store.state.agent.fromDetailsLink" type="button" @click="setGreenColor" class="green-btn-back btn btn-block btn-default target-form-color-components agentform-color-components-align btn-colors-size"></button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -294,7 +306,8 @@ export default {
         }
       },
       nextAgentSequence: 30,
-      showNameInput: false
+      showNameInput: false,
+      isRandomColorSelected: false
     }
   },
   mixins: [TargetMixin],
@@ -315,6 +328,21 @@ export default {
     },
     isFormValid () {
       return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
+    },
+    isBlueColorSelected () {
+      return this.agent.primaryColor === '#03DCED'
+    },
+    isVioletColorSelected () {
+      return this.agent.primaryColor === '#737be5'
+    },
+    isRedColorSelected () {
+      return this.agent.primaryColor === '#F96767'
+    },
+    isOrangeColorSelected () {
+      return this.agent.primaryColor === '#FF9966'
+    },
+    isGreenColorSelected () {
+      return this.agent.primaryColor === '#3adb99'
     }
   },
   watch: {
@@ -345,22 +373,27 @@ export default {
     setBlueColor: function () {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
+      this.isRandomColorSelected = false
     },
     setVioletColor: function () {
       this.agent.primaryColor = '#737be5'
       this.agent.secondaryColor = '#7159d3'
+      this.isRandomColorSelected = false
     },
     setRedColor: function () {
       this.agent.primaryColor = '#F96767'
       this.agent.secondaryColor = '#FF4343'
+      this.isRandomColorSelected = false
     },
     setOrangeColor: function () {
       this.agent.primaryColor = '#FF9966'
       this.agent.secondaryColor = '#f36a33'
+      this.isRandomColorSelected = false
     },
     setGreenColor: function () {
       this.agent.primaryColor = '#3adb99'
       this.agent.secondaryColor = '#16c465'
+      this.isRandomColorSelected = false
     },
     addAgent () {
       this.enableValidationMessages()
@@ -529,6 +562,7 @@ export default {
       const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
       this.agent.primaryColor = randomColor.primaryColor
       this.agent.secondaryColor = randomColor.secondaryColor
+      this.isRandomColorSelected = true
     },
     verifyPencilStatus () {
       if (this.isPencilVisibleAndClick) {
@@ -550,6 +584,18 @@ export default {
   .agent-type-container{
     height: 159px
   }
+  .random-color-selection-container{
+    padding: 2px !important;
+  }
+  .color-selection-container{
+    border-radius: 8px;
+    opacity: 1;
+    width: 41px;
+    padding: 3px;
+  }
+  .color-selection-container-border{
+    border: 1px solid #00C9FF;
+  }
     .targetform-action{
         bottom: -28%;
         position: absolute;
@@ -560,7 +606,6 @@ export default {
     .target-form-color-components{
         width: 30px;
         height: 30px;
-        margin-top: 23px !important;
     }
 
     .custom-control-input:checked~.custom-control-label::before {
@@ -602,7 +647,7 @@ export default {
     }
 
     .target-combo-box-size{
-        height: 144px;
+        height: 114px;
     }
 
     .combo-box-left-padding{
@@ -713,10 +758,6 @@ label[for='uploadimage']{
   border-radius: 7px;
 }
 
-/* input.agent-name-input:hover{
-  background-color: #afd9e647;
-} */
-
 .bordered-input-name-withfocus{
   border-top: 2px solid #00B1FF;
   border-right: 2px solid #00B1FF;
@@ -740,10 +781,6 @@ label[for='uploadimage']{
 
 .target-inputs-separator {
   margin-top: 14px;
-}
-
-.private-program-container {
-  /* float: right; */
 }
 
 div.private-program-container label {
@@ -771,13 +808,10 @@ textarea {
 
 .p-chips{
   width: 100%;
-  /* border-radius: 12px !important; */
   opacity: 1;
-  /* border: 1px solid #f1f3f5; */
   background: #fffffF 0% 0% no-repeat padding-box;
   font-size: 14px;
   color: #000000;
-  /* min-height: calc(1.8125rem + 2px); */
 }
 .title-target-admin-form{
   font-size: 24px
