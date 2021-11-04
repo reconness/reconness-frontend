@@ -75,7 +75,7 @@
                         <div class="col-12">
                           <div class="info-box d-flex infobox-radius infobox-padding-bordered">
                             <div class="w-100 infobox-radius d-flex infobox-border-line infobox-padding-bordered d-flex align-items-center">
-                            <span class="color-sample-area ml-1 info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+target.primaryColor+' '+ '0%,' + target.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco class="w-75 h-75"/></span>
+                            <span class="color-sample-area ml-1 info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+target.primaryColor+' '+ '0%,' + target.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco class="form-ico-size"/></span>
                             <div class="info-box-content info-box-content-custom ml-2">
                             <span class="info-box-text domain-names-target">
                             {{target.name}}

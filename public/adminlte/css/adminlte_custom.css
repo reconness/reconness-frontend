@@ -1156,3 +1156,7 @@ html {
   padding: 0 !important;
   overflow-y: auto;
 }
+.form-ico-size{
+  height: 68%!important;
+  width: 68%!important;
+}

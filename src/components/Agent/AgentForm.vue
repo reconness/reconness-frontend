@@ -135,8 +135,8 @@
                                 <span v-else class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                               </div> <!-- /.info-box-content -->
                               <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor +' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-                                <AccountCogIco v-if="!agent.image && this.$installedByUser(agent.createdBy)" class="w-75 h-75"/>
-                                <ApplicationCogIco v-if="!agent.image && this.$installedBySystem(agent.createdBy)" class="w-75 h-75"/>
+                                <AccountCogIco v-if="!agent.image && this.$installedByUser(agent.createdBy)" class="form-ico-size"/>
+                                <ApplicationCogIco v-if="!agent.image && this.$installedBySystem(agent.createdBy)" class="form-ico-size"/>
                                 <img v-if="agent.image" class="logo-image w-75 h-75" :src="agent.image">
                               </span>
                             </div> <!-- /.info-box -->
