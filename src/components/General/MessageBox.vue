@@ -26,7 +26,7 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <input class="form-control zero-borders" v-model="nameTyped" placeholder="Target name">
+                    <input class="form-control zero-borders" v-model="nameTyped" :placeholder="entityTypeDisplayed.description + ' name'">
                   </div>
                 </div>
                 </div> <!-- /.modal-body -->
