@@ -7,7 +7,7 @@ export default ({
         filename: 'default.txt',
         type: 3,
         count: 1263,
-        size: '17kb',
+        size: '17',
         path: '/app/Content/wordlists/dns_resolver_enum'
       },
       {
@@ -15,7 +15,7 @@ export default ({
         filename: 'default2.txt',
         type: 1,
         count: 1264,
-        size: '18kb',
+        size: '18',
         path: '/app/Content/wordlists/subdomain_enum'
       },
       {
@@ -23,10 +23,11 @@ export default ({
         filename: 'default3.txt',
         type: 2,
         count: 1265,
-        size: '19kb',
+        size: '19',
         path: '/app/Content/wordlists/dir_enum'
       }
-    ]
+    ],
+    idWordList: 37
   },
   mutations: {
     removeWordListItem (state, idWordlist) {
@@ -34,6 +35,11 @@ export default ({
       if (index !== -1) {
         state.wordlists.splice(index, 1)
       }
+    },
+    addWordListItem (state, wordlistItem) {
+      state.idWordList = state.idWordList + 1
+      wordlistItem.id = state.idWordList
+      state.wordlists.push(wordlistItem)
     }
   },
   actions: {},

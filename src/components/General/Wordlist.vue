@@ -28,8 +28,9 @@
             <div class="col-12">
               <div class="form-group mt-4">
                 <div class="custom-file">
-                  <input type="file" id="wordlists-files" placeholder="Add Subdomain Enum Files"/>
-                  <label class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add Subdomain Enum Files</label>
+                  <input type="file" id="wordlists-files" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
+                  <label v-if="loadedFileName === ''" class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add {{this.getWordListEnumByType.description }} Files</label>
+                  <label v-else class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">{{loadedFileName}}</label>
                 </div>
               </div>
             </div>
@@ -44,13 +45,13 @@
                 </div>
                 <div class=" wordlist-data-container overflow-y-auto w-100">
                 <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
-                  <div class="col-2"><span>{{wordlistItem.filename}}</span></div>
-                  <div class="col-2"><span>{{wordlistItem.count}}</span></div>
-                  <div class="col-1"><span>{{wordlistItem.size}}</span></div>
-                  <div class="col-4"><span class="text-break">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
+                  <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.filename}}</span></div>
+                  <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.count}}</span></div>
+                  <div class="col-1"><span class="text-wrap break-word">{{wordlistItem.size}}kb</span></div>
+                  <div class="col-4"><span class="text-break break-word">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
                   <div class="col-3">
                     <div class="d-flex justify-content-between">
-                      <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded">Edit</button>
+                      <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
                       <button @click="removeWordListItem(wordlistItem.id)" type="button" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                     </div>
                   </div>
@@ -61,7 +62,7 @@
           </div><!-- /.row -->
         </div>
         <div class="border-top-none modal-footer">
-          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Accept</button>
           <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
         </div>
       </div>
@@ -75,34 +76,69 @@ export default {
   name: 'WordList',
   data: function () {
     return {
-      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM
+      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id,
+      loadedFileName: ''
     }
   },
   computed: {
     ...mapState('wordlist', ['wordlists']),
     isSubdomainEnumSelected () {
-      return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM
+      return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM.id
     },
     isDirectoryEnumSelected () {
-      return this.selectedPill === this.$wordlistType.DIRECTORIES_ENUM
+      return this.selectedPill === this.$wordlistType.DIRECTORIES_ENUM.id
     },
     isDnsResolverSelected () {
-      return this.selectedPill === this.$wordlistType.DNS_RESOLVERS
+      return this.selectedPill === this.$wordlistType.DNS_RESOLVERS.id
     },
     getWordListByType () {
       return this.wordlists.filter(item => item.type === this.selectedPill)
+    },
+    getWordListEnumByType () {
+      if (this.isSubdomainEnumSelected) {
+        return this.$wordlistType.SUBDOMAIN_ENUM
+      } else if (this.isDirectoryEnumSelected) {
+        return this.$wordlistType.DIRECTORIES_ENUM
+      } else {
+        return this.$wordlistType.DNS_RESOLVERS
+      }
     }
   },
   methods: {
-    ...mapMutations('wordlist', ['removeWordListItem']),
+    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem']),
+    resetLoadedFileName () {
+      this.loadedFileName = ''
+    },
     setSubdomainEnumSelected () {
-      this.selectedPill = this.$wordlistType.SUBDOMAIN_ENUM
+      this.selectedPill = this.$wordlistType.SUBDOMAIN_ENUM.id
+      this.resetLoadedFileName()
     },
     setDirectoryEnumSelected () {
-      this.selectedPill = this.$wordlistType.DIRECTORIES_ENUM
+      this.selectedPill = this.$wordlistType.DIRECTORIES_ENUM.id
+      this.resetLoadedFileName()
     },
     setDnsResolverSelected () {
-      this.selectedPill = this.$wordlistType.DNS_RESOLVERS
+      this.selectedPill = this.$wordlistType.DNS_RESOLVERS.id
+      this.resetLoadedFileName()
+    },
+    checkIfNoFileHaveBeenSelectedAndResetLoadedName (e) {
+      if (e.target.value.length === 0) {
+        this.resetLoadedFileName()
+      }
+    },
+    getFileMetadata (e) {
+      this.checkIfNoFileHaveBeenSelectedAndResetLoadedName(e)
+      const sizeInkb = e.target.files[0].size / 1024
+      this.loadedFileName = e.target.files[0].name
+      const wordListItem = {
+        id: -1,
+        filename: e.target.files[0].name,
+        size: Math.round(sizeInkb),
+        type: this.selectedPill,
+        count: 0,
+        path: ''
+      }
+      this.addWordListItem(wordListItem)
     }
   }
 }
@@ -163,7 +199,7 @@ label {
   word-break: break-all;
 }
 .wordlist-btn-size{
-  width: 80px;
+  width: 83px;
   height: 40px;
 }
 .wordlist-data-container{
@@ -177,5 +213,8 @@ label.wordlists-files-label::after{
 label.wordlists-files-label{
   font-size: 1rem !important;
   border: 1px solid #dee2e6!important;
+}
+button.wordlist-download-btn{
+  padding: unset !important
 }
 </style>

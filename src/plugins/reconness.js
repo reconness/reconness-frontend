@@ -120,7 +120,7 @@ export default {
     app.config.globalProperties.$entityTypeData = Object.freeze(
       {
         TARGET: { id: 1, description: 'Target' },
-        ROOTDOMAIN: { id: 2, description: 'RootDomain' },
+        ROOTDOMAIN: { id: 2, description: 'Root Domain' },
         SUBDOMAIN: { id: 3, description: 'SubDomain' },
         AGENT: { id: 4, description: 'Agent' },
         PIPELINE: { id: 5, description: 'Pipeline' }
@@ -129,9 +129,9 @@ export default {
 
     app.config.globalProperties.$wordlistType = Object.freeze(
       {
-        SUBDOMAIN_ENUM: 1,
-        DIRECTORIES_ENUM: 2,
-        DNS_RESOLVERS: 3
+        SUBDOMAIN_ENUM: { id: 1, description: 'Subdomain Enum' },
+        DIRECTORIES_ENUM: { id: 2, description: 'Directories Enum' },
+        DNS_RESOLVERS: { id: 3, description: 'DNS Resolvers' }
       }
     )
 

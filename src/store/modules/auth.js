@@ -2,11 +2,30 @@ import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
-    authentication_token: ''
+    authentication_token: '',
+    showForgottenPasswordForm: false,
+    showResetPasswordForm: false,
+    showLoginForm: true
+
   },
   mutations: {
     updateAuthenticationToken (state, token) {
       state.authentication_token = token
+    },
+    goToForgotPasswordForm (state) {
+      state.showForgottenPasswordForm = true
+      state.showResetPasswordForm = false
+      state.showLoginForm = false
+    },
+    goToResetPasswordForm (state) {
+      state.showForgottenPasswordForm = false
+      state.showResetPasswordForm = true
+      state.showLoginForm = false
+    },
+    goToLoginForm (state) {
+      state.showForgottenPasswordForm = false
+      state.showResetPasswordForm = false
+      state.showLoginForm = true
     }
   },
   actions: {
@@ -26,7 +45,5 @@ export default ({
         })
     }
   },
-  getters: {
-
-  }
+  getters: {}
 })
