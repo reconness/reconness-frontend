@@ -28,8 +28,9 @@
             <div class="col-12">
               <div class="form-group mt-4">
                 <div class="custom-file">
-                  <input type="file" id="wordlists-files" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
-                  <label class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add {{this.getWordListEnumByType.description }} Files</label>
+                  <input type="file" id="wordlists-files" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
+                  <label v-if="loadedFileName === ''" class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add {{this.getWordListEnumByType.description }} Files</label>
+                  <label v-else class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">{{loadedFileName}}</label>
                 </div>
               </div>
             </div>
@@ -44,10 +45,10 @@
                 </div>
                 <div class=" wordlist-data-container overflow-y-auto w-100">
                 <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
-                  <div class="col-2"><span>{{wordlistItem.filename}}</span></div>
-                  <div class="col-2"><span>{{wordlistItem.count}}</span></div>
-                  <div class="col-1"><span>{{wordlistItem.size}}</span></div>
-                  <div class="col-4"><span class="text-break">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
+                  <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.filename}}</span></div>
+                  <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.count}}</span></div>
+                  <div class="col-1"><span class="text-wrap break-word">{{wordlistItem.size}}kb</span></div>
+                  <div class="col-4"><span class="text-break break-word">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
                   <div class="col-3">
                     <div class="d-flex justify-content-between">
                       <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
@@ -75,7 +76,8 @@ export default {
   name: 'WordList',
   data: function () {
     return {
-      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id
+      selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id,
+      loadedFileName: ''
     }
   },
   computed: {
@@ -103,15 +105,40 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('wordlist', ['removeWordListItem']),
+    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem']),
+    resetLoadedFileName () {
+      this.loadedFileName = ''
+    },
     setSubdomainEnumSelected () {
       this.selectedPill = this.$wordlistType.SUBDOMAIN_ENUM.id
+      this.resetLoadedFileName()
     },
     setDirectoryEnumSelected () {
       this.selectedPill = this.$wordlistType.DIRECTORIES_ENUM.id
+      this.resetLoadedFileName()
     },
     setDnsResolverSelected () {
       this.selectedPill = this.$wordlistType.DNS_RESOLVERS.id
+      this.resetLoadedFileName()
+    },
+    checkIfNoFileHaveBeenSelectedAndResetLoadedName (e) {
+      if (e.target.value.length === 0) {
+        this.resetLoadedFileName()
+      }
+    },
+    getFileMetadata (e) {
+      this.checkIfNoFileHaveBeenSelectedAndResetLoadedName(e)
+      const sizeInkb = e.target.files[0].size / 1024
+      this.loadedFileName = e.target.files[0].name
+      const wordListItem = {
+        id: -1,
+        filename: e.target.files[0].name,
+        size: Math.round(sizeInkb),
+        type: this.selectedPill,
+        count: 0,
+        path: ''
+      }
+      this.addWordListItem(wordListItem)
     }
   }
 }
