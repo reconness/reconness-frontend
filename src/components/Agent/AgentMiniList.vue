@@ -130,6 +130,7 @@ export default {
     width: 18px;
     height: 18px;
     top: 0;
+    margin-left: 25%
 }
 .agent-minilist-source-size-ico {
     width: 19px

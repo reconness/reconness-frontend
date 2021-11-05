@@ -124,5 +124,6 @@ export default {
     width: 18px;
     height: 18px;
     top: 0;
+    margin-left: 25%
 }
 </style>
