@@ -13,6 +13,7 @@
                   <div class="col-12">
                     <div class="d-flex justify-content-center">
                       <p v-if="removeAll" class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete all {{this.getLowerNameOfEntityTypeDisplayed}}s?</p>
+                      <p v-else-if="multipleItemsToDelete" class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete selected {{this.getLowerNameOfEntityTypeDisplayed}}s?</p>
                       <p v-else class="question-title-text-width question-title-font-size question-title-font-color text-center font-weight-bold ">Are you sure you want to delete selected {{this.getLowerNameOfEntityTypeDisplayed}}?</p>
                     </div>
                   </div>
