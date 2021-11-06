@@ -19,9 +19,10 @@
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
-                  <input v-model="user.username" placeholder="username" class="ph-center login-input w-75 form-control">
-                  <input v-model="user.password" placeholder="password" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">LOGIN</button>
+                  <input v-model="user.username" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
+                  <input type="password" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
+                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text" @click="authenticate">LOGIN</button>
+                  <p v-if="areInputInBlank" class="mt-2 text-center invalid">Es necesario que especifique su usuario y contrasenna para poder acceder al sistema</p>
                 </div>
               </div>
               <div class="col-12">
@@ -43,11 +44,25 @@ export default {
       user: {
         username: '',
         password: ''
-      }
+      },
+      wereWrittenInput: false
+    }
+  },
+  computed: {
+    areInputInBlank () {
+      return (this.$validateIsBlank(this.user.username) || this.$validateIsBlank(this.user.password)) && this.wereWrittenInput
     }
   },
   methods: {
-    ...mapMutations('auth', ['goToForgotPasswordForm'])
+    ...mapMutations('auth', ['goToForgotPasswordForm']),
+    authenticate () {
+      if (!this.areInputInBlank) {
+        this.$router.push({ name: 'Home' })
+      }
+    },
+    setWrittenInputFlag () {
+      this.wereWrittenInput = true
+    }
   }
 }
 </script>
