@@ -1160,3 +1160,6 @@ html {
   height: 68%!important;
   width: 68%!important;
 }
+.invalid {
+  color: red;
+}

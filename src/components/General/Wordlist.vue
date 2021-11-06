@@ -171,10 +171,6 @@ export default {
 .input.invalid input {
     border: 1px solid red;
 }
-
-.invalid {
-  color: red;
-}
 .agent-name-input {
   width: 50%;
 }
