@@ -22,7 +22,7 @@
                   <input v-model="user.username" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
                   <input type="password" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
                   <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text" @click="authenticate">LOGIN</button>
-                  <p v-if="areInputInBlank" class="mt-2 text-center invalid">Es necesario que especifique su usuario y contrasenna para poder acceder al sistema</p>
+                  <p v-if="areInputInBlank" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                 </div>
               </div>
               <div class="col-12">
