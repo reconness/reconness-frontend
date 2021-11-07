@@ -22,9 +22,11 @@
               </div>
               <div class="col-12">
                 <div class="d-flex flex-column align-items-center">
-                  <input v-model="user.password" placeholder="password" class="mb-2 ph-center login-input w-75 form-control">
-                  <input v-model="confirm_password" placeholder="confirm password" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">SUBMIT</button>
+                  <input v-model="user.password" placeholder="password" :disabled="this.$validateIsBlank(confirmation_code)" class="mb-2 ph-center login-input w-75 form-control">
+                  <input v-model="confirm_password" placeholder="confirm password" :disabled="this.$validateIsBlank(confirmation_code)" class="ph-center login-input w-75 form-control mt-2">
+                  <button type="button" :disabled="this.$validateIsBlank(confirmation_code)" @click="changeUserPassword" class="mt-4 btn btn-block login-button w-50pc white-text">SUBMIT</button>
+                  <p v-if="!passwordsAreEquals" class="mt-2 text-center invalid">The specified passwords do not match</p>
+                  <p v-if="areInputInBlank" class="mt-2 text-center invalid">Please specify and confirm the new password to continue</p>
                 </div>
               </div>
               <div class="col-12">
@@ -48,11 +50,38 @@ export default {
       user: {
         username: '',
         password: ''
-      }
+      },
+      wereWrittenInput: false
+    }
+  },
+  computed: {
+    passwordsAreEquals () {
+      return this.user.password === this.confirm_password
+    },
+    areInputInBlank () {
+      return (this.$validateIsBlank(this.confirm_password) || this.$validateIsBlank(this.user.password)) && this.wereWrittenInput
+    }
+  },
+  watch: {
+    'user.password': function (value) {
+      this.wereWrittenInput = true
+    },
+    confirm_password: function (value) {
+      this.wereWrittenInput = true
     }
   },
   methods: {
-    ...mapMutations('auth', ['goToLoginForm'])
+    ...mapMutations('auth', ['goToLoginForm']),
+    ...mapMutations('target', ['updateUserPassword']),
+    changeUserPassword () {
+      if (this.$validateIsBlank(this.confirm_password) || this.$validateIsBlank(this.user.password)) {
+        this.wereWrittenInput = true
+      }
+      if (this.passwordsAreEquals && !this.$validateIsBlank(this.user.password)) {
+        this.updateUserPassword(this.user.password)
+        this.goToLoginForm()
+      }
+    }
   }
 }
 </script>

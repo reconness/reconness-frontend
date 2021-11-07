@@ -991,7 +991,8 @@ export default ({
     idNote: -1,
     loggedUser: {
       name: 'John Doe',
-      email: 'johndoe@gmail.com'
+      email: 'johndoe@gmail.com',
+      password: ''
     },
     isTargetDeleted: false,
     isTableList: true,
@@ -1355,6 +1356,9 @@ export default ({
     },
     updateRemoveAllOption (state, value) {
       state.removeAll = value
+    },
+    updateUserPassword (state, newPassword) {
+      state.loggedUser.password = newPassword
     }
   },
   actions: {
