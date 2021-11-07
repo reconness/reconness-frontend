@@ -14,10 +14,15 @@
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
-                  <input v-model="user.email" placeholder="email" class="mb-2 ph-center login-input w-75 form-control">
+                  <input v-model="user.email" type="email" @change="setWrittenInputFlag" placeholder="email" class="mb-2 ph-center login-input w-75 form-control">
                   <span class="blue-text">O</span>
-                  <input v-model="user.phone" placeholder="phone number" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" @click="goToResetPasswordForm" class="mt-4 btn btn-block login-button w-50pc white-text">ENTER</button>
+                  <input v-model="user.phone" @change="setWrittenInputFlag" placeholder="phone number" class="ph-center login-input w-75 form-control mt-2">
+                  <button type="button" @click="checkIfInputDataAreValid" class="mt-4 btn btn-block login-button w-50pc white-text">ENTER</button>
+                  <div class="mt-4">
+                    <p v-if="!isValidEmail" class="text-center invalid">The specified email is not correct</p>
+                    <p v-if="isValidPhone" class="text-center invalid">The specified phone is not correct</p>
+                    <p v-if="areEmptyEmailAndPhoneVar" class="text-center invalid">You must specify your phone or email to continue</p>
+                  </div>
                 </div>
               </div>
               <div class="col-12">
@@ -39,11 +44,49 @@ export default {
       user: {
         email: '',
         phone: ''
+      },
+      areEmptyEmailAndPhoneVar: false
+    }
+  },
+  computed: {
+    isValidEmail () {
+      if (this.$validateIsBlank(this.user.email)) {
+        return true
+      }
+      return this.$validateEmail(this.user.email)
+    },
+    isValidPhone () {
+      if (this.$validateIsBlank(this.user.phone)) {
+        return false
+      }
+      return this.$validatePhone(this.user.phone)
+    },
+    arePhoneAndEmailEmpty () {
+      return (this.$validateIsBlank(this.user.email) && this.$validateIsBlank(this.user.phone))
+    }
+  },
+  watch: {
+    'user.email': function (value) {
+      if (!this.$validateIsBlank(this.user.email)) {
+        this.areEmptyEmailAndPhoneVar = false
+      }
+    },
+    'user.phone': function (value) {
+      if (!this.$validateIsBlank(this.user.phone)) {
+        this.areEmptyEmailAndPhoneVar = false
       }
     }
   },
   methods: {
-    ...mapMutations('auth', ['goToLoginForm', 'goToResetPasswordForm'])
+    ...mapMutations('auth', ['goToLoginForm', 'goToResetPasswordForm']),
+    checkIfInputDataAreValid () {
+      if (this.arePhoneAndEmailEmpty) {
+        this.areEmptyEmailAndPhoneVar = true
+      }
+      if ((this.isValidEmail && !this.isValidPhone) && !this.arePhoneAndEmailEmpty) {
+        this.goToResetPasswordForm()
+      }
+    }
   }
 }
 </script>
