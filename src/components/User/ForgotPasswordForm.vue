@@ -5,29 +5,29 @@
           <div class="row">
               <div class="col-12">
                 <div class="pt-3 d-flex justify-content-center flex-column mb-3">
-                  <span class="black-text font-weight-bold m-auto">Forgot password</span>
+                  <span class="black-text login-form-header-font m-auto">Forgot password</span>
                   <hr class="login-welcome-blue-line"/>
                 </div>
               </div>
               <div class="col-12">
-                  <p class="text-center">Enter your number or email address below and our system will send you a confirmation code</p>
+                  <p class="text-center login-form-info-font">Enter your number or email address below and our system will send you a confirmation code</p>
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
                   <input v-model="user.email" type="email" @change="setWrittenInputFlag" placeholder="email" class="mb-2 ph-center login-input w-75 form-control">
-                  <span class="blue-text">O</span>
+                  <span class="blue-text login-form-separator-font">O</span>
                   <input v-model="user.phone" @change="setWrittenInputFlag" placeholder="phone number" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" @click="checkIfInputDataAreValid" class="mt-4 btn btn-block login-button w-50pc white-text">ENTER</button>
+                  <button type="button" @click="checkIfInputDataAreValid" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text">ENTER</button>
                   <div class="mt-4">
-                    <p v-if="!isValidEmail" class="text-center invalid">The specified email is not correct</p>
-                    <p v-if="isValidPhone" class="text-center invalid">The specified phone is not correct</p>
-                    <p v-if="areEmptyEmailAndPhoneVar" class="text-center invalid">You must specify your phone or email to continue</p>
+                    <p v-if="!isValidEmail" class="text-center login-form-info-font invalid">The specified email is not correct</p>
+                    <p v-if="isValidPhone" class="text-center login-form-info-font invalid">The specified phone is not correct</p>
+                    <p v-if="areEmptyEmailAndPhoneVar" class="text-center login-form-info-font invalid">You must specify your phone or email to continue</p>
                   </div>
                 </div>
               </div>
               <div class="col-12">
                   <div class="bottom-border-radius-12px mt-5 login-bottom-section d-flex justify-content-center ligth-gray-background">
-                      <span @click="goToLoginForm" class="cursor-pointer blue-text my-3">Back to login</span>
+                      <span @click="goToLoginForm" class="cursor-pointer blue-text my-3 login-form-footer-link">Back to login</span>
                   </div>
               </div>
           </div>
@@ -128,7 +128,8 @@ export default {
 }
 .ph-center::-webkit-input-placeholder, .ph-center{
   text-align: center;
-  line-height: 100px
+  line-height: 100px;
+  font: normal normal 300 14px/19px Poppins;
 }
 .login-button{
   background: #00b1ff 0% 0% no-repeat padding-box;

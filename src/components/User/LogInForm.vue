@@ -123,23 +123,9 @@ export default {
 div.avatar_container span.material-icons {
   font-size: 8rem
 }
-.login-form-header-font{
-  font: normal normal 600 20px/33px Poppins;
-  letter-spacing: 1px
-}
+
 .login-form-header-welcome-font{
   font: normal normal normal 27px/22px Poppins;
-  letter-spacing: 0px;
-}
-.login-form-info-font{
-  font: normal normal 300 14px/18px Poppins;
-}
-.login-form-action-button{
-  font: normal normal normal 14px/17px Poppins;
-  height: 45px;
-}
-.login-form-footer-link{
-  font: normal normal 300 14px/19px Poppins;
   letter-spacing: 0px;
 }
 </style>

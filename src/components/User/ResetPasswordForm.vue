@@ -5,12 +5,12 @@
           <div class="row">
               <div class="col-12">
                 <div class="pt-3 d-flex justify-content-center flex-column mb-3">
-                  <span class="black-text font-weight-bold m-auto">Reset Password</span>
+                  <span class="black-text login-form-header-font m-auto">Reset Password</span>
                   <hr class="login-welcome-blue-line"/>
                 </div>
               </div>
               <div class="col-12">
-                  <p class="text-center mt-2">Enter the confirmation code and our system will let you reset your password</p>
+                  <p class="text-center mt-2 login-form-info-font">Enter the confirmation code and our system will let you reset your password</p>
               </div>
               <div class="col-12">
                 <div class="pt-2 d-flex flex-column align-items-center">
@@ -18,20 +18,22 @@
                 </div>
               </div>
               <div class="col-12">
-                  <p class="text-center mx-2 mt-2">Please provide a new password and we'll redirect you to the login page</p>
+                  <p class="text-center mx-2 mt-2 login-form-info-font">Please provide a new password and we'll redirect you to the login page</p>
               </div>
               <div class="col-12">
                 <div class="d-flex flex-column align-items-center">
                   <input v-model="user.password" placeholder="password" :disabled="this.$validateIsBlank(confirmation_code)" class="mb-2 ph-center login-input w-75 form-control">
                   <input v-model="confirm_password" placeholder="confirm password" :disabled="this.$validateIsBlank(confirmation_code)" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" :disabled="this.$validateIsBlank(confirmation_code)" @click="changeUserPassword" class="mt-4 btn btn-block login-button w-50pc white-text">SUBMIT</button>
-                  <p v-if="!passwordsAreEquals" class="mt-2 text-center invalid">The specified passwords do not match</p>
-                  <p v-if="areInputInBlank" class="mt-2 text-center invalid">Please specify and confirm the new password to continue</p>
+                  <button type="button" :disabled="this.$validateIsBlank(confirmation_code)" @click="changeUserPassword" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text">SUBMIT</button>
+                  <div class="mt-4">
+                    <p v-if="!passwordsAreEquals" class="mt-2 login-form-info-font text-center invalid">The specified passwords do not match</p>
+                    <p v-if="areInputInBlank" class="mt-2 login-form-info-font text-center invalid">Please specify and confirm the new password to continue</p>
+                  </div>
                 </div>
               </div>
               <div class="col-12">
                   <div class="bottom-border-radius-12px mt-5 login-bottom-section d-flex justify-content-center ligth-gray-background">
-                      <span @click="goToLoginForm" class="cursor-pointer blue-text my-3">Back to login</span>
+                      <span @click="goToLoginForm" class="cursor-pointer blue-text my-3 login-form-footer-link">Back to login</span>
                   </div>
               </div>
           </div>
@@ -123,7 +125,8 @@ export default {
 }
 .ph-center::-webkit-input-placeholder, .ph-center{
   text-align: center;
-  line-height: 100px
+  line-height: 100px;
+  font: normal normal 300 14px/19px Poppins;
 }
 .login-button{
   background: #00b1ff 0% 0% no-repeat padding-box;

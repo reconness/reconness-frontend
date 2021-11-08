@@ -1166,3 +1166,23 @@ html {
 .poppins {
   font-family: 'Poppins', sans-serif;
 }
+.login-form-header-font{
+  font: normal normal 600 20px/33px Poppins;
+  letter-spacing: 1px
+}
+.login-form-info-font{
+  font: normal normal 300 14px/18px Poppins;
+  letter-spacing: 0.7px;
+}
+.login-form-action-button{
+  font: normal normal normal 14px/17px Poppins;
+  height: 45px;
+}
+.login-form-footer-link{
+  font: normal normal 300 14px/19px Poppins;
+  letter-spacing: 0px;
+}
+.login-form-separator-font{
+  font: normal normal 600 14px/19px Poppins;
+  letter-spacing: 0px;
+}
