@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="login-main-container d-flex align-items-center flex-column justify-content-center">
       <div class="welcome-container d-flex mb-3">
-          <hr class="login-welcome-line mr-2"/><span class="white-text">WELCOME</span><hr class="login-welcome-line ml-2"/>
+          <hr class="login-welcome-line mr-2"/><span class="login-form-header-welcome-font white-text">WELCOME</span><hr class="login-welcome-line ml-2"/>
       </div>
       <div class="login-container">
           <div class="row">
@@ -21,13 +21,13 @@
                 <div class="pt-4 d-flex flex-column align-items-center">
                   <input v-model="user.username" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
                   <input type="password" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text" @click="authenticate">LOGIN</button>
+                  <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text login-form-header-font" @click="authenticate">LOGIN</button>
                   <p v-if="areInputInBlank" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                 </div>
               </div>
               <div class="col-12">
                   <div class="bottom-border-radius-12px mt-5 login-bottom-section d-flex justify-content-center ligth-gray-background">
-                      <span @click="goToForgotPasswordForm" class="cursor-pointer blue-text my-3">Forgot Password?</span>
+                      <span @click="goToForgotPasswordForm" class="cursor-pointer blue-text my-3 login-form-footer-link">Forgot Password?</span>
                   </div>
               </div>
           </div>
@@ -104,7 +104,8 @@ export default {
 }
 .ph-center::-webkit-input-placeholder, .ph-center{
   text-align: center;
-  line-height: 100px
+  line-height: 100px;
+  font: normal normal 300 14px/19px Poppins;
 }
 .login-button{
   background: #00b1ff 0% 0% no-repeat padding-box;
@@ -121,5 +122,23 @@ export default {
 }
 div.avatar_container span.material-icons {
   font-size: 8rem
+}
+.login-form-header-font{
+  font: normal normal 600 20px/62px Poppins;
+}
+.login-form-header-welcome-font{
+  font: normal normal normal 27px/22px Poppins;
+  letter-spacing: 0px;
+}
+.login-form-info-font{
+  font: normal normal 300 14px/18px Poppins;
+}
+.login-form-action-button{
+  font: normal normal normal 14px/17px Poppins;
+  height: 45px;
+}
+.login-form-footer-link{
+  font: normal normal 300 14px/19px Poppins;
+  letter-spacing: 0px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid poppins">
     <div class="row">
       <div class="col-12">
         <div class="login-top-banner d-flex mt-2 justify-content-between">
