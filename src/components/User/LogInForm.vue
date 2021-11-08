@@ -8,7 +8,7 @@
           <div class="row">
               <div class="col-12">
                 <div class="pt-3 d-flex justify-content-center flex-column mb-3">
-                  <span class="black-text font-weight-bold m-auto">SIGN IN</span>
+                  <span class="black-text  m-auto login-form-header-font">SIGN IN</span>
                   <hr class="login-welcome-blue-line"/>
                 </div>
               </div>
@@ -21,7 +21,7 @@
                 <div class="pt-4 d-flex flex-column align-items-center">
                   <input v-model="user.username" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
                   <input type="password" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text login-form-header-font" @click="authenticate">LOGIN</button>
+                  <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text" @click="authenticate">LOGIN</button>
                   <p v-if="areInputInBlank" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                 </div>
               </div>
@@ -124,7 +124,8 @@ div.avatar_container span.material-icons {
   font-size: 8rem
 }
 .login-form-header-font{
-  font: normal normal 600 20px/62px Poppins;
+  font: normal normal 600 20px/33px Poppins;
+  letter-spacing: 1px
 }
 .login-form-header-welcome-font{
   font: normal normal normal 27px/22px Poppins;
