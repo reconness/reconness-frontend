@@ -185,33 +185,33 @@
       <aside class="control-sidebar-dark" @mouseleave="mouseleave" id="marketplace-agent">
         <!-- Control sidebar content goes here -->
         <div class="p-3 control-sidebar-content">
-            <h5>Marketplace</h5>
+            <h5 class="marketplace-title-font">Marketplace</h5>
         </div>
 
-        <div class="sidebar-list" v-for="agentInstaller of agentsInstallers" :key="agentInstaller.id">
+        <div class="sidebar-list marketplace-agent-container" v-for="agentInstaller of agentsInstallers" :key="agentInstaller.id">
           <dl class="row">
             <dt class="col-3">
-              <p>{{  agentInstaller.name  }}</p>
+              <p class="marketplace-agent-name-font">{{  agentInstaller.name  }}</p>
             </dt>
             <dd class="col-9">
               <dl class="row">
                 <dt class="col-7 reset-col">
                   <em>
-                    <a href="#" class="sidebar-right marketplace-detail-option float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" :data-agent="agentInstaller.name" :data-description="agentInstaller.description">Details</a>
+                    <a href="#" class="marketplace-agent-details-font sidebar-right marketplace-detail-option float-right" @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" :data-agent="agentInstaller.name" :data-description="agentInstaller.description">Details</a>
                   </em>
                 </dt>
                 <dd class="col-5 reset-col">
-                  <a v-if="!agentInstaller.installed" href="#" class="float-right marketplace-installer-option" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Install</a>
-                  <a v-if="agentInstaller.installed" href="#" class="float-right marketplace-installer-option" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Uninstall</a>
+                  <a v-if="!agentInstaller.installed" href="#" class="marketplace-agent-install-font float-right marketplace-installer-option" data-toggle="modal" data-target="#debug-installer-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Install</a>
+                  <a v-if="agentInstaller.installed" href="#" class="marketplace-agent-install-font float-right marketplace-installer-option" data-toggle="modal" data-target="#debug-uninstaller-modal" @click="this.optionNumber = agentInstaller.id; this.optionName = agentInstaller.name">Uninstall</a>
                 </dd>
               </dl>
             </dd>
           </dl>
         </div>
-        <div class="sidebar-list">
+        <div class="sidebar-list marketplace-total-agents-container">
           <dl class="row">
             <dt class="col-12">
-              <p class="text-center">{{ agentsInstallers.length }} Agents</p>
+              <p class="text-center marketplace-total-agents-font">{{ agentsInstallers.length }} Agents</p>
             </dt>
           </dl>
         </div>
@@ -401,5 +401,32 @@ a.sidebar-right.marketplace-detail-option:hover{
 }
 a.marketplace-installer-option:hover{
   color: #00b1ff
+}
+.marketplace-title-font{
+  font: normal normal medium 20px/32px Poppins;
+  letter-spacing: 0px;
+}
+.marketplace-agent-name-font{
+  font: normal normal 300 14px/45px Poppins;
+  letter-spacing: 0px;
+}
+.marketplace-agent-details-font{
+  font: italic normal 300 12px/45px Poppins;
+  letter-spacing: 0px;
+}
+.marketplace-agent-install-font{
+  font: normal normal 300 14px/45px Poppins;
+}
+.marketplace-agent-container{
+  height: 48px;
+  padding: 0 .5rem 0 .5rem;
+}
+.marketplace-total-agents-font{
+  font: normal normal normal 14px/45px Poppins;
+  letter-spacing: 0px;
+}
+.marketplace-total-agents-container{
+  height: 46px;
+  padding: 0 .5rem 0 .5rem;
 }
 </style>
