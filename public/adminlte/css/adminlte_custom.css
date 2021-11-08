@@ -211,6 +211,17 @@ div.image img{
   font: normal normal 600 16px/33px;
 }
 
+.font-weight-semibold{
+  font-weight: 600 !important;
+}
+.font-weight-light{
+  font-weight: 300 !important;
+}
+.font-weight-medium{
+  font-weight: 500 !important;
+}
+
+
 .right-sidebar-title{
   overflow: hidden;
   margin-top: 20px;
