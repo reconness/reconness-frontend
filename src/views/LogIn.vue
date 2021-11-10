@@ -37,16 +37,18 @@
       </div>
     </div>
     <div class="row">
-          <LogInForm v-if="showLoginForm" class="mt-5"/>
+          <!-- <LogInForm v-if="showLoginForm" class="mt-5"/>
           <ForgotPasswordForm v-else-if="showForgottenPasswordForm" class="mt-5"/>
-          <ResetPasswordForm v-else-if="showResetPasswordForm" class="mt-5"/>
+          <ResetPasswordForm v-else-if="showResetPasswordForm" class="mt-5"/> -->
+          <UserManagement class="mt-5"/>
     </div>
   </div>
 </template>
 <script>
-import LogInForm from '@/components/User/LogInForm.vue'
-import ForgotPasswordForm from '@/components/User/ForgotPasswordForm.vue'
-import ResetPasswordForm from '@/components/User/ResetPasswordForm.vue'
+// import LogInForm from '@/components/User/LogInForm.vue'
+// import ForgotPasswordForm from '@/components/User/ForgotPasswordForm.vue'
+// import ResetPasswordForm from '@/components/User/ResetPasswordForm.vue'
+import UserManagement from '@/components/User/UserManagement.vue'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import ExportIco from '@/components/Icons/ExportIco.vue'
 import AlphaABoxIco from '@/components/Icons/AlphaABoxIco.vue'
@@ -55,13 +57,14 @@ import { mapState } from 'vuex'
 export default {
   name: 'LogIn',
   components: {
-    LogInForm,
-    ForgotPasswordForm,
-    ResetPasswordForm,
+    // LogInForm,
+    // ForgotPasswordForm,
+    // ResetPasswordForm,
     BullseyeArrowIco,
     ExportIco,
     AlphaABoxIco,
-    CodeNotEqualVariantIco
+    CodeNotEqualVariantIco,
+    UserManagement
   },
   computed: {
     ...mapState('auth', ['showForgottenPasswordForm', 'showResetPasswordForm', 'showLoginForm'])

@@ -44,7 +44,7 @@
 <script>
 import { mapMutations } from 'vuex'
 export default {
-  name: 'ForgotPasswordForm',
+  name: 'ResetPasswordForm',
   data () {
     return {
       confirmation_code: '',
