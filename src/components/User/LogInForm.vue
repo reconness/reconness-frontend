@@ -14,7 +14,8 @@
               </div>
               <div class="col-12">
                 <div class="avatar_container d-flex justify-content-center">
-                  <span class="material-icons text-blue">account_circle</span>
+                  <!-- <span class="material-icons text-blue">account_circle</span> -->
+                  <img src="@/assets/user-icon.png" class="login-logo" alt="User Logo">
                 </div>
               </div>
               <div class="col-12">
@@ -77,6 +78,9 @@ export default {
 }
 </script>
 <style scoped>
+.login-logo{
+  width: 130px;
+}
 .login-container {
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 19px 45px #0c1f6a6e;

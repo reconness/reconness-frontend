@@ -11,7 +11,7 @@
           <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showUsersSection, 'white-text': showUsersSection, 'unselected-color-user-section': !showUsersSection}" @click="goToUsersSection">Users</span>
           <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showSettingsSection, 'white-text': showSettingsSection, 'unselected-color-user-section': !showSettingsSection}" @click="goToSettingsSection">Settings</span>
         </div>
-        <div class="quick-access-container d-flex mr-3">
+        <div class="quick-access-container d-flex mr-3" v-if="isUserLogged">
           <router-link :to="{name: 'Home'}">
             <div class="quick-access-icon-container d-flex justify-content-center align-items-center">
               <span class="material-icons">home</span>
