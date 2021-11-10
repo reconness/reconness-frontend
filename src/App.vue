@@ -250,7 +250,15 @@ export default {
   }
 }
 </script>
-
+<style>
+.login-wallpaper{
+  background: #49b1fe url('~@/assets/wallpaper.png') top left no-repeat;
+  background-size: cover
+}
+.default-background-color{
+  background: #f2f4f6;
+}
+</style>
 <style scoped>
 .vertical-align-0{
   vertical-align: 0px;

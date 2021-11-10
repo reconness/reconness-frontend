@@ -75,16 +75,18 @@ export default {
     ...mapState('auth', ['showForgottenPasswordForm', 'showResetPasswordForm', 'showLoginForm', 'showLogsSection', 'showUsersSection', 'showSettingsSection']),
     ...mapState('user', ['isUserLogged'])
   },
+  mounted () {
+    document.body.classList.add('login-wallpaper')
+  },
+  unmounted () {
+    document.body.classList.remove('login-wallpaper')
+  },
   methods: {
     ...mapMutations('user', ['goToLogsSection', 'goToUsersSection', 'goToSettingsSection'])
   }
 }
 </script>
 <style>
-  body{
-    background: red url('~@/assets/wallpaper.jpg') top left no-repeat;
-    background-size: cover
-  }
   .reconness-logo{
     font-size: 1.4rem;
   }
