@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['goToForgotPasswordForm']),
+    ...mapMutations('user', ['updateIsUserLogged']),
     authenticate () {
       if (!this.areInputInBlank) {
         this.$router.push({ name: 'Home' })
@@ -62,6 +63,15 @@ export default {
     },
     setWrittenInputFlag () {
       this.wereWrittenInput = true
+    },
+    updateUserLogFlagAfterSeconds () {
+      const self = this
+      setTimeout(
+        function () {
+          self.updateIsUserLogged(true)
+        },
+        2000
+      )
     }
   }
 }

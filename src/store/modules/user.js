@@ -44,9 +44,14 @@ export default ({
       lastname: 'Doe',
       email: 'johndoe@gmail.com',
       id: 1
+    },
+    isUserLogged: false
+  },
+  mutations: {
+    updateIsUserLogged (state, isLogged) {
+      state.isUserLogged = isLogged
     }
   },
-  mutations: {},
   actions: {},
   getters: {}
 })
