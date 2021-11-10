@@ -6,6 +6,11 @@
         <div class="text-left reconness-logo ml-2">
           <span class="brand-text"><strong class="white-text">Recon</strong></span><span class="white-text">Ness</span>
         </div>
+        <div class="user-manager-selection-bar d-flex">
+          <span class="logs-section font-size-24px cursor-pointer" :class="{'border-selected-user-section': showLogsSection, 'white-text': showLogsSection, 'unselected-color-user-section': !showLogsSection}" @click="goToLogsSection">Logs</span>
+          <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showUsersSection, 'white-text': showUsersSection, 'unselected-color-user-section': !showUsersSection}" @click="goToUsersSection">Users</span>
+          <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showSettingsSection, 'white-text': showSettingsSection, 'unselected-color-user-section': !showSettingsSection}" @click="goToSettingsSection">Settings</span>
+        </div>
         <div class="quick-access-container d-flex mr-3">
           <router-link :to="{name: 'Home'}">
             <div class="quick-access-icon-container d-flex justify-content-center align-items-center">
@@ -53,7 +58,7 @@ import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import ExportIco from '@/components/Icons/ExportIco.vue'
 import AlphaABoxIco from '@/components/Icons/AlphaABoxIco.vue'
 import CodeNotEqualVariantIco from '@/components/Icons/CodeNotEqualVariantIco.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'LogIn',
   components: {
@@ -67,7 +72,10 @@ export default {
     UserManagement
   },
   computed: {
-    ...mapState('auth', ['showForgottenPasswordForm', 'showResetPasswordForm', 'showLoginForm'])
+    ...mapState('auth', ['showForgottenPasswordForm', 'showResetPasswordForm', 'showLoginForm', 'showLogsSection', 'showUsersSection', 'showSettingsSection'])
+  },
+  methods: {
+    ...mapMutations('auth', ['goToLogsSection', 'goToUsersSection', 'goToSettingsSection'])
   }
 }
 </script>
@@ -94,5 +102,11 @@ export default {
 .pipeline-quick-access-icon{
   font-size: 14px;
   color: rgba(245, 246, 247, 1);
+}
+.border-selected-user-section{
+  border-bottom: 4px solid #FFFFFF;
+}
+.unselected-color-user-section{
+  color: rgba(255, 255, 255, 0.5)
 }
 </style>
