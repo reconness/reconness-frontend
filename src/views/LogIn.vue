@@ -2,7 +2,7 @@
   <div class="container-fluid poppins">
     <div class="row">
       <div class="col-12">
-        <div class="login-top-banner d-flex mt-2 justify-content-between">
+        <div class="login-top-banner d-flex mt-5 justify-content-between">
         <div class="text-left reconness-logo ml-2">
           <span class="brand-text"><strong class="white-text">Recon</strong></span><span class="white-text">Ness</span>
         </div>

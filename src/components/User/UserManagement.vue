@@ -27,7 +27,8 @@ export default {
     border: 1px solid #E5E9EC;
     border-radius: 12px;
     height: 486px;
-    width: 60%
+    width: 60%;
+    max-width: 1086px;
 }
 .user-management-logo-avatar{
     width: 131px;

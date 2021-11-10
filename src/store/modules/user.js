@@ -27,7 +27,7 @@ export default ({
         email: 'johnson@gmail.com',
         password: '',
         role: [],
-        id: 1
+        id: 3
       },
       {
         username: 'yanet',
@@ -36,9 +36,15 @@ export default ({
         email: 'yanet@gmail.com',
         password: '',
         role: [],
-        id: 1
+        id: 4
       }
-    ]
+    ],
+    loggedUser: {
+      name: 'John Doe',
+      lastname: 'Doe',
+      email: 'johndoe@gmail.com',
+      id: 1
+    }
   },
   mutations: {},
   actions: {},

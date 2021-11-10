@@ -23,22 +23,22 @@
               </div>
               <div class="user-management-content-body mt-5 mx-5">
                   <div>
-                  <div class="card border box-shadow-none">
+                  <div class="card user-management-list-border box-shadow-none">
               <div class="user-management-listing-users card-body table-responsive p-0">
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
                     <tr>
-                      <th class="box-shadow-none border-bottom"><div class="font-weight-medium font-size-14px">User Name</div></th>
-                      <th class="box-shadow-none border-bottom"><div class="font-weight-medium border-left pl-2 font-size-14px">Email</div></th>
-                      <th class="box-shadow-none border-bottom"><div class="font-weight-medium border-left pl-2 font-size-14px">Role</div></th>
-                      <th class="box-shadow-none border-bottom user-management-action-width"><div class="font-weight-medium border-left pl-2 font-size-14px">Actions</div></th>
+                      <th class="box-shadow-none user-management-list-border-bottom"><div class="font-weight-medium font-size-14px">User Name</div></th>
+                      <th class="box-shadow-none user-management-list-border-bottom"><div class="font-weight-medium user-management-list-border-left pl-2 font-size-14px">Email</div></th>
+                      <th class="box-shadow-none user-management-list-border-bottom"><div class="font-weight-medium user-management-list-border-left pl-2 font-size-14px">Role</div></th>
+                      <th class="box-shadow-none user-management-list-border-bottom user-management-action-width"><div class="font-weight-medium user-management-list-border-left pl-2 font-size-14px">Actions</div></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="user of users" :key="user.id">
-                      <td class="border-top-0 pl-4 font-size-14px">{{user.username}}</td>
+                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': loggedUser.id === user.id}">{{user.username}}</td>
                       <td class="border-top-0 pl-4 font-size-14px">{{user.email}}</td>
-                      <td class="border-top-0 pl-4 font-size-14px">-</td>
+                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': loggedUser.id === user.id}">-</td>
                       <td class="border-top-0 d-flex justify-content-between user-management-action-width">
                         <button type="button" class="font-size-14px user-management-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
                         <button @click="removeWordListItem(wordlistItem.id)" type="button" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
@@ -63,7 +63,7 @@ export default {
     AccountCogIco
   },
   computed: {
-    ...mapState('user', ['users'])
+    ...mapState('user', ['users', 'loggedUser'])
   }
 }
 </script>
@@ -124,6 +124,18 @@ table.user-management-users-list.table thead th{
 }
 .box-shadow-none{
     box-shadow: none !important;
+}
+.user-management-list-border{
+  border: 1px solid #E5E9EC!important;
+}
+.user-management-list-border-bottom{
+  border-bottom: 1px solid #E5E9EC!important;
+}
+.user-management-list-border-right{
+  border-right: 1px solid #E5E9EC!important;
+}
+.user-management-list-border-left{
+  border-left: 1px solid #E5E9EC!important;
 }
 
 </style>
