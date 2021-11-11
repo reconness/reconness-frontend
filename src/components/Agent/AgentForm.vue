@@ -3,7 +3,7 @@
         <form>
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content agent-containers">
+            <div class="modal-content agent-containers poppins">
               <div class="modal-header remove-flex">
                 <div class="row">
                   <div class="col-12">
@@ -12,7 +12,7 @@
                         <div class="d-flex">
                           <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
                             <input v-if="showNameInput" v-model="agent.name" :placeholder="agent.name" @keyup="enableValidationMessageName" class="form-control agent-placeholder w-100 agent-name-input" :readonly="this.$store.state.agent.fromDetailsLink">
-                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2">{{agent.name}}</span>
+                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{agent.name}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
                         </div><!-- /.d-flex -->
@@ -32,11 +32,11 @@
                   <div class="col-12 col-sm-8" v-if="isVisibleTopSection">
                     <div class="col-12">
                       <div class="d-flex justify-content-between">
-                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="ligth-gray-background form-control zero-borders mt-4 w-75" placeholder="Repository">
+                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="ligth-gray-background form-control zero-borders mt-4 w-70 agent-form-placeholder-font" placeholder="Repository">
                         <div class="d-flex flex-row justify-content-end file-import-container mt-2">
                           <div class="mr-2 logo d-flex flex-column">
-                            <span>Add</span>
-                            <span>your logo</span>
+                            <span class="agent-regular-font">Add</span>
+                            <span class="agent-regular-font">your logo</span>
                           </div>
                           <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
                           <label for="uploadimage">
@@ -61,14 +61,14 @@
                           <span :class="{invalid: validators.blank.command}">The field command is required</span>
                         </div>
                         <div class="col-12">
-                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" class="mb-3 blue-text d-flex justify-content-end">Learn more</a>
+                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" class="mb-3 blue-text d-flex agent-regular-font font-weight-light justify-content-end">Learn more</a>
                         </div><!-- /.col-12 -->
                         <div class="row show multi-collapse">
                     <div class="col-12 col-md-6">
                         <div class="card agent-containers agent-type-container ligth-gray-background combo-box-size">
                             <div class="card-header border-bottom-none">
                               <div class="middle-settings-agent">
-                                  <h3 class="card-title font-weight-bold">
+                                  <h3 class="card-title agent-title-sub-containers">
                                   Agent Type
                                   </h3>
                               </div>
@@ -77,15 +77,15 @@
                             <div class="form-group">
                                 <div class="custom-control custom-radio form-check">
                                 <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
-                                <label class="form-check-label custom-control-label" for="agent_customCheckbox1">Target</label>
+                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox1">Target</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
                                 <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN" v-model="agent.type">
-                                <label class="form-check-label custom-control-label" for="agent_customCheckbox2">RootDomain</label>
+                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox2">RootDomain</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
                                 <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN" v-model="agent.type">
-                                <label class="form-check-label custom-control-label" for="agent_customCheckbox3">Subdomain</label>
+                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox3">Subdomain</label>
                                 </div>
                             </div>
                             </div><!-- /.card-body -->
@@ -95,7 +95,7 @@
                         <div class="card agent-containers combo-box-size ligth-gray-background">
                             <div class="card-header border-bottom-none">
                             <div class="middle-settings-agent">
-                                <h3 class="card-title font-weight-bold">
+                                <h3 class="card-title agent-title-sub-containers">
                                 Triggers
                                 </h3>
                             </div>
@@ -104,14 +104,14 @@
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox form-check">
                                 <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
-                                <label class="form-check-label custom-control-label" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox4">Run Only if it is Alive</label>
                                 </div>
                                 <div class="custom-control custom-checkbox form-check">
                                 <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
-                                <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
+                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox5">Run Only if has Http Open</label>
                                 </div>
                                 <div class="form-check text-right more-option-padding">
-                                <a href="#" @click="showMiddleSection"><span class="form-check-label blue-text">More Options</span></a>
+                                <a href="#" @click="showMiddleSection"><span class="form-check-label blue-text agent-regular-font font-weight-light">More Options</span></a>
                                 </div>
                             </div>
                             </div><!-- /.card-body -->
@@ -126,13 +126,13 @@
                       <div class="target-color-section mt-4 pt-3 border-radios-8px pl-2 pr-2">
                         <div class="row">
                           <div class="col-12">
-                            <div class="info-box">
+                            <div class="info-box color-sample-container">
                               <div class="info-box-content info-box-content-custom ml-2 mt-2">
-                                <span class="info-box-text domain-names-target">
+                                <span class="info-box-text font-weight-semibold agent-regular-font">
                                   {{agent.name}}
                                 </span>
-                                <span v-if="editable"  class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
-                                <span v-else class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
+                                <span v-if="editable"  class="agent-mini-agent-details agent-regular-font-11px pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
+                                <span v-else class="agent-mini-agent-details agent-regular-font-11px pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                               </div> <!-- /.info-box-content -->
                               <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor +' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
                                 <AccountCogIco v-if="!agent.image && this.$installedByUser(agent.createdBy)" class="form-ico-size"/>
@@ -142,7 +142,7 @@
                             </div> <!-- /.info-box -->
                           </div>
                           <div class="col-12 text-center mt-2">
-                            <h3 class="font-weight-bold card-title disable-float mt-4">
+                            <h3 class="agent-title-sub-containers card-title disable-float mt-4">
                               Pick a Color
                             </h3>
                             <div class="mt-4 pl-0 w-100 agent-containers target-combo-box-size target-color-section">
@@ -190,7 +190,7 @@
                   <div v-if="isVisibleMiddleSection" class="col-12">
                     <div id="triggers-section">
                       <div class="mt-4 mb-2 mx-2 d-flex justify-content-between">
-                        <b class="triggers-label-space">Triggers</b>
+                        <span class="triggers-label-space agent-title-sub-containers">Triggers</span>
                         <a href="#" @click="showTopSection">
                           <span class="material-icons line-height-1-7 triggers-label-arrow-space">keyboard_arrow_down</span>
                         </a>
@@ -199,11 +199,11 @@
                         <div class="form-group triggers-options-space">
                             <div class="custom-control custom-checkbox form-check">
                             <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
-                            <label class="opacity-none form-check-label custom-control-label" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                            <label class="opacity-none form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox4">Run Only if it is Alive</label>
                             </div>
                             <div class="custom-control custom-checkbox form-check">
                             <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
-                            <label class="form-check-label custom-control-label" for="agent_customCheckbox5">Run Only if has Http Open</label>
+                            <label class="form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox5">Run Only if has Http Open</label>
                             </div>
                         </div><!-- /.form-group -->
                       </div><!-- /.combo-box-left-padding -->
@@ -215,8 +215,8 @@
                       <div :class="{'mt-4': isVisibleBottomSection}" class="my-3 agent-containers min-height-auto">
                         <div class="info-box-content d-flex px-2 border-radius-8px justify-content-between learn-more-border-line">
                           <span class="info-box-text">
-                            <b class="mr-2">Script</b>
-                            <a href="https://docs.reconness.com/agents/script-agent" class="blue-text">Learn more</a>
+                            <span class="mr-2 agent-title-sub-containers">Script</span>
+                            <a href="https://docs.reconness.com/agents/script-agent" class="blue-text agent-regular-font font-weight-light">Learn more</a>
                           </span>
                           <a href="#" @click="showBottomSection">
                             <span v-show="arrow_up" class="material-icons learn-more-arrow-up">keyboard_arrow_up</span>
@@ -583,6 +583,32 @@ export default {
 }
 </script>
 <style>
+.color-sample-container{
+  box-shadow: 0px 19px 27px #0C1F6A12 !important;
+  border-radius: 12px !important;
+}
+.w-70{
+  width: 70% !important;
+}
+.agent-form-name-font{
+  font: normal normal normal 24px/29px Poppins;
+  letter-spacing: 0px;
+}
+.agent-regular-font{
+  font-size: 14px !important;
+}
+.agent-regular-font-11px{
+  font-size: 11px !important;
+}
+.agent-disable-weigth{
+  font-weight: unset !important;
+}
+.agent-title-sub-containers{
+  font-size: 16px
+}
+div.modal-content.agent-containers{
+  border-radius: 12px;
+}
   .agent-type-container{
     height: 159px
   }
@@ -642,10 +668,6 @@ export default {
 
     .input.invalid input {
         border: 1px solid red;
-    }
-
-    .invalid {
-        color: red;
     }
 
     .target-combo-box-size{
@@ -792,7 +814,7 @@ div.private-program-container label {
 label {
   color: #495057;
   font-size: 18px;
-  font-weight: 100 !important;
+  font-weight: 100;
   font-size: 1.1rem;
 }
 

@@ -540,10 +540,6 @@ export default {
         border: 1px solid red;
     }
 
-    .invalid {
-        color: red;
-    }
-
     .target-combo-box-size{
         height: 114px;
     }

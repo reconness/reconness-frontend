@@ -248,6 +248,12 @@ export default {
   }
 }
 </script>
+<style>
+  body{
+    background: #f2f4f6;
+    background-size: cover
+  }
+</style>
 <style scoped>
 .content-header h1 {
     font-size: 40px;

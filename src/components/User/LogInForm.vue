@@ -2,31 +2,33 @@
     <div class="col-12">
         <div class="login-main-container d-flex align-items-center flex-column justify-content-center">
       <div class="welcome-container d-flex mb-3">
-          <hr class="login-welcome-line mr-2"/><span class="white-text">WELCOME</span><hr class="login-welcome-line ml-2"/>
+          <hr class="login-welcome-line mr-2"/><span class="login-form-header-welcome-font white-text">WELCOME</span><hr class="login-welcome-line ml-2"/>
       </div>
       <div class="login-container">
           <div class="row">
               <div class="col-12">
                 <div class="pt-3 d-flex justify-content-center flex-column mb-3">
-                  <span class="black-text font-weight-bold m-auto">SIGN IN</span>
+                  <span class="black-text  m-auto login-form-header-font">SIGN IN</span>
                   <hr class="login-welcome-blue-line"/>
                 </div>
               </div>
               <div class="col-12">
                 <div class="avatar_container d-flex justify-content-center">
-                  <span class="material-icons text-blue">account_circle</span>
+                  <!-- <span class="material-icons text-blue">account_circle</span> -->
+                  <img src="@/assets/user-icon.png" class="login-logo" alt="User Logo">
                 </div>
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
-                  <input v-model="user.username" placeholder="username" class="ph-center login-input w-75 form-control">
-                  <input v-model="user.password" placeholder="password" class="ph-center login-input w-75 form-control mt-2">
-                  <button type="button" class="mt-4 btn btn-block login-button w-50pc white-text">LOGIN</button>
+                  <input v-model="user.username" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
+                  <input type="password" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
+                  <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text" @click="authenticate">LOGIN</button>
+                  <p v-if="areInputInBlank" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                 </div>
               </div>
               <div class="col-12">
                   <div class="bottom-border-radius-12px mt-5 login-bottom-section d-flex justify-content-center ligth-gray-background">
-                      <span @click="goToForgotPasswordForm" class="cursor-pointer blue-text my-3">Forgot Password?</span>
+                      <span @click="goToForgotPasswordForm" class="cursor-pointer blue-text my-3 login-form-footer-link">Forgot Password?</span>
                   </div>
               </div>
           </div>
@@ -35,7 +37,7 @@
     </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 export default {
   name: 'LogInForm',
   data () {
@@ -43,15 +45,34 @@ export default {
       user: {
         username: '',
         password: ''
-      }
+      },
+      wereWrittenInput: false
+    }
+  },
+  computed: {
+    areInputInBlank () {
+      return (this.$validateIsBlank(this.user.username) || this.$validateIsBlank(this.user.password)) && this.wereWrittenInput
     }
   },
   methods: {
-    ...mapMutations('auth', ['goToForgotPasswordForm'])
+    ...mapMutations('auth', ['goToForgotPasswordForm']),
+    ...mapActions('user', ['updateUserLogFlagAfterSeconds']),
+    authenticate () {
+      if (!this.areInputInBlank) {
+        this.updateUserLogFlagAfterSeconds(true)
+        this.$router.push({ name: 'Home' })
+      }
+    },
+    setWrittenInputFlag () {
+      this.wereWrittenInput = true
+    }
   }
 }
 </script>
 <style scoped>
+.login-logo{
+  width: 130px;
+}
 .login-container {
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 19px 45px #0c1f6a6e;
@@ -89,7 +110,8 @@ export default {
 }
 .ph-center::-webkit-input-placeholder, .ph-center{
   text-align: center;
-  line-height: 100px
+  line-height: 100px;
+  font: normal normal 300 14px/19px Poppins;
 }
 .login-button{
   background: #00b1ff 0% 0% no-repeat padding-box;
@@ -106,5 +128,10 @@ export default {
 }
 div.avatar_container span.material-icons {
   font-size: 8rem
+}
+
+.login-form-header-welcome-font{
+  font: normal normal normal 27px/22px Poppins;
+  letter-spacing: 0px;
 }
 </style>

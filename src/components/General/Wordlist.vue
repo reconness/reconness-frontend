@@ -28,7 +28,7 @@
             <div class="col-12">
               <div class="form-group mt-4">
                 <div class="custom-file">
-                  <input type="file" id="wordlists-files" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
+                  <input type="file" accept=".txt" id="wordlists-files" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
                   <label v-if="loadedFileName === ''" class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add {{this.getWordListEnumByType.description }} Files</label>
                   <label v-else class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">{{loadedFileName}}</label>
                 </div>
@@ -128,17 +128,34 @@ export default {
     },
     getFileMetadata (e) {
       this.checkIfNoFileHaveBeenSelectedAndResetLoadedName(e)
-      const sizeInkb = e.target.files[0].size / 1024
-      this.loadedFileName = e.target.files[0].name
-      const wordListItem = {
-        id: -1,
-        filename: e.target.files[0].name,
-        size: Math.round(sizeInkb),
-        type: this.selectedPill,
-        count: 0,
-        path: ''
+      this.loadTextFileAndCountLines(e.target.files[0])
+    },
+    loadTextFileAndCountLines (textfile) {
+      const reader = new FileReader()
+      const self = this
+      reader.onload = function () {
+        const sizeInkb = textfile.size / 1024
+        self.loadedFileName = textfile.name
+        const wordListItem = {
+          id: -1,
+          filename: textfile.name,
+          size: Math.round(sizeInkb),
+          type: self.selectedPill,
+          count: self.countLinesFromText(reader.result),
+          path: ''
+        }
+        self.addWordListItem(wordListItem)
       }
-      this.addWordListItem(wordListItem)
+      reader.readAsText(textfile)
+    },
+    countLinesFromText (text) {
+      let nLines = 1
+      for (let index = 0; index < text.length; index++) {
+        if (text[index] === '\n') {
+          nLines++
+        }
+      }
+      return nLines
     }
   }
 }
@@ -153,10 +170,6 @@ export default {
 
 .input.invalid input {
     border: 1px solid red;
-}
-
-.invalid {
-  color: red;
 }
 .agent-name-input {
   width: 50%;

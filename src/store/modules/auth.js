@@ -5,7 +5,10 @@ export default ({
     authentication_token: '',
     showForgottenPasswordForm: false,
     showResetPasswordForm: false,
-    showLoginForm: true
+    showLoginForm: true,
+    showLogsSection: false,
+    showUsersSection: true,
+    showSettingsSection: false
 
   },
   mutations: {
@@ -26,6 +29,21 @@ export default ({
       state.showForgottenPasswordForm = false
       state.showResetPasswordForm = false
       state.showLoginForm = true
+    },
+    goToLogsSection (state) {
+      state.showLogsSection = true
+      state.showUsersSection = false
+      state.showSettingsSection = false
+    },
+    goToUsersSection (state) {
+      state.showLogsSection = false
+      state.showUsersSection = true
+      state.showSettingsSection = false
+    },
+    goToSettingsSection (state) {
+      state.showLogsSection = false
+      state.showUsersSection = false
+      state.showSettingsSection = true
     }
   },
   actions: {
