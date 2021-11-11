@@ -37,7 +37,7 @@
     </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 export default {
   name: 'LogInForm',
   data () {
@@ -56,23 +56,15 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['goToForgotPasswordForm']),
-    ...mapMutations('user', ['updateIsUserLogged']),
+    ...mapActions('user', ['updateUserLogFlagAfterSeconds']),
     authenticate () {
       if (!this.areInputInBlank) {
+        this.updateUserLogFlagAfterSeconds(true)
         this.$router.push({ name: 'Home' })
       }
     },
     setWrittenInputFlag () {
       this.wereWrittenInput = true
-    },
-    updateUserLogFlagAfterSeconds () {
-      const self = this
-      setTimeout(
-        function () {
-          self.updateIsUserLogged(true)
-        },
-        2000
-      )
     }
   }
 }

@@ -52,6 +52,15 @@ export default ({
       state.isUserLogged = isLogged
     }
   },
-  actions: {},
+  actions: {
+    updateUserLogFlagAfterSeconds ({ state, commit }, loggedFlag) {
+      setTimeout(
+        function () {
+          commit('updateIsUserLogged', loggedFlag)
+        },
+        2000
+      )
+    }
+  },
   getters: {}
 })

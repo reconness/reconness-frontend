@@ -47,16 +47,16 @@
         <li class="nav-item dropdown">
           <div class="image nav-link cursor-pointer" data-toggle="dropdown">
             <span class="loged-user-name">{{loggedUser.name}}</span>
-            <img @click="this.$router.push({ name: 'LogIn' })" :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="img-circle elevation-2" alt="User Image">
+            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
+            <a href="#" @click="this.$router.push({ name: 'LogIn' })" class="dropdown-item">
               My account
             </a>
             <div class="dropdown-divider"></div>
-              <router-link class="dropdown-item" :to="{ name: 'LogOut'}" >
+              <a href="#" @click="logoutOfSystem" class="dropdown-item">
                 Sign out
-              </router-link>
+              </a>
           </div>
         </li>
 
@@ -137,12 +137,12 @@
               </ul>
             </li>
             <li class="nav-item">
-                <router-link :to="{ name: 'LogOut' }" class="nav-link">
+                <a href="#" class="nav-link" v-on:click="logoutOfSystem" v-bind:class="{'nav2': styleLogsState}">
                 <span class="material-icons">exit_to_app</span>
                 <p>
                   Logout
                 </p>
-                </router-link>
+                </a>
             </li>
           </ul>
         </nav>
@@ -164,7 +164,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import MessageBox from '@/components/General/MessageBox.vue'
@@ -211,10 +211,15 @@ export default {
     this.location = this.viewloc
   },
   methods: {
+    ...mapMutations('user', ['updateIsUserLogged']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
       }
+    },
+    logoutOfSystem: function () {
+      this.updateIsUserLogged(false)
+      this.$router.push({ name: 'LogOut' })
     },
     mouseleave: function () {
       if (this.button_module) {
