@@ -6,12 +6,12 @@ export default ({
     showForgottenPasswordForm: false,
     showResetPasswordForm: false,
     showLoginForm: true,
-    showLogsSection: false,
-    showUsersSection: true,
-    showSettingsSection: false
-
+    isUserLogged: false
   },
   mutations: {
+    updateIsUserLogged (state, isLogged) {
+      state.isUserLogged = isLogged
+    },
     updateAuthenticationToken (state, token) {
       state.authentication_token = token
     },
@@ -29,21 +29,6 @@ export default ({
       state.showForgottenPasswordForm = false
       state.showResetPasswordForm = false
       state.showLoginForm = true
-    },
-    goToLogsSection (state) {
-      state.showLogsSection = true
-      state.showUsersSection = false
-      state.showSettingsSection = false
-    },
-    goToUsersSection (state) {
-      state.showLogsSection = false
-      state.showUsersSection = true
-      state.showSettingsSection = false
-    },
-    goToSettingsSection (state) {
-      state.showLogsSection = false
-      state.showUsersSection = false
-      state.showSettingsSection = true
     }
   },
   actions: {
@@ -61,6 +46,14 @@ export default ({
         .catch(function () {
           return false
         })
+    },
+    updateUserLogFlagAfterSeconds ({ state, commit }, loggedFlag) {
+      setTimeout(
+        function () {
+          commit('updateIsUserLogged', loggedFlag)
+        },
+        2000
+      )
     }
   },
   getters: {}

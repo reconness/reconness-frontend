@@ -45,22 +45,27 @@ export default ({
       email: 'johndoe@gmail.com',
       id: 1
     },
-    isUserLogged: false
+    showLogsSection: false,
+    showUsersSection: true,
+    showSettingsSection: false
   },
   mutations: {
-    updateIsUserLogged (state, isLogged) {
-      state.isUserLogged = isLogged
+    goToLogsSection (state) {
+      state.showLogsSection = true
+      state.showUsersSection = false
+      state.showSettingsSection = false
+    },
+    goToUsersSection (state) {
+      state.showLogsSection = false
+      state.showUsersSection = true
+      state.showSettingsSection = false
+    },
+    goToSettingsSection (state) {
+      state.showLogsSection = false
+      state.showUsersSection = false
+      state.showSettingsSection = true
     }
   },
-  actions: {
-    updateUserLogFlagAfterSeconds ({ state, commit }, loggedFlag) {
-      setTimeout(
-        function () {
-          commit('updateIsUserLogged', loggedFlag)
-        },
-        2000
-      )
-    }
-  },
+  actions: {},
   getters: {}
 })

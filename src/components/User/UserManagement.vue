@@ -16,7 +16,7 @@ export default {
     UserList
   },
   computed: {
-    ...mapState('auth', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])
+    ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])
   }
 }
 </script>

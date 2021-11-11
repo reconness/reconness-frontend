@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['goToForgotPasswordForm']),
-    ...mapActions('user', ['updateUserLogFlagAfterSeconds']),
+    ...mapActions('auth', ['updateUserLogFlagAfterSeconds']),
     authenticate () {
       if (!this.areInputInBlank) {
         this.updateUserLogFlagAfterSeconds(true)

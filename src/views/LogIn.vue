@@ -72,8 +72,8 @@ export default {
     UserManagement
   },
   computed: {
-    ...mapState('auth', ['showForgottenPasswordForm', 'showResetPasswordForm', 'showLoginForm', 'showLogsSection', 'showUsersSection', 'showSettingsSection']),
-    ...mapState('user', ['isUserLogged'])
+    ...mapState('auth', ['isUserLogged', 'showForgottenPasswordForm', 'showResetPasswordForm', 'showLoginForm', 'showLogsSection', 'showUsersSection', 'showSettingsSection']),
+    ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])
   },
   mounted () {
     document.body.classList.add('login-wallpaper')

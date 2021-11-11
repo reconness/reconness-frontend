@@ -211,7 +211,7 @@ export default {
     this.location = this.viewloc
   },
   methods: {
-    ...mapMutations('user', ['updateIsUserLogged']),
+    ...mapMutations('auth', ['updateIsUserLogged']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
