@@ -182,9 +182,9 @@
     </nav>
 
     <div v-show="active">
-      <aside class="control-sidebar-dark" @mouseleave="mouseleave" id="marketplace-agent">
+      <aside class="control-sidebar-dark installer-agents" @mouseleave="mouseleave" id="marketplace-agent">
         <!-- Control sidebar content goes here -->
-        <div class="p-3 control-sidebar-content">
+        <div class="p-3 control-sidebar-content sticky-top">
             <h5 class="marketplace-title-font">Marketplace</h5>
         </div>
 
@@ -208,7 +208,7 @@
             </dd>
           </dl>
         </div>
-        <div class="sidebar-list marketplace-total-agents-container">
+        <div class="sticky-bottom sidebar-list marketplace-total-agents-container">
           <dl class="row">
             <dt class="col-12">
               <p class="text-center marketplace-total-agents-font">{{ agentsInstallers.length }} Agents</p>
@@ -428,5 +428,15 @@ a.marketplace-installer-option:hover{
 .marketplace-total-agents-container{
   height: 46px;
   padding: 0 .5rem 0 .5rem;
+}
+aside.installer-agents{
+  overflow-y: auto;
+}
+aside.installer-agents::-webkit-scrollbar{
+  display: none;
+}
+aside.installer-agents{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>

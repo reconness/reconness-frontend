@@ -1118,6 +1118,11 @@ a.target-detail-popover:hover{
   top: 0 !important;
   z-index: 1020;
 }
+.sticky-bottom {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 1020;
+}
 html {
   overflow-y: scroll;
 }
