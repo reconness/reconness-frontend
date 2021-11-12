@@ -135,6 +135,14 @@ export default {
       }
     )
 
+    app.config.globalProperties.$roles = Object.freeze(
+      {
+        OWNER: { id: 1, longName: 'Administrator Owner', shortName: 'Owner' },
+        ADMIN: { id: 2, longName: 'Administrator', shortName: 'Admin' },
+        MEMBER: { id: 3, longName: 'Member', shortName: 'Member' }
+      }
+    )
+
     app.config.globalProperties.$entitySource = Object.freeze(
       {
         USER: { id: 1, description: 'User' },

@@ -17,7 +17,7 @@
                      <img src="@/assets/user-icon.png" class="rounded-circle user-management-plus-logo" alt="User Logo">
                       <div class="user-management-new-container-action-btn d-flex align-items-center">
                         <span class="material-icons blue-text font-size-16px m-auto">add</span>
-                        <span class="blue-text font-size-16px">New User</span>
+                        <a href="#" class="blue-text font-size-16px" data-toggle="modal" data-target="#user-form-modal">New User</a>
                       </div>
                   </div>
               </div>
@@ -52,15 +52,18 @@
             <!-- /.card -->
                   </div>
               </div>
+              <UserForm/>
           </div>
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import UserForm from '@/components/User/UserForm.vue'
 import { mapState } from 'vuex'
 export default {
   name: 'UserList',
   components: {
-    AccountCogIco
+    AccountCogIco,
+    UserForm
   },
   computed: {
     ...mapState('user', ['users', 'loggedUser'])

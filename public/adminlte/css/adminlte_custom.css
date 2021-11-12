@@ -220,6 +220,9 @@ div.image img{
 .font-weight-medium{
   font-weight: 500 !important;
 }
+.font-weight-regular{
+  font-weight: normal !important;
+}
 .right-sidebar-title{
   overflow: hidden;
   margin-top: 20px;
@@ -1202,4 +1205,10 @@ html {
 }
 .font-size-24px{
   font-size: 24px;
+}
+.font-size-16px{
+  font-size: 16px !important;
+}
+.font-size-14px{
+  font-size: 14px !important;
 }
