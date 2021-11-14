@@ -9,12 +9,13 @@
                   <div class="col-12">
                     <div class="row">
                       <div class="col-8">
-                        <div class="d-flex">
-                          <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
-                            <input v-if="showNameInput" v-model="user.name" :placeholder="user.username" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input" :readonly="this.$store.state.agent.fromDetailsLink">
-                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
+                        <div class="d-flex flex-column">
+                          <div :class="{'w-100': showNameInput}">
+                            <input v-if="showNameInput" v-model="user.username" placeholder="Username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
+                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">Username</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
+                          <span v-if="isUserNameInBlank" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
                         </div><!-- /.d-flex -->
                       </div><!-- /.col-12 -->
                       <div class="col-4">
@@ -32,23 +33,29 @@
                   <div class="col-12 col-sm-8">
                     <div class="form-group">
                       <label for="user-form-email" class="font-weight-regular black-text font-size-16px">Email</label>
-                      <input id="user-form-email" v-model="user.email" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input id="user-form-email" @blur="updateEmailWasWritten" @change="updateEmailWasWritten" v-model="user.email" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                          <span v-if="isEmailInBlank" :class="{invalid: isEmailInBlank}" class="mt-2">The field email is required</span>
+                          <span v-if="isInValidEmail" :class="{invalid: isInValidEmail}" class="mt-2">The specified email is not correct</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-firstname" class="font-weight-regular black-text font-size-16px">First Name</label>
-                      <input id="user-form-firstname" v-model="user.name" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input id="user-form-firstname" @blur="updateFirstNameWasWritten" @change="updateFirstNameWasWritten" v-model="user.firstname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                          <span v-if="isFirstNameInBlank" :class="{invalid: isFirstNameInBlank}" class="mt-2">The field firstname is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-lastname" class="font-weight-regular black-text font-size-16px">Last Name</label>
-                      <input id="user-form-lastname" v-model="user.lastname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input id="user-form-lastname" @blur="updateLastNameWasWritten" @change="updateLastNameWasWritten" v-model="user.lastname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                          <span v-if="isLastNameInBlank" :class="{invalid: isLastNameInBlank}" class="mt-2">The field lastname is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
-                      <input id="user-form-password" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordWasWritten" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                          <span v-if="isPasswordInBlank" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-confirm_password" class="font-weight-regular black-text font-size-16px">Confirmation Password</label>
                       <input id="user-form-confirm_password" v-model="confirm_password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <span v-if="!isConfirmPasswordEqualToPassword" :class="{invalid: !isConfirmPasswordEqualToPassword}" class="mt-2">The field confirm password must be equal to the password field</span>
                     </div>
                   </div><!-- /.col-12 col-sm-8 -->
                     <div class="col-12 col-sm-4 pt-1">
@@ -67,7 +74,7 @@
                             </div>
                             <div class="userform-role-title">
                                 <div class="form-group ml-3 mt-2">
-                                <div class="custom-control custom-radio form-check">
+                                <div v-if="isLoggedUserOwner" class="custom-control custom-radio form-check">
                                 <input class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                                   <span class="material-icons blue-text">manage_accounts</span>
@@ -95,7 +102,7 @@
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div class="border-top-none modal-footer">
-                  <button type="button" @click="addAgent(this.agent)" class="blue-text agent-border btn create-agent-buttons-main-action">Add</button>
+                  <button :disabled="isUserFormInvalid" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Add</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -105,8 +112,7 @@
     </div>
 </template>
 <script>
-// import jQuery from 'jquery'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'UserForm',
@@ -116,77 +122,86 @@ export default {
     return {
       showNameInput: false,
       user: {
-        username: 'Username',
-        name: 'Yanet',
-        lastname: 'Jackson',
-        email: 'yanet@gmail.com',
+        username: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        phone: 0,
         password: '',
-        role: []
+        role: [],
+        profilePicture: ''
       },
-      confirm_password: ''
+      confirm_password: '',
+      userNameWasWritten: false,
+      firstNameWasWritten: false,
+      lastNameWasWritten: false,
+      emailWasWritten: false,
+      phoneWasWritten: false,
+      passwordWasWritten: false
     }
   },
-  computed: {},
-  watch: {},
+  computed: {
+    ...mapState('user', ['loggedUser']),
+    isUserNameInBlank () {
+      return this.$validateIsBlank(this.user.username) && this.userNameWasWritten
+    },
+    isFirstNameInBlank () {
+      return this.$validateIsBlank(this.user.firstname) && this.firstNameWasWritten
+    },
+    isLastNameInBlank () {
+      return this.$validateIsBlank(this.user.lastname) && this.lastNameWasWritten
+    },
+    isEmailInBlank () {
+      return this.$validateIsBlank(this.user.email) && this.emailWasWritten
+    },
+    isInValidEmail () {
+      if (!this.$validateIsBlank(this.user.email)) {
+        return !this.$validateEmail(this.user.email)
+      }
+      return false
+    },
+    isPhoneInBlank () {
+      return this.$validateIsBlank(this.user.phone) && this.phoneWasWritten
+    },
+    isPasswordInBlank () {
+      return this.$validateIsBlank(this.user.password) && this.passwordWasWritten
+    },
+    isConfirmPasswordEqualToPassword () {
+      return this.user.password === this.confirm_password
+    },
+    isUserFormInvalid () {
+      return this.isUserNameInBlank || this.isFirstNameInBlank || this.isLastNameInBlank || this.isEmailInBlank || this.isInValidEmail || this.isPasswordInBlank || !this.isConfirmPasswordEqualToPassword
+    },
+    isLoggedUserOwner () {
+      return this.loggedUser.role === this.$roles.OWNER.id
+    },
+    isLoggedUserAdmin () {
+      return this.loggedUser.role === this.$roles.ADMIN.id
+    },
+    isLoggedUserMember () {
+      return this.loggedUser.role === this.$roles.MEMBER.id
+    }
+  },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
-    // addAgent () {
-    //   this.enableValidationMessages()
-    //   if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
-    //     const randomResult = this.$randomBooleanResult()
-    //     if (this.editable) {
-    //       if (randomResult) {
-    //         this.agent.id = parseInt(this.$store.getters['agent/idAgent'])
-    //         this.$store.commit('agent/updateAgent', this.agent)
-    //         this.$store.commit('agent/setIdAgent', -1)
-    //         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
-    //       } else {
-    //         this.$store.commit('agent/setIdAgent', -1)
-    //         this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
-    //       }
-    //     } else {
-    //       if (randomResult) {
-    //         this.$store.commit('agent/addAgent', this.agent)
-    //         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
-    //       } else {
-    //         this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
-    //       }
-    //     }
-    //     this.resetAgentForm()
-    //     jQuery('#exampleModalCenter').modal('hide')
-    //     this.editable = false
-    //   }
-    // },
-    // close () {
-    //   this.resetAgentForm()
-    //   this.editable = false
-    //   this.$store.commit('agent/setIdAgent', -1)
-    //   this.$store.commit('agent/setDetailsLinks', false)
-    // },
-    // resetAgentForm () {
-    //   this.isRandomColorSelected = true
-    //   this.agent = {
-    //     name: 'My Agent',
-    //     background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
-    //     repository: '',
-    //     target: '',
-    //     command: '',
-    //     type: '',
-    //     isAliveTrigger: false,
-    //     isHttpOpenTrigger: false,
-    //     category: '',
-    //     script: '',
-    //     id: -1,
-    //     creationDate: new Date().toString(),
-    //     image: '',
-    //     lastRun: null,
-    //     status: this.$entityStatus.FINISHED,
-    //     createdBy: this.$entitySource.USER.id
-    //   }
-    // },
-    // onEdit () {
-    //   this.$store.commit('agent/setDetailsLinks', false)
-    // },
+    updateUserNameWasWritten () {
+      this.userNameWasWritten = true
+    },
+    updateFirstNameWasWritten () {
+      this.firstNameWasWritten = true
+    },
+    updateLastNameWasWritten () {
+      this.lastNameWasWritten = true
+    },
+    updateEmailWasWritten () {
+      this.emailWasWritten = true
+    },
+    updatePhoneWasWritten () {
+      this.phoneWasWritten = true
+    },
+    updatePasswordWasWritten () {
+      this.passwordWasWritten = true
+    },
     switchNameInput () {
       this.showNameInput = !this.showNameInput
     }

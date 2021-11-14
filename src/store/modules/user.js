@@ -4,7 +4,7 @@ export default ({
     users: [
       {
         username: 'john.doe',
-        name: 'John',
+        firstname: 'John',
         lastname: 'Doe',
         email: 'johndoe@gmail.com',
         password: '',
@@ -13,7 +13,7 @@ export default ({
       },
       {
         username: 'adam',
-        name: 'Adam',
+        firstname: 'Adam',
         lastname: 'Sandler',
         email: 'adam@gmail.com',
         password: '',
@@ -22,7 +22,7 @@ export default ({
       },
       {
         username: 'angel',
-        name: 'Angel',
+        firstname: 'Angel',
         lastname: 'Johnson',
         email: 'johnson@gmail.com',
         password: '',
@@ -31,7 +31,7 @@ export default ({
       },
       {
         username: 'yanet',
-        name: 'Yanet',
+        firstname: 'Yanet',
         lastname: 'Jackson',
         email: 'yanet@gmail.com',
         password: '',
@@ -40,10 +40,11 @@ export default ({
       }
     ],
     loggedUser: {
-      name: 'John Doe',
+      firstname: 'John Doe',
       lastname: 'Doe',
       email: 'johndoe@gmail.com',
-      id: 1
+      id: 1,
+      role: 1
     },
     showLogsSection: false,
     showUsersSection: true,
