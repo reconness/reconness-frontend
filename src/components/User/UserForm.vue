@@ -15,7 +15,7 @@
                             <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">Username</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
-                          <span v-if="isUserNameInBlank" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
+                          <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
                         </div><!-- /.d-flex -->
                       </div><!-- /.col-12 -->
                       <div class="col-4">
@@ -34,18 +34,18 @@
                     <div class="form-group">
                       <label for="user-form-email" class="font-weight-regular black-text font-size-16px">Email</label>
                       <input id="user-form-email" @blur="updateEmailWasWritten" @change="updateEmailWasWritten" v-model="user.email" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
-                          <span v-if="isEmailInBlank" :class="{invalid: isEmailInBlank}" class="mt-2">The field email is required</span>
-                          <span v-if="isInValidEmail" :class="{invalid: isInValidEmail}" class="mt-2">The specified email is not correct</span>
+                          <span v-if="(isEmailInBlank && this.emailWasWritten) || (isEmailInBlank && userTryToAdd)" :class="{invalid: isEmailInBlank}" class="mt-2">The field email is required</span>
+                          <span v-if="(isInValidEmail && this.emailWasWritten) || (isInValidEmail && userTryToAdd)" :class="{invalid: isInValidEmail}" class="mt-2">The specified email is not correct</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-firstname" class="font-weight-regular black-text font-size-16px">First Name</label>
                       <input id="user-form-firstname" @blur="updateFirstNameWasWritten" @change="updateFirstNameWasWritten" v-model="user.firstname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
-                          <span v-if="isFirstNameInBlank" :class="{invalid: isFirstNameInBlank}" class="mt-2">The field firstname is required</span>
+                          <span v-if="(isFirstNameInBlank && this.firstNameWasWritten) || (isFirstNameInBlank && userTryToAdd)" :class="{invalid: isFirstNameInBlank}" class="mt-2">The field firstname is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-lastname" class="font-weight-regular black-text font-size-16px">Last Name</label>
                       <input id="user-form-lastname" @blur="updateLastNameWasWritten" @change="updateLastNameWasWritten" v-model="user.lastname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
-                          <span v-if="isLastNameInBlank" :class="{invalid: isLastNameInBlank}" class="mt-2">The field lastname is required</span>
+                          <span v-if="(isLastNameInBlank && this.lastNameWasWritten) || (isLastNameInBlank && userTryToAdd)" :class="{invalid: isLastNameInBlank}" class="mt-2">The field lastname is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
@@ -59,37 +59,41 @@
                     </div>
                   </div><!-- /.col-12 col-sm-8 -->
                     <div class="col-12 col-sm-4 pt-1">
-                        <div class="mt-4 userform-image-container d-flex align-items-center flex-column">
+                        <label for="uploadimage" class="mt-4 userform-image-container d-flex align-items-center flex-column">
+                        <!-- <div class="mt-4 userform-image-container d-flex align-items-center flex-column"> -->
                           <div class="rounded-circle userform-border-camera-container p-1">
                             <div class="user-management-main-info-img camera-container align-items-center d-flex justify-content-center rounded-circle user-border-admin-role">
-                              <span class="material-icons white-text userform-camera-icon">camera_alt</span>
+                              <span v-if="!user.profilePicture" class="material-icons white-text userform-camera-icon">camera_alt</span>
                               <!-- <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-management-logo-avatar" alt="User Logo"> -->
+                              <img v-if="user.profilePicture" class="rounded-circle user-management-logo-avatar" :src="user.profilePicture">
                             </div>
                           </div>
-                          <span class="agent-mini-color-gray mt-3 mb-4">Profile Picture</span>
-                        </div>
+                          <input id="uploadimage" type="file" @change="onFileChange"/>
+                          <span class="agent-mini-color-gray mt-3 mb-4 font-weight-normal">Profile Picture</span>
+                        <!-- </div> -->
+                        </label>
                         <div class="userform-roles-container border">
                             <div class="userform-roles-title-container border-bottom pb-3 pt-2">
                             <span class="font-weight-regular black-text font-size-16px ml-3">Role</span>
                             </div>
                             <div class="userform-role-title">
-                                <div class="form-group ml-3 mt-2">
-                                <div v-if="isLoggedUserOwner" class="custom-control custom-radio form-check">
-                                <input class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET">
+                              <div class="form-group ml-3user mt-2">
+                                <div v-if="isLoggedUserOwner" class="ml-2 custom-control custom-radio form-check">
+                                <input v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                                   <span class="material-icons blue-text">manage_accounts</span>
                                   Owner
                                 </label>
                                 </div>
-                                <div class="custom-control custom-radio form-check">
-                                <input class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$agentType.ROOTDOMAIN">
+                                <div class="ml-2 custom-control custom-radio form-check">
+                                <input v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                   <span class="material-icons green-text">manage_accounts</span>
                                   Administrator
                                 </label>
                                 </div>
-                                <div class="custom-control custom-radio form-check">
-                                <input  class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$agentType.SUBDOMAIN">
+                                <div class="ml-2 custom-control custom-radio form-check">
+                                <input v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
                                   <span class="material-icons green-text">person</span>
                                   Member
@@ -102,7 +106,7 @@
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div class="border-top-none modal-footer">
-                  <button :disabled="isUserFormInvalid" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Add</button>
+                  <button :disabled="isUserFormInvalid" @click="addUser" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Add</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -113,6 +117,7 @@
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex'
+import jQuery from 'jquery'
 
 export default {
   name: 'UserForm',
@@ -126,10 +131,11 @@ export default {
         firstname: '',
         lastname: '',
         email: '',
-        phone: 0,
         password: '',
-        role: [],
-        profilePicture: ''
+        phone: 0,
+        role: -1,
+        profilePicture: '',
+        id: -1
       },
       confirm_password: '',
       userNameWasWritten: false,
@@ -137,22 +143,23 @@ export default {
       lastNameWasWritten: false,
       emailWasWritten: false,
       phoneWasWritten: false,
-      passwordWasWritten: false
+      passwordWasWritten: false,
+      userTryToAdd: false
     }
   },
   computed: {
     ...mapState('user', ['loggedUser']),
     isUserNameInBlank () {
-      return this.$validateIsBlank(this.user.username) && this.userNameWasWritten
+      return this.$validateIsBlank(this.user.username)
     },
     isFirstNameInBlank () {
-      return this.$validateIsBlank(this.user.firstname) && this.firstNameWasWritten
+      return this.$validateIsBlank(this.user.firstname)
     },
     isLastNameInBlank () {
-      return this.$validateIsBlank(this.user.lastname) && this.lastNameWasWritten
+      return this.$validateIsBlank(this.user.lastname)
     },
     isEmailInBlank () {
-      return this.$validateIsBlank(this.user.email) && this.emailWasWritten
+      return this.$validateIsBlank(this.user.email)
     },
     isInValidEmail () {
       if (!this.$validateIsBlank(this.user.email)) {
@@ -183,7 +190,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('agent', ['setIsDeletetFromForm']),
+    ...mapMutations('user', ['addUserEntity']),
     updateUserNameWasWritten () {
       this.userNameWasWritten = true
     },
@@ -204,11 +211,57 @@ export default {
     },
     switchNameInput () {
       this.showNameInput = !this.showNameInput
+    },
+    onFileChange (e) {
+      const files = e.target.files || e.dataTransfer.files
+      if (!files.length) {
+        return
+      }
+      const reader = new FileReader()
+      const self = this
+      reader.onload = (e) => {
+        self.user.profilePicture = e.target.result
+      }
+      reader.readAsDataURL(files[0])
+    },
+    addUser () {
+      this.userTryToAdd = true
+      this.addUserEntity(this.user)
+      jQuery('#user-form-modal').modal('hide')
+      this.resetUserForm()
+    },
+    resetUserForm () {
+      this.user = {
+        username: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+        phone: 0,
+        role: -1,
+        profilePicture: '',
+        id: -1
+      }
+      this.showNameInput = false
+      this.confirm_password = ''
+      this.userNameWasWritten = false
+      this.firstNameWasWritten = false
+      this.lastNameWasWritten = false
+      this.emailWasWritten = false
+      this.phoneWasWritten = false
+      this.passwordWasWritten = false
+      this.userTryToAdd = false
     }
   }
 }
 </script>
 <style>
+.user-management-logo-avatar{
+  max-width: 160px;
+  max-height: 160px;
+  width: 160px;
+  max: 160px;
+}
 .color-sample-container{
   box-shadow: 0px 19px 27px #0C1F6A12 !important;
   border-radius: 12px !important;

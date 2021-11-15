@@ -8,7 +8,9 @@ export default ({
         lastname: 'Doe',
         email: 'johndoe@gmail.com',
         password: '',
-        role: [],
+        phone: 56823566,
+        role: 1,
+        profilePicture: '',
         id: 1
       },
       {
@@ -17,7 +19,9 @@ export default ({
         lastname: 'Sandler',
         email: 'adam@gmail.com',
         password: '',
-        role: [],
+        phone: 51249876,
+        role: 3,
+        profilePicture: '',
         id: 2
       },
       {
@@ -26,7 +30,9 @@ export default ({
         lastname: 'Johnson',
         email: 'johnson@gmail.com',
         password: '',
-        role: [],
+        phone: 51228876,
+        role: 2,
+        profilePicture: '',
         id: 3
       },
       {
@@ -35,20 +41,27 @@ export default ({
         lastname: 'Jackson',
         email: 'yanet@gmail.com',
         password: '',
-        role: [],
+        phone: 51234876,
+        role: 1,
+        profilePicture: '',
         id: 4
       }
     ],
     loggedUser: {
-      firstname: 'John Doe',
+      username: 'john.doe',
+      firstname: 'John',
       lastname: 'Doe',
       email: 'johndoe@gmail.com',
-      id: 1,
-      role: 1
+      password: '',
+      phone: 56823566,
+      role: 1,
+      profilePicture: '',
+      id: 1
     },
     showLogsSection: false,
     showUsersSection: true,
-    showSettingsSection: false
+    showSettingsSection: false,
+    idUserSequence: 10
   },
   mutations: {
     goToLogsSection (state) {
@@ -65,6 +78,10 @@ export default ({
       state.showLogsSection = false
       state.showUsersSection = false
       state.showSettingsSection = true
+    },
+    addUserEntity (state, user) {
+      this.idUserSequence = this.idUserSequence++
+      state.users.push(user)
     }
   },
   actions: {},
