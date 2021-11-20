@@ -143,6 +143,17 @@ export default {
       }
     )
 
+    app.config.globalProperties.$getRoleById = function (idRole) {
+      switch (idRole) {
+        case 1:
+          return this.$roles.OWNER
+        case 2:
+          return this.$roles.ADMIN
+        default:
+          return this.$roles.MEMBER
+      }
+    }
+
     app.config.globalProperties.$entitySource = Object.freeze(
       {
         USER: { id: 1, description: 'User' },

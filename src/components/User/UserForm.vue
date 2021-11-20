@@ -21,7 +21,7 @@
                       <div class="col-4">
                         <div class="d-flex flex-row-reverse">
                           <!-- <span v-if="editable" class="title-target-admin-form agent-mini-color-gray mr-1">Settings</span> -->
-                          <span class="title-target-admin-form font-size-24px agent-mini-color-gray mr-1">New User</span>
+                          <span class="title-target-admin-form font-size-24px agent-mini-color-gray mr-1">{{this.getUserFormStatus}}</span>
                         </div>
                       </div>
                     </div><!-- /.row -->
@@ -49,12 +49,12 @@
                     </div>
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
-                      <input id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordWasWritten" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordWasWritten" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                           <span v-if="isPasswordInBlank" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-confirm_password" class="font-weight-regular black-text font-size-16px">Confirmation Password</label>
-                      <input id="user-form-confirm_password" v-model="confirm_password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input type="password" id="user-form-confirm_password" v-model="confirm_password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                       <span v-if="!isConfirmPasswordEqualToPassword" :class="{invalid: !isConfirmPasswordEqualToPassword}" class="mt-2">The field confirm password must be equal to the password field</span>
                     </div>
                   </div><!-- /.col-12 col-sm-8 -->
@@ -79,21 +79,21 @@
                             <div class="userform-role-title">
                               <div class="form-group ml-3user mt-2">
                                 <div v-if="isLoggedUserOwner" class="ml-2 custom-control custom-radio form-check">
-                                <input v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
+                                <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                                   <span class="material-icons blue-text">manage_accounts</span>
                                   Owner
                                 </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                <input v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                   <span class="material-icons green-text">manage_accounts</span>
                                   Administrator
                                 </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                <input v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
+                                <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
                                   <span class="material-icons green-text">person</span>
                                   Member
@@ -116,7 +116,7 @@
     </div>
 </template>
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapGetters } from 'vuex'
 import jQuery from 'jquery'
 
 export default {
@@ -144,11 +144,14 @@ export default {
       emailWasWritten: false,
       phoneWasWritten: false,
       passwordWasWritten: false,
-      userTryToAdd: false
+      userTryToAdd: false,
+      editable: false,
+      manageHisProfile: false
     }
   },
   computed: {
-    ...mapState('user', ['loggedUser']),
+    ...mapState('user', ['loggedUser', 'selectedIdUser', 'manageMyOwnProfile']),
+    ...mapGetters('user', ['getUserById']),
     isUserNameInBlank () {
       return this.$validateIsBlank(this.user.username)
     },
@@ -187,10 +190,36 @@ export default {
     },
     isLoggedUserMember () {
       return this.loggedUser.role === this.$roles.MEMBER.id
+    },
+    getUserFormStatus () {
+      if (this.editable) {
+        return 'Edit User'
+      }
+      return 'New User'
+    }
+  },
+  watch: {
+    selectedIdUser: function (value) {
+      const selectedUser = this.getUserById(value)
+      if (selectedUser !== undefined) {
+        this.user.username = selectedUser.username
+        this.user.firstname = selectedUser.firstname
+        this.user.lastname = selectedUser.lastname
+        this.user.email = selectedUser.email
+        this.user.password = selectedUser.password
+        this.user.phone = selectedUser.phone
+        this.user.role = selectedUser.role
+        this.user.profilePicture = selectedUser.profilePicture
+        this.user.id = selectedUser.id
+        this.showNameInput = true
+        this.editable = true
+        this.confirm_password = selectedUser.password
+      }
     }
   },
   methods: {
     ...mapMutations('user', ['addUserEntity']),
+    ...mapMutations('user', ['updateSelectedIdUser']),
     updateUserNameWasWritten () {
       this.userNameWasWritten = true
     },
@@ -251,7 +280,12 @@ export default {
       this.phoneWasWritten = false
       this.passwordWasWritten = false
       this.userTryToAdd = false
+      this.updateSelectedIdUser(-1)
+      this.updateManageMyOwnProfile(false)
     }
+  },
+  close () {
+    this.resetUserForm()
   }
 }
 </script>
@@ -270,9 +304,6 @@ export default {
 .userform-input-text{
   border: 1px solid #E5E9EC !important;
   border-radius: 6px !important;
-}
-.green-text{
-  color: #1ED675 !important;
 }
 .w-70{
   width: 70% !important;

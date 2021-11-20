@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper poppins">
     <!-- Navbar -->
     <nav v-if="!isLoginPage" class="main-header navbar navbar-expand navbar-white navbar-light sticky-top">
       <!-- Left navbar links -->
@@ -25,9 +25,6 @@
         </form>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <span class="material-icons">settings</span>
-          </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
             Notifications
@@ -44,19 +41,20 @@
             <span class="material-icons">notifications_none</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <div class="image nav-link cursor-pointer" data-toggle="dropdown">
-            <span class="loged-user-name">{{loggedUser.name}}</span>
-            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="img-circle elevation-2" alt="User Image">
+        <li @mouseenter="showUserConfigurationMenu" @mouseleave="hideUserConfigurationMenu" class="nav-item dropdown">
+          <div class="image nav-link cursor-pointer d-flex" data-toggle="dropdown">
+            <div class="main-bar-user-data d-flex flex-column">
+              <span class="loged-user-name font-size-16px">{{loggedUser.firstname}} {{loggedUser.lastname}}</span>
+              <span class="font-size-10px font-weight-light">{{this.$getRoleById(loggedUser.role).longName}}</span>
+            </div>
+            <div>
+            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="top-bar-logo img-circle elevation-2" alt="User Image">
+            <span v-if="isLoggedUserMember" class="green-text material-icons position-absolute top-bar-role-icon rounded-circle">person</span>
+            <span v-else :class="{'blue-text': isLoggedUserOwner, 'green-text': isLoggedUserAdmin}" class="material-icons position-absolute top-bar-role-icon rounded-circle blue-text">manage_accounts</span>
+            </div>
           </div>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" @click="this.$router.push({ name: 'LogIn' })" class="dropdown-item">
-              My account
-            </a>
-            <div class="dropdown-divider"></div>
-              <a href="#" @click="logoutOfSystem" class="dropdown-item">
-                Sign out
-              </a>
+          <div v-if="showAccountUserMenu" class="cursor-pointer menu-configure-account text-center position-absolute">
+            <span class="cursor-pointer" @click="manageMyUser">Configure User Account</span>
           </div>
         </li>
 
@@ -156,7 +154,8 @@
       <router-view/>
       <div class="container">
         <div class="row">
-          <MessageBox />
+          <MessageBox/>
+          <UserForm/>
         </div>
       </div>
     </div><!-- /.content-wrapper -->
@@ -165,11 +164,18 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import UserForm from '@/components/User/UserForm.vue'
+import jQuery from 'jquery'
 import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import MessageBox from '@/components/General/MessageBox.vue'
 export default {
   name: 'App',
+  components: {
+    BullseyeArrowIco,
+    MessageBox,
+    UserForm
+  },
   data: function () {
     return {
       arrow_down: true,
@@ -181,16 +187,15 @@ export default {
       button_vert: true,
       location: 'Home',
       goAgent: false,
-      isNoteSectionOpenedReference: true
+      isNoteSectionOpenedReference: true,
+      showAccountUserMenu: false,
+      showAccountUserMenuSubItem: false,
+      isPointerOnAccountUserMenuContainer: false
     }
-  },
-  components: {
-    BullseyeArrowIco,
-    MessageBox
   },
   computed: {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
-    ...mapState('target', ['loggedUser']),
+    ...mapState('user', ['loggedUser']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
     },
@@ -200,6 +205,15 @@ export default {
     },
     isAnyPipelineRelatedPage () {
       return this.$route.name === 'Pipelines' || this.$route.name === 'PipelineDetail' || this.$route.name === 'PipelineRunView'
+    },
+    isLoggedUserOwner () {
+      return this.loggedUser.role === this.$roles.OWNER.id
+    },
+    isLoggedUserAdmin () {
+      return this.loggedUser.role === this.$roles.ADMIN.id
+    },
+    isLoggedUserMember () {
+      return this.loggedUser.role === this.$roles.MEMBER.id
     }
   },
   watch: {
@@ -212,6 +226,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
+    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -251,11 +266,54 @@ export default {
     goToPipelinesListPageAndExpandMenu () {
       this.switchArrowsPipeline()
       this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)
+    },
+    showUserConfigurationMenu () {
+      this.showAccountUserMenu = true
+    },
+    hideUserConfigurationMenu () {
+      this.showAccountUserMenu = false
+    },
+    manageMyUser () {
+      if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
+        this.$router.push({ name: 'LogIn' })
+      } else {
+        console.log(123)
+        this.updateSelectedIdUser(this.loggedUser.id)
+        this.updateManageMyOwnProfile(true)
+        jQuery('#user-form-modal').modal()
+      }
+      this.showAccountUserMenu = false
     }
   }
 }
 </script>
 <style>
+.menu-configure-account{
+  width:151px;
+  height:26px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 19px 15px #0C1F6A12;
+  border: 1px solid #E5E9EC;
+  border-radius: 6px;
+}
+.menu-configure-account span{
+  font-size: 11px;
+  width: 151;
+  height: 26px;
+  background: #ffffff;
+}
+.top-bar-logo{
+  width: 36px;
+  max-width: 36px;
+  height: 36px;
+  max-width: 36px;
+}
+.top-bar-role-icon{
+  background: #ffffff;
+  font-size: 17px !important;
+  bottom: 0;
+  right: 30px;
+}
 .login-wallpaper{
   background: #49b1fe url('~@/assets/wallpaper.png') top left no-repeat;
   background-size: cover
@@ -332,7 +390,7 @@ form .input-group {
     padding: 0;
     font-size: .9rem;
     border-radius: .2rem;
-    width: 120px;
+    width: 11rem;
 }
 .navbar-expand .navbar-nav .nav-link {
     padding-left: .5rem;

@@ -48,6 +48,9 @@ a.brand-link{
 .white-text{
   color: #ffffff !important;
 }
+.green-text{
+  color: #1ED675 !important;
+}
 .black-text{
   color: #000000 !important;
 }
@@ -1211,4 +1214,7 @@ html {
 }
 .font-size-14px{
   font-size: 14px !important;
+}
+.font-size-10px{
+  font-size: 10px !important;
 }

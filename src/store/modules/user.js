@@ -7,7 +7,7 @@ export default ({
         firstname: 'John',
         lastname: 'Doe',
         email: 'johndoe@gmail.com',
-        password: '',
+        password: '123',
         phone: 56823566,
         role: 1,
         profilePicture: '',
@@ -18,7 +18,7 @@ export default ({
         firstname: 'Adam',
         lastname: 'Sandler',
         email: 'adam@gmail.com',
-        password: '',
+        password: '123',
         phone: 51249876,
         role: 3,
         profilePicture: '',
@@ -29,7 +29,7 @@ export default ({
         firstname: 'Angel',
         lastname: 'Johnson',
         email: 'johnson@gmail.com',
-        password: '',
+        password: '123',
         phone: 51228876,
         role: 2,
         profilePicture: '',
@@ -40,7 +40,7 @@ export default ({
         firstname: 'Yanet',
         lastname: 'Jackson',
         email: 'yanet@gmail.com',
-        password: '',
+        password: '123',
         phone: 51234876,
         role: 1,
         profilePicture: '',
@@ -52,16 +52,18 @@ export default ({
       firstname: 'John',
       lastname: 'Doe',
       email: 'johndoe@gmail.com',
-      password: '',
+      password: '123',
       phone: 56823566,
-      role: 1,
+      role: 3,
       profilePicture: '',
       id: 1
     },
     showLogsSection: false,
     showUsersSection: true,
     showSettingsSection: false,
-    idUserSequence: 10
+    idUserSequence: 10,
+    selectedIdUser: -1,
+    manageMyOwnProfile: false
   },
   mutations: {
     goToLogsSection (state) {
@@ -80,10 +82,20 @@ export default ({
       state.showSettingsSection = true
     },
     addUserEntity (state, user) {
-      this.idUserSequence = this.idUserSequence++
+      state.idUserSequence = state.idUserSequence++
       state.users.push(user)
+    },
+    updateSelectedIdUser (state, idUser) {
+      state.selectedIdUser = idUser
+    },
+    updateManageMyOwnProfile (state, status) {
+      state.manageMyOwnProfile = status
     }
   },
   actions: {},
-  getters: {}
+  getters: {
+    getUserById: (state) => (id) => {
+      return state.users.find(user => user.id === id)
+    }
+  }
 })
