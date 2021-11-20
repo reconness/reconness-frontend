@@ -1,7 +1,7 @@
 <template>
-  <div class="wrapper poppins">
+  <div class="wrapper">
     <!-- Navbar -->
-    <nav v-if="!isLoginPage" class="main-header navbar navbar-expand navbar-white navbar-light sticky-top">
+    <nav v-if="!isLoginPage" class="poppins main-header navbar navbar-expand navbar-white navbar-light sticky-top">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -62,7 +62,7 @@
     </nav>
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
-    <aside v-if="!isLoginPage" class="main-sidebar sidebar-dark-primary  left-aside position-fixed" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <aside v-if="!isLoginPage" class="poppins main-sidebar sidebar-dark-primary  left-aside position-fixed" @mouseenter="mouseenter" @mouseleave="mouseleave">
       <!-- Brand Logo -->
        <router-link :to="{name: 'Home'}">
       <a href="#" class="brand-link">

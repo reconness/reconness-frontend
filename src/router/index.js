@@ -75,6 +75,11 @@ const routes = [
     path: '/logout',
     name: 'LogOut',
     redirect: { name: 'LogIn' }
+  },
+  {
+    path: '/searcher',
+    name: 'SearchResult',
+    component: () => import('../views/SearchResult.vue')
   }
 ]
 const router = createRouter({
