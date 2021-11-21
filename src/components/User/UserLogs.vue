@@ -21,7 +21,7 @@
                               <label>Log files</label>
                               <select class="form-control" @change="getLogData" v-model="logName">
                                 <option value="" disabled hidden selected>Please select an option</option>
-                                <option v-for="log of loggedUser.logs" :value="log.id" :key="log.id">{{log.name}}</option>
+                                <option v-for="log of loggedUser.logs" :value="log.name" :key="log.id">{{log.name}}</option>
                               </select>
                           </div>
                       </div>
@@ -57,7 +57,6 @@ export default {
   },
   methods: {
     getLogData: function () {
-      console.log(this.getLogInfoByName(this.logName))
       this.logText = this.getLogInfoByName(this.logName)
     }
   }

@@ -87,7 +87,17 @@ export default ({
     showSettingsSection: false,
     idUserSequence: 10,
     selectedIdUser: -1,
-    manageMyOwnProfile: false
+    manageMyOwnProfile: false,
+    userLogsFiles: [
+      {
+        name: '3739362293.txt',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
+      },
+      {
+        name: '37sh2362293.txt',
+        text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
+      }
+    ]
   },
   mutations: {
     goToLogsSection (state) {
@@ -122,11 +132,8 @@ export default ({
       return state.users.find(user => user.id === id)
     },
     getLogInfoByName: (state) => (logname) => {
-      if (logname === '3739362293.txt') {
-        return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
-      } else {
-        return 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
-      }
+      const logFileText = state.userLogsFiles.find(item => item.name === logname).text
+      return logFileText
     }
   }
 })
