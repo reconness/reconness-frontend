@@ -4,12 +4,12 @@
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Results for agents</span>
-                <span class="ml-2 font-size-14px">6 results</span>
+                <span class="ml-2 font-size-14px">{{getFilteredAgentsByName(textToSearch).length}} results</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">Completed repository 2</span>
+            <div v-for="agent of getFilteredAgentsByName(textToSearch)" :key="agent.id" class="entity-result-items-cell pt-2 pb-2">
+                <span class="ml-5  font-size-14px">{{agent.name}}</span>
             </div>
         </div>
     </div>
@@ -17,12 +17,22 @@
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Results for targets</span>
-                <span class="ml-2 font-size-14px">6 results</span>
+                <span class="ml-2 font-size-14px">{{getFilteredTargetsByName(textToSearch).length + getFilteredRootDomainsByName(textToSearch).size + getFilteredSubDomainsByName(textToSearch).size }} results</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">Completed repository 2</span>
+            <div v-for="target of getFilteredTargetsByName(textToSearch)" :key="target.id" class="entity-result-items-cell pt-2 pb-2">
+                <span class="ml-5  font-size-14px">{{target.name}}</span>
+            </div>
+        </div>
+        <div class="entity-result-items">
+            <div v-for="rootDomain of getFilteredRootDomainsByName(textToSearch).result" :key="rootDomain.id" class="entity-result-items-cell pt-2 pb-2">
+                <span class="ml-5  font-size-14px">{{rootDomain.root}}</span>
+            </div>
+        </div>
+        <div class="entity-result-items">
+            <div v-for="subdomain of getFilteredSubDomainsByName(textToSearch).result" :key="subdomain.id" class="entity-result-items-cell pt-2 pb-2">
+                <span class="ml-5  font-size-14px">{{subdomain.name}}</span>
             </div>
         </div>
     </div>
@@ -30,12 +40,12 @@
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Results for pipelines</span>
-                <span class="ml-2 font-size-14px">6 results</span>
+                <span class="ml-2 font-size-14px">{{getFilteredPipelinesByName(textToSearch).length}} results</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">Completed repository 2</span>
+            <div v-for="pipeline of getFilteredPipelinesByName(textToSearch)" :key="pipeline.id" class="entity-result-items-cell pt-2 pb-2">
+                <span class="ml-5  font-size-14px">{{pipeline.name}}</span>
             </div>
         </div>
     </div>
@@ -43,7 +53,7 @@
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Others</span>
-                <span class="ml-2 font-size-14px">6 results</span>
+                <span class="ml-2 font-size-14px">1 results</span>
             </div>
         </div>
         <div class="entity-result-items">
@@ -54,6 +64,18 @@
     </div>
 </div>
 </template>
+<script>
+import { mapState, mapGetters } from 'vuex'
+export default {
+  name: 'SearchResultItem',
+  computed: {
+    ...mapGetters('agent', ['getFilteredAgentsByName']),
+    ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
+    ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
+    ...mapState('target', ['textToSearch'])
+  }
+}
+</script>
 <style scoped>
 .font-size-20px{
   font-size: 20px;

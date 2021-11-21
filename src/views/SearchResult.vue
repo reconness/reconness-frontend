@@ -3,8 +3,7 @@
   <!-- Contains navs-bar -->
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="container-fluid">
-        <hr class="reset-margin-top mb-0" />
+      <div class="container-fluid search-result-main-view">
           <SearchResultItem/>
       </div>
     </div>
@@ -23,5 +22,9 @@ export default {
   body{
     background: #f2f4f6;
     background-size: cover
+  }
+  .search-result-main-view{
+    padding-right:0;
+    padding-left: 0;
   }
 </style>

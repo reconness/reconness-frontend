@@ -1136,7 +1136,7 @@ html {
   border-radius: 8px;
 }
 .ligth-gray-background{
-  background-color: #FBFBFB;
+  background-color: #FBFBFB !important;
 }
 .remove-flex{
   display: initial !important;

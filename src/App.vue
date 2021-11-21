@@ -1,16 +1,20 @@
 <template>
   <div class="wrapper">
     <!-- Navbar -->
-    <nav v-if="!isLoginPage" class="poppins main-header navbar navbar-expand navbar-white navbar-light sticky-top">
+    <nav v-if="!isLoginPage" :class="{'search-page-top-bar': isSearcherView}" class="poppins main-header navbar navbar-expand navbar-white navbar-light sticky-top">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" v-on:click="changeButton" data-widget="pushmenu" href="#" role="button">
-           <button type="button" class="btn btn-light margin-right"> <span v-show="button_module" class="material-icons">view_module</span>
-            <span v-show="button_vert" class="material-icons">more_vert</span>
-              </button>
-             <p class="mt-03 float-right loc"><strong>{{viewloc}}</strong></p>
-            </a>
+          <a :class="{'d-flex': isSearcherView}" class="nav-link" href="#" role="button">
+            <button type="button" data-widget="pushmenu" v-on:click="changeButton" class="btn btn-light margin-right"> <span v-show="button_module" class="material-icons">view_module</span>
+              <span v-show="button_vert" class="material-icons">more_vert</span>
+            </button>
+            <div class="d-flex align-self-center" v-if="isSearcherView">
+              <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="goToPreviousPage">arrow_back</span>
+              <p class="float-right loc"><strong>Search Results</strong></p>
+            </div>
+            <p v-else class="mt-03 float-right loc"><strong>{{viewloc}}</strong></p>
+          </a>
         </li>
       </ul>
       <!-- Right navbar links -->
@@ -20,7 +24,7 @@
         <form class="form-inline">
       <div class="form-group has-search input-group-sm">
                               <span class="material-icons search-icon form-control-feddback">search</span>
-                              <input class="form-control url-input" type="search" placeholder="Search" aria-label="Search">
+                              <input :class="{'ligth-gray-background': isSearcherView}" class="form-control url-input" type="search" placeholder="Search" aria-label="Search" @keyup="goToSearchView"  v-model="textFilter">
                             </div>
         </form>
         </li>
@@ -190,12 +194,14 @@ export default {
       isNoteSectionOpenedReference: true,
       showAccountUserMenu: false,
       showAccountUserMenuSubItem: false,
-      isPointerOnAccountUserMenuContainer: false
+      isPointerOnAccountUserMenuContainer: false,
+      textFilter: ''
     }
   },
   computed: {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('user', ['loggedUser']),
+    ...mapState('target', ['routePreviousToSearch']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
     },
@@ -214,11 +220,20 @@ export default {
     },
     isLoggedUserMember () {
       return this.loggedUser.role === this.$roles.MEMBER.id
+    },
+    isSearcherView () {
+      return this.$route.name === 'SearchResult'
     }
   },
   watch: {
     isNotesSectionOpened: function (value) {
       this.isNoteSectionOpenedReference = value
+    },
+    textFilter: function (value) {
+      this.updateTextToSearch(value)
+      if (this.$validateIsBlank(value)) {
+        this.goToPreviousPage()
+      }
     }
   },
   mounted () {
@@ -226,6 +241,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
+    ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile']),
     mouseenter: function () {
       if (this.button_module) {
@@ -277,17 +293,33 @@ export default {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
         this.$router.push({ name: 'LogIn' })
       } else {
-        console.log(123)
         this.updateSelectedIdUser(this.loggedUser.id)
         this.updateManageMyOwnProfile(true)
         jQuery('#user-form-modal').modal()
       }
       this.showAccountUserMenu = false
+    },
+    goToSearchView () {
+      this.updateRoutePreviousToSearch(this.$route.name)
+      this.$router.push({ name: 'SearchResult' })
+    },
+    goToPreviousPage () {
+      this.$router.push({ name: this.routePreviousToSearch })
     }
   }
 }
 </script>
 <style>
+.search-page-name-label{
+  font-size: 24px;
+}
+.search-page-top-bar{
+  background: #FBFBFB 0% 0% no-repeat padding-box !important;
+}
+.arrow-cancel-search{
+  font-size: 18px !important;
+  line-height: 1.4 !important;
+}
 .menu-configure-account{
   width:151px;
   height:26px;
