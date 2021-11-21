@@ -3,6 +3,7 @@
     <div class="d-flex align-items-center flex-column justify-content-center">
       <div class="user-management-container">
         <UserList v-if="showUsersSection"/>
+        <UserLogs v-else-if="showLogsSection"/>
       </div>
     </div>
   </div>
@@ -10,10 +11,12 @@
 <script>
 import { mapState } from 'vuex'
 import UserList from '@/components/User/UserList.vue'
+import UserLogs from '@/components/User/UserLogs.vue'
 export default {
   name: 'UserManagement',
   components: {
-    UserList
+    UserList,
+    UserLogs
   },
   computed: {
     ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])
