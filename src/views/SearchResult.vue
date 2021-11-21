@@ -7,14 +7,27 @@
           <SearchResultItem/>
       </div>
     </div>
+    <SearchBottomBar :total="totalSearchedItems"/>
   </div>
 </template>
 <script>
 import SearchResultItem from '@/components/General/SearchResultItem.vue'
+import SearchBottomBar from '@/components/General/SearchBottomBar.vue'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'SearchList',
   components: {
-    SearchResultItem
+    SearchResultItem,
+    SearchBottomBar
+  },
+  computed: {
+    ...mapGetters('agent', ['getFilteredAgentsByName']),
+    ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
+    ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
+    ...mapState('target', ['textToSearch']),
+    totalSearchedItems () {
+      return this.getFilteredAgentsByName(this.textToSearch).length + this.getFilteredPipelinesByName(this.textToSearch).length + this.getFilteredTargetsByName(this.textToSearch).length + this.getFilteredRootDomainsByName(this.textToSearch).size + this.getFilteredSubDomainsByName(this.textToSearch).size + 1
+    }
   }
 }
 </script>

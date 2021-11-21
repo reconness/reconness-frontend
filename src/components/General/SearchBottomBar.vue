@@ -1,0 +1,31 @@
+<template>
+<div class="w-100 pt-2 h-8vh left-aside pb-2 mt-3 pr-3 d-flex position-sticky bottom-0" style="height: 35px !important">
+  <div class="d-flex justify-content-center align-items-center w-100">
+    <span>{{total}} results</span>
+  </div>
+</div>
+</template>
+<script>
+export default {
+  name: 'SearchBottomBar',
+  data () {
+    return {
+      page: 0
+    }
+  },
+  props: {
+    total: {
+      type: Number,
+      default: 0
+    }
+  }
+}
+</script>
+<style scoped>
+.bottom-0{
+  bottom: 0 !important;
+}
+.h-8vh{
+  height: 8vh !important
+}
+</style>
