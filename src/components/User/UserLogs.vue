@@ -18,7 +18,7 @@
                   <div class="row">
                       <div class="col-12">
                           <div class="form-group">
-                              <label>Log files</label>
+                              <label class="user-logs-label-select font-weight-medium font-size-14px">Log files</label>
                               <select class="form-control" @change="getLogData" v-model="logName">
                                 <option value="" disabled hidden selected>Please select an option</option>
                                 <option v-for="log of loggedUser.logs" :value="log.name" :key="log.id">{{log.name}}</option>
@@ -29,8 +29,8 @@
                           <div class="form-group">
                             <textarea class="form-control user-logs-files-content" rows="6" v-model="logText"></textarea>
                           </div>
-                          <div class="d-flex">
-                          <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+                          <div class="d-flex justify-content-end">
+                          <button type="button" class="user-logs-cancel-btn red-text agent-border btn create-agent-buttons-main-action font-size-14px font-weight-light" data-dismiss="modal">Clean</button>
                           </div>
                       </div>
                   </div>
@@ -112,6 +112,14 @@ table.user-management-users-list.table thead th{
 }
 .user-management-main-info-img{
     padding: 7px
+}
+textarea, select{
+  border: 1px solid #E5E9EC;
+  border-radius: 6px;
+}
+.user-logs-cancel-btn{
+  width: 77px;
+  height: 36px;
 }
 
 </style>
