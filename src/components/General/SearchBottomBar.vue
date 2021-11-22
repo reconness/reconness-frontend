@@ -8,11 +8,6 @@
 <script>
 export default {
   name: 'SearchBottomBar',
-  data () {
-    return {
-      page: 0
-    }
-  },
   props: {
     total: {
       type: Number,
