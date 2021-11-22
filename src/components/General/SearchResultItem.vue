@@ -26,12 +26,12 @@
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="rootDomain of getFilteredRootDomainsByName(textToSearch).result" :key="rootDomain.id" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="rootDomain of getFilteredRootDomainsByName(textToSearch).result" :key="rootDomain.idSearch" class="entity-result-items-cell pt-2 pb-2">
                 <span class="ml-5  font-size-14px">{{rootDomain.root}}</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="subdomain of getFilteredSubDomainsByName(textToSearch).result" :key="subdomain.id" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="subdomain of getFilteredSubDomainsByName(textToSearch).result" :key="subdomain.idSearch" class="entity-result-items-cell pt-2 pb-2">
                 <span class="ml-5  font-size-14px">{{subdomain.name}}</span>
             </div>
         </div>

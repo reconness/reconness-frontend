@@ -1689,9 +1689,16 @@ export default ({
           target.rootDomains.filter(rootDomains => rootDomains.root.includes(name))
         )
       })
+      let sequence = 0
+      const finalSearchResult = []
+      searchResult.forEach(element => {
+        sequence++
+        const elementClone = Object.assign({ idSearch: sequence }, element)
+        finalSearchResult.push(elementClone)
+      })
       return {
-        result: searchResult,
-        size: searchResult.length
+        result: finalSearchResult,
+        size: finalSearchResult.length
       }
     },
     getFilteredSubDomainsByName: (state) => (name) => {
@@ -1703,9 +1710,16 @@ export default ({
           )
         })
       })
+      let sequence = 0
+      const finalSearchResult = []
+      searchResult.forEach(element => {
+        sequence++
+        const elementClone = Object.assign({ idSearch: sequence }, element)
+        finalSearchResult.push(elementClone)
+      })
       return {
-        result: searchResult,
-        size: searchResult.length
+        result: finalSearchResult,
+        size: finalSearchResult.length
       }
     }
   }
