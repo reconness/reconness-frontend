@@ -97,6 +97,14 @@ export default {
       }
     )
 
+    app.config.globalProperties.$notificationMessageType = Object.freeze(
+      {
+        CONFIRM: 1,
+        ERROR: 2,
+        SUCCESS: 3
+      }
+    )
+
     app.config.globalProperties.$isOddNumber = function (value) {
       return (value % 2) === 1
     }

@@ -1224,3 +1224,9 @@ html {
 .border-ligth-gray{
   border: 1px solid #E5E9EC !important;
 }
+.gray-background-box{
+  background: #FBFBFB 0% 0% no-repeat padding-box;
+}
+.highlight-area{
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+}

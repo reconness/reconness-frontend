@@ -6,10 +6,10 @@
                           <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-logs-logo-avatar" alt="User Logo">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
-                          <span class="user-management-username">John Smith</span>
+                          <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
                           <div class="user-management-roles">
                               <AccountCogIco class="user-role-ico"/>
-                              <span class="font-size-16px user-management-role-name ml-1">Administrator Owner</span>
+                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.id).longName}}</span>
                           </div>
                       </div>
                   </div>
@@ -21,7 +21,7 @@
                               <label class="user-logs-label-select font-weight-medium font-size-14px">Log files</label>
                               <select class="form-control" @change="getLogData" v-model="logName">
                                 <option value="" disabled hidden selected>Please select an option</option>
-                                <option v-for="log of loggedUser.logs" :value="log.name" :key="log.id">{{log.name}}</option>
+                                <option v-for="log of getLoggedUserData.logs" :value="log.name" :key="log.id">{{log.name}}</option>
                               </select>
                           </div>
                       </div>
@@ -30,7 +30,7 @@
                             <textarea class="form-control user-logs-files-content" rows="6" v-model="logText"></textarea>
                           </div>
                           <div class="d-flex justify-content-end">
-                            <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Clean</button>
+                            <button :disabled="isNotLogSelected" @click="updateNotificationMessage" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-toggle="modal" data-target="#message-box-notification-modal" data-dismiss="modal">Clean</button>
                           </div>
                       </div>
                   </div>
@@ -39,7 +39,7 @@
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
 export default {
   name: 'UserLogs',
   components: {
@@ -53,11 +53,34 @@ export default {
   },
   computed: {
     ...mapState('user', ['users', 'loggedUser']),
-    ...mapGetters('user', ['getLogInfoByName'])
+    ...mapState('general', ['notificationMessageActionSelected']),
+    ...mapGetters('user', ['getLogInfoByName', 'getLoggedUserData']),
+    isNotLogSelected () {
+      return this.$validateIsBlank(this.logName)
+    }
+  },
+  watch: {
+    notificationMessageActionSelected: function (value) {
+      if (value) {
+        this.removeUserLogByName(this.logName)
+        this.resetData()
+      }
+    }
   },
   methods: {
+    ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
+    ...mapMutations('user', ['removeUserLogByName']),
     getLogData: function () {
       this.logText = this.getLogInfoByName(this.logName)
+    },
+    updateNotificationMessage: function () {
+      this.updateNotificationMessageType(this.$notificationMessageType.CONFIRM)
+      const notificationMessageDesc = 'Are you sure to clean this log: <span class="font-weight-semibold"> ' + this.logName + ' </span>'
+      this.updateNotificationMessageDescription(notificationMessageDesc)
+    },
+    resetData: function () {
+      this.updateNotificationMessageActionSelected(false)
+      this.logText = ''
     }
   }
 }

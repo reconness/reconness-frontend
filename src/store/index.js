@@ -5,6 +5,7 @@ import agent from './modules/agent'
 import auth from './modules/auth'
 import wordlist from './modules/wordlist'
 import referent from './modules/referent'
+import general from './modules/general'
 import user from './modules/user'
 
 export default createStore({
@@ -15,6 +16,7 @@ export default createStore({
     auth,
     referent,
     wordlist,
-    user
+    user,
+    general
   }
 })

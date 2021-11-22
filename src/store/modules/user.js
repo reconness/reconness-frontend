@@ -118,6 +118,7 @@ export default ({
         }
       ]
     },
+    loggedUserId: 1,
     showLogsSection: false,
     showUsersSection: true,
     showSettingsSection: false,
@@ -160,6 +161,11 @@ export default ({
     },
     updateManageMyOwnProfile (state, status) {
       state.manageMyOwnProfile = status
+    },
+    removeUserLogByName (state, logName) {
+      const user = state.users.find(user => user.id === state.loggedUser.id)
+      const logIndexToRemove = user.logs.findIndex(log => log.name === logName)
+      user.logs.splice(logIndexToRemove, 1)
     }
   },
   actions: {},
@@ -170,6 +176,9 @@ export default ({
     getLogInfoByName: (state) => (logname) => {
       const logFileText = state.userLogsFiles.find(item => item.name === logname).text
       return logFileText
+    },
+    getLoggedUserData: (state) => {
+      return state.users.find(user => user.id === state.loggedUserId)
     }
   }
 })

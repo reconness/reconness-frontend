@@ -159,6 +159,7 @@
       <div class="container">
         <div class="row">
           <MessageBox/>
+          <MessageBoxNotification/>
           <UserForm/>
         </div>
       </div>
@@ -173,11 +174,13 @@ import jQuery from 'jquery'
 import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import MessageBox from '@/components/General/MessageBox.vue'
+import MessageBoxNotification from '@/components/General/MessageBoxNotification.vue'
 export default {
   name: 'App',
   components: {
     BullseyeArrowIco,
     MessageBox,
+    MessageBoxNotification,
     UserForm
   },
   data: function () {
