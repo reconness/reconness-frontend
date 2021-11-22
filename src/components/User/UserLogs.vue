@@ -30,7 +30,7 @@
                             <textarea class="form-control user-logs-files-content" rows="6" v-model="logText"></textarea>
                           </div>
                           <div class="d-flex justify-content-end">
-                          <button type="button" class="user-logs-cancel-btn red-text agent-border btn create-agent-buttons-main-action font-size-14px font-weight-light" data-dismiss="modal">Clean</button>
+                            <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Clean</button>
                           </div>
                       </div>
                   </div>

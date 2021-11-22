@@ -21,7 +21,16 @@ export default ({
             id: 2,
             name: '37sh2362293.txt'
           }
-        ]
+        ],
+        notification: {
+          url: '',
+          method: '',
+          payload: '',
+          rootDomain: '',
+          subDomain: '',
+          ipAddress: '',
+          isAlive: ''
+        }
       },
       {
         username: 'adam',
@@ -33,7 +42,16 @@ export default ({
         role: 3,
         profilePicture: '',
         id: 2,
-        logs: []
+        logs: [],
+        notification: {
+          url: '',
+          method: '',
+          payload: '',
+          rootDomain: '',
+          subDomain: '',
+          ipAddress: '',
+          isAlive: ''
+        }
       },
       {
         username: 'angel',
@@ -45,7 +63,16 @@ export default ({
         role: 2,
         profilePicture: '',
         id: 3,
-        logs: []
+        logs: [],
+        notification: {
+          url: '',
+          method: '',
+          payload: '',
+          rootDomain: '',
+          subDomain: '',
+          ipAddress: '',
+          isAlive: ''
+        }
       },
       {
         username: 'yanet',
@@ -57,7 +84,16 @@ export default ({
         role: 1,
         profilePicture: '',
         id: 4,
-        logs: []
+        logs: [],
+        notification: {
+          url: '',
+          method: '',
+          payload: '',
+          rootDomain: '',
+          subDomain: '',
+          ipAddress: '',
+          isAlive: ''
+        }
       }
     ],
     loggedUsername: 'john.doe',

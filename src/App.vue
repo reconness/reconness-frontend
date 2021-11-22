@@ -124,11 +124,11 @@
                 <span v-show="arrow_up_settings" class="material-icons float-right">arrow_drop_up</span>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item" ><router-link :to="{ name: 'Notifications' }" >
-                  <a href="#" class="nav-link" v-on:click="addLocation('Notifications')" v-bind:class="{'nav2': styleNotificationsState}">
+                <li class="nav-item" >
+                  <a href="#" class="nav-link" v-on:click="goToUserSettings" v-bind:class="{'nav2': styleNotificationsState}">
                     <span class="material-icons">font_download</span>
                         <p>Notifications</p>
-                  </a></router-link>
+                  </a>
                 </li>
                 <li class="nav-item" ><router-link :to="{ name: 'Logs' }" >
                   <a href="#" class="nav-link" v-on:click="addLocation('Logs')" v-bind:class="{'nav2': styleLogsState}">
@@ -242,7 +242,7 @@ export default {
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
-    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile']),
+    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -305,6 +305,10 @@ export default {
     },
     goToPreviousPage () {
       this.$router.push({ name: this.routePreviousToSearch })
+    },
+    goToUserSettings () {
+      this.goToSettingsSection()
+      this.$router.push({ name: 'LogIn' })
     }
   }
 }

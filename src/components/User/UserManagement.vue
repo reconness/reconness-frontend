@@ -1,9 +1,10 @@
 <template>
   <div class="col-12">
     <div class="d-flex align-items-center flex-column justify-content-center">
-      <div class="user-management-container">
+      <div :class="{'user-settings': showSettingsSection}" class="user-management-container pb-5">
         <UserList v-if="showUsersSection"/>
         <UserLogs v-else-if="showLogsSection"/>
+        <UserSettings v-else/>
       </div>
     </div>
   </div>
@@ -12,11 +13,13 @@
 import { mapState } from 'vuex'
 import UserList from '@/components/User/UserList.vue'
 import UserLogs from '@/components/User/UserLogs.vue'
+import UserSettings from '@/components/User/UserSettings.vue'
 export default {
   name: 'UserManagement',
   components: {
     UserList,
-    UserLogs
+    UserLogs,
+    UserSettings
   },
   computed: {
     ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])
@@ -29,7 +32,6 @@ export default {
     box-shadow: 0px 19px 45px #0C1F6A6E;
     border: 1px solid #E5E9EC;
     border-radius: 12px;
-    height: 486px;
     width: 60%;
     max-width: 1086px;
 }

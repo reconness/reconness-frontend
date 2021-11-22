@@ -1218,3 +1218,9 @@ html {
 .font-size-10px{
   font-size: 10px !important;
 }
+.border-radius-6px{
+  border-radius: 6px;
+}
+.border-ligth-gray{
+  border: 1px solid #E5E9EC !important;
+}
