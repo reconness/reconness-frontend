@@ -6,10 +6,10 @@
                           <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-management-logo-avatar" alt="User Logo">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
-                          <span class="user-management-username">John Smith</span>
+                          <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
                           <div class="user-management-roles">
                               <AccountCogIco class="user-role-ico"/>
-                              <span class="font-size-16px user-management-role-name ml-1">Administrator Owner</span>
+                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.id).longName}}</span>
                           </div>
                       </div>
                   </div>
@@ -58,7 +58,7 @@
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import UserForm from '@/components/User/UserForm.vue'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'UserList',
   components: {
@@ -66,7 +66,8 @@ export default {
     UserForm
   },
   computed: {
-    ...mapState('user', ['users', 'loggedUser'])
+    ...mapState('user', ['users', 'loggedUser']),
+    ...mapGetters('user', ['getLoggedUserData'])
   }
 }
 </script>

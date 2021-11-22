@@ -6,10 +6,10 @@
                           <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-logs-logo-avatar" alt="User Logo">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
-                          <span class="user-management-username">John Smith</span>
+                          <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
                           <div class="user-management-roles">
                               <AccountCogIco class="user-role-ico"/>
-                              <span class="font-size-16px user-management-role-name ml-1">Administrator Owner</span>
+                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.id).longName}}</span>
                           </div>
                       </div>
                   </div>
@@ -17,8 +17,8 @@
               <div class="user-management-content-body mt-3 mx-5">
                   <div class="row">
                       <div class="col-12">
-                          <span @click="updateIsUserNotificationSettingsSelected(true)" :class="{'user-payload-selected-pill': isUserNotificationSettingsSelected}" class="p-2 user-setting-pill user-setting-notification-pill notification-active font-size-14px">Notification Settings</span>
-                          <span @click="updateIsUserNotificationSettingsSelected(false)" :class="{'user-payload-selected-pill': !isUserNotificationSettingsSelected}" class="p-2 user-setting-pill user-setting-payload-pill font-size-14px ml-4">Notification Payloads</span>
+                          <span @click="updateIsUserNotificationSettingsSelected(true)" :class="{'user-payload-selected-pill': isUserNotificationSettingsSelected}" class="p-2 user-setting-pill user-setting-notification-pill notification-active font-size-14px cursor-pointer">Notification Settings</span>
+                          <span @click="updateIsUserNotificationSettingsSelected(false)" :class="{'user-payload-selected-pill': !isUserNotificationSettingsSelected}" class="p-2 user-setting-pill user-setting-payload-pill font-size-14px ml-4 cursor-pointer">Notification Payloads</span>
                       </div>
                       <div class="col-12">
                           <div v-if="isUserNotificationSettingsSelected">
@@ -65,10 +65,14 @@
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
+import { mapGetters } from 'vuex'
 export default {
   name: 'UserSettings',
   components: {
     AccountCogIco
+  },
+  computed: {
+    ...mapGetters('user', ['getLoggedUserData'])
   },
   data () {
     return {
