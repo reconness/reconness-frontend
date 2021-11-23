@@ -151,7 +151,8 @@ export default {
   },
   computed: {
     ...mapState('user', ['loggedUser', 'selectedIdUser', 'manageMyOwnProfile']),
-    ...mapGetters('user', ['getUserById']),
+    ...mapState('general', ['notificationMessageActionSelected']),
+    ...mapGetters('user', ['getUserById', 'getLoggedUserData']),
     isUserNameInBlank () {
       return this.$validateIsBlank(this.user.username)
     },
@@ -199,6 +200,18 @@ export default {
     }
   },
   watch: {
+    'user.role': function (value) {
+      if (value === this.$roles.OWNER.id) {
+        if (this.getLoggedUserData.role === this.$roles.OWNER.id) {
+          if ((this.selectedUser !== undefined && this.user.id !== this.getLoggedUserData.id) || !this.selectedUser) {
+            this.updateNotificationMessageType(this.$notificationMessageType.CONFIRM)
+            const notificationMessageDesc = 'Are you sure to assign this user: <span class="font-weight-semibold"> ' + this.user.username + ' </span>' + 'as the new Owner, you will be remove as Owner and sign out'
+            this.updateNotificationMessageDescription(notificationMessageDesc)
+            jQuery('#message-box-notification-modal').modal()
+          }
+        }
+      }
+    },
     selectedIdUser: function (value) {
       const selectedUser = this.getUserById(value)
       if (selectedUser !== undefined) {
@@ -215,11 +228,18 @@ export default {
         this.editable = true
         this.confirm_password = selectedUser.password
       }
+    },
+    notificationMessageActionSelected: function (value) {
+      if (value) {
+        jQuery('#message-box-notification-modal').hide()
+      }
     }
+
   },
   methods: {
-    ...mapMutations('user', ['addUserEntity']),
-    ...mapMutations('user', ['updateSelectedIdUser']),
+    ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateSelectedIdUser', 'updateUserRole']),
+    ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageDescription']),
+    ...mapMutations('auth', ['updateIsUserLogged']),
     updateUserNameWasWritten () {
       this.userNameWasWritten = true
     },
@@ -257,6 +277,10 @@ export default {
       this.userTryToAdd = true
       this.addUserEntity(this.user)
       jQuery('#user-form-modal').modal('hide')
+      if (this.getLoggedUserData.role === this.user.role) {
+        this.updateUserRole({ idUser: this.getLoggedUserData.id, idRole: this.getLoggedUserData.role })
+        this.logoutUser()
+      }
       this.resetUserForm()
     },
     resetUserForm () {
@@ -282,6 +306,10 @@ export default {
       this.userTryToAdd = false
       this.updateSelectedIdUser(-1)
       this.updateManageMyOwnProfile(false)
+    },
+    logoutUser () {
+      this.updateIsUserLogged(false)
+      this.$router.push('LogIn')
     }
   },
   close () {

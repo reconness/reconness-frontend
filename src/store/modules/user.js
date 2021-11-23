@@ -166,6 +166,10 @@ export default ({
       const user = state.users.find(user => user.id === state.loggedUser.id)
       const logIndexToRemove = user.logs.findIndex(log => log.name === logName)
       user.logs.splice(logIndexToRemove, 1)
+    },
+    updateUserRole (state, idUserAndIdRole) {
+      const user = state.users.find(user => user.id === idUserAndIdRole.idUser)
+      user.role = idUserAndIdRole.idRole
     }
   },
   actions: {},
