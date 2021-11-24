@@ -42,7 +42,7 @@
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
-            <span class="material-icons">notifications_none</span>
+            <span class="material-icons" @click="showNotificationsMenu">notifications_none</span>
           </a>
         </li>
         <li @mouseenter="showUserConfigurationMenu" @mouseleave="hideUserConfigurationMenu" class="nav-item dropdown">
@@ -244,6 +244,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
+    ...mapMutations('notification', ['showNotificationsMenu']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection']),
     mouseenter: function () {
