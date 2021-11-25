@@ -156,6 +156,10 @@ export default ({
       state.idUserSequence = state.idUserSequence++
       state.users.push(user)
     },
+    updateUserEntity (state, user) {
+      const item = state.users.find(item => item.id === user.id)
+      Object.assign(item, user)
+    },
     updateSelectedIdUser (state, idUser) {
       state.selectedIdUser = idUser
     },
@@ -167,7 +171,7 @@ export default ({
       const logIndexToRemove = user.logs.findIndex(log => log.name === logName)
       user.logs.splice(logIndexToRemove, 1)
     },
-    updateUserRole (state, idUserAndIdRole) {
+    updateLoggedUserRole (state, idUserAndIdRole) {
       const user = state.users.find(user => user.id === idUserAndIdRole.idUser)
       user.role = idUserAndIdRole.idRole
     }

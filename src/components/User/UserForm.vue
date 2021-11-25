@@ -11,7 +11,7 @@
                       <div class="col-8">
                         <div class="d-flex flex-column">
                           <div :class="{'w-100': showNameInput}">
-                            <input v-if="showNameInput" v-model="user.username" placeholder="Username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
+                            <input v-if="showNameInput" :disabled="editable" v-model="user.username" placeholder="Username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
                             <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">Username</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
@@ -237,7 +237,7 @@ export default {
 
   },
   methods: {
-    ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateSelectedIdUser', 'updateUserRole']),
+    ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateUserEntity', 'updateSelectedIdUser', 'updateLoggedUserRole']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageDescription']),
     ...mapMutations('auth', ['updateIsUserLogged']),
     updateUserNameWasWritten () {
@@ -275,12 +275,18 @@ export default {
     },
     addUser () {
       this.userTryToAdd = true
-      this.addUserEntity(this.user)
-      jQuery('#user-form-modal').modal('hide')
-      if (this.getLoggedUserData.role === this.user.role) {
-        this.updateUserRole({ idUser: this.getLoggedUserData.id, idRole: this.getLoggedUserData.role })
-        this.logoutUser()
+      if (!this.isUserFormInvalid) {
+        if (this.editable) {
+          this.updateUserEntity(this.user)
+        } else {
+          this.addUserEntity(this.user)
+        }
+        if (this.getLoggedUserData.role === this.user.role) {
+          this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.getLoggedUserData.role })
+          this.logoutUser()
+        }
       }
+      jQuery('#user-form-modal').modal('hide')
       this.resetUserForm()
     },
     resetUserForm () {
