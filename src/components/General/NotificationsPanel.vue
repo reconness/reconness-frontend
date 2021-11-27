@@ -60,7 +60,7 @@
         <div class="sticky-bottom sidebar-list marketplace-total-agents-container">
           <dl class="row">
             <dt class="col-12">
-              <router-link :to="{name: 'NotificationsCenter'}">
+              <router-link @click="showNotificationsMenu" :to="{name: 'NotificationsCenter'}">
               <p class="text-center marketplace-total-agents-font">View all notifications</p>
               </router-link>
             </dt>
@@ -77,8 +77,20 @@ export default {
     ...mapState('notification', ['notifications']),
     ...mapGetters('notification', ['getTodaysNotifications', 'getTodaysTotalUnreadNotifications', 'getYesterdayNotifications', 'getYesterdayTotalUnreadNotifications', 'getOlderNotifications'])
   },
+  mounted () {
+    this.updateNotificationsStatus()
+  },
   methods: {
-    ...mapMutations('notification', ['showNotificationsMenu'])
+    ...mapMutations('notification', ['showNotificationsMenu', 'removeUnreadStatusTodayAndYesterday']),
+    updateNotificationsStatus () {
+      const self = this
+      setTimeout(
+        function () {
+          self.removeUnreadStatusTodayAndYesterday()
+        },
+        3000
+      )
+    }
   }
 }
 </script>

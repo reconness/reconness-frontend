@@ -83,7 +83,7 @@
 </div>
 </template>
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
 export default {
   name: 'NotificationsCenter',
   computed: {
@@ -101,11 +101,22 @@ export default {
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'NotificationsCenter', true)
+    this.updateNotificationsStatus()
   },
   methods: {
+    ...mapMutations('notification', ['removeUnreadStatusToAll']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('referent/setSelectedResource', selectedId)
+    },
+    updateNotificationsStatus () {
+      const self = this
+      setTimeout(
+        function () {
+          self.removeUnreadStatusToAll()
+        },
+        3000
+      )
     }
   }
 }

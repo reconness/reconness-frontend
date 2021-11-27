@@ -5,9 +5,9 @@ export default ({
       {
         id: 1,
         status: 1,
-        created: new Date('11-26-2021'),
+        created: new Date('11-27-2021'),
         description: 'Completed Pipeline',
-        readed: true
+        readed: false
       },
       {
         id: 2,
@@ -41,6 +41,24 @@ export default ({
         readed: false
       }
       state.notifications.push(notification)
+    },
+    removeUnreadStatusToAll (state) {
+      state.notifications.forEach(notification => {
+        if (!notification.readed) {
+          notification.readed = true
+        }
+      })
+    },
+    removeUnreadStatusTodayAndYesterday (state) {
+      const today = new Date()
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      const todayAndYesterdayNotifications = state.notifications.filter(item => item.created.getTime() >= yesterday.getTime())
+      todayAndYesterdayNotifications.forEach(notification => {
+        if (!notification.readed) {
+          notification.readed = true
+        }
+      })
     }
   },
   actions: {},
