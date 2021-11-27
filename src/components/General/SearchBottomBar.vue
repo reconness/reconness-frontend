@@ -16,11 +16,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.bottom-0{
-  bottom: 0 !important;
-}
-.h-8vh{
-  height: 8vh !important
-}
-</style>

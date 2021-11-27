@@ -106,6 +106,7 @@ export default {
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
       this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.addNewNotification('Running agent' + ' ' + this.selectedAgentName)
       this.insertAgentIfNotExistInRootDomain(
         {
           idTarget: parseInt(this.$route.params.idTarget),
@@ -155,7 +156,8 @@ export default {
         )
       }
     },
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'insertAgentIfNotExistInRootDomain'])
+    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'insertAgentIfNotExistInRootDomain']),
+    ...mapMutations('notification', ['addNewNotification'])
   }
 }
 </script>
