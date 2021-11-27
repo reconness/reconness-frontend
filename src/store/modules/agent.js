@@ -297,7 +297,7 @@ export default ({
       if (namePath === 'Logs') {
         state.styleLogsState = true
       }
-      if (namePath === 'Notifications') {
+      if (namePath === 'NotificationsCenter') {
         state.styleNotificationsState = true
       }
       state.viewloc = namePath
