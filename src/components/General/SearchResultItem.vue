@@ -53,12 +53,12 @@
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Others</span>
-                <span class="ml-2 font-size-14px">1 results</span>
+                <span class="ml-2 font-size-14px">{{ getFilteredOthers.length }} results</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">Completed repository 2</span>
+            <div v-for="other of getFilteredOthers" :key="other.name" class="entity-result-items-cell pt-2 pb-2">
+                <span class="ml-5  font-size-14px">{{ other.name }}</span>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@ export default {
   computed: {
     ...mapGetters('agent', ['getFilteredAgentsByName']),
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
-    ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
+    ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredOthers', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
     ...mapState('target', ['textToSearch'])
   }
 }

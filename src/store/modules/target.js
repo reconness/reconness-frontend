@@ -1682,6 +1682,9 @@ export default ({
     getFilteredTargetsByName: (state) => (name) => {
       return state.targetListStore.filter(target => target.name.includes(name))
     },
+    getFilteredOthers: (state) => {
+      return [{ name: 'Completed repository 2' }]
+    },
     getFilteredRootDomainsByName: (state) => (name) => {
       let searchResult = []
       state.targetListStore.forEach(target => {
