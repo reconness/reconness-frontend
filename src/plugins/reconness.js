@@ -317,5 +317,9 @@ export default {
       const allnumericplus = /^[+]?[0-9]+$/
       return !allnumericplus.test(String(phone))
     }
+
+    app.config.globalProperties.$getFormatedTime = function (time) {
+      return time.toLocaleString('en-Us', { hour: 'numeric', minute: 'numeric', hour12: true })
+    }
   }
 }

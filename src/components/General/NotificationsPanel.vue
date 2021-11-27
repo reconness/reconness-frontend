@@ -1,6 +1,6 @@
 <template>
-<div class="poppins">
-          <aside class="notifications-aside notifications-container-border-radius control-sidebar-dark installer-agents" @mouseleave="showNotificationsMenu">
+<div class="poppins position-absolute notification-panel-top-container">
+          <div class="notifications-aside notifications-container-border-radius control-sidebar-dark installer-agents">
         <div class="p-3 notifications-top-container control-sidebar-content sticky-top d-flex align-items-center justify-content-between">
             <span class="font-size-20px font-weight-medium">Notifications</span>
             <span class="cursor-pointer clear-all font-weight-light">Clear All</span>
@@ -10,13 +10,13 @@
             <dt class="col-12">
                 <div class="justify-content-between d-flex h-100 align-items-center">
                     <p class="font-weight-medium font-size-14px">Today</p>
-                    <span class="notifications-count font-weight-light">2 new notifications</span>
+                    <span class="notifications-count font-weight-light">{{getTodaysTotalUnreadNotifications}} new notifications</span>
               </div>
             </dt>
           </dl>
         </div>
-        <div class="sidebar-list marketplace-agent-container" v-for="notification of notifications" :key="notification.id">
-          <dl class="row h-100 notification-new-indicator">
+        <div class="sidebar-list marketplace-agent-container" v-for="notification of getTodaysNotifications" :key="notification.id">
+          <dl class="row h-100" :class="{'notification-new-indicator': notification.readed===false}">
               <dt class="col-10">
                   <div class="d-flex h-100 align-items-center">
                     <p class="font-size-14px font-weight-light">{{  notification.description  }}</p>
@@ -34,28 +34,48 @@
         <div class="sidebar-list marketplace-agent-container">
           <dl class="row h-100">
             <dt class="col-12">
-                <div class="d-flex h-100 align-items-center">
+                <div class="justify-content-between  d-flex h-100 align-items-center">
                     <p class="font-weight-medium font-size-14px">Yesterday</p>
+                    <span class="notifications-count font-weight-light">{{getYesterdayTotalUnreadNotifications}} new notifications</span>
                 </div>
             </dt>
+          </dl>
+        </div>
+        <div class="sidebar-list marketplace-agent-container" v-for="notification of getYesterdayNotifications" :key="notification.id">
+          <dl class="row h-100" :class="{'notification-new-indicator': notification.readed===false}">
+              <dt class="col-10">
+                  <div class="d-flex h-100 align-items-center">
+                    <p class="font-size-14px font-weight-light">{{  notification.description  }}</p>
+                    </div>
+                  </dt>
+                  <dd class="col-2 mb-0">
+                    <div class="h-100 w-100 d-flex align-items-center h-100">
+                        <span v-if="notification.status === this.$entityStatus.FAILED" class="font-size-20px material-icons red-text">cancel</span>
+                        <span v-else-if="notification.status === this.$entityStatus.SUCCESS" class="font-size-20px blue-text material-icons">check_circle</span>
+                        <span v-else class="material-icons font-size-20px green-text">play_circle</span>
+                    </div>
+                </dd>
           </dl>
         </div>
         <div class="sticky-bottom sidebar-list marketplace-total-agents-container">
           <dl class="row">
             <dt class="col-12">
+              <router-link :to="{name: 'NotificationsCenter'}">
               <p class="text-center marketplace-total-agents-font">View all notifications</p>
+              </router-link>
             </dt>
           </dl>
         </div>
-      </aside>
+      </div>
       </div>
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
-  name: 'NotificationsAside',
+  name: 'NotificationsPanel',
   computed: {
-    ...mapState('notification', ['notifications'])
+    ...mapState('notification', ['notifications']),
+    ...mapGetters('notification', ['getTodaysNotifications', 'getTodaysTotalUnreadNotifications', 'getYesterdayNotifications', 'getYesterdayTotalUnreadNotifications', 'getOlderNotifications'])
   },
   methods: {
     ...mapMutations('notification', ['showNotificationsMenu'])
@@ -105,17 +125,23 @@ border-radius: 0px 4px 4px 0px; */
     color: #707070;
     font-size: 11px;
 }
-aside.notifications-aside{
+.notifications-aside{
+  height: fit-content;
+}
+div.notifications-aside{
   overflow-y: auto;
 }
-aside.notifications-aside::-webkit-scrollbar{
+div.notifications-aside::-webkit-scrollbar{
   display: none;
 }
-aside.notifications-aside{
+div.notifications-aside{
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-aside.notifications-aside{
+div.notifications-aside{
   overflow-y: auto;
+}
+.notification-panel-top-container{
+  right: 0;
 }
 </style>

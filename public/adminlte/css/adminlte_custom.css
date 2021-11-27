@@ -1231,3 +1231,12 @@ html {
 .highlight-area{
   background: #FFFFFF 0% 0% no-repeat padding-box;
 }
+.footer-bar-size{
+  height: 35px !important
+}
+.bottom-0{
+  bottom: 0 !important;
+}
+.h-8vh{
+  height: 8vh !important
+}

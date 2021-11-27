@@ -180,7 +180,6 @@
         </li>
       </ul>
     </nav>
-    <NotificationsAside v-if="isNotificationMenuActive"/>
     <div v-show="active">
       <aside class="control-sidebar-dark installer-agents" @mouseleave="mouseleave" id="marketplace-agent">
         <div class="p-3 control-sidebar-content sticky-top">
@@ -244,7 +243,6 @@ import ConfirmDeleteList from '@/components/General/ConfirmDeleteList.vue'
 import jQuery from 'jquery'
 import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
 import Wordlist from '@/components/General/Wordlist.vue'
-import NotificationsAside from '@/components/General/NotificationsAside'
 export default {
   name: 'NavBarTwo',
   components: {
@@ -256,8 +254,7 @@ export default {
     OverlayPanel,
     ConfirmDeleteList,
     LocalMallIco,
-    Wordlist,
-    NotificationsAside
+    Wordlist
   },
   data: function () {
     return {
@@ -274,7 +271,6 @@ export default {
   computed: {
     ...mapState('agent', ['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
     ...mapState('target', ['entitiesToDelete']),
-    ...mapState('notification', ['isNotificationMenuActive']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.background))]
     }

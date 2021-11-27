@@ -43,6 +43,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             <span class="material-icons" @click="showNotificationsMenu">notifications_none</span>
+            <span v-if="existNewNotifications" class="notification-badge rounded-circle">{{getAllNewNotifications.length}}</span>
           </a>
         </li>
         <li @mouseenter="showUserConfigurationMenu" @mouseleave="hideUserConfigurationMenu" class="nav-item dropdown">
@@ -60,6 +61,7 @@
           <div v-if="showAccountUserMenu" class="cursor-pointer menu-configure-account text-center position-absolute">
             <span class="cursor-pointer" @click="manageMyUser">Configure User Account</span>
           </div>
+          <NotificationsPanel v-if="isNotificationMenuActive"/>
         </li>
 
       </ul>
@@ -168,20 +170,22 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 import UserForm from '@/components/User/UserForm.vue'
 import jQuery from 'jquery'
 import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import MessageBox from '@/components/General/MessageBox.vue'
 import MessageBoxNotification from '@/components/General/MessageBoxNotification.vue'
+import NotificationsPanel from '@/components/General/NotificationsPanel'
 export default {
   name: 'App',
   components: {
     BullseyeArrowIco,
     MessageBox,
     MessageBoxNotification,
-    UserForm
+    UserForm,
+    NotificationsPanel
   },
   data: function () {
     return {
@@ -205,6 +209,8 @@ export default {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('user', ['loggedUser']),
     ...mapState('target', ['routePreviousToSearch']),
+    ...mapGetters('notification', ['getAllNewNotifications']),
+    ...mapState('notification', ['isNotificationMenuActive']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
     },
@@ -226,6 +232,9 @@ export default {
     },
     isSearcherView () {
       return this.$route.name === 'SearchResult'
+    },
+    existNewNotifications () {
+      return this.getAllNewNotifications.length > 0
     }
   },
   watch: {
@@ -318,6 +327,24 @@ export default {
 }
 </script>
 <style>
+.notification-badge{
+  position: absolute;
+  right: 12px;
+  top: 0px;
+  color: #fff;
+  background-color: #FF4545;
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  width: 17px;
+  height: 17px;
+}
 .search-page-name-label{
   font-size: 24px;
 }
