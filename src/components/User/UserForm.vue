@@ -40,12 +40,10 @@
                     <div class="form-group">
                       <label for="user-form-firstname" class="font-weight-regular black-text font-size-16px">First Name</label>
                       <input id="user-form-firstname" @blur="updateFirstNameWasWritten" @change="updateFirstNameWasWritten" v-model="user.firstname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
-                          <span v-if="(isFirstNameInBlank && this.firstNameWasWritten) || (isFirstNameInBlank && userTryToAdd)" :class="{invalid: isFirstNameInBlank}" class="mt-2">The field firstname is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-lastname" class="font-weight-regular black-text font-size-16px">Last Name</label>
                       <input id="user-form-lastname" @blur="updateLastNameWasWritten" @change="updateLastNameWasWritten" v-model="user.lastname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
-                          <span v-if="(isLastNameInBlank && this.lastNameWasWritten) || (isLastNameInBlank && userTryToAdd)" :class="{invalid: isLastNameInBlank}" class="mt-2">The field lastname is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
@@ -181,7 +179,7 @@ export default {
       return this.user.password === this.confirm_password
     },
     isUserFormInvalid () {
-      return this.isUserNameInBlank || this.isFirstNameInBlank || this.isLastNameInBlank || this.isEmailInBlank || this.isInValidEmail || this.isPasswordInBlank || !this.isConfirmPasswordEqualToPassword
+      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || this.isPasswordInBlank || !this.isConfirmPasswordEqualToPassword
     },
     isLoggedUserOwner () {
       return this.loggedUser.role === this.$roles.OWNER.id

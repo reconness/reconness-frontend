@@ -9,7 +9,7 @@ export default ({
         email: 'johndoe@gmail.com',
         password: '123',
         phone: 56823566,
-        role: 3,
+        role: 1,
         profilePicture: '',
         id: 1,
         logs: [
