@@ -10,7 +10,7 @@
                           <div class="user-management-roles d-flex align-items-center">
                               <span class="material-icons font-size-16px green-text" v-if="getLoggedUserData.role === this.$roles.MEMBER.id">person</span>
                               <span v-else :class="{'blue-text': getLoggedUserData.role === this.$roles.OWNER.id, 'green-text': getLoggedUserData.role === this.$roles.ADMIN.id}" class="material-icons font-size-16px">manage_accounts</span>
-                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.id).longName}}</span>
+                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.role).longName}}</span>
                           </div>
                       </div>
                   </div>
@@ -37,9 +37,9 @@
                   </thead>
                   <tbody>
                     <tr v-for="user of users" :key="user.id">
-                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': loggedUser.id === user.id}">{{user.username}}</td>
+                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': getLoggedUserData.id === user.id}">{{user.username}}</td>
                       <td class="border-top-0 pl-4 font-size-14px">{{user.email}}</td>
-                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': loggedUser.id === user.id}">
+                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': getLoggedUserData.id === user.id}">
                         <div class="d-flex align-items-center justify-content-between">
                           {{this.$getRoleById(user.role).shortName}}
                           <span class="material-icons font-size-16px green-text ml-2" v-if="user.role === this.$roles.MEMBER.id">person</span>
