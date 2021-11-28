@@ -232,7 +232,6 @@ export default {
         jQuery('#message-box-notification-modal').hide()
       }
     }
-
   },
   methods: {
     ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateUserEntity', 'updateSelectedIdUser', 'updateLoggedUserRole']),

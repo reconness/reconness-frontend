@@ -5,13 +5,17 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a :class="{'d-flex': isSearcherView}" class="nav-link" href="#" role="button">
+          <a :class="{'d-flex': isSearcherView || isNotificationsCenterView}" class="nav-link" href="#" role="button">
             <button type="button" data-widget="pushmenu" v-on:click="changeButton" class="btn btn-light margin-right"> <span v-show="button_module" class="material-icons">view_module</span>
               <span v-show="button_vert" class="material-icons">more_vert</span>
             </button>
             <div class="d-flex align-self-center" v-if="isSearcherView">
               <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="goToPreviousPage">arrow_back</span>
               <p class="float-right loc"><strong>Search Results</strong></p>
+            </div>
+            <div class="d-flex align-self-center" v-else-if="isNotificationsCenterView">
+              <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="goToPreviousPage">arrow_back</span>
+              <p class="float-right loc"><strong>Notification Center</strong></p>
             </div>
             <p v-else class="mt-03 float-right loc"><strong>{{viewloc}}</strong></p>
           </a>
@@ -236,6 +240,9 @@ export default {
     },
     isSearcherView () {
       return this.$route.name === 'SearchResult'
+    },
+    isNotificationsCenterView () {
+      return this.$route.name === 'NotificationsCenter'
     },
     existNewNotifications () {
       return this.getAllNewNotifications.length > 0
