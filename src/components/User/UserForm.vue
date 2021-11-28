@@ -77,27 +77,27 @@
                             <div class="userform-role-title">
                               <div class="form-group ml-3user mt-2">
                                 <div v-if="isLoggedUserOwner" class="ml-2 custom-control custom-radio form-check">
-                                <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
-                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
-                                  <span class="material-icons blue-text">manage_accounts</span>
-                                  Owner
-                                </label>
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
+                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
+                                    <span class="material-icons blue-text">manage_accounts</span>
+                                    Owner
+                                  </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
-                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
-                                  <span class="material-icons green-text">manage_accounts</span>
-                                  Administrator
-                                </label>
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
+                                    <span class="material-icons green-text">manage_accounts</span>
+                                    Administrator
+                                  </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
-                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
-                                  <span class="material-icons green-text">person</span>
-                                  Member
-                                </label>
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
+                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
+                                    <span class="material-icons green-text">person</span>
+                                    Member
+                                  </label>
                                 </div>
-                            </div>
+                              </div>
                             </div>
                         </div>
                     </div>
