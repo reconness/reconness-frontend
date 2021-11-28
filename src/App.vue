@@ -162,6 +162,7 @@
         <div class="row">
           <MessageBox/>
           <MessageBoxNotification/>
+          <MessageBoxNotificationTime/>
           <UserForm/>
         </div>
       </div>
@@ -177,6 +178,7 @@ import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import MessageBox from '@/components/General/MessageBox.vue'
 import MessageBoxNotification from '@/components/General/MessageBoxNotification.vue'
+import MessageBoxNotificationTime from '@/components/General/MessageBoxNotificationTime.vue'
 import NotificationsPanel from '@/components/General/NotificationsPanel'
 export default {
   name: 'App',
@@ -184,6 +186,7 @@ export default {
     BullseyeArrowIco,
     MessageBox,
     MessageBoxNotification,
+    MessageBoxNotificationTime,
     UserForm,
     NotificationsPanel
   },
@@ -211,6 +214,7 @@ export default {
     ...mapState('target', ['routePreviousToSearch']),
     ...mapGetters('notification', ['getAllNewNotifications']),
     ...mapState('notification', ['isNotificationMenuActive']),
+    ...mapState('general', ['notificationTimeSelected']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
     },
@@ -246,6 +250,15 @@ export default {
       if (this.$validateIsBlank(value)) {
         this.goToPreviousPage()
       }
+    },
+    notificationTimeSelected: function (notificationTime) {
+      if (notificationTime === 'today') {
+        this.clearTodayNotifications()
+      } else if (notificationTime === 'yesterday') {
+        this.clearYesterdayNotifications()
+      } else {
+        this.clearOlderNotifications()
+      }
     }
   },
   mounted () {
@@ -253,7 +266,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
-    ...mapMutations('notification', ['showNotificationsMenu']),
+    ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection']),
     mouseenter: function () {

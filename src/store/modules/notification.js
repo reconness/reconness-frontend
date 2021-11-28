@@ -19,7 +19,7 @@ export default ({
       {
         id: 3,
         status: 5,
-        created: new Date('11-24-2021'),
+        created: new Date(),
         description: 'Failed Subdomain',
         readed: false
       }
@@ -59,6 +59,34 @@ export default ({
           notification.readed = true
         }
       })
+    },
+    clearTodayNotifications (state) {
+      const today = new Date()
+      const todayNotifications = state.notifications.filter(item => item.created.getDate() === today.getDate() && item.created.getMonth() === today.getMonth() && item.created.getYear() === today.getYear())
+      for (let index = todayNotifications.length - 1; index >= 0; index--) {
+        const notificationIndex = state.notifications.findIndex(notification => notification.id === todayNotifications[index].id)
+        state.notifications.splice(notificationIndex, 1)
+      }
+    },
+    clearYesterdayNotifications (state) {
+      const today = new Date()
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      const yesterdayNotifications = state.notifications.filter(item => item.created.getDate() === yesterday.getDate() && item.created.getMonth() === yesterday.getMonth() && item.created.getYear() === yesterday.getYear())
+      for (let index = yesterdayNotifications.length - 1; index >= 0; index--) {
+        const notificationIndex = state.notifications.findIndex(notification => notification.id === yesterdayNotifications[index].id)
+        state.notifications.splice(notificationIndex, 1)
+      }
+    },
+    clearOlderNotifications (state) {
+      const today = new Date()
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      const olderNotifications = state.notifications.filter(item => item.created.getDate() !== yesterday.getDate() && item.created.getTime() < yesterday.getTime())
+      for (let index = olderNotifications.length - 1; index >= 0; index--) {
+        const notificationIndex = state.notifications.findIndex(notification => notification.id === olderNotifications[index].id)
+        state.notifications.splice(notificationIndex, 1)
+      }
     }
   },
   actions: {},

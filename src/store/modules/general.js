@@ -3,7 +3,8 @@ export default ({
   state: {
     notificationMessageType: 1,
     notificationMessageDescription: '',
-    notificationMessageActionSelected: false
+    notificationMessageActionSelected: false,
+    notificationTimeSelected: ''
   },
   mutations: {
     updateNotificationMessageType (state, type) {
@@ -14,6 +15,9 @@ export default ({
     },
     updateNotificationMessageActionSelected (state, action) {
       state.notificationMessageActionSelected = action
+    },
+    updateNotificationTimeSelected (state, timeSelected) {
+      state.notificationTimeSelected = timeSelected
     }
   },
   actions: {},

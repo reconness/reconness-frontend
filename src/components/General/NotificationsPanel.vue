@@ -3,7 +3,7 @@
           <div class="notifications-aside notifications-container-border-radius control-sidebar-dark installer-agents">
         <div class="p-3 notifications-top-container control-sidebar-content sticky-top d-flex align-items-center justify-content-between">
             <span class="font-size-20px font-weight-medium">Notifications</span>
-            <span class="cursor-pointer clear-all font-weight-light">Clear All</span>
+            <span class="cursor-pointer clear-all font-weight-light" @click="removeNotifications">Clear All</span>
         </div>
         <div class="sidebar-list marketplace-agent-container">
           <dl class="row h-100">
@@ -71,6 +71,7 @@
 </template>
 <script>
 import { mapState, mapMutations, mapGetters } from 'vuex'
+import jQuery from 'jquery'
 export default {
   name: 'NotificationsPanel',
   computed: {
@@ -82,6 +83,7 @@ export default {
   },
   methods: {
     ...mapMutations('notification', ['showNotificationsMenu', 'removeUnreadStatusTodayAndYesterday']),
+    ...mapMutations('general', ['updateNotificationMessageDescription']),
     updateNotificationsStatus () {
       const self = this
       setTimeout(
@@ -90,6 +92,11 @@ export default {
         },
         3000
       )
+    },
+    removeNotifications () {
+      const notificationMessageDesc = 'Please select the logs to remove'
+      this.updateNotificationMessageDescription(notificationMessageDesc)
+      jQuery('#notifications-time-message-box-modal').modal()
     }
   }
 }
