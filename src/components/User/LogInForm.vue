@@ -55,12 +55,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('auth', ['goToForgotPasswordForm']),
+    ...mapMutations('auth', ['goToForgotPasswordForm', 'updateIsUserLogged']),
     ...mapActions('auth', ['updateUserLogFlagAfterSeconds']),
     authenticate () {
       if (!this.areInputInBlank) {
-        this.updateUserLogFlagAfterSeconds(true)
         this.$router.push({ name: 'Home' })
+        this.updateIsUserLogged(true)
       }
     },
     setWrittenInputFlag () {

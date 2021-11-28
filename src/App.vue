@@ -324,7 +324,7 @@ export default {
     },
     manageMyUser () {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
-        this.$router.push({ name: 'LogIn' })
+        this.$router.push({ path: 'user' })
       } else {
         this.updateSelectedIdUser(this.loggedUser.id)
         this.updateManageMyOwnProfile(true)

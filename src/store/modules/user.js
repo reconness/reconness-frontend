@@ -118,7 +118,7 @@ export default ({
         }
       ]
     },
-    loggedUserId: 1,
+    loggedUserId: 2,
     showLogsSection: false,
     showUsersSection: true,
     showSettingsSection: false,
