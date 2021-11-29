@@ -6,10 +6,11 @@
                           <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-management-logo-avatar" alt="User Logo">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
-                          <span class="user-management-username">John Smith</span>
-                          <div class="user-management-roles">
-                              <AccountCogIco class="user-role-ico"/>
-                              <span class="font-size-16px user-management-role-name ml-1">Administrator Owner</span>
+                          <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
+                          <div class="user-management-roles d-flex align-items-center">
+                              <span class="material-icons font-size-16px green-text" v-if="getLoggedUserData.role === this.$roles.MEMBER.id">person</span>
+                              <span v-else :class="{'blue-text': getLoggedUserData.role === this.$roles.OWNER.id, 'green-text': getLoggedUserData.role === this.$roles.ADMIN.id}" class="material-icons font-size-16px">manage_accounts</span>
+                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.role).longName}}</span>
                           </div>
                       </div>
                   </div>
@@ -17,7 +18,7 @@
                      <img src="@/assets/user-icon.png" class="rounded-circle user-management-plus-logo" alt="User Logo">
                       <div class="user-management-new-container-action-btn d-flex align-items-center">
                         <span class="material-icons blue-text font-size-16px m-auto">add</span>
-                        <span class="blue-text font-size-16px">New User</span>
+                        <a href="#" class="blue-text font-size-16px" data-toggle="modal" data-target="#user-form-modal">New User</a>
                       </div>
                   </div>
               </div>
@@ -36,11 +37,17 @@
                   </thead>
                   <tbody>
                     <tr v-for="user of users" :key="user.id">
-                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': loggedUser.id === user.id}">{{user.username}}</td>
+                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': getLoggedUserData.id === user.id}">{{user.username}}</td>
                       <td class="border-top-0 pl-4 font-size-14px">{{user.email}}</td>
-                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': loggedUser.id === user.id}">-</td>
+                      <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': getLoggedUserData.id === user.id}">
+                        <div class="d-flex align-items-center justify-content-between">
+                          {{this.$getRoleById(user.role).shortName}}
+                          <span class="material-icons font-size-16px green-text ml-2" v-if="user.role === this.$roles.MEMBER.id">person</span>
+                          <span v-else :class="{'blue-text': user.role === this.$roles.OWNER.id, 'green-text': user.role === this.$roles.ADMIN.id}" class="material-icons font-size-16px ml-2">manage_accounts</span>
+                        </div>
+                      </td>
                       <td class="border-top-0 d-flex justify-content-between user-management-action-width">
-                        <button type="button" class="font-size-14px user-management-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
+                        <button @click="editUser" data-toggle="modal" data-target="#user-form-modal" :data-id="user.id" type="button" class="font-size-14px user-management-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
                         <button @click="removeWordListItem(wordlistItem.id)" type="button" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                       </td>
                     </tr>
@@ -52,18 +59,26 @@
             <!-- /.card -->
                   </div>
               </div>
+              <UserForm/>
           </div>
 </template>
 <script>
-import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { mapState } from 'vuex'
+import UserForm from '@/components/User/UserForm.vue'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'UserList',
   components: {
-    AccountCogIco
+    UserForm
   },
   computed: {
-    ...mapState('user', ['users', 'loggedUser'])
+    ...mapState('user', ['users', 'loggedUser']),
+    ...mapGetters('user', ['getLoggedUserData'])
+  },
+  methods: {
+    editUser (e) {
+      const selectedUserId = e.currentTarget.getAttribute('data-id')
+      this.$store.commit('user/updateSelectedIdUser', parseInt(selectedUserId))
+    }
   }
 }
 </script>

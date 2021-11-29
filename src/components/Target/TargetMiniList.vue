@@ -1,6 +1,6 @@
 <template>
     <div class="col-12">
-        <div class="row header-bottom-line-shadow" style="position: sticky !important;">
+        <div class="row header-bottom-line-shadow position-sticky">
             <div class="w-60px"></div>
             <div class="col-1 my-2 border-left">Color ID</div>
             <div class="col-2 my-2 border-left">Name</div>

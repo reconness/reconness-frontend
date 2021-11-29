@@ -180,10 +180,8 @@
         </li>
       </ul>
     </nav>
-
     <div v-show="active">
       <aside class="control-sidebar-dark installer-agents" @mouseleave="mouseleave" id="marketplace-agent">
-        <!-- Control sidebar content goes here -->
         <div class="p-3 control-sidebar-content sticky-top">
             <h5 class="marketplace-title-font">Marketplace</h5>
         </div>
@@ -327,8 +325,8 @@ export default {
       }
     },
     close () {
-      var checkboxes = document.getElementsByName('checkitem')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''

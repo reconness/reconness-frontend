@@ -297,7 +297,7 @@ export default ({
       if (namePath === 'Logs') {
         state.styleLogsState = true
       }
-      if (namePath === 'Notifications') {
+      if (namePath === 'NotificationsCenter') {
         state.styleNotificationsState = true
       }
       state.viewloc = namePath
@@ -379,6 +379,9 @@ export default ({
     },
     getAgentsByType: (state) => (type) => {
       return state.agentListStore.filter(item => item.type === type)
+    },
+    getFilteredAgentsByName: (state) => (name) => {
+      return state.agentListStore.filter(agent => agent.name.includes(name))
     },
     daysWithMostInteractionsLastWeek (state) {
       return [22, 30, 70, 77, 42, 20, 50]

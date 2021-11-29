@@ -48,6 +48,9 @@ a.brand-link{
 .white-text{
   color: #ffffff !important;
 }
+.green-text{
+  color: #1ED675 !important;
+}
 .black-text{
   color: #000000 !important;
 }
@@ -214,11 +217,11 @@ div.image img{
 .font-weight-semibold{
   font-weight: 600 !important;
 }
-.font-weight-light{
-  font-weight: 300 !important;
-}
 .font-weight-medium{
   font-weight: 500 !important;
+}
+.font-weight-regular{
+  font-weight: normal !important;
 }
 .right-sidebar-title{
   overflow: hidden;
@@ -1130,7 +1133,7 @@ html {
   border-radius: 8px;
 }
 .ligth-gray-background{
-  background-color: #FBFBFB;
+  background-color: #FBFBFB !important;
 }
 .remove-flex{
   display: initial !important;
@@ -1200,6 +1203,40 @@ html {
   font: normal normal 600 14px/19px Poppins;
   letter-spacing: 0px;
 }
+.font-size-10px{
+  font-size: 10px !important;
+}
+.font-size-14px{
+  font-size: 14px !important;
+}
+.font-size-16px{
+  font-size: 16px !important;
+}
+.font-size-20px{
+  font-size: 20px !important;
+}
 .font-size-24px{
   font-size: 24px;
+}
+
+.border-radius-6px{
+  border-radius: 6px;
+}
+.border-ligth-gray{
+  border: 1px solid #E5E9EC !important;
+}
+.gray-background-box{
+  background: #FBFBFB 0% 0% no-repeat padding-box;
+}
+.highlight-area{
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+}
+.footer-bar-size{
+  height: 35px !important
+}
+.bottom-0{
+  bottom: 0 !important;
+}
+.h-8vh{
+  height: 8vh !important
 }

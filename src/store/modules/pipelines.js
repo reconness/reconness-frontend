@@ -657,6 +657,9 @@ export default {
         }
       })
       return mergedAgents.slice(0, mergedAgents.length)
+    },
+    getFilteredPipelinesByName: (state) => (name) => {
+      return state.pipelinesListStore.filter(pipeline => pipeline.name.includes(name))
     }
   }
 }

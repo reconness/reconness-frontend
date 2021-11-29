@@ -1020,9 +1020,17 @@ export default ({
       startIndex: 0,
       endIndex: 0
     },
-    removeAll: false
+    removeAll: false,
+    textToSearch: '',
+    routePreviousToSearch: ''
   },
   mutations: {
+    updateRoutePreviousToSearch (state, route) {
+      if (route !== 'SearchResult') {
+        state.routePreviousToSearch = route
+        state.textToSearch = ''
+      }
+    },
     changeCounterSubdom (state, countSubd) {
       state.countSubdomainList = countSubd
     },
@@ -1359,6 +1367,9 @@ export default ({
     },
     updateUserPassword (state, newPassword) {
       state.loggedUser.password = newPassword
+    },
+    updateTextToSearch (state, newFilter) {
+      state.textToSearch = newFilter
     }
   },
   actions: {
@@ -1667,6 +1678,52 @@ export default ({
         },
         1000
       )
+    },
+    getFilteredTargetsByName: (state) => (name) => {
+      return state.targetListStore.filter(target => target.name.includes(name))
+    },
+    getFilteredOthers: (state) => {
+      return [{ name: 'Completed repository 2' }]
+    },
+    getFilteredRootDomainsByName: (state) => (name) => {
+      let searchResult = []
+      state.targetListStore.forEach(target => {
+        searchResult = searchResult.concat(
+          target.rootDomains.filter(rootDomains => rootDomains.root.includes(name))
+        )
+      })
+      let sequence = 0
+      const finalSearchResult = []
+      searchResult.forEach(element => {
+        sequence++
+        const elementClone = Object.assign({ idSearch: sequence }, element)
+        finalSearchResult.push(elementClone)
+      })
+      return {
+        result: finalSearchResult,
+        size: finalSearchResult.length
+      }
+    },
+    getFilteredSubDomainsByName: (state) => (name) => {
+      let searchResult = []
+      state.targetListStore.forEach(target => {
+        target.rootDomains.forEach(rootdomain => {
+          searchResult = searchResult.concat(
+            rootdomain.subdomain.filter(subdomain => subdomain.name.includes(name))
+          )
+        })
+      })
+      let sequence = 0
+      const finalSearchResult = []
+      searchResult.forEach(element => {
+        sequence++
+        const elementClone = Object.assign({ idSearch: sequence }, element)
+        finalSearchResult.push(elementClone)
+      })
+      return {
+        result: finalSearchResult,
+        size: finalSearchResult.length
+      }
     }
   }
 })

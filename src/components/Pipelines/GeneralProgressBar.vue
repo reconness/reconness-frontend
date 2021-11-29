@@ -71,8 +71,10 @@ export default {
   },
   methods: {
     ...mapMutations('pipelines', ['setPipelineStatus', 'setPipelineAgentParentIndex', 'setStatusToAllAgentsByPipeline']),
+    ...mapMutations('notification', ['addNewNotification']),
     executeOrStopPipeline () {
       if (this.pipeline.statusRun === this.$entityStatus.RUNNING) {
+        this.addNewNotification('Running pipeline' + ' ' + this.pipeline.name)
         this.setPipelineStatus({
           idPipeline: this.pipeline.id,
           status: this.$entityStatus.WAITING

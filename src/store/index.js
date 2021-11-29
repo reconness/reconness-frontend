@@ -5,7 +5,9 @@ import agent from './modules/agent'
 import auth from './modules/auth'
 import wordlist from './modules/wordlist'
 import referent from './modules/referent'
+import general from './modules/general'
 import user from './modules/user'
+import notification from './modules/notification'
 
 export default createStore({
   modules: {
@@ -15,6 +17,8 @@ export default createStore({
     auth,
     referent,
     wordlist,
-    user
+    user,
+    general,
+    notification
   }
 })

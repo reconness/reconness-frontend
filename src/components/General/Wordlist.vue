@@ -52,7 +52,7 @@
                   <div class="col-3">
                     <div class="d-flex justify-content-between">
                       <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
-                      <button @click="removeWordListItem(wordlistItem.id)" type="button" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
+                      <button @click="removeWordList" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -72,16 +72,19 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
+import jQuery from 'jquery'
 export default {
   name: 'WordList',
   data: function () {
     return {
       selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id,
-      loadedFileName: ''
+      loadedFileName: '',
+      selectedIdWordlist: -1
     }
   },
   computed: {
     ...mapState('wordlist', ['wordlists']),
+    ...mapState('general', ['notificationMessageActionSelected']),
     isSubdomainEnumSelected () {
       return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM.id
     },
@@ -104,8 +107,17 @@ export default {
       }
     }
   },
+  watch: {
+    notificationMessageActionSelected: function (value) {
+      if (value) {
+        this.removeWordListItem(this.selectedIdWordlist)
+        this.resetData()
+      }
+    }
+  },
   methods: {
     ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem']),
+    ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
     resetLoadedFileName () {
       this.loadedFileName = ''
     },
@@ -156,6 +168,17 @@ export default {
         }
       }
       return nLines
+    },
+    removeWordList (e) {
+      this.selectedIdWordlist = Number(e.currentTarget.getAttribute('data-id'))
+      const selectedTargetName = e.currentTarget.getAttribute('data-name')
+      const notificationMessageDesc = 'Are you sure to remove the file: <span class="font-weight-semibold"> ' + selectedTargetName + ' </span>'
+      this.updateNotificationMessageDescription(notificationMessageDesc)
+      jQuery('#message-box-notification-modal').modal()
+    },
+    resetData: function () {
+      this.updateNotificationMessageActionSelected(false)
+      this.selectedIdWordlist = -1
     }
   }
 }

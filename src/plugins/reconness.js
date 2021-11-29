@@ -97,6 +97,14 @@ export default {
       }
     )
 
+    app.config.globalProperties.$notificationMessageType = Object.freeze(
+      {
+        CONFIRM: 1,
+        ERROR: 2,
+        SUCCESS: 3
+      }
+    )
+
     app.config.globalProperties.$isOddNumber = function (value) {
       return (value % 2) === 1
     }
@@ -134,6 +142,25 @@ export default {
         DNS_RESOLVERS: { id: 3, description: 'DNS Resolvers' }
       }
     )
+
+    app.config.globalProperties.$roles = Object.freeze(
+      {
+        OWNER: { id: 1, longName: 'Administrator Owner', shortName: 'Owner' },
+        ADMIN: { id: 2, longName: 'Administrator', shortName: 'Admin' },
+        MEMBER: { id: 3, longName: 'Member', shortName: 'Member' }
+      }
+    )
+
+    app.config.globalProperties.$getRoleById = function (idRole) {
+      switch (idRole) {
+        case 1:
+          return this.$roles.OWNER
+        case 2:
+          return this.$roles.ADMIN
+        default:
+          return this.$roles.MEMBER
+      }
+    }
 
     app.config.globalProperties.$entitySource = Object.freeze(
       {
@@ -289,6 +316,10 @@ export default {
     app.config.globalProperties.$validatePhone = function (phone) {
       const allnumericplus = /^[+]?[0-9]+$/
       return !allnumericplus.test(String(phone))
+    }
+
+    app.config.globalProperties.$getFormatedTime = function (time) {
+      return time.toLocaleString('en-Us', { hour: 'numeric', minute: 'numeric', hour12: true })
     }
   }
 }
