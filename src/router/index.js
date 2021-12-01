@@ -105,11 +105,18 @@ const routes = [
   },
   {
     path: '/login',
-    alias: '/user',
     name: 'LogIn',
     component: () => import('../views/LogIn.vue'),
     meta: {
       guest: true
+    }
+  },
+  {
+    path: '/user',
+    name: 'Users',
+    component: () => import('../views/UserManagementView.vue'),
+    meta: {
+      guest: false
     }
   },
   {
@@ -135,11 +142,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(!to.meta.guest && !store.state.auth.isUserLogged)
-  if (!to.meta.guest && !store.state.auth.isUserLogged) {
-    return next({ name: 'LogIn' })
+  if (to.meta.guest) {
+    next()
   } else {
-    return next()
+    if (store.state.auth.isUserLogged) {
+      return next()
+    } else {
+      return next({ name: 'LogIn' })
+    }
   }
 })
 export default router
