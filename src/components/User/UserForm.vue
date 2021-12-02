@@ -70,7 +70,7 @@
                           <span class="agent-mini-color-gray mt-3 mb-4 font-weight-normal">Profile Picture</span>
                         <!-- </div> -->
                         </label>
-                        <div class="userform-roles-container border">
+                        <div class="userform-roles-container border mb-1">
                             <div class="userform-roles-title-container border-bottom pb-3 pt-2">
                             <span class="font-weight-regular black-text font-size-16px ml-3">Role</span>
                             </div>
@@ -100,6 +100,7 @@
                               </div>
                             </div>
                         </div>
+                        <span v-if="!isRoleSelected && userTryToAdd" :class="{invalid: !isRoleSelected}">You must select a role for the user</span>
                     </div>
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
@@ -195,6 +196,9 @@ export default {
         return 'Edit User'
       }
       return 'New User'
+    },
+    isRoleSelected () {
+      return this.user.role >= 1
     }
   },
   watch: {
@@ -272,7 +276,7 @@ export default {
     },
     addUser () {
       this.userTryToAdd = true
-      if (!this.isUserFormInvalid) {
+      if (!this.isUserFormInvalid && (this.isRoleSelected && this.userTryToAdd)) {
         if (this.editable) {
           this.updateUserEntity(this.user)
         } else {
@@ -282,9 +286,9 @@ export default {
           this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.getLoggedUserData.role })
           this.logoutUser()
         }
+        jQuery('#user-form-modal').modal('hide')
+        this.resetUserForm()
       }
-      jQuery('#user-form-modal').modal('hide')
-      this.resetUserForm()
     },
     resetUserForm () {
       this.user = {
@@ -313,10 +317,10 @@ export default {
     logoutUser () {
       this.updateIsUserLogged(false)
       this.$router.push('LogIn')
+    },
+    close () {
+      this.resetUserForm()
     }
-  },
-  close () {
-    this.resetUserForm()
   }
 }
 </script>
