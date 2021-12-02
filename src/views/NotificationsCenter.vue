@@ -2,8 +2,6 @@
 <div class="poppins">
 <div class="content-wrapper screen-height">
       <div class="container-fluid">
-        <!-- <hr class="reset-margin-top" :class="{'mb-0': isOnAgentMinimalView}"/> -->
-        <!-- <div class="content"> -->
           <div class="row">
             <div class="col-12 border-bottom">
               <div class="row">

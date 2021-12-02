@@ -14,7 +14,7 @@
               <p class="float-right loc"><strong>Search Results</strong></p>
             </div>
             <div class="d-flex align-self-center" v-else-if="isNotificationsCenterView">
-              <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="goToPreviousPage">arrow_back</span>
+              <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="redirectToHomePage">arrow_back</span>
               <p class="float-right loc"><strong>Notification Center</strong></p>
             </div>
             <p v-else class="mt-03 float-right loc"><strong>{{viewloc}}</strong></p>
