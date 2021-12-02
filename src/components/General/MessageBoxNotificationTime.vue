@@ -12,20 +12,20 @@
                       <span v-html="notificationMessageDescription" class="message-box-notification-description black-text font-size-16px px-2 mt-4"></span>
                       <div class="mt-3 userform-role-title">
                         <div class="form-group ml-3user mt-2 d-flex">
-                          <div class="ml-2 custom-control custom-radio form-check">
-                            <input v-model="notificationToRemove"  value="today" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
+                          <div class="ml-2 custom-control custom-checkbox form-check">
+                            <input v-model="toRemoveTodayNotifications" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox1">
                             <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                               Today
                             </label>
                           </div>
-                          <div class="ml-2 custom-control custom-radio form-check ml-4">
-                            <input v-model="notificationToRemove" value="yesterday" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2">
+                          <div class="ml-2 custom-control custom-checkbox form-check ml-4">
+                            <input v-model="toRemoveYesterdayNotifications" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox2">
                             <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                               Yesterday
                             </label>
                           </div>
-                          <div class="ml-2 custom-control custom-radio form-check ml-4">
-                            <input v-model="notificationToRemove" value="older" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3">
+                          <div class="ml-2 custom-control custom-checkbox form-check ml-4">
+                            <input v-model="toRemoveOldersNotifications" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox3">
                             <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
                               Olders
                             </label>
@@ -50,12 +50,15 @@ import HelpIco from '@/components/Icons/HelpIco.vue'
 import jQuery from 'jquery'
 import { mapState, mapMutations } from 'vuex'
 export default {
-  name: 'MessageBoxNotification',
+  name: 'MessageBoxNotificationTime',
   components: {
     HelpIco
   },
   data () {
     return {
+      toRemoveOldersNotifications: false,
+      toRemoveYesterdayNotifications: false,
+      toRemoveTodayNotifications: false,
       notificationToRemove: 'older'
     }
   },
@@ -75,7 +78,11 @@ export default {
     ...mapMutations('general', ['updateNotificationMessageActionSelected', 'updateNotificationTimeSelected']),
     setActionToTake: function (action) {
       this.updateNotificationMessageActionSelected(action)
-      this.updateNotificationTimeSelected(this.notificationToRemove)
+      this.updateNotificationTimeSelected({
+        today: this.toRemoveTodayNotifications,
+        yesterday: this.toRemoveYesterdayNotifications,
+        olders: this.toRemoveOldersNotifications
+      })
       jQuery('#notifications-time-message-box-modal').modal('hide')
     }
   }

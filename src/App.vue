@@ -261,14 +261,19 @@ export default {
         this.goToPreviousPage()
       }
     },
-    notificationTimeSelected: function (notificationTime) {
-      if (notificationTime === 'today') {
-        this.clearTodayNotifications()
-      } else if (notificationTime === 'yesterday') {
-        this.clearYesterdayNotifications()
-      } else {
-        this.clearOlderNotifications()
-      }
+    notificationTimeSelected: {
+      handler: function (notificationTime) {
+        if (notificationTime.today) {
+          this.clearTodayNotifications()
+        }
+        if (notificationTime.yesterday) {
+          this.clearYesterdayNotifications()
+        }
+        if (notificationTime.olders) {
+          this.clearOlderNotifications()
+        }
+      },
+      deep: true
     }
   },
   mounted () {

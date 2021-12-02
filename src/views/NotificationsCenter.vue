@@ -51,7 +51,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-12 border-bottom header-bottom-line-shadow">
+            <div v-if="!areOldersNotificationsEmpty" class="col-12 border-bottom header-bottom-line-shadow">
               <p class="ml-5 mt-1 mb-1 font-weight-semibold font-size-20px">Older</p>
             </div>
             <div v-for="notification of getOlderNotifications" :class="{'header-bottom-line-shadow': !notification.readed}" :key="notification.id" class="col-12">
@@ -92,6 +92,9 @@ export default {
     },
     isYesterdayNotificationsEmpty () {
       return this.getYesterdayNotifications.length === 0
+    },
+    areOldersNotificationsEmpty () {
+      return this.getOlderNotifications.length === 0
     },
     getTotalNotifications () {
       return this.notifications.length

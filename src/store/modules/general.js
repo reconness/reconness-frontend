@@ -4,7 +4,11 @@ export default ({
     notificationMessageType: 1,
     notificationMessageDescription: '',
     notificationMessageActionSelected: false,
-    notificationTimeSelected: ''
+    notificationTimeSelected: {
+      today: false,
+      yesterday: false,
+      olders: false
+    }
   },
   mutations: {
     updateNotificationMessageType (state, type) {
@@ -17,7 +21,9 @@ export default ({
       state.notificationMessageActionSelected = action
     },
     updateNotificationTimeSelected (state, timeSelected) {
-      state.notificationTimeSelected = timeSelected
+      state.notificationTimeSelected.today = timeSelected.today
+      state.notificationTimeSelected.yesterday = timeSelected.yesterday
+      state.notificationTimeSelected.olders = timeSelected.olders
     }
   },
   actions: {},
