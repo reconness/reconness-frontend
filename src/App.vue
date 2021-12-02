@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <!-- Navbar -->
-    <nav v-if="!isLoginPage" :class="{'search-page-top-bar': isSearcherView}" class="poppins main-header navbar navbar-expand navbar-white navbar-light sticky-top">
+    <nav v-show="!(isLoginPage || isUserManagementPage)" :class="{'search-page-top-bar': isSearcherView}" class="poppins main-header navbar navbar-expand navbar-white navbar-light sticky-top">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -72,7 +72,7 @@
     </nav>
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
-    <aside v-if="!isLoginPage" class="poppins main-sidebar sidebar-dark-primary  left-aside position-fixed" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <aside v-show="!(isLoginPage || isUserManagementPage)" class="poppins main-sidebar sidebar-dark-primary  left-aside position-fixed" @mouseenter="mouseenter" @mouseleave="mouseleave">
       <!-- Brand Logo -->
        <router-link :to="{name: 'Home'}">
       <a href="#" class="brand-link">
@@ -222,6 +222,9 @@ export default {
     isLoginPage () {
       return this.$route.name === 'LogIn'
     },
+    isUserManagementPage () {
+      return this.$route.name === 'Users'
+    },
     gravatarURL () {
       const hashedUrl = md5(this.loggedUser.email)
       return this.$getGravatarUrlByEmail(hashedUrl)
@@ -324,7 +327,7 @@ export default {
     },
     manageMyUser () {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
-        this.$router.push({ path: 'user' })
+        this.$router.push({ name: 'Users' })
       } else {
         this.updateSelectedIdUser(this.loggedUser.id)
         this.updateManageMyOwnProfile(true)
@@ -341,7 +344,7 @@ export default {
     },
     goToUserSettings () {
       this.goToSettingsSection()
-      this.$router.push({ name: 'LogIn' })
+      this.$router.push({ name: 'Users' })
     }
   }
 }
