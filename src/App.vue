@@ -14,7 +14,7 @@
               <p class="float-right loc"><strong>Search Results</strong></p>
             </div>
             <div class="d-flex align-self-center" v-else-if="isNotificationsCenterView">
-              <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="goToPreviousPage">arrow_back</span>
+              <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="redirectToHomePage">arrow_back</span>
               <p class="float-right loc"><strong>Notification Center</strong></p>
             </div>
             <p v-else class="mt-03 float-right loc"><strong>{{viewloc}}</strong></p>
@@ -53,8 +53,8 @@
         <li @mouseenter="showUserConfigurationMenu" @mouseleave="hideUserConfigurationMenu" class="nav-item dropdown">
           <div class="image nav-link cursor-pointer d-flex" data-toggle="dropdown">
             <div class="main-bar-user-data d-flex flex-column">
-              <span class="loged-user-name font-size-16px">{{loggedUser.firstname}} {{loggedUser.lastname}}</span>
-              <span class="font-size-10px font-weight-light">{{this.$getRoleById(loggedUser.role).longName}}</span>
+              <span class="loged-user-name font-size-16px">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
+              <span class="font-size-10px font-weight-light">{{this.$getRoleById(getLoggedUserData.role).longName}}</span>
             </div>
             <div>
             <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="top-bar-logo img-circle elevation-2" alt="User Image">
@@ -214,9 +214,9 @@ export default {
   },
   computed: {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
-    ...mapState('user', ['loggedUser']),
     ...mapState('target', ['routePreviousToSearch']),
     ...mapGetters('notification', ['getAllNewNotifications']),
+    ...mapGetters('user', ['getLoggedUserData']),
     ...mapState('notification', ['isNotificationMenuActive']),
     ...mapState('general', ['notificationTimeSelected']),
     isLoginPage () {
@@ -226,20 +226,20 @@ export default {
       return this.$route.name === 'Users'
     },
     gravatarURL () {
-      const hashedUrl = md5(this.loggedUser.email)
+      const hashedUrl = md5(this.getLoggedUserData.email)
       return this.$getGravatarUrlByEmail(hashedUrl)
     },
     isAnyPipelineRelatedPage () {
       return this.$route.name === 'Pipelines' || this.$route.name === 'PipelineDetail' || this.$route.name === 'PipelineRunView'
     },
     isLoggedUserOwner () {
-      return this.loggedUser.role === this.$roles.OWNER.id
+      return this.getLoggedUserData.role === this.$roles.OWNER.id
     },
     isLoggedUserAdmin () {
-      return this.loggedUser.role === this.$roles.ADMIN.id
+      return this.getLoggedUserData.role === this.$roles.ADMIN.id
     },
     isLoggedUserMember () {
-      return this.loggedUser.role === this.$roles.MEMBER.id
+      return this.getLoggedUserData.role === this.$roles.MEMBER.id
     },
     isSearcherView () {
       return this.$route.name === 'SearchResult'
@@ -261,14 +261,19 @@ export default {
         this.goToPreviousPage()
       }
     },
-    notificationTimeSelected: function (notificationTime) {
-      if (notificationTime === 'today') {
-        this.clearTodayNotifications()
-      } else if (notificationTime === 'yesterday') {
-        this.clearYesterdayNotifications()
-      } else {
-        this.clearOlderNotifications()
-      }
+    notificationTimeSelected: {
+      handler: function (notificationTime) {
+        if (notificationTime.today) {
+          this.clearTodayNotifications()
+        }
+        if (notificationTime.yesterday) {
+          this.clearYesterdayNotifications()
+        }
+        if (notificationTime.olders) {
+          this.clearOlderNotifications()
+        }
+      },
+      deep: true
     }
   },
   mounted () {
@@ -329,7 +334,7 @@ export default {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
         this.$router.push({ name: 'Users' })
       } else {
-        this.updateSelectedIdUser(this.loggedUser.id)
+        this.updateSelectedIdUser(this.getLoggedUserData.id)
         this.updateManageMyOwnProfile(true)
         jQuery('#user-form-modal').modal()
       }
