@@ -45,8 +45,8 @@
         </li>
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <span class="material-icons" @click="showNotificationsMenu">notifications_none</span>
+          <a @click="showNotificationsMenu" class="nav-link" data-toggle="dropdown" href="#">
+            <span class="material-icons">notifications_none</span>
             <span v-if="existNewNotifications" class="notification-badge rounded-circle">{{getAllNewNotifications.length}}</span>
           </a>
         </li>
@@ -132,13 +132,13 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item" >
                   <a href="#" class="nav-link" v-on:click="goToUserSettings" v-bind:class="{'nav2': styleNotificationsState}">
-                    <span class="material-icons">font_download</span>
+                    <span class="material-icons">circle_notifications</span>
                         <p>Notifications</p>
                   </a>
                 </li>
                 <li class="nav-item" ><router-link :to="{ name: 'Logs' }" >
                   <a href="#" class="nav-link" v-on:click="addLocation('Logs')" v-bind:class="{'nav2': styleLogsState}">
-                    <span class="material-icons">font_download</span>
+                    <span class="material-icons">insert_drive_file</span>
                         <p>Logs</p>
                   </a></router-link>
                 </li>
