@@ -58,17 +58,14 @@
                   </div><!-- /.col-12 col-sm-8 -->
                     <div class="col-12 col-sm-4 pt-1">
                         <label for="uploadimage" class="mt-4 userform-image-container d-flex align-items-center flex-column">
-                        <!-- <div class="mt-4 userform-image-container d-flex align-items-center flex-column"> -->
                           <div class="rounded-circle userform-border-camera-container p-1">
                             <div class="user-management-main-info-img camera-container align-items-center d-flex justify-content-center rounded-circle user-border-admin-role">
                               <span v-if="!user.profilePicture" class="material-icons white-text userform-camera-icon">camera_alt</span>
-                              <!-- <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-management-logo-avatar" alt="User Logo"> -->
                               <img v-if="user.profilePicture" class="rounded-circle user-management-logo-avatar" :src="user.profilePicture">
                             </div>
                           </div>
                           <input id="uploadimage" type="file" @change="onFileChange"/>
                           <span class="agent-mini-color-gray mt-3 mb-4 font-weight-normal">Profile Picture</span>
-                        <!-- </div> -->
                         </label>
                         <div class="userform-roles-container border mb-1">
                             <div class="userform-roles-title-container border-bottom pb-3 pt-2">
@@ -105,7 +102,7 @@
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div class="border-top-none modal-footer">
-                  <button :disabled="isUserFormInvalid" @click="addUser" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Add</button>
+                  <button :disabled="isUserFormInvalid" @click="addUser" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">{{changeActionSaveBtnByFormStatus}}</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -196,6 +193,12 @@ export default {
         return 'Edit User'
       }
       return 'New User'
+    },
+    changeActionSaveBtnByFormStatus () {
+      if (this.editable) {
+        return 'Save'
+      }
+      return 'Add'
     },
     isRoleSelected () {
       return this.user.role >= 1
