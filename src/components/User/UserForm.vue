@@ -11,8 +11,8 @@
                       <div class="col-8">
                         <div class="d-flex flex-column">
                           <div :class="{'w-100': showNameInput}">
-                            <input v-if="showNameInput" :disabled="editable" v-model="user.username" placeholder="Username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
-                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">Username</span>
+                            <input v-if="showNameInput" v-model="user.username" :placeholder="user.username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
+                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
                           <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
@@ -122,7 +122,7 @@ export default {
     return {
       showNameInput: false,
       user: {
-        username: '',
+        username: 'Username',
         firstname: '',
         lastname: '',
         email: '',
@@ -228,7 +228,6 @@ export default {
         this.user.role = selectedUser.role
         this.user.profilePicture = selectedUser.profilePicture
         this.user.id = selectedUser.id
-        this.showNameInput = true
         this.editable = true
         this.confirm_password = selectedUser.password
       }
@@ -262,6 +261,9 @@ export default {
       this.passwordWasWritten = true
     },
     switchNameInput () {
+      if (!this.editable) {
+        this.user.username = ''
+      }
       this.showNameInput = !this.showNameInput
     },
     onFileChange (e) {
@@ -294,7 +296,7 @@ export default {
     },
     resetUserForm () {
       this.user = {
-        username: '',
+        username: 'Username',
         firstname: '',
         lastname: '',
         email: '',
