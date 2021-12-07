@@ -142,6 +142,12 @@
                         <p>Logs</p>
                   </a></router-link>
                 </li>
+                <li class="nav-item" ><router-link :to="{ name: 'Users' }" >
+                  <a href="#" class="nav-link" v-on:click="addLocation('UsersList')" v-bind:class="{'nav2': styleLogsState}">
+                    <span class="material-icons">supervisor_account</span>
+                        <p>Users</p>
+                  </a></router-link>
+                </li>
               </ul>
             </li>
             <li class="nav-item">
@@ -283,7 +289,7 @@ export default {
     ...mapMutations('auth', ['updateIsUserLogged']),
     ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
-    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToLogsSection']),
+    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -312,6 +318,9 @@ export default {
     addLocation: function (loc) {
       if (loc === 'Logs') {
         this.goToLogsSection()
+      }
+      if (loc === 'UsersList') {
+        this.goToUsersSection()
       }
       if (loc === 'Settings') {
         this.arrow_down_settings = !this.arrow_down_settings
