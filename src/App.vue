@@ -145,7 +145,7 @@
               </ul>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" v-on:click="logoutOfSystem" v-bind:class="{'nav2': styleLogsState}">
+                <a href="#" class="nav-link" v-on:click="logoutOfSystem">
                 <span class="material-icons">exit_to_app</span>
                 <p>
                   Logout
