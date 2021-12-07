@@ -20,7 +20,6 @@
                       </div><!-- /.col-12 -->
                       <div class="col-4">
                         <div class="d-flex flex-row-reverse">
-                          <!-- <span v-if="editable" class="title-target-admin-form agent-mini-color-gray mr-1">Settings</span> -->
                           <span class="title-target-admin-form font-size-24px agent-mini-color-gray mr-1">{{this.getUserFormStatus}}</span>
                         </div>
                       </div>
@@ -314,6 +313,7 @@ export default {
       this.phoneWasWritten = false
       this.passwordWasWritten = false
       this.userTryToAdd = false
+      this.editable = false
       this.updateSelectedIdUser(-1)
       this.updateManageMyOwnProfile(false)
     },
