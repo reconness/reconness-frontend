@@ -23,13 +23,13 @@ export default ({
           }
         ],
         notification: {
-          url: '',
-          method: '',
-          payload: '',
-          rootDomain: '',
-          subDomain: '',
-          ipAddress: '',
-          isAlive: ''
+          url: '10.45.56.34',
+          method: 'method',
+          payload: 'payload',
+          rootDomain: 'rootDomain',
+          subDomain: 'subDomain',
+          ipAddress: '10.45.56.34',
+          isAlive: 'alive'
         }
       },
       {
@@ -174,6 +174,10 @@ export default ({
     updateLoggedUserRole (state, idUserAndIdRole) {
       const user = state.users.find(user => user.id === idUserAndIdRole.idUser)
       user.role = idUserAndIdRole.idRole
+    },
+    saveNotificationsSettingsToLoggedUser (state, notificationsSettings) {
+      const userItem = state.users.find(item => item.id === state.loggedUserId)
+      Object.assign(userItem.notification, notificationsSettings)
     }
   },
   actions: {

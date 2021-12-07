@@ -25,15 +25,15 @@
                           <div class="p-3 form-settings-main-container mt-4">
                             <div class="">
                                 <label class="font-size-16px font-weight-normal" for="user-settings-url">URL</label>
-                                <input class="border-ligth-gray border-radius-6px form-control" id="user-settings-url">
+                                <input v-model="notificationsSettings.url" class="border-ligth-gray border-radius-6px form-control" id="user-settings-url">
                             </div>
                             <div class="mt-1">
                                 <label class="font-size-16px font-weight-normal" for="user-settings-method">Method</label>
-                                <input class="border-ligth-gray border-radius-6px form-control" id="user-settings-method">
+                                <input v-model="notificationsSettings.method" class="border-ligth-gray border-radius-6px form-control" id="user-settings-method">
                             </div>
                             <div class="mt-1">
                                 <label class="font-size-16px font-weight-normal" for="user-settings-payload">Payload</label>
-                                <input class="border-ligth-gray border-radius-6px form-control" id="user-settings-payload">
+                                <input v-model="notificationsSettings.payload" class="border-ligth-gray border-radius-6px form-control" id="user-settings-payload">
                             </div>
                           </div>
                           <div class="mt-2 text-right font-size-14px font-italic">
@@ -43,21 +43,26 @@
                         <div v-else class="p-3 form-settings-main-container mt-4">
                             <div class="">
                                 <label class="font-size-16px font-weight-normal" for="user-payload-rootdomain">New Root Domain. Use <span v-pre class="user-payload-highlighted">{{rootDomain}}</span> to obtain <span class="user-payload-highlighted">scriptOutput.rootDomain</span> value</label>
-                                <input class="border-ligth-gray border-radius-6px form-control" id="user-payload-rootdomain">
+                                <input v-model="notificationsSettings.rootDomain" class="border-ligth-gray border-radius-6px form-control" id="user-payload-rootdomain">
                             </div>
                             <div class="mt-1">
                                 <label class="font-size-16px font-weight-normal" for="user-payload-subdomain">New Subdomain. Use <span v-pre class="user-payload-highlighted">{{domain}}</span> to obtain <span class="user-payload-highlighted">scriptOutput.Subdomain</span> value</label>
-                                <input class="border-ligth-gray border-radius-6px form-control" id="user-payload-subdomain">
+                                <input v-model="notificationsSettings.subDomain" class="border-ligth-gray border-radius-6px form-control" id="user-payload-subdomain">
                             </div>
                             <div class="mt-1">
                                 <label class="font-size-16px font-weight-normal" for="user-payload-ipaddress">New IpAdreess. Use <span v-pre class="user-payload-highlighted">{{ip}}</span> to obtain <span class="user-payload-highlighted">scriptOutput.Ip</span> value</label>
-                                <input class="border-ligth-gray border-radius-6px form-control" id="user-payload-ipaddress">
+                                <input v-model="notificationsSettings.ipAddress" class="border-ligth-gray border-radius-6px form-control" id="user-payload-ipaddress">
                             </div>
                             <div class="mt-1">
                                 <label class="font-size-16px font-weight-normal" for="user-payload-isalive">New IsAlive. Use <span v-pre class="user-payload-highlighted">{{isAlive}}</span> to obtain <span class="user-payload-highlighted">scriptOutput.IsAlive</span> value</label>
-                                <input class="border-ligth-gray border-radius-6px form-control" id="user-payload-isalive">
+                                <input v-model="notificationsSettings.isAlive" class="border-ligth-gray border-radius-6px form-control" id="user-payload-isalive">
                             </div>
                           </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="mt-5 d-flex justify-content-end">
+                            <button type="button" @click="saveNotificationsSettingsToLoggedUser(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                        </div>
                       </div>
                   </div>
               </div>
@@ -65,7 +70,7 @@
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'UserSettings',
   components: {
@@ -74,14 +79,30 @@ export default {
   computed: {
     ...mapGetters('user', ['getLoggedUserData'])
   },
+  mounted () {
+    this.loadNotificationsSettings()
+  },
   data () {
     return {
-      isUserNotificationSettingsSelected: true
+      isUserNotificationSettingsSelected: true,
+      notificationsSettings: {
+        url: '',
+        method: '',
+        payload: '',
+        rootDomain: '',
+        subDomain: '',
+        ipAddress: '',
+        isAlive: ''
+      }
     }
   },
   methods: {
+    ...mapMutations('user', ['saveNotificationsSettingsToLoggedUser']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
+    },
+    loadNotificationsSettings () {
+      this.notificationsSettings = this.getLoggedUserData.notification
     }
   }
 }
