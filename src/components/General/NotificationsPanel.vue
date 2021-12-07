@@ -126,6 +126,7 @@ export default {
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #E5E9EC;
     border-radius: 8px 8px 0px 0px;
+    margin-right: 0 !important;
 }
 .notifications-container-border-radius{
     border-radius: 8px 8px 0px 0px;
