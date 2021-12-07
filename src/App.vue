@@ -136,7 +136,7 @@
                         <p>Notifications</p>
                   </a>
                 </li>
-                <li class="nav-item" ><router-link :to="{ name: 'Logs' }" >
+                <li class="nav-item" ><router-link :to="{ name: 'Users' }" >
                   <a href="#" class="nav-link" v-on:click="addLocation('Logs')" v-bind:class="{'nav2': styleLogsState}">
                     <span class="material-icons">insert_drive_file</span>
                         <p>Logs</p>
@@ -283,7 +283,7 @@ export default {
     ...mapMutations('auth', ['updateIsUserLogged']),
     ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
-    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection']),
+    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToLogsSection']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -310,6 +310,9 @@ export default {
       this.arrow_up = !this.arrow_up
     },
     addLocation: function (loc) {
+      if (loc === 'Logs') {
+        this.goToLogsSection()
+      }
       if (loc === 'Settings') {
         this.arrow_down_settings = !this.arrow_down_settings
         this.arrow_up_settings = !this.arrow_up_settings
