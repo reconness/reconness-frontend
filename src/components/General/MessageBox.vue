@@ -77,6 +77,8 @@ export default {
         return this.$entityTypeData.SUBDOMAIN
       } else if (this.$isOnPipelineView()) {
         return this.$entityTypeData.PIPELINE
+      } else if (this.$isOnUserManagementView()) {
+        return this.$entityTypeData.USER
       }
       return ''
     },
@@ -132,6 +134,7 @@ export default {
     ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
+    ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView) {
         this.processTarget()
@@ -164,6 +167,9 @@ export default {
       } else if (this.$isOnPipelineView()) {
         this.clearPipelineEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
+      } else if (this.$isOnUserManagementView()) {
+        this.clearUserEntitiesToDelete()
+        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserDeletion)
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')

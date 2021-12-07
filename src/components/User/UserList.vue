@@ -48,7 +48,7 @@
                       </td>
                       <td class="border-top-0 d-flex justify-content-between user-management-action-width">
                         <button @click="editUser" data-toggle="modal" data-target="#user-form-modal" :data-id="user.id" type="button" class="font-size-14px user-management-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
-                        <button @click="removeWordListItem(wordlistItem.id)" type="button" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
+                        <button @click="prepareToDelete($event, this.$entityTypeData.USER.id)" data-toggle="modal" data-target="#message-box-modal" type="button" :data-name="user.username" :data-id="user.id" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                       </td>
                     </tr>
                   </tbody>
@@ -64,20 +64,32 @@
 </template>
 <script>
 import UserForm from '@/components/User/UserForm.vue'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
+import { AgentMixin } from '@/mixins/AgentMixin'
 export default {
   name: 'UserList',
   components: {
     UserForm
   },
+  data () {
+    return {
+      idUserSelected: -1
+    }
+  },
+  mixins: [AgentMixin],
   computed: {
     ...mapState('user', ['users', 'loggedUser']),
     ...mapGetters('user', ['getLoggedUserData'])
   },
   methods: {
+    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
     editUser (e) {
       const selectedUserId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('user/updateSelectedIdUser', parseInt(selectedUserId))
+    },
+    removeUser (e) {
+      const selectedUserId = e.currentTarget.getAttribute('data-id')
+      this.idUserSelected = Number(selectedUserId)
     }
   }
 }

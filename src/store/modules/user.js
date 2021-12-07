@@ -176,7 +176,17 @@ export default ({
       user.role = idUserAndIdRole.idRole
     }
   },
-  actions: {},
+  actions: {
+    clearUserEntitiesToDelete ({ state, commit, rootState }) {
+      rootState.target.entitiesToDelete.forEach(entity => {
+        const index = state.users.findIndex(user => user.id === entity.id)
+        if (index !== -1) {
+          state.users.splice(index, 1)
+        }
+      })
+      commit('target/clearReferencesToDelete', null, { root: true })
+    }
+  },
   getters: {
     getUserById: (state) => (id) => {
       return state.users.find(user => user.id === id)
