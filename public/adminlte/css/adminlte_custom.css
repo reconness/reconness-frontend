@@ -573,6 +573,7 @@ font-weight: 600;
 }
 .main-sidebar {
   height: -webkit-fill-available !important;
+  overflow-y: auto;
 }
 
 @media (min-width: 2560px) {

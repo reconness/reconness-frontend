@@ -1,7 +1,7 @@
 <template>
   <div class="col-12">
     <div class="d-flex align-items-center flex-column justify-content-center">
-      <div :class="{'user-settings': showSettingsSection, 'pb-5': !showLogsSection}" class="user-management-container">
+      <div :class="{'user-settings': showSettingsSection, 'pb-3': !showLogsSection}" class="user-management-container">
         <UserList v-if="showUsersSection"/>
         <UserLogs v-else-if="showLogsSection"/>
         <UserSettings v-else/>

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <!-- Navbar -->
-    <nav v-show="!(isLoginPage || isUserManagementPage)" :class="{'search-page-top-bar': isSearcherView}" class="poppins main-header navbar navbar-expand navbar-white navbar-light sticky-top">
+    <nav v-show="showTopAndLeftBars" :class="{'search-page-top-bar': isSearcherView}" class="poppins main-header navbar navbar-expand navbar-white navbar-light sticky-top">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -45,8 +45,8 @@
         </li>
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <span class="material-icons" @click="showNotificationsMenu">notifications_none</span>
+          <a @click="showNotificationsMenu" class="nav-link" data-toggle="dropdown" href="#">
+            <span class="material-icons">notifications_none</span>
             <span v-if="existNewNotifications" class="notification-badge rounded-circle">{{getAllNewNotifications.length}}</span>
           </a>
         </li>
@@ -72,10 +72,10 @@
     </nav>
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
-    <aside v-show="!(isLoginPage || isUserManagementPage)" class="poppins main-sidebar sidebar-dark-primary  left-aside position-fixed" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <aside v-show="showTopAndLeftBars" class="poppins main-sidebar sidebar-dark-primary  left-aside position-fixed" @mouseenter="mouseenter" @mouseleave="mouseleave">
       <!-- Brand Logo -->
        <router-link :to="{name: 'Home'}">
-      <a href="#" class="brand-link">
+      <a href="#" class="brand-link sticky-top-aside">
         <img src="/adminlte/img/reconnes/logo2x.png" v-show="hide_logo" alt="ReconNess Logo" class="brand-image img-circle elevation-3 opacity-08">
         <div class="text-center">
           <span class="brand-text"><strong>Recon</strong></span><span>Ness</span>
@@ -132,20 +132,26 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item" >
                   <a href="#" class="nav-link" v-on:click="goToUserSettings" v-bind:class="{'nav2': styleNotificationsState}">
-                    <span class="material-icons">font_download</span>
+                    <span class="material-icons">circle_notifications</span>
                         <p>Notifications</p>
                   </a>
                 </li>
-                <li class="nav-item" ><router-link :to="{ name: 'Logs' }" >
+                <li class="nav-item" ><router-link :to="{ name: 'Users' }" >
                   <a href="#" class="nav-link" v-on:click="addLocation('Logs')" v-bind:class="{'nav2': styleLogsState}">
-                    <span class="material-icons">font_download</span>
+                    <span class="material-icons">insert_drive_file</span>
                         <p>Logs</p>
+                  </a></router-link>
+                </li>
+                <li class="nav-item" ><router-link :to="{ name: 'Users' }" >
+                  <a href="#" class="nav-link" v-on:click="addLocation('UsersList')" v-bind:class="{'nav2': styleLogsState}">
+                    <span class="material-icons">supervisor_account</span>
+                        <p>Users</p>
                   </a></router-link>
                 </li>
               </ul>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" v-on:click="logoutOfSystem" v-bind:class="{'nav2': styleLogsState}">
+                <a href="#" class="nav-link" v-on:click="logoutOfSystem">
                 <span class="material-icons">exit_to_app</span>
                 <p>
                   Logout
@@ -219,6 +225,7 @@ export default {
     ...mapGetters('user', ['getLoggedUserData']),
     ...mapState('notification', ['isNotificationMenuActive']),
     ...mapState('general', ['notificationTimeSelected']),
+    ...mapState('auth', ['isUserLogged']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
     },
@@ -249,6 +256,9 @@ export default {
     },
     existNewNotifications () {
       return this.getAllNewNotifications.length > 0
+    },
+    showTopAndLeftBars () {
+      return this.isUserLogged && !this.isUserManagementPage
     }
   },
   watch: {
@@ -283,7 +293,7 @@ export default {
     ...mapMutations('auth', ['updateIsUserLogged']),
     ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
-    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection']),
+    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -310,6 +320,12 @@ export default {
       this.arrow_up = !this.arrow_up
     },
     addLocation: function (loc) {
+      if (loc === 'Logs') {
+        this.goToLogsSection()
+      }
+      if (loc === 'UsersList') {
+        this.goToUsersSection()
+      }
       if (loc === 'Settings') {
         this.arrow_down_settings = !this.arrow_down_settings
         this.arrow_up_settings = !this.arrow_up_settings
@@ -355,6 +371,11 @@ export default {
 }
 </script>
 <style>
+.sticky-top-aside{
+  position: sticky !important;
+  top: 10px !important;
+  z-index: 1020;
+}
 .notification-badge{
   position: absolute;
   right: 12px;

@@ -7,27 +7,27 @@
           <span class="brand-text"><strong class="white-text">Recon</strong></span><span class="white-text">Ness</span>
         </div>
         <div class="user-manager-selection-bar d-flex">
-          <span class="logs-section font-size-24px cursor-pointer" :class="{'border-selected-user-section': showLogsSection, 'white-text': showLogsSection, 'unselected-color-user-section': !showLogsSection}" @click="goToLogsSection">Logs</span>
-          <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showUsersSection, 'white-text': showUsersSection, 'unselected-color-user-section': !showUsersSection}" @click="goToUsersSection">Users</span>
-          <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showSettingsSection, 'white-text': showSettingsSection, 'unselected-color-user-section': !showSettingsSection}" @click="goToSettingsSection">Settings</span>
+          <span class="logs-section font-size-24px cursor-pointer" :class="{'border-selected-user-section': showUsersSection, 'white-text': showUsersSection, 'unselected-color-user-section': !showUsersSection}" @click="goToUsersSection">Users</span>
+          <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showSettingsSection, 'white-text': showSettingsSection, 'unselected-color-user-section': !showSettingsSection}" @click="goToSettingsSection">Notifications</span>
+          <span class="logs-section ml-5 font-size-24px cursor-pointer" :class="{'border-selected-user-section': showLogsSection, 'white-text': showLogsSection, 'unselected-color-user-section': !showLogsSection}" @click="goToLogsSection">Logs</span>
         </div>
         <div class="quick-access-container d-flex mr-3">
-          <router-link :to="{name: 'Home'}">
+          <router-link @click="updateLocView('Home')" :to="{name: 'Home'}">
             <div class="quick-access-icon-container d-flex justify-content-center align-items-center">
               <span class="material-icons">home</span>
             </div>
           </router-link>
-          <router-link :to="{name: 'Targets'}">
+          <router-link @click="updateLocView('Targets')" :to="{name: 'Targets'}">
             <div class="ml-3 quick-access-icon-container d-flex justify-content-center align-items-center">
               <BullseyeArrowIco/>
             </div>
           </router-link>
-          <router-link :to="{name: 'Pipelines'}">
+          <router-link @click="updateLocView('Pipelines')" :to="{name: 'Pipelines'}">
             <div class="ml-3 quick-access-icon-container d-flex justify-content-center align-items-center">
               <CodeNotEqualVariantIco/>
             </div>
           </router-link>
-          <router-link :to="{name: 'Agent'}">
+          <router-link @click="updateLocView('Agents')" :to="{name: 'Agent'}">
             <div class="ml-3 quick-access-icon-container d-flex justify-content-center align-items-center">
               <AlphaABoxIco/>
             </div>
@@ -72,6 +72,7 @@ export default {
     document.body.classList.remove('login-wallpaper')
   },
   methods: {
+    ...mapMutations('agent', ['updateLocView']),
     ...mapMutations('user', ['goToLogsSection', 'goToUsersSection', 'goToSettingsSection'])
   }
 }

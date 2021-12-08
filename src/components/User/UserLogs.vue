@@ -27,7 +27,7 @@
                       </div>
                       <div class="col-12">
                           <div class="form-group">
-                            <textarea class="form-control user-logs-files-content" rows="6" v-model="logText"></textarea>
+                            <textarea readonly class="form-control user-logs-files-content" rows="6" v-model="logText"></textarea>
                           </div>
                           <div class="d-flex justify-content-end">
                             <button :disabled="isNotLogSelected" @click="updateNotificationMessage" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-toggle="modal" data-target="#message-box-notification-modal" data-dismiss="modal">Clean</button>
@@ -88,6 +88,9 @@ export default {
 <style scoped>
 .user-logs-files-content{
     resize: none;
+}
+textarea.user-logs-files-content:read-only{
+  background-color: #ffffff;
 }
 .user-logs-logo-avatar{
     width: 81px;

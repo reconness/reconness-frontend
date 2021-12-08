@@ -11,8 +11,8 @@
                       <div class="col-8">
                         <div class="d-flex flex-column">
                           <div :class="{'w-100': showNameInput}">
-                            <input v-if="showNameInput" :disabled="editable" v-model="user.username" placeholder="Username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
-                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">Username</span>
+                            <input v-if="showNameInput" v-model="user.username" :placeholder="user.username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
+                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
                           <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
@@ -20,7 +20,6 @@
                       </div><!-- /.col-12 -->
                       <div class="col-4">
                         <div class="d-flex flex-row-reverse">
-                          <!-- <span v-if="editable" class="title-target-admin-form agent-mini-color-gray mr-1">Settings</span> -->
                           <span class="title-target-admin-form font-size-24px agent-mini-color-gray mr-1">{{this.getUserFormStatus}}</span>
                         </div>
                       </div>
@@ -58,17 +57,14 @@
                   </div><!-- /.col-12 col-sm-8 -->
                     <div class="col-12 col-sm-4 pt-1">
                         <label for="uploadimage" class="mt-4 userform-image-container d-flex align-items-center flex-column">
-                        <!-- <div class="mt-4 userform-image-container d-flex align-items-center flex-column"> -->
                           <div class="rounded-circle userform-border-camera-container p-1">
                             <div class="user-management-main-info-img camera-container align-items-center d-flex justify-content-center rounded-circle user-border-admin-role">
                               <span v-if="!user.profilePicture" class="material-icons white-text userform-camera-icon">camera_alt</span>
-                              <!-- <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-management-logo-avatar" alt="User Logo"> -->
                               <img v-if="user.profilePicture" class="rounded-circle user-management-logo-avatar" :src="user.profilePicture">
                             </div>
                           </div>
                           <input id="uploadimage" type="file" @change="onFileChange"/>
                           <span class="agent-mini-color-gray mt-3 mb-4 font-weight-normal">Profile Picture</span>
-                        <!-- </div> -->
                         </label>
                         <div class="userform-roles-container border mb-1">
                             <div class="userform-roles-title-container border-bottom pb-3 pt-2">
@@ -77,21 +73,21 @@
                             <div class="userform-role-title">
                               <div class="form-group ml-3user mt-2">
                                 <div v-if="isLoggedUserOwner" class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" @click="userSelectARole" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                                     <span class="material-icons blue-text">manage_accounts</span>
                                     Owner
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
                                     Administrator
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
                                     <span class="material-icons green-text">person</span>
                                     Member
@@ -105,7 +101,7 @@
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div class="border-top-none modal-footer">
-                  <button :disabled="isUserFormInvalid" @click="addUser" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">Add</button>
+                  <button :disabled="isUserFormInvalid" @click="addUser" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">{{changeActionSaveBtnByFormStatus}}</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -126,7 +122,7 @@ export default {
     return {
       showNameInput: false,
       user: {
-        username: '',
+        username: 'Username',
         firstname: '',
         lastname: '',
         email: '',
@@ -145,7 +141,8 @@ export default {
       passwordWasWritten: false,
       userTryToAdd: false,
       editable: false,
-      manageHisProfile: false
+      manageHisProfile: false,
+      firstRoleSelection: false
     }
   },
   computed: {
@@ -197,13 +194,19 @@ export default {
       }
       return 'New User'
     },
+    changeActionSaveBtnByFormStatus () {
+      if (this.editable) {
+        return 'Save'
+      }
+      return 'Add'
+    },
     isRoleSelected () {
       return this.user.role >= 1
     }
   },
   watch: {
     'user.role': function (value) {
-      if (value === this.$roles.OWNER.id) {
+      if (this.firstRoleSelection && value === this.$roles.OWNER.id) {
         if (this.getLoggedUserData.role === this.$roles.OWNER.id) {
           if ((this.selectedUser !== undefined && this.user.id !== this.getLoggedUserData.id) || !this.selectedUser) {
             this.updateNotificationMessageType(this.$notificationMessageType.CONFIRM)
@@ -226,7 +229,6 @@ export default {
         this.user.role = selectedUser.role
         this.user.profilePicture = selectedUser.profilePicture
         this.user.id = selectedUser.id
-        this.showNameInput = true
         this.editable = true
         this.confirm_password = selectedUser.password
       }
@@ -260,6 +262,9 @@ export default {
       this.passwordWasWritten = true
     },
     switchNameInput () {
+      if (!this.editable) {
+        this.user.username = ''
+      }
       this.showNameInput = !this.showNameInput
     },
     onFileChange (e) {
@@ -292,7 +297,7 @@ export default {
     },
     resetUserForm () {
       this.user = {
-        username: '',
+        username: 'Username',
         firstname: '',
         lastname: '',
         email: '',
@@ -311,6 +316,8 @@ export default {
       this.phoneWasWritten = false
       this.passwordWasWritten = false
       this.userTryToAdd = false
+      this.editable = false
+      this.firstRoleSelection = false
       this.updateSelectedIdUser(-1)
       this.updateManageMyOwnProfile(false)
     },
@@ -320,6 +327,9 @@ export default {
     },
     close () {
       this.resetUserForm()
+    },
+    userSelectARole () {
+      this.firstRoleSelection = true
     }
   }
 }

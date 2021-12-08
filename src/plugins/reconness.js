@@ -131,7 +131,8 @@ export default {
         ROOTDOMAIN: { id: 2, description: 'Root Domain' },
         SUBDOMAIN: { id: 3, description: 'SubDomain' },
         AGENT: { id: 4, description: 'Agent' },
-        PIPELINE: { id: 5, description: 'Pipeline' }
+        PIPELINE: { id: 5, description: 'Pipeline' },
+        USER: { id: 6, description: 'User' }
       }
     )
 
@@ -279,6 +280,7 @@ export default {
         successMessageForTargetEdition: 'The target has been edited successfully',
         successMessageForAgentDeletion: 'The agent has been deleted successfully',
         successMessageForPipelineDeletion: 'The pipeline has been deleted successfully',
+        successMessageForUserDeletion: 'The user has been deleted successfully',
         successMessageForAgentInstallation: 'The agent was installed successfully',
         errorMessageForAgentInstallation: 'An error ocurred during installation'
       }
@@ -302,6 +304,10 @@ export default {
 
     app.config.globalProperties.$isOnSubDomainView = function () {
       return this.$route.name === 'SubDomainDetails'
+    }
+
+    app.config.globalProperties.$isOnUserManagementView = function () {
+      return this.$route.name === 'Users'
     }
 
     app.config.globalProperties.$isOnPipelineView = function () {

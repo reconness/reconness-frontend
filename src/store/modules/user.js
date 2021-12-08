@@ -23,13 +23,13 @@ export default ({
           }
         ],
         notification: {
-          url: '',
-          method: '',
-          payload: '',
-          rootDomain: '',
-          subDomain: '',
-          ipAddress: '',
-          isAlive: ''
+          url: '10.45.56.34',
+          method: 'method',
+          payload: 'payload',
+          rootDomain: 'rootDomain',
+          subDomain: 'subDomain',
+          ipAddress: '10.45.56.34',
+          isAlive: 'alive'
         }
       },
       {
@@ -118,7 +118,7 @@ export default ({
         }
       ]
     },
-    loggedUserId: 2,
+    loggedUserId: 1,
     showLogsSection: false,
     showUsersSection: true,
     showSettingsSection: false,
@@ -174,9 +174,23 @@ export default ({
     updateLoggedUserRole (state, idUserAndIdRole) {
       const user = state.users.find(user => user.id === idUserAndIdRole.idUser)
       user.role = idUserAndIdRole.idRole
+    },
+    saveNotificationsSettingsToLoggedUser (state, notificationsSettings) {
+      const userItem = state.users.find(item => item.id === state.loggedUserId)
+      Object.assign(userItem.notification, notificationsSettings)
     }
   },
-  actions: {},
+  actions: {
+    clearUserEntitiesToDelete ({ state, commit, rootState }) {
+      rootState.target.entitiesToDelete.forEach(entity => {
+        const index = state.users.findIndex(user => user.id === entity.id)
+        if (index !== -1) {
+          state.users.splice(index, 1)
+        }
+      })
+      commit('target/clearReferencesToDelete', null, { root: true })
+    }
+  },
   getters: {
     getUserById: (state) => (id) => {
       return state.users.find(user => user.id === id)
