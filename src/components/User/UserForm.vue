@@ -73,21 +73,21 @@
                             <div class="userform-role-title">
                               <div class="form-group ml-3user mt-2">
                                 <div v-if="isLoggedUserOwner" class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" @click="userSelectARole" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                                     <span class="material-icons blue-text">manage_accounts</span>
                                     Owner
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
                                     Administrator
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
                                     <span class="material-icons green-text">person</span>
                                     Member
@@ -141,7 +141,8 @@ export default {
       passwordWasWritten: false,
       userTryToAdd: false,
       editable: false,
-      manageHisProfile: false
+      manageHisProfile: false,
+      firstRoleSelection: false
     }
   },
   computed: {
@@ -205,7 +206,7 @@ export default {
   },
   watch: {
     'user.role': function (value) {
-      if (value === this.$roles.OWNER.id) {
+      if (this.firstRoleSelection && value === this.$roles.OWNER.id) {
         if (this.getLoggedUserData.role === this.$roles.OWNER.id) {
           if ((this.selectedUser !== undefined && this.user.id !== this.getLoggedUserData.id) || !this.selectedUser) {
             this.updateNotificationMessageType(this.$notificationMessageType.CONFIRM)
@@ -316,6 +317,7 @@ export default {
       this.passwordWasWritten = false
       this.userTryToAdd = false
       this.editable = false
+      this.firstRoleSelection = false
       this.updateSelectedIdUser(-1)
       this.updateManageMyOwnProfile(false)
     },
@@ -325,6 +327,9 @@ export default {
     },
     close () {
       this.resetUserForm()
+    },
+    userSelectARole () {
+      this.firstRoleSelection = true
     }
   }
 }
