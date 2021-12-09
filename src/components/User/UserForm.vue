@@ -202,6 +202,15 @@ export default {
     },
     isRoleSelected () {
       return this.user.role >= 1
+    },
+    editedUserIsNotSameLoggedIn () {
+      return this.getLoggedUserData.id !== this.user.id
+    },
+    editedUserHasSameRoleLoggedIn () {
+      return this.getLoggedUserData.role === this.user.role
+    },
+    theNewRoleOfEditedUserIsOwner () {
+      return this.user.role === this.$roles.OWNER.id
     }
   },
   watch: {
@@ -285,7 +294,7 @@ export default {
         } else {
           this.addUserEntity(this.user)
         }
-        if (this.getLoggedUserData.role === this.user.role && this.user.role === this.$roles.OWNER.id) {
+        if (this.editedUserIsNotSameLoggedIn && this.editedUserHasSameRoleLoggedIn && this.theNewRoleOfEditedUserIsOwner) {
           this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.$roles.ADMIN.id })
           this.logoutUser()
         }
