@@ -193,6 +193,10 @@ export default ({
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
+    },
+    saveNotificationsSettingsToLoggedUserAction ({ state, commit, rootState }, notificationsSettings) {
+      commit('saveNotificationsSettingsToLoggedUser', notificationsSettings)
+      commit('target/updateOperationStatusInfo', { status: 5, message: '' }, { root: true })
     }
   },
   getters: {
