@@ -154,10 +154,14 @@ export default ({
     },
     addUserEntity (state, user) {
       state.idUserSequence = state.idUserSequence++
+      user.id = state.idUserSequence
       state.users.push(user)
     },
     updateUserEntity (state, user) {
       const item = state.users.find(item => item.id === user.id)
+      if (user.password.match(/^ *$/) !== null) {
+        user.password = item.password
+      }
       Object.assign(item, user)
     },
     updateSelectedIdUser (state, idUser) {
