@@ -269,7 +269,7 @@ export default {
       {
         errorSummary: 'Error',
         successSumary: 'Success',
-        errorMessageForAllPurpose: 'An error occured during the removal process',
+        errorMessageForAllPurpose: 'An error occured during the process',
         errorMessageForInsertionPurpose: 'An error occured during the insertion process',
         errorMessageForEditionPurpose: 'An error occured during the edition process',
         successMessageForTargetDeletion: 'The target has been deleted successfully',

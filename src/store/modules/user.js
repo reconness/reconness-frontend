@@ -195,8 +195,12 @@ export default ({
       commit('target/clearReferencesToDelete', null, { root: true })
     },
     saveNotificationsSettingsToLoggedUserAction ({ state, commit, rootState }, notificationsSettings) {
-      commit('saveNotificationsSettingsToLoggedUser', notificationsSettings)
-      commit('target/updateOperationStatusInfo', { status: 5, message: '' }, { root: true })
+      if (Math.random() < 0.5) {
+        commit('saveNotificationsSettingsToLoggedUser', notificationsSettings)
+        commit('target/updateOperationStatusInfo', { status: 5, message: '' }, { root: true })
+      } else {
+        commit('target/updateOperationStatusInfo', { status: 4, message: '' }, { root: true })
+      }
     }
   },
   getters: {
