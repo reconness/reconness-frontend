@@ -32,7 +32,7 @@
               <AlphaABoxIco/>
             </div>
           </router-link>
-          <router-link :to="{name: 'LogOut'}">
+          <router-link @click="updateIsUserLogged(false)" :to="{name: 'LogOut'}">
             <div class="ml-3 quick-access-icon-container d-flex justify-content-center align-items-center">
               <ExportIco/>
             </div>
@@ -73,7 +73,8 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['updateLocView']),
-    ...mapMutations('user', ['goToLogsSection', 'goToUsersSection', 'goToSettingsSection'])
+    ...mapMutations('user', ['goToLogsSection', 'goToUsersSection', 'goToSettingsSection']),
+    ...mapMutations('auth', ['updateIsUserLogged'])
   }
 }
 </script>

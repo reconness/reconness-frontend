@@ -9,8 +9,8 @@
                   <div class="col-12">
                     <div class="row">
                       <div class="col-8">
-                        <div class="d-flex flex-column">
-                          <div :class="{'w-100': showNameInput}">
+                        <div class="d-flex">
+                          <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
                             <input v-if="showNameInput" v-model="user.username" :placeholder="user.username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
                             <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
@@ -47,7 +47,7 @@
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
                       <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordWasWritten" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
-                          <span v-if="isPasswordInBlank" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
+                          <span v-if="isPasswordInBlank && !editable" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-confirm_password" class="font-weight-regular black-text font-size-16px">Confirmation Password</label>
@@ -177,7 +177,7 @@ export default {
       return this.user.password === this.confirm_password
     },
     isUserFormInvalid () {
-      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || this.isPasswordInBlank || !this.isConfirmPasswordEqualToPassword
+      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword
     },
     isLoggedUserOwner () {
       return this.loggedUser.role === this.$roles.OWNER.id
@@ -202,6 +202,15 @@ export default {
     },
     isRoleSelected () {
       return this.user.role >= 1
+    },
+    editedUserIsNotSameLoggedIn () {
+      return this.getLoggedUserData.id !== this.user.id
+    },
+    editedUserHasSameRoleLoggedIn () {
+      return this.getLoggedUserData.role === this.user.role
+    },
+    theNewRoleOfEditedUserIsOwner () {
+      return this.user.role === this.$roles.OWNER.id
     }
   },
   watch: {
@@ -224,13 +233,11 @@ export default {
         this.user.firstname = selectedUser.firstname
         this.user.lastname = selectedUser.lastname
         this.user.email = selectedUser.email
-        this.user.password = selectedUser.password
         this.user.phone = selectedUser.phone
         this.user.role = selectedUser.role
         this.user.profilePicture = selectedUser.profilePicture
         this.user.id = selectedUser.id
         this.editable = true
-        this.confirm_password = selectedUser.password
       }
     },
     notificationMessageActionSelected: function (value) {
@@ -287,8 +294,8 @@ export default {
         } else {
           this.addUserEntity(this.user)
         }
-        if (this.getLoggedUserData.role === this.user.role) {
-          this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.getLoggedUserData.role })
+        if (this.editedUserIsNotSameLoggedIn && this.editedUserHasSameRoleLoggedIn && this.theNewRoleOfEditedUserIsOwner) {
+          this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.$roles.ADMIN.id })
           this.logoutUser()
         }
         jQuery('#user-form-modal').modal('hide')

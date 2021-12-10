@@ -154,10 +154,14 @@ export default ({
     },
     addUserEntity (state, user) {
       state.idUserSequence = state.idUserSequence++
+      user.id = state.idUserSequence
       state.users.push(user)
     },
     updateUserEntity (state, user) {
       const item = state.users.find(item => item.id === user.id)
+      if (user.password.match(/^ *$/) !== null) {
+        user.password = item.password
+      }
       Object.assign(item, user)
     },
     updateSelectedIdUser (state, idUser) {
@@ -189,6 +193,10 @@ export default ({
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
+    },
+    saveNotificationsSettingsToLoggedUserAction ({ state, commit, rootState }, notificationsSettings) {
+      commit('saveNotificationsSettingsToLoggedUser', notificationsSettings)
+      commit('target/updateOperationStatusInfo', { status: 5, message: '' }, { root: true })
     }
   },
   getters: {

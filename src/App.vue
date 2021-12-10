@@ -258,7 +258,7 @@ export default {
       return this.getAllNewNotifications.length > 0
     },
     showTopAndLeftBars () {
-      return this.isUserLogged && !this.isUserManagementPage
+      return this.isUserLogged && !this.isUserManagementPage && !(this.isLoginPage || this.isUserManagementPage)
     }
   },
   watch: {

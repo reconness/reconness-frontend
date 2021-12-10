@@ -61,7 +61,7 @@
                       </div>
                       <div class="col-12">
                         <div class="mt-5 d-flex justify-content-end">
-                            <button type="button" @click="saveNotificationsSettingsToLoggedUser(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                            <button type="button" @click="saveNotificationsSettingsToLoggedUserAction(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
                         </div>
                       </div>
                   </div>
@@ -70,14 +70,16 @@
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { mapGetters, mapMutations } from 'vuex'
+import jQuery from 'jquery'
+import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 export default {
   name: 'UserSettings',
   components: {
     AccountCogIco
   },
   computed: {
-    ...mapGetters('user', ['getLoggedUserData'])
+    ...mapGetters('user', ['getLoggedUserData']),
+    ...mapState('target', ['operationStatus'])
   },
   mounted () {
     this.loadNotificationsSettings()
@@ -96,8 +98,22 @@ export default {
       }
     }
   },
+  watch: {
+    operationStatus: {
+      handler: function (result) {
+        if (result.status === this.$entityStatus.SUCCESS) {
+          this.updateNotificationMessageType(this.$notificationMessageType.SUCCESS)
+          this.updateNotificationMessageDescription(this.$message.successMessageForNotificationUpdate)
+          jQuery('#message-box-notification-modal').modal()
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     ...mapMutations('user', ['saveNotificationsSettingsToLoggedUser']),
+    ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
+    ...mapActions('user', ['saveNotificationsSettingsToLoggedUserAction']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
     },
