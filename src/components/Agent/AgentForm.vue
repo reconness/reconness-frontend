@@ -246,7 +246,7 @@ import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 
@@ -371,6 +371,7 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
+    ...mapActions('agent', ['addAgentToServer']),
     setBlueColor: function () {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
@@ -399,7 +400,7 @@ export default {
     addAgent () {
       this.enableValidationMessages()
       if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
-        const randomResult = this.$randomBooleanResult()
+        const randomResult = true
         if (this.editable) {
           if (randomResult) {
             this.agent.id = parseInt(this.$store.getters['agent/idAgent'])
@@ -412,7 +413,8 @@ export default {
           }
         } else {
           if (randomResult) {
-            this.$store.commit('agent/addAgent', this.agent)
+            // this.$store.commit('agent/addAgent', this.agent)
+            this.addAgentToServer(this.agent)
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {
             this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)

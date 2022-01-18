@@ -206,7 +206,7 @@ export default ({
     },
     addAgent (state, agent) {
       state.agentSequence = state.agentSequence + 1
-      agent.id = state.agentSequence
+      agent.id = state.agentSequence.toString()
       state.agentListStore.push(agent)
     },
     setIdAgent (state, id) {
@@ -387,6 +387,9 @@ export default ({
       return [22, 30, 70, 77, 42, 20, 50]
     },
     getEntityTypeByDescription: (state) => (descriptionEntity) => {
+      if (descriptionEntity === null) {
+        return 3
+      }
       const transformedDescription = descriptionEntity.toLowerCase()
       if (transformedDescription === 'target') {
         return 1
@@ -396,14 +399,52 @@ export default ({
         return 3
       }
     },
+    getEntitySourceByDescription: (state) => (entitySourceDescription) => {
+      if (entitySourceDescription === null) {
+        return 1
+      }
+      const transformedDescription = entitySourceDescription.toLowerCase()
+      if (transformedDescription === 'user') {
+        return 1
+      } else {
+        return 2
+      }
+    },
+    getEntitySourceDescriptionByCode: (state) => (entitySourceCode) => {
+      if (entitySourceCode === 1) {
+        return 'user'
+      }
+      return 'system'
+    },
+    getPrimaryColor: (state) => (primaryColor) => {
+      if (primaryColor === null) {
+        return '#737be5'
+      }
+      return primaryColor
+    },
+    getSecondaryColor: (state) => (secondaryColor) => {
+      if (secondaryColor === null) {
+        return '#7159d3'
+      }
+      return secondaryColor
+    },
+    getEntityTypeDescriptionByCode: (state) => (entityTypeCode) => {
+      if (entityTypeCode === 1) {
+        return 'target'
+      } else if (entityTypeCode === 2) {
+        return 'rootdomain'
+      } else {
+        return 'subdomain'
+      }
+    },
     mapAgents: (state, getters) => (agents) => {
       const newAgents = []
       let newAgent
       agents.forEach(agent => {
         newAgent = {
           name: agent.name,
-          primaryColor: '#03DCED',
-          secondaryColor: '#0cb8e0',
+          primaryColor: getters.getPrimaryColor(agent.primaryColor),
+          secondaryColor: getters.getSecondaryColor(agent.secondaryColor),
           id: agent.id,
           repository: agent.repository,
           target: '',
@@ -415,11 +456,29 @@ export default ({
           image: '',
           date: '21/01/2020',
           installedFrom: '',
-          lastRun: new Date(agent.lastRun)
+          lastRun: new Date(agent.lastRun),
+          createdBy: getters.getEntitySourceByDescription(agent.createdBy)
         }
         newAgents.push(newAgent)
       })
       return newAgents
+    },
+    mapSingleItem: (state, getters) => (agent) => {
+      const mappedAgent = {
+        name: agent.name,
+        command: agent.command,
+        repository: agent.repository,
+        agentType: getters.getEntityTypeDescriptionByCode(agent.type),
+        categories: [],
+        entitySource: agent.createdBy,
+        primaryColor: agent.primaryColor,
+        secondaryColor: agent.secondaryColor,
+        script: agent.script,
+        createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
+        triggerSubdomainIsAlive: agent.isAliveTrigger,
+        triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger
+      }
+      return mappedAgent
     }
   },
   actions: {
@@ -432,8 +491,8 @@ export default ({
       })
       commit('target/clearReferencesToDelete', null, { root: true })
     },
-    loadAgents ({ state, commit, getters }) {
-      if (state.authentication_token !== '') {
+    loadAgents ({ state, commit, getters, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
         return axios.get('/agents')
           .then(function (response) {
             const agentsMapped = getters.mapAgents(response.data)
@@ -441,6 +500,19 @@ export default ({
             return true
           })
           .catch(function () {
+            return false
+          })
+      }
+    },
+    addAgentToServer ({ state, rootState, getters, commit }, agent) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents', getters.mapSingleItem(agent))
+          .then(function (response) {
+            commit('addAgent', agent)
+            return true
+          })
+          .catch(function (response) {
+            console.log(response)
             return false
           })
       }
