@@ -452,12 +452,15 @@ export default ({
           type: getters.getEntityTypeByDescription(agent.agentType),
           isAliveTrigger: agent.triggerSubdomainIsAlive,
           isHttpOpenTrigger: agent.triggerSubdomainHasHttpOrHttpsOpen,
-          script: agent.script,
+          script: '',
           image: '',
           date: '21/01/2020',
           installedFrom: '',
           lastRun: new Date(agent.lastRun),
           createdBy: getters.getEntitySourceByDescription(agent.createdBy)
+        }
+        if (agent.script != null) {
+          newAgent.script = agent.script
         }
         newAgents.push(newAgent)
       })
@@ -504,12 +507,24 @@ export default ({
           })
       }
     },
-    addAgentToServer ({ state, rootState, getters, commit }, agent) {
+    addAgentToServer ({ state, rootState, getters }, agent) {
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/agents', getters.mapSingleItem(agent))
           .then(function (response) {
             agent.id = response.data.id
             state.agentListStore.push(agent)
+            return true
+          })
+          .catch(function (response) {
+            return false
+          })
+      }
+    },
+    updateAgentToServer ({ state, rootState, getters, commit }, agent) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.put('/agents/' + agent.id, getters.mapSingleItem(agent))
+          .then(function (response) {
+            commit('updateAgent', agent)
             return true
           })
           .catch(function (response) {
