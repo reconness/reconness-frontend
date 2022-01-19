@@ -413,7 +413,6 @@ export default {
           }
         } else {
           if (randomResult) {
-            // this.$store.commit('agent/addAgent', this.agent)
             this.addAgentToServer(this.agent)
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
           } else {

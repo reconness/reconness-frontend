@@ -508,11 +508,11 @@ export default ({
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/agents', getters.mapSingleItem(agent))
           .then(function (response) {
-            commit('addAgent', agent)
+            agent.id = response.data.id
+            state.agentListStore.push(agent)
             return true
           })
           .catch(function (response) {
-            console.log(response)
             return false
           })
       }
