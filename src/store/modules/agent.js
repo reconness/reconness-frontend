@@ -489,7 +489,15 @@ export default ({
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
-          state.agentListStore.splice(index, 1)
+          const agentName = state.agentListStore[index].name
+          axios.delete('/agents/' + agentName)
+            .then(function (response) {
+              state.agentListStore.splice(index, 1)
+              return true
+            })
+            .catch(function () {
+              return false
+            })
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
