@@ -400,24 +400,25 @@ export default {
     addAgent () {
       this.enableValidationMessages()
       if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
-        const randomResult = true
         if (this.editable) {
-          if (randomResult) {
-            this.agent.id = this.$store.getters['agent/idAgent']
-            this.updateAgentToServer(this.agent)
-            this.$store.commit('agent/setIdAgent', -1)
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
-          } else {
-            this.$store.commit('agent/setIdAgent', -1)
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
-          }
+          this.agent.id = this.$store.getters['agent/idAgent']
+          this.updateAgentToServer(this.agent).then(success => {
+            if (success) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentEdition)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
+            }
+          })
+          this.$store.commit('agent/setIdAgent', -1)
         } else {
-          if (randomResult) {
-            this.addAgentToServer(this.agent)
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
-          } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
-          }
+          this.addAgentToServer(this.agent).then(success => {
+            if (success) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInsertion)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
+            }
+          })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
         }
         this.resetAgentForm()
         jQuery('#exampleModalCenter').modal('hide')

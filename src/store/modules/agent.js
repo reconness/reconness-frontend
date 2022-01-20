@@ -447,7 +447,7 @@ export default ({
           secondaryColor: getters.getSecondaryColor(agent.secondaryColor),
           id: agent.id,
           repository: agent.repository,
-          target: '',
+          target: agent.target,
           command: agent.command,
           type: getters.getEntityTypeByDescription(agent.agentType),
           isAliveTrigger: agent.triggerSubdomainIsAlive,
@@ -479,7 +479,8 @@ export default ({
         script: agent.script,
         createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
         triggerSubdomainIsAlive: agent.isAliveTrigger,
-        triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger
+        triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
+        target: agent.target
       }
       return mappedAgent
     }
@@ -490,7 +491,7 @@ export default ({
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
           const agentName = state.agentListStore[index].name
-          axios.delete('/agents/' + agentName)
+          return axios.delete('/agents/' + agentName)
             .then(function (response) {
               state.agentListStore.splice(index, 1)
               return true
