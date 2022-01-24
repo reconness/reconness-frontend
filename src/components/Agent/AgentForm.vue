@@ -762,7 +762,6 @@ label[for='uploadimage']{
   max-width: 1.2rem;
   max-height: 1.2rem;
   width: 1.2rem;
-  max: 1.2rem;
 }
 .logo{
   text-align: right;

@@ -285,7 +285,9 @@ export default {
         successMessageForUserDeletion: 'The user has been deleted successfully',
         successMessageForAgentInstallation: 'The agent was installed successfully',
         errorMessageForAgentInstallation: 'An error ocurred during installation',
-        successMessageForNotificationUpdate: 'The notifications settings has been edited successfully'
+        successMessageForNotificationUpdate: 'The notifications settings has been edited successfully',
+        successMessageForAgentUninstallation: 'The agent has been installed successfully',
+        errorMessageForAgentUninstallation: 'An error ocurred during uninstallation'
       }
     )
 

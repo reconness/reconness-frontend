@@ -312,12 +312,6 @@ export default ({
       agentInstallerMapped.secondaryColor = randomColor.secondaryColor
       state.agentListStore.push(agentInstallerMapped)
     },
-    removeAgentFromInstaller (state, idInstaller) {
-      const index = state.agentListStore.findIndex(agent => agent.installedFrom === idInstaller)
-      if (index !== -1) {
-        state.agentListStore.splice(index, 1)
-      }
-    },
     setIsNotesSectionOpened (state, value) {
       state.isNotesSectionOpened = value
     },
@@ -340,6 +334,15 @@ export default ({
       state.agentsInstallers.splice(0, state.agentsInstallers.length)
       agentsInstallersMapped.forEach(agent => {
         state.agentsInstallers.push(agent)
+      })
+    },
+    updateInstalledFromFieldOnAgentList (state, agentsMarketMapped) {
+      let foundedAgentindex
+      agentsMarketMapped.forEach(agentMarket => {
+        foundedAgentindex = state.agentListStore.findIndex(agent => agent.name === agentMarket.id)
+        if (foundedAgentindex !== -1) {
+          state.agentListStore[foundedAgentindex].installedFrom = agentMarket.id
+        }
       })
     }
   },
@@ -525,6 +528,7 @@ export default ({
         return axios.get('/agents/marketplace')
           .then(function (response) {
             const agentsMarketMapped = getters.mapServerAgentMarket(response.data)
+            commit('updateInstalledFromFieldOnAgentList', agentsMarketMapped)
             commit('updateAgentsInstallers', agentsMarketMapped)
             return true
           }).catch(function () {
@@ -554,6 +558,18 @@ export default ({
             return true
           })
           .catch(function (response) {
+            return false
+          })
+      }
+    },
+    removeAgentFromInstaller ({ state }, installer) {
+      const index = state.agentListStore.findIndex(agent => agent.installedFrom === installer.idInstaller)
+      if (index !== -1) {
+        return axios.delete('/agents/' + installer.nameInstaller)
+          .then(function (response) {
+            state.agentListStore.splice(index, 1)
+            return true
+          }).catch(function () {
             return false
           })
       }
