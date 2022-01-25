@@ -603,6 +603,17 @@ export default ({
             return false
           })
       }
+    },
+    debugCode ({ state, rootState, getters, commit }, debugScripts) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/debug', debugScripts)
+          .then(function (response) {
+            return response.data
+          })
+          .catch(function (error) {
+            return error.data
+          })
+      }
     }
   }
 })
