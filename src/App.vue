@@ -75,7 +75,7 @@
     <aside v-show="showTopAndLeftBars" class="poppins main-sidebar sidebar-dark-primary  left-aside position-fixed" @mouseenter="mouseenter" @mouseleave="mouseleave">
       <!-- Brand Logo -->
        <router-link :to="{name: 'Home'}">
-      <a href="#" class="brand-link sticky-top-aside">
+      <a href="#" :click="addLocation('Home')" class="brand-link sticky-top-aside">
         <img src="/adminlte/img/reconnes/logo2x.png" v-show="hide_logo" alt="ReconNess Logo" class="brand-image img-circle elevation-3 opacity-08">
         <div class="text-center">
           <span class="brand-text"><strong>Recon</strong></span><span>Ness</span>

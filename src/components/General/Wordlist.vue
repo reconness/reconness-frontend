@@ -71,7 +71,7 @@
 </div>
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import jQuery from 'jquery'
 export default {
   name: 'WordList',
@@ -85,6 +85,7 @@ export default {
   computed: {
     ...mapState('wordlist', ['wordlists']),
     ...mapState('general', ['notificationMessageActionSelected']),
+    ...mapState('auth', ['authentication_token']),
     isSubdomainEnumSelected () {
       return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM.id
     },
@@ -115,9 +116,13 @@ export default {
       }
     }
   },
+  mounted () {
+    this.loadWordlist()
+  },
   methods: {
     ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
+    ...mapActions('wordlist', ['loadWordlist']),
     resetLoadedFileName () {
       this.loadedFileName = ''
     },

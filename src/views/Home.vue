@@ -86,7 +86,7 @@
                               <input :value="item.categories.toString()" class="form-control url-input without-bordered-lines">
                             </div>
                             <div class="col-lg-2">
-                              <button data-target="#simple-confirmation-modal" @click="setSelectedReference" data-toggle="modal" :data-id="item.id" type="button" class="btn btn-primary btn-block btn-danger delete_btn font-size-14px rounded-corners">Delete</button>
+                              <button data-target="#message-box-notification-modal" @click="setSelectedReference" data-toggle="modal" :data-id="item.id" type="button" class="btn btn-primary btn-block btn-danger delete_btn font-size-14px rounded-corners">Delete</button>
                             </div>
                           </div>
                         </div>
@@ -111,8 +111,9 @@ import HomeRigthSidebar from '@/components/General/HomeRigthSidebar.vue'
 import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
 import SimpleConfirmation from '@/components/General/SimpleConfirmation.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import Chips from 'primevue/chips'
+import jQuery from 'jquery'
 export default {
   name: 'Home',
   components: {
@@ -140,6 +141,7 @@ export default {
   computed: {
     ...mapState('auth', ['authentication_token']),
     ...mapState('referent', ['resources']),
+    ...mapState('general', ['notificationMessageActionSelected']),
     getApiUserName () {
       return process.env.VUE_APP_API_RECONNES_USERNAME
     },
@@ -158,6 +160,12 @@ export default {
     authentication_token: function (value) {
       if (value !== '') {
         this.loadResources()
+        this.loadAgents()
+      }
+    },
+    notificationMessageActionSelected: function (value) {
+      if (value) {
+        this.removeResource()
       }
     }
   },
@@ -169,11 +177,15 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['login']),
-    ...mapActions('referent', ['loadResources', 'addResource']),
+    ...mapActions('referent', ['loadResources', 'addResource', 'deleteResource']),
     ...mapActions('agent', ['loadAgents']),
+    ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('referent/setSelectedResource', selectedId)
+      const notificationMessageDesc = 'Are you sure to remove the selected resource'
+      this.updateNotificationMessageDescription(notificationMessageDesc)
+      jQuery('#message-box-notification-modal').modal()
     },
     addReference () {
       if (!this.validators.url.name && !this.validators.blank.name) {
@@ -181,11 +193,6 @@ export default {
           url: this.resource.url,
           categories: this.resource.categories
         }).then(success => {
-          if (success) {
-            this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The reference has been inserted successfully', life: 3000 })
-          } else {
-            this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error occured during the insertion process', life: 3000 })
-          }
           this.resetResource()
         })
       }
@@ -220,6 +227,18 @@ export default {
     },
     closeMenu () {
       this.isCategoriesMenuClosed = true
+    },
+    resetData: function () {
+      this.updateNotificationMessageActionSelected(false)
+    },
+    removeResource: function () {
+      this.deleteResource(this.$store.state.referent.idResource)
+        .then(success => {
+          if (success) {
+            this.resetData()
+          }
+          jQuery('#simple-confirmation-modal').modal('hide')
+        })
     }
   },
   data () {

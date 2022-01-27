@@ -206,7 +206,7 @@ export default ({
     },
     addAgent (state, agent) {
       state.agentSequence = state.agentSequence + 1
-      agent.id = state.agentSequence
+      agent.id = state.agentSequence.toString()
       state.agentListStore.push(agent)
     },
     setIdAgent (state, id) {
@@ -302,40 +302,15 @@ export default ({
       }
       state.viewloc = namePath
     },
-    installUninstallAgent (state, idAgent) {
-      const index = state.agentsInstallers.findIndex(agent => agent.id === idAgent)
-      if (index !== -1) {
-        state.agentsInstallers[index].installed = !state.agentsInstallers[index].installed
-      }
+    installUninstallAgent (state, agentIndex) {
+      state.agentsInstallers[agentIndex].installed = !state.agentsInstallers[agentIndex].installed
     },
-    addAgentFromInstaller (state, idInstaller) {
-      const installer = state.agentsInstallers.find(item => item.id === parseInt(idInstaller))
+    addAgentFromInstaller (state, agentInstallerMapped) {
       const predefinedColors = state.systemColors
       const randomColor = predefinedColors[Math.floor(Math.random() * predefinedColors.length)]
-      const transformedAgent = {
-        name: installer.name,
-        primaryColor: randomColor.primaryColor,
-        secondaryColor: randomColor.secondaryColor,
-        id: state.agentListStore.length + 1,
-        repository: 'installer-repository.com',
-        target: 'target-installer',
-        command: 'command-installer',
-        type: 1,
-        isAliveTrigger: false,
-        isHttpOpenTrigger: false,
-        script: '',
-        image: '',
-        date: new Date(),
-        installedFrom: idInstaller,
-        createdBy: 2
-      }
-      state.agentListStore.push(transformedAgent)
-    },
-    removeAgentFromInstaller (state, idInstaller) {
-      const index = state.agentListStore.findIndex(agent => agent.installedFrom === idInstaller)
-      if (index !== -1) {
-        state.agentListStore.splice(index, 1)
-      }
+      agentInstallerMapped.primaryColor = randomColor.primaryColor
+      agentInstallerMapped.secondaryColor = randomColor.secondaryColor
+      state.agentListStore.push(agentInstallerMapped)
     },
     setIsNotesSectionOpened (state, value) {
       state.isNotesSectionOpened = value
@@ -353,6 +328,21 @@ export default ({
       state.agentListStore.splice(0, state.agentListStore.length)
       agents.forEach(agent => {
         state.agentListStore.push(agent)
+      })
+    },
+    updateAgentsInstallers (state, agentsInstallersMapped) {
+      state.agentsInstallers.splice(0, state.agentsInstallers.length)
+      agentsInstallersMapped.forEach(agent => {
+        state.agentsInstallers.push(agent)
+      })
+    },
+    updateInstalledFromFieldOnAgentList (state, agentsMarketMapped) {
+      let foundedAgentindex
+      agentsMarketMapped.forEach(agentMarket => {
+        foundedAgentindex = state.agentListStore.findIndex(agent => agent.name === agentMarket.id)
+        if (foundedAgentindex !== -1) {
+          state.agentListStore[foundedAgentindex].installedFrom = agentMarket.id
+        }
       })
     }
   },
@@ -387,6 +377,9 @@ export default ({
       return [22, 30, 70, 77, 42, 20, 50]
     },
     getEntityTypeByDescription: (state) => (descriptionEntity) => {
+      if (descriptionEntity === null) {
+        return 3
+      }
       const transformedDescription = descriptionEntity.toLowerCase()
       if (transformedDescription === 'target') {
         return 1
@@ -396,30 +389,120 @@ export default ({
         return 3
       }
     },
+    getEntitySourceByDescription: (state) => (entitySourceDescription) => {
+      if (entitySourceDescription === null) {
+        return 1
+      }
+      const transformedDescription = entitySourceDescription.toLowerCase()
+      if (transformedDescription === 'user') {
+        return 1
+      } else {
+        return 2
+      }
+    },
+    getEntitySourceDescriptionByCode: (state) => (entitySourceCode) => {
+      if (entitySourceCode === 1) {
+        return 'user'
+      }
+      return 'system'
+    },
+    getPrimaryColor: (state) => (primaryColor) => {
+      if (primaryColor === null) {
+        return '#737be5'
+      }
+      return primaryColor
+    },
+    getSecondaryColor: (state) => (secondaryColor) => {
+      if (secondaryColor === null) {
+        return '#7159d3'
+      }
+      return secondaryColor
+    },
+    getEntityTypeDescriptionByCode: (state) => (entityTypeCode) => {
+      if (entityTypeCode === 1) {
+        return 'target'
+      } else if (entityTypeCode === 2) {
+        return 'rootdomain'
+      } else {
+        return 'subdomain'
+      }
+    },
+    isAgentInstalled: (state, getters) => (agentName) => {
+      const index = state.agentListStore.findIndex(agent => agent.name === agentName)
+      return index >= 0
+    },
+    mapServerAgentMarket: (state, getters) => (agents) => {
+      const newMarkedAgents = []
+      let newMarkedAgent
+      agents.forEach(agent => {
+        newMarkedAgent = {
+          name: agent.name,
+          description: 'Description of agent ' + agent.name,
+          id: agent.name,
+          installed: getters.isAgentInstalled(agent.name),
+          category: agent.category,
+          command: agent.command,
+          isByRootDomain: agent.isByRootDomain,
+          isByTarget: agent.isByTarget,
+          isBySubdomain: agent.isBySubdomain,
+          scriptUrl: agent.scriptUrl,
+          repository: agent.repository
+        }
+        newMarkedAgents.push(newMarkedAgent)
+      })
+      return newMarkedAgents
+    },
     mapAgents: (state, getters) => (agents) => {
       const newAgents = []
       let newAgent
       agents.forEach(agent => {
-        newAgent = {
-          name: agent.name,
-          primaryColor: '#03DCED',
-          secondaryColor: '#0cb8e0',
-          id: agent.id,
-          repository: agent.repository,
-          target: '',
-          command: agent.command,
-          type: getters.getEntityTypeByDescription(agent.agentType),
-          isAliveTrigger: agent.triggerSubdomainIsAlive,
-          isHttpOpenTrigger: agent.triggerSubdomainHasHttpOrHttpsOpen,
-          script: agent.script,
-          image: '',
-          date: '21/01/2020',
-          installedFrom: '',
-          lastRun: new Date(agent.lastRun)
-        }
+        newAgent = getters.mapItemFromServerToLocal(agent)
         newAgents.push(newAgent)
       })
       return newAgents
+    },
+    mapItemFromServerToLocal: (state, getters) => (agent) => {
+      const mappedAgent = {
+        name: agent.name,
+        primaryColor: getters.getPrimaryColor(agent.primaryColor),
+        secondaryColor: getters.getSecondaryColor(agent.secondaryColor),
+        id: agent.id,
+        repository: agent.repository,
+        target: agent.target,
+        command: agent.command,
+        type: getters.getEntityTypeByDescription(agent.agentType),
+        isAliveTrigger: agent.triggerSubdomainIsAlive,
+        isHttpOpenTrigger: agent.triggerSubdomainHasHttpOrHttpsOpen,
+        script: '',
+        image: '',
+        date: new Date(),
+        installedFrom: '',
+        lastRun: new Date(agent.lastRun),
+        createdBy: getters.getEntitySourceByDescription(agent.createdBy),
+        categories: []
+      }
+      if (agent.script != null) {
+        mappedAgent.script = agent.script
+      }
+      return mappedAgent
+    },
+    mapItemFromLocalToServer: (state, getters) => (agent) => {
+      const mappedAgent = {
+        name: agent.name,
+        command: agent.command,
+        repository: agent.repository,
+        agentType: getters.getEntityTypeDescriptionByCode(agent.type),
+        categories: [],
+        entitySource: agent.createdBy,
+        primaryColor: agent.primaryColor,
+        secondaryColor: agent.secondaryColor,
+        script: agent.script,
+        createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
+        triggerSubdomainIsAlive: agent.isAliveTrigger,
+        triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
+        target: agent.target
+      }
+      return mappedAgent
     }
   },
   actions: {
@@ -427,13 +510,34 @@ export default ({
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
-          state.agentListStore.splice(index, 1)
+          const agentName = state.agentListStore[index].name
+          return axios.delete('/agents/' + agentName)
+            .then(function (response) {
+              state.agentListStore.splice(index, 1)
+              return true
+            })
+            .catch(function () {
+              return false
+            })
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
     },
-    loadAgents ({ state, commit, getters }) {
-      if (state.authentication_token !== '') {
+    loadMarketplace ({ state, commit, getters, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents/marketplace')
+          .then(function (response) {
+            const agentsMarketMapped = getters.mapServerAgentMarket(response.data)
+            commit('updateInstalledFromFieldOnAgentList', agentsMarketMapped)
+            commit('updateAgentsInstallers', agentsMarketMapped)
+            return true
+          }).catch(function () {
+            return false
+          })
+      }
+    },
+    loadAgents ({ state, commit, getters, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
         return axios.get('/agents')
           .then(function (response) {
             const agentsMapped = getters.mapAgents(response.data)
@@ -442,6 +546,72 @@ export default ({
           })
           .catch(function () {
             return false
+          })
+      }
+    },
+    addAgentToServer ({ state, rootState, getters }, agent) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents', getters.mapItemFromLocalToServer(agent))
+          .then(function (response) {
+            agent.id = response.data.id
+            state.agentListStore.push(agent)
+            return true
+          })
+          .catch(function (response) {
+            return false
+          })
+      }
+    },
+    removeAgentFromInstaller ({ state }, installer) {
+      const index = state.agentListStore.findIndex(agent => agent.installedFrom === installer.idInstaller)
+      if (index !== -1) {
+        return axios.delete('/agents/' + installer.nameInstaller)
+          .then(function (response) {
+            state.agentListStore.splice(index, 1)
+            return true
+          }).catch(function () {
+            return false
+          })
+      }
+    },
+    updateAgentToServer ({ state, rootState, getters, commit }, agent) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.put('/agents/' + agent.id, getters.mapSingleItem(agent))
+          .then(function (response) {
+            commit('updateAgent', agent)
+            return true
+          })
+          .catch(function (response) {
+            return false
+          })
+      }
+    },
+    agentInstallerUninstaller ({ state, rootState, getters, commit }, agentId) {
+      const index = state.agentsInstallers.findIndex(agent => agent.id === agentId)
+      if (index !== -1) {
+        const agentInstaller = state.agentsInstallers[index]
+        return axios.post('/agents/install', agentInstaller)
+          .then(function (response) {
+            commit('installUninstallAgent', index)
+            const agentDto = response.data
+            const mappedAgent = getters.mapItemFromServerToLocal(agentDto)
+            mappedAgent.createdBy = 2
+            mappedAgent.installedFrom = agentInstaller.id
+            state.agentListStore.push(mappedAgent)
+            return true
+          }).catch(function () {
+            return false
+          })
+      }
+    },
+    debugCode ({ state, rootState, getters, commit }, debugScripts) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/debug', debugScripts)
+          .then(function (response) {
+            return response.data
+          })
+          .catch(function (error) {
+            return error.data
           })
       }
     }

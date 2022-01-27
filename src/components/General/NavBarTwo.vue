@@ -232,7 +232,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import AgentForm from '@/components/Agent/AgentForm.vue'
 import Debug from '@/components/General/Debug.vue'
 import InstallOnDebug from '@/components/General/InstallOnDebug'
@@ -261,7 +261,7 @@ export default {
       active: false,
       active_arrow_down: true,
       active_arrow_up: false,
-      optionNumber: -1,
+      optionNumber: '-1',
       optionName: '',
       selectedAgentDescription: '',
       isMiniView: false,
@@ -280,6 +280,9 @@ export default {
       this.isMiniView = true
       this.isListView = false
     }
+    if (this.authentication_token !== '') {
+      this.loadMarketplace()
+    }
   },
   methods: {
     mouseenter: function () {
@@ -289,6 +292,7 @@ export default {
       this.active = !this.active
     },
     ...mapMutations('agent', ['isFilter', 'editList']),
+    ...mapActions('agent', ['loadMarketplace']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()

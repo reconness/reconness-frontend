@@ -35,7 +35,7 @@ export default {
     ...mapState('agent', ['idAgent']),
     ...mapGetters('agent', ['getAgentById']),
     getAgent () {
-      return this.getAgentById(parseInt(this.idAgent))
+      return this.getAgentById(this.idAgent)
     }
   },
   methods: {

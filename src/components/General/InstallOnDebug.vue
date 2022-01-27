@@ -24,22 +24,23 @@
 </template>
 <script>
 import { TargetMixin } from '@/mixins/TargetMixin'
+import { mapActions } from 'vuex'
 export default {
   name: 'InstallOnDebug',
   props: {
-    installerOption: Number
+    installerOption: String
   },
   mixins: [TargetMixin],
   methods: {
+    ...mapActions('agent', ['agentInstallerUninstaller']),
     installer () {
-      const success = this.$randomBooleanResult()
-      if (success) {
-        this.$store.commit('agent/installUninstallAgent', this.installerOption)
-        this.$store.commit('agent/addAgentFromInstaller', this.installerOption)
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInstallation)
-      } else {
-        this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAgentInstallation)
-      }
+      this.agentInstallerUninstaller(this.installerOption).then(success => {
+        if (success) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInstallation)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAgentInstallation)
+        }
+      })
     }
   }
 }

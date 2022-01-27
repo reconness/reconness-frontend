@@ -269,7 +269,7 @@ export default {
       {
         errorSummary: 'Error',
         successSumary: 'Success',
-        errorMessageForAllPurpose: 'An error occured during the removal process',
+        errorMessageForAllPurpose: 'An error occured during the process',
         errorMessageForInsertionPurpose: 'An error occured during the insertion process',
         errorMessageForEditionPurpose: 'An error occured during the edition process',
         successMessageForTargetDeletion: 'The target has been deleted successfully',
@@ -279,11 +279,15 @@ export default {
         successMessageForTargetInsertion: 'The target has been inserted successfully',
         successMessageForTargetEdition: 'The target has been edited successfully',
         successMessageForAgentDeletion: 'The agent has been deleted successfully',
+        successMessageForAgentEdition: 'The agent has been edited successfully',
+        successMessageForAgentInsertion: 'The agent has been inserted successfully',
         successMessageForPipelineDeletion: 'The pipeline has been deleted successfully',
         successMessageForUserDeletion: 'The user has been deleted successfully',
         successMessageForAgentInstallation: 'The agent was installed successfully',
         errorMessageForAgentInstallation: 'An error ocurred during installation',
-        successMessageForNotificationUpdate: 'The notifications settings has been edited successfully'
+        successMessageForNotificationUpdate: 'The notifications settings has been edited successfully',
+        successMessageForAgentUninstallation: 'The agent has been installed successfully',
+        errorMessageForAgentUninstallation: 'An error ocurred during uninstallation'
       }
     )
 

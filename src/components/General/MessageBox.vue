@@ -148,8 +148,13 @@ export default {
           this.clearTargetRedirectToTargetListAndUpdateOperationStatus()
         }
       } else if (this.$isOnAgentView()) {
-        this.clearAgentEntitiesToDelete()
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+        this.clearAgentEntitiesToDelete().then(success => {
+          if (success) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAllPurpose)
+          }
+        })
       } else if (this.$isOnRootDomainView()) {
         if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
           if (this.removeAll) {

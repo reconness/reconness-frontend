@@ -246,7 +246,7 @@ import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 
@@ -324,7 +324,7 @@ export default {
     },
     loadSelectedAgent () {
       const id = this.$store.getters['agent/idAgent']
-      return this.$store.getters['agent/getAgentById'](parseInt(id))
+      return this.$store.getters['agent/getAgentById'](id)
     },
     isFormValid () {
       return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
@@ -371,6 +371,7 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
+    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer']),
     setBlueColor: function () {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
@@ -399,24 +400,25 @@ export default {
     addAgent () {
       this.enableValidationMessages()
       if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
-        const randomResult = this.$randomBooleanResult()
         if (this.editable) {
-          if (randomResult) {
-            this.agent.id = parseInt(this.$store.getters['agent/idAgent'])
-            this.$store.commit('agent/updateAgent', this.agent)
-            this.$store.commit('agent/setIdAgent', -1)
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
-          } else {
-            this.$store.commit('agent/setIdAgent', -1)
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
-          }
+          this.agent.id = this.$store.getters['agent/idAgent']
+          this.updateAgentToServer(this.agent).then(success => {
+            if (success) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentEdition)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
+            }
+          })
+          this.$store.commit('agent/setIdAgent', -1)
         } else {
-          if (randomResult) {
-            this.$store.commit('agent/addAgent', this.agent)
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
-          } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
-          }
+          this.addAgentToServer(this.agent).then(success => {
+            if (success) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInsertion)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
+            }
+          })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
         }
         this.resetAgentForm()
         jQuery('#exampleModalCenter').modal('hide')
@@ -760,7 +762,6 @@ label[for='uploadimage']{
   max-width: 1.2rem;
   max-height: 1.2rem;
   width: 1.2rem;
-  max: 1.2rem;
 }
 .logo{
   text-align: right;

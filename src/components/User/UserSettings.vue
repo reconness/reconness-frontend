@@ -105,6 +105,10 @@ export default {
           this.updateNotificationMessageType(this.$notificationMessageType.SUCCESS)
           this.updateNotificationMessageDescription(this.$message.successMessageForNotificationUpdate)
           jQuery('#message-box-notification-modal').modal()
+        } else if (result.status === this.$entityStatus.FAILED) {
+          this.updateNotificationMessageType(this.$notificationMessageType.ERROR)
+          this.updateNotificationMessageDescription(this.$message.errorMessageForAllPurpose)
+          jQuery('#message-box-notification-modal').modal()
         }
       },
       deep: true

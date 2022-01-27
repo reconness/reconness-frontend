@@ -8,9 +8,11 @@
                   <div class="col-12">
                     <div class="d-flex flex-column align-items-center justify-content-center mb-3">
                       <HelpIco v-if="isNotificationMessageTypeConfirmSelected" :variableClass="'mt-3 question-mark-size question-mark-color'"/>
-                      <span v-else-if="isNotificationMessageTypeSuccessSelected" class="material-icons mt-3 blue-text notification-settings-icon-size">check_circle_outline</span>
+                      <span v-if="isNotificationMessageTypeSuccessSelected" class="material-icons mt-3 blue-text notification-settings-icon-size">check_circle_outline</span>
+                      <span v-if="isNotificationMessageTypeErrorSelected" class="material-icons-outlined mt-3 red-text notification-settings-icon-size">cancel</span>
                       <span v-if="isNotificationMessageTypeConfirmSelected" class="message-box-notification-type-text black-text font-size-24px mt-2 font-weight-semibold">Confirm</span>
                       <span v-if="isNotificationMessageTypeSuccessSelected" class="message-box-notification-type-text black-text font-size-24px mt-2 font-weight-semibold">Success</span>
+                      <span v-if="isNotificationMessageTypeErrorSelected" class="message-box-notification-type-text black-text font-size-24px mt-2 font-weight-semibold">Error</span>
                       <span v-html="notificationMessageDescription" class="message-box-notification-description black-text font-size-16px px-2 mt-4"></span>
                     </div>
                   </div>
@@ -60,7 +62,7 @@ export default {
       this.resetOperationStatus()
     },
     resetOperationStatus () {
-      this.updateOperationStatusInfo(this.$entityStatus.WAITING, '')
+      this.updateOperationStatusInfo({ status: this.$entityStatus.WAITING, message: '' })
     }
   }
 }

@@ -25,6 +25,7 @@
 </template>
 <script>
 import { VAceEditor } from 'vue3-ace-editor'
+import { mapActions } from 'vuex'
 export default {
   name: 'Debug',
   components: {
@@ -46,6 +47,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('agent', ['debugCode']),
     clearContent: function () {
       this.terminalOutput = ''
       this.terminalInput = ''
@@ -53,12 +55,14 @@ export default {
     },
     executeCode: function () {
       if (this.terminalInput !== '') {
-        const success = this.$randomBooleanResult()
-        if (success) {
-          this.executionResult = this.$compilationResponse.success.description
-        } else {
-          this.executionResult = this.$compilationResponse.error.description
-        }
+        this.debugCode({
+          terminalOutput: this.terminalOutput,
+          script: this.terminalInput
+        }).then(success => {
+          this.executionResult = success
+        }).catch(function (error) {
+          this.executionResult = error
+        })
       }
     }
   }

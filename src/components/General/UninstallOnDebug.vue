@@ -23,19 +23,25 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 export default {
   name: 'UninstallOnDebug',
   props: ['installerOptionName', 'installerOption'],
+  mixins: [StatusMessageMixin],
   methods: {
+    ...mapActions('agent', ['removeAgentFromInstaller']),
     installer () {
-      const success = this.$randomBooleanResult()
-      if (success) {
-        this.$store.commit('agent/installUninstallAgent', this.installerOption)
-        this.$store.commit('agent/removeAgentFromInstaller', this.installerOption)
-        this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The agent was uninstalled', life: 3000 })
-      } else {
-        this.$toast.add({ severity: 'error', sumary: 'Error', detail: 'An error ocurred during uninstallation', life: 3000 })
-      }
+      this.removeAgentFromInstaller({
+        idInstaller: this.installerOption,
+        nameInstaller: this.installerOptionName
+      }).then(success => {
+        if (success) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentUninstallation)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAgentUninstallation)
+        }
+      })
     }
   }
 }
