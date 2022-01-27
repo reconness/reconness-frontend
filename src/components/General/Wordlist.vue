@@ -122,7 +122,7 @@ export default {
   methods: {
     ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
-    ...mapActions('wordlist', ['loadWordlist']),
+    ...mapActions('wordlist', ['loadWordlist', 'uploadWordListFile']),
     resetLoadedFileName () {
       this.loadedFileName = ''
     },
@@ -153,15 +153,21 @@ export default {
       reader.onload = function () {
         const sizeInkb = textfile.size / 1024
         self.loadedFileName = textfile.name
-        const wordListItem = {
-          id: -1,
-          filename: textfile.name,
-          size: Math.round(sizeInkb),
-          type: self.selectedPill,
-          count: self.countLinesFromText(reader.result),
-          path: ''
-        }
-        self.addWordListItem(wordListItem)
+        const wordlistFormData = new FormData()
+        wordlistFormData.append('file', textfile)
+        self.upload(wordlistFormData).then(success => {
+          if (success) {
+            const wordListItem = {
+              id: -1,
+              filename: textfile.name,
+              size: Math.round(sizeInkb),
+              type: self.selectedPill,
+              count: self.countLinesFromText(reader.result),
+              path: ''
+            }
+            self.addWordListItem(wordListItem)
+          }
+        })
       }
       reader.readAsText(textfile)
     },
@@ -184,6 +190,13 @@ export default {
     resetData: function () {
       this.updateNotificationMessageActionSelected(false)
       this.selectedIdWordlist = -1
+    },
+    upload (fileFormData) {
+      return this.uploadWordListFile(
+        {
+          wordListCode: this.selectedPill,
+          formData: fileFormData
+        })
     }
   }
 }

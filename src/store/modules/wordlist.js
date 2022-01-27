@@ -64,6 +64,20 @@ export default ({
             return false
           })
       }
+    },
+    uploadWordListFile ({ getters, rootState }, wordlistData) {
+      if (rootState.auth.authentication_token !== '') {
+        const wordListDescription = getters.getWordlistType(wordlistData.wordListCode)
+        return axios.post('/wordlists/upload/' + wordListDescription, wordlistData.formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          return true
+        }).catch(function () {
+          return false
+        })
+      }
     }
   },
   getters: {
@@ -94,6 +108,15 @@ export default ({
         path: wordContainer.word.path
       }
       return newWord
+    },
+    getWordlistType: (state) => (wordlistCode) => {
+      if (wordlistCode === 1) {
+        return 'subdomain_enum'
+      } else if (wordlistCode === 2) {
+        return 'dir_enum'
+      } else {
+        return 'dns_resolver_enum'
+      }
     }
   }
 })
