@@ -78,6 +78,27 @@ export default ({
           return false
         })
       }
+    },
+    removeWordListFromServer ({ state, commit, getters, rootState }, wordlistData) {
+      const wordlistDescriptionType = getters.getWordlistType(wordlistData.codeType)
+      return axios.delete('/wordlists/' + wordlistDescriptionType + '/' + wordlistData.filename)
+        .then(function (response) {
+          commit('removeWordListItem', wordlistData.id)
+          return true
+        })
+        .catch(function () {
+          return false
+        })
+    },
+    downloadWordListFile ({ state, commit, getters, rootState }, wordlistData) {
+      const wordlistDescriptionType = getters.getWordlistType(wordlistData.codeType)
+      return axios.get('/wordlists/download/', {
+        responseType: 'blob',
+        params: {
+          type: wordlistDescriptionType,
+          filename: wordlistData.filename
+        }
+      })
     }
   },
   getters: {
