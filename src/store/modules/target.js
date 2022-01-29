@@ -1635,18 +1635,7 @@ export default ({
       const newTargets = []
       let newTarget
       targets.forEach(target => {
-        newTarget = {
-          id: target.id,
-          name: target.name,
-          primaryColor: '#03dced',
-          secondaryColor: '#0cb8e0',
-          date: '20/01/2020',
-          rootDomains: getters.mapRootDomains(target.rootDomains),
-          isPrivateProgram: target.isPrivate,
-          inScope: target.inScope,
-          outScope: target.outOfScope,
-          messages: []
-        }
+        newTarget = getters.mapTargetFromServerToLocal(target)
         newTargets.push(newTarget)
       })
       return newTargets
@@ -1724,6 +1713,21 @@ export default ({
         result: finalSearchResult,
         size: finalSearchResult.length
       }
+    },
+    mapTargetFromServerToLocal: (state, getters) => (target) => {
+      const newTarget = {
+        id: target.id,
+        name: target.name,
+        primaryColor: target.primaryColor,
+        secondaryColor: target.secondaryColor,
+        date: new Date(),
+        rootDomains: [], // getters.mapRootDomains(target.rootDomains),
+        isPrivateProgram: target.isPrivate,
+        inScope: target.inScope,
+        outScope: target.outOfScope,
+        messages: []
+      }
+      return newTarget
     }
   }
 })

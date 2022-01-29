@@ -161,6 +161,7 @@ export default {
       if (value !== '') {
         this.loadResources()
         this.loadAgents()
+        this.loadTargets()
       }
     },
     notificationMessageActionSelected: function (value) {
@@ -179,6 +180,7 @@ export default {
     ...mapActions('auth', ['login']),
     ...mapActions('referent', ['loadResources', 'addResource', 'deleteResource']),
     ...mapActions('agent', ['loadAgents']),
+    ...mapActions('target', ['loadTargets']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')

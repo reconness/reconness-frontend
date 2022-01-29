@@ -456,12 +456,12 @@ export default ({
       const newAgents = []
       let newAgent
       agents.forEach(agent => {
-        newAgent = getters.mapItemFromServerToLocal(agent)
+        newAgent = getters.mapAgentFromServerToLocal(agent)
         newAgents.push(newAgent)
       })
       return newAgents
     },
-    mapItemFromServerToLocal: (state, getters) => (agent) => {
+    mapAgentFromServerToLocal: (state, getters) => (agent) => {
       const mappedAgent = {
         name: agent.name,
         primaryColor: getters.getPrimaryColor(agent.primaryColor),
@@ -486,7 +486,7 @@ export default ({
       }
       return mappedAgent
     },
-    mapItemFromLocalToServer: (state, getters) => (agent) => {
+    mapAgentFromLocalToServer: (state, getters) => (agent) => {
       const mappedAgent = {
         name: agent.name,
         command: agent.command,
@@ -551,7 +551,7 @@ export default ({
     },
     addAgentToServer ({ state, rootState, getters }, agent) {
       if (rootState.auth.authentication_token !== '') {
-        return axios.post('/agents', getters.mapItemFromLocalToServer(agent))
+        return axios.post('/agents', getters.mapAgentFromLocalToServer(agent))
           .then(function (response) {
             agent.id = response.data.id
             state.agentListStore.push(agent)
@@ -594,7 +594,7 @@ export default ({
           .then(function (response) {
             commit('installUninstallAgent', index)
             const agentDto = response.data
-            const mappedAgent = getters.mapItemFromServerToLocal(agentDto)
+            const mappedAgent = getters.mapAgentFromServerToLocal(agentDto)
             mappedAgent.createdBy = 2
             mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)
