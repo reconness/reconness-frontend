@@ -418,7 +418,6 @@ export default {
               this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
             }
           })
-          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
         }
         this.resetAgentForm()
         jQuery('#exampleModalCenter').modal('hide')

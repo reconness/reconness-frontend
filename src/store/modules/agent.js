@@ -576,7 +576,7 @@ export default ({
     },
     updateAgentToServer ({ state, rootState, getters, commit }, agent) {
       if (rootState.auth.authentication_token !== '') {
-        return axios.put('/agents/' + agent.id, getters.mapSingleItem(agent))
+        return axios.put('/agents/' + agent.id, getters.mapAgentFromLocalToServer(agent))
           .then(function (response) {
             commit('updateAgent', agent)
             return true

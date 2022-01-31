@@ -57,7 +57,7 @@ export default {
     name: String,
     primaryColor: String,
     secondaryColor: String,
-    id: Number,
+    id: String,
     rootDom: Array
   },
   data: function () {

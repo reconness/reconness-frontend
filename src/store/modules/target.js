@@ -1385,6 +1385,31 @@ export default ({
             return false
           })
       }
+    },
+    addTargetToServer ({ state, rootState, getters }, target) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/targets', getters.mapTargetFromLocalToServer(target))
+          .then(function (response) {
+            target.id = response.data.id
+            state.targetListStore.push(target)
+            return true
+          })
+          .catch(function (response) {
+            return false
+          })
+      }
+    },
+    updateTargetToServer ({ state, rootState, getters, commit }, target) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.put('/targets/' + target.id, getters.mapTargetFromLocalToServer(target))
+          .then(function (response) {
+            commit('updateTarget', target)
+            return true
+          })
+          .catch(function (response) {
+            return false
+          })
+      }
     }
   },
   modules: {
@@ -1640,14 +1665,14 @@ export default ({
       })
       return newTargets
     },
-    mapRootDomains: (state) => (rootDomains) => {
+    mapRootDomainsFromServerToLocal: (state) => (rootDomains) => {
       const newRootDomains = []
       let newRootDomain
       rootDomains.forEach(rootDomain => {
         newRootDomain = {
           id: rootDomain.id,
           root: rootDomain.name,
-          date: '21/09/2018',
+          date: rootDomain.createdAt,
           subdomain: [],
           messages: [],
           agent: []
@@ -1721,13 +1746,42 @@ export default ({
         primaryColor: target.primaryColor,
         secondaryColor: target.secondaryColor,
         date: new Date(),
-        rootDomains: [], // getters.mapRootDomains(target.rootDomains),
+        rootDomains: getters.mapRootDomainsFromServerToLocal(target.rootDomains), // getters.mapRootDomains(target.rootDomains),
         isPrivateProgram: target.isPrivate,
         inScope: target.inScope,
         outScope: target.outOfScope,
-        messages: []
+        messages: [],
+        bugBountyUrl: target.bugBountyProgramUrl
       }
       return newTarget
+    },
+    mapTargetFromLocalToServer: (state, getters) => (target) => {
+      const mappedTarget = {
+        name: target.name,
+        primaryColor: target.primaryColor,
+        secondaryColor: target.secondaryColor,
+        rootDomains: getters.mapRootDomainsListFromLocalToServer(target.rootDomains),
+        isPrivate: target.isPrivateProgram,
+        inScope: target.inScope,
+        outScope: target.outOfScope,
+        messages: [],
+        bugBountyProgramUrl: target.bugBountyUrl
+      }
+      return mappedTarget
+    },
+    mapRootDomainFromLocalToServer: (state, getters) => (rootDomain) => {
+      const newRootDomain = {
+        name: rootDomain.root
+      }
+      return newRootDomain
+    },
+    mapRootDomainsListFromLocalToServer: (state, getters) => (rootDomainList) => {
+      const mappedRootDomains = []
+      rootDomainList.forEach(element => {
+        const newRootDomain = getters.mapRootDomainFromLocalToServer(element)
+        mappedRootDomains.push(newRootDomain)
+      })
+      return mappedRootDomains
     }
   }
 })

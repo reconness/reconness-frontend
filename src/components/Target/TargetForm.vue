@@ -150,7 +150,7 @@ import jQuery from 'jquery'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import Chips from 'primevue/chips'
 import { TargetMixin } from '@/mixins/TargetMixin'
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 export default {
   name: 'TargetForm',
   components: {
@@ -208,7 +208,7 @@ export default {
   computed: {
     loadSelectedTarget () {
       const id = this.$store.getters['target/idTarget']
-      return this.$store.getters['target/getTargetById'](parseInt(id))
+      return this.$store.getters['target/getTargetById'](id)
     },
     isFormValid () {
       return (this.validators.blank.name && this.validators.blank.rootDomains && this.validators.url.bugBountyUrl && this.validators.exist.name && !this.targetNameContainsHyphens)
@@ -261,6 +261,7 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
+    ...mapActions('target', ['addTargetToServer', 'updateTargetToServer']),
     setBlueColor: function () {
       this.target.primaryColor = '#03DCED'
       this.target.secondaryColor = '#0cb8e0'
@@ -289,27 +290,27 @@ export default {
     addTarget () {
       this.enableValidationMessages()
       if (!this.validators.blank.name && !this.validators.blank.rootDomains && !this.validators.url.bugBountyUrl && !this.validators.exist.name && !this.targetNameContainsHyphens) {
-        const randomResult = this.$randomBooleanResult()
         if (this.editable) {
-          if (randomResult) {
-            this.target.id = parseInt(this.$store.getters['target/idTarget'])
-            this.target.name = this.transformedName
-            this.$store.commit('target/updateTarget', this.target)
-            this.$store.commit('target/setIdTarget', -1)
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
-          } else {
-            this.$store.commit('target/setIdTarget', -1)
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
-          }
+          this.target.id = this.$store.getters['target/idTarget']
+          this.target.name = this.transformedName
+          this.updateTargetToServer(this.target).then(success => {
+            if (success) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
+            }
+          })
+          this.$store.commit('target/setIdTarget', -1)
         } else {
-          if (randomResult) {
-            this.target.id = this.nextTargetSequence++
-            this.target.name = this.transformedName
-            this.$store.commit('target/addTarget', this.target)
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetInsertion)
-          } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
-          }
+          this.target.id = this.nextTargetSequence++
+          this.target.name = this.transformedName
+          this.addTargetToServer(this.target).then(success => {
+            if (success) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetInsertion)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
+            }
+          })
         }
         this.resetTargetForm()
         jQuery('#targetModalForm').modal('hide')
