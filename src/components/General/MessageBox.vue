@@ -133,13 +133,19 @@ export default {
   methods: {
     ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
+    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView) {
         this.processTarget()
-        this.clearTargetEntitiesToDelete()
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
+        this.clearTargetEntitiesToDeleteToServer().then(success => {
+          if (success) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAllPurpose)
+          }
+        })
       } else if (this.isOnTargetDetailView) {
         if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
           this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })

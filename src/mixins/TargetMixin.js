@@ -37,7 +37,7 @@ const TargetMixin = {
       const entityId = e.currentTarget.getAttribute('data-id')
       this.addEntityToDelete(
         {
-          id: parseInt(entityId),
+          id: entityId,
           name: entityName,
           type: entityType // this.$agentType.TARGET
         }

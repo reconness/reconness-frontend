@@ -507,11 +507,12 @@ export default ({
   },
   actions: {
     clearAgentEntitiesToDelete ({ state, commit, rootState }) {
+      let promiseResult
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
           const agentName = state.agentListStore[index].name
-          return axios.delete('/agents/' + agentName)
+          promiseResult = axios.delete('/agents/' + agentName)
             .then(function (response) {
               state.agentListStore.splice(index, 1)
               return true
@@ -522,6 +523,7 @@ export default ({
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
+      return promiseResult
     },
     loadMarketplace ({ state, commit, getters, rootState }) {
       if (rootState.auth.authentication_token !== '') {

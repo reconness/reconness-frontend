@@ -1410,6 +1410,25 @@ export default ({
             return false
           })
       }
+    },
+    clearTargetEntitiesToDeleteToServer ({ state, commit, rootState }) {
+      let promiseResult
+      state.entitiesToDelete.forEach(entity => {
+        const index = state.targetListStore.findIndex(target => target.id === entity.id)
+        if (index !== -1) {
+          const targetName = state.targetListStore[index].name
+          promiseResult = axios.delete('/targets/' + targetName)
+            .then(function (response) {
+              state.targetListStore.splice(index, 1)
+              return true
+            })
+            .catch(function () {
+              return false
+            })
+        }
+      })
+      commit('clearReferencesToDelete')
+      return promiseResult
     }
   },
   modules: {
