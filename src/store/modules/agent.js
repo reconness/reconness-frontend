@@ -506,13 +506,14 @@ export default ({
     }
   },
   actions: {
-    removeAgentsSelected ({ state, rootState }) {
+    removeAgentsSelected ({ state, commit, rootState }) {
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
           state.agentListStore.splice(index, 1)
         }
       })
+      commit('target/clearReferencesToDelete', null, { root: true })
     },
     clearAgentEntitiesToDelete ({ state, commit, rootState, dispatch }) {
       const agentNames = []
