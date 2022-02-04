@@ -506,24 +506,32 @@ export default ({
     }
   },
   actions: {
-    clearAgentEntitiesToDelete ({ state, commit, rootState }) {
-      let promiseResult
+    removeAgentsSelected ({ state, rootState }) {
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
-          const agentName = state.agentListStore[index].name
-          promiseResult = axios.delete('/agents/' + agentName)
-            .then(function (response) {
-              state.agentListStore.splice(index, 1)
-              return true
-            })
-            .catch(function () {
-              return false
-            })
+          state.agentListStore.splice(index, 1)
         }
       })
-      commit('target/clearReferencesToDelete', null, { root: true })
-      return promiseResult
+    },
+    clearAgentEntitiesToDelete ({ state, commit, rootState, dispatch }) {
+      const agentNames = []
+      rootState.target.entitiesToDelete.forEach(entity => {
+        let agentName
+        const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
+        if (index !== -1) {
+          agentName = state.agentListStore[index].name
+          agentNames.push(agentName)
+        }
+      })
+      return axios.delete('/agents/batch', {
+        data: agentNames
+      }).then(function (response) {
+        dispatch('removeAgentsSelected')
+        return true
+      }).catch(function () {
+        return false
+      })
     },
     loadMarketplace ({ state, commit, getters, rootState }) {
       if (rootState.auth.authentication_token !== '') {
