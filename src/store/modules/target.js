@@ -1411,24 +1411,33 @@ export default ({
           })
       }
     },
-    clearTargetEntitiesToDeleteToServer ({ state, commit, rootState }) {
-      let promiseResult
+    removeTargetsSelected ({ state, commit, rootState }) {
       state.entitiesToDelete.forEach(entity => {
         const index = state.targetListStore.findIndex(target => target.id === entity.id)
         if (index !== -1) {
-          const targetName = state.targetListStore[index].name
-          promiseResult = axios.delete('/targets/' + targetName)
-            .then(function (response) {
-              state.targetListStore.splice(index, 1)
-              return true
-            })
-            .catch(function () {
-              return false
-            })
+          state.targetListStore.splice(index, 1)
         }
       })
       commit('clearReferencesToDelete')
-      return promiseResult
+    },
+    clearTargetEntitiesToDeleteToServer ({ state, dispatch }) {
+      const targetNames = []
+      state.entitiesToDelete.forEach(entity => {
+        let targetName
+        const index = state.targetListStore.findIndex(target => target.id === entity.id)
+        if (index !== -1) {
+          targetName = state.targetListStore[index].name
+          targetNames.push(targetName)
+        }
+      })
+      return axios.delete('/targets/batch', {
+        data: targetNames
+      }).then(function (response) {
+        dispatch('removeTargetsSelected')
+        return true
+      }).catch(function () {
+        return false
+      })
     }
   },
   modules: {

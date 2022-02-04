@@ -61,7 +61,7 @@ const TargetMixin = {
       )
     },
     prepareToDeleteFromMultipleSelections (e, entityType) {
-      const entityId = Number(e.currentTarget.getAttribute('data-id'))
+      const entityId = e.currentTarget.getAttribute('data-id')
       const isCurrentCheckBoxChecked = document.getElementById('remove_customCheckbox' + entityId).checked
       if (!isCurrentCheckBoxChecked) {
         this.prepareToDelete(e, entityType)
