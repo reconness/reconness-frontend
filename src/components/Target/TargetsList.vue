@@ -78,7 +78,7 @@ export default {
       this.selectedCard = selectedIndex
     },
     isSelected (cardIndex) {
-      return parseInt(this.selectedCard.id) === parseInt(cardIndex)
+      return this.selectedCard.id === cardIndex
     },
     onEdit (e) {
       this.setTargetId(e)
