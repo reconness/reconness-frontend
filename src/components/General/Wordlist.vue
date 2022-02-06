@@ -51,7 +51,7 @@
                   <div class="col-4"><span class="text-break break-word">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
                   <div class="col-3">
                     <div class="d-flex justify-content-between">
-                      <button type="button" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
+                      <button @click="downloadWordlist" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
                       <button @click="removeWordList" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                     </div>
                   </div>
@@ -79,7 +79,8 @@ export default {
     return {
       selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id,
       loadedFileName: '',
-      selectedIdWordlist: -1
+      selectedIdWordlist: -1,
+      selectedFileName: ''
     }
   },
   computed: {
@@ -111,8 +112,15 @@ export default {
   watch: {
     notificationMessageActionSelected: function (value) {
       if (value) {
-        this.removeWordListItem(this.selectedIdWordlist)
-        this.resetData()
+        this.removeWordListFromServer(
+          {
+            codeType: this.selectedPill,
+            filename: this.selectedFileName,
+            id: this.selectedIdWordlist
+          }
+        ).then(success => {
+          this.resetData()
+        })
       }
     }
   },
@@ -122,7 +130,7 @@ export default {
   methods: {
     ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
-    ...mapActions('wordlist', ['loadWordlist']),
+    ...mapActions('wordlist', ['loadWordlist', 'uploadWordListFile', 'removeWordListFromServer', 'downloadWordListFile']),
     resetLoadedFileName () {
       this.loadedFileName = ''
     },
@@ -153,15 +161,21 @@ export default {
       reader.onload = function () {
         const sizeInkb = textfile.size / 1024
         self.loadedFileName = textfile.name
-        const wordListItem = {
-          id: -1,
-          filename: textfile.name,
-          size: Math.round(sizeInkb),
-          type: self.selectedPill,
-          count: self.countLinesFromText(reader.result),
-          path: ''
-        }
-        self.addWordListItem(wordListItem)
+        const wordlistFormData = new FormData()
+        wordlistFormData.append('file', textfile)
+        self.upload(wordlistFormData).then(success => {
+          if (success) {
+            const wordListItem = {
+              id: -1,
+              filename: textfile.name,
+              size: Math.round(sizeInkb),
+              type: self.selectedPill,
+              count: self.countLinesFromText(reader.result),
+              path: ''
+            }
+            self.addWordListItem(wordListItem)
+          }
+        })
       }
       reader.readAsText(textfile)
     },
@@ -176,14 +190,35 @@ export default {
     },
     removeWordList (e) {
       this.selectedIdWordlist = Number(e.currentTarget.getAttribute('data-id'))
-      const selectedTargetName = e.currentTarget.getAttribute('data-name')
-      const notificationMessageDesc = 'Are you sure to remove the file: <span class="font-weight-semibold"> ' + selectedTargetName + ' </span>'
+      this.selectedFileName = e.currentTarget.getAttribute('data-name')
+      const notificationMessageDesc = 'Are you sure to remove the file: <span class="font-weight-semibold"> ' + this.selectedFileName + ' </span>'
       this.updateNotificationMessageDescription(notificationMessageDesc)
       jQuery('#message-box-notification-modal').modal()
     },
     resetData: function () {
       this.updateNotificationMessageActionSelected(false)
       this.selectedIdWordlist = -1
+    },
+    upload (fileFormData) {
+      return this.uploadWordListFile(
+        {
+          wordListCode: this.selectedPill,
+          formData: fileFormData
+        })
+    },
+    downloadWordlist (e) {
+      this.selectedFileName = e.currentTarget.getAttribute('data-name')
+      this.downloadWordListFile({
+        codeType: this.selectedPill,
+        filename: this.selectedFileName
+      }).then(response => {
+        const fileURL = window.URL.createObjectURL(new Blob([response.data]))
+        const fileLink = document.createElement('a')
+        fileLink.href = fileURL
+        fileLink.setAttribute('download', this.selectedFileName)
+        document.body.appendChild(fileLink)
+        fileLink.click()
+      })
     }
   }
 }

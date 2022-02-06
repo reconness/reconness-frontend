@@ -456,12 +456,12 @@ export default ({
       const newAgents = []
       let newAgent
       agents.forEach(agent => {
-        newAgent = getters.mapItemFromServerToLocal(agent)
+        newAgent = getters.mapAgentFromServerToLocal(agent)
         newAgents.push(newAgent)
       })
       return newAgents
     },
-    mapItemFromServerToLocal: (state, getters) => (agent) => {
+    mapAgentFromServerToLocal: (state, getters) => (agent) => {
       const mappedAgent = {
         name: agent.name,
         primaryColor: getters.getPrimaryColor(agent.primaryColor),
@@ -486,7 +486,7 @@ export default ({
       }
       return mappedAgent
     },
-    mapItemFromLocalToServer: (state, getters) => (agent) => {
+    mapAgentFromLocalToServer: (state, getters) => (agent) => {
       const mappedAgent = {
         name: agent.name,
         command: agent.command,
@@ -506,22 +506,33 @@ export default ({
     }
   },
   actions: {
-    clearAgentEntitiesToDelete ({ state, commit, rootState }) {
+    removeAgentsSelected ({ state, commit, rootState }) {
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
-          const agentName = state.agentListStore[index].name
-          return axios.delete('/agents/' + agentName)
-            .then(function (response) {
-              state.agentListStore.splice(index, 1)
-              return true
-            })
-            .catch(function () {
-              return false
-            })
+          state.agentListStore.splice(index, 1)
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
+    },
+    clearAgentEntitiesToDelete ({ state, commit, rootState, dispatch }) {
+      const agentNames = []
+      rootState.target.entitiesToDelete.forEach(entity => {
+        let agentName
+        const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
+        if (index !== -1) {
+          agentName = state.agentListStore[index].name
+          agentNames.push(agentName)
+        }
+      })
+      return axios.delete('/agents/batch', {
+        data: agentNames
+      }).then(function (response) {
+        dispatch('removeAgentsSelected')
+        return true
+      }).catch(function () {
+        return false
+      })
     },
     loadMarketplace ({ state, commit, getters, rootState }) {
       if (rootState.auth.authentication_token !== '') {
@@ -551,7 +562,7 @@ export default ({
     },
     addAgentToServer ({ state, rootState, getters }, agent) {
       if (rootState.auth.authentication_token !== '') {
-        return axios.post('/agents', getters.mapItemFromLocalToServer(agent))
+        return axios.post('/agents', getters.mapAgentFromLocalToServer(agent))
           .then(function (response) {
             agent.id = response.data.id
             state.agentListStore.push(agent)
@@ -576,7 +587,7 @@ export default ({
     },
     updateAgentToServer ({ state, rootState, getters, commit }, agent) {
       if (rootState.auth.authentication_token !== '') {
-        return axios.put('/agents/' + agent.id, getters.mapSingleItem(agent))
+        return axios.put('/agents/' + agent.id, getters.mapAgentFromLocalToServer(agent))
           .then(function (response) {
             commit('updateAgent', agent)
             return true
@@ -594,7 +605,7 @@ export default ({
           .then(function (response) {
             commit('installUninstallAgent', index)
             const agentDto = response.data
-            const mappedAgent = getters.mapItemFromServerToLocal(agentDto)
+            const mappedAgent = getters.mapAgentFromServerToLocal(agentDto)
             mappedAgent.createdBy = 2
             mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)

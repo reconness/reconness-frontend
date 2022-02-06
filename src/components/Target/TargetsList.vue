@@ -57,7 +57,7 @@ export default {
     name: String,
     primaryColor: String,
     secondaryColor: String,
-    id: Number,
+    id: String,
     rootDom: Array
   },
   data: function () {
@@ -78,7 +78,7 @@ export default {
       this.selectedCard = selectedIndex
     },
     isSelected (cardIndex) {
-      return parseInt(this.selectedCard.id) === parseInt(cardIndex)
+      return this.selectedCard.id === cardIndex
     },
     onEdit (e) {
       this.setTargetId(e)

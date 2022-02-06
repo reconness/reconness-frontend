@@ -35,7 +35,7 @@ export default {
     ...mapState('target', ['idTarget']),
     ...mapGetters('target', ['getTargetById']),
     getTarget () {
-      return this.getTargetById(parseInt(this.idTarget))
+      return this.getTargetById(this.idTarget)
     }
   },
   methods: {

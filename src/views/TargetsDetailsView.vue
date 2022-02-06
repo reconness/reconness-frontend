@@ -326,7 +326,7 @@ export default {
       if (this.isIdPropsUndefined) {
         this.updateTargetWhenUrlAccessedDirectly()
       } else {
-        this.Target = this.getTargetById(parseInt(this.getTargetId))
+        this.Target = this.getTargetById(this.getTargetId)
       }
     },
     updateTargetWhenUrlAccessedDirectly () {

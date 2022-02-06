@@ -1385,6 +1385,59 @@ export default ({
             return false
           })
       }
+    },
+    addTargetToServer ({ state, rootState, getters }, target) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/targets', getters.mapTargetFromLocalToServer(target))
+          .then(function (response) {
+            target.id = response.data.id
+            state.targetListStore.push(target)
+            return true
+          })
+          .catch(function (response) {
+            return false
+          })
+      }
+    },
+    updateTargetToServer ({ state, rootState, getters, commit }, target) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.put('/targets/' + target.id, getters.mapTargetFromLocalToServer(target))
+          .then(function (response) {
+            commit('updateTarget', target)
+            return true
+          })
+          .catch(function (response) {
+            return false
+          })
+      }
+    },
+    removeTargetsSelected ({ state, commit, rootState }) {
+      state.entitiesToDelete.forEach(entity => {
+        const index = state.targetListStore.findIndex(target => target.id === entity.id)
+        if (index !== -1) {
+          state.targetListStore.splice(index, 1)
+        }
+      })
+      commit('clearReferencesToDelete')
+    },
+    clearTargetEntitiesToDeleteToServer ({ state, dispatch }) {
+      const targetNames = []
+      state.entitiesToDelete.forEach(entity => {
+        let targetName
+        const index = state.targetListStore.findIndex(target => target.id === entity.id)
+        if (index !== -1) {
+          targetName = state.targetListStore[index].name
+          targetNames.push(targetName)
+        }
+      })
+      return axios.delete('/targets/batch', {
+        data: targetNames
+      }).then(function (response) {
+        dispatch('removeTargetsSelected')
+        return true
+      }).catch(function () {
+        return false
+      })
     }
   },
   modules: {
@@ -1635,30 +1688,19 @@ export default ({
       const newTargets = []
       let newTarget
       targets.forEach(target => {
-        newTarget = {
-          id: target.id,
-          name: target.name,
-          primaryColor: '#03dced',
-          secondaryColor: '#0cb8e0',
-          date: '20/01/2020',
-          rootDomains: getters.mapRootDomains(target.rootDomains),
-          isPrivateProgram: target.isPrivate,
-          inScope: target.inScope,
-          outScope: target.outOfScope,
-          messages: []
-        }
+        newTarget = getters.mapTargetFromServerToLocal(target)
         newTargets.push(newTarget)
       })
       return newTargets
     },
-    mapRootDomains: (state) => (rootDomains) => {
+    mapRootDomainsFromServerToLocal: (state) => (rootDomains) => {
       const newRootDomains = []
       let newRootDomain
       rootDomains.forEach(rootDomain => {
         newRootDomain = {
           id: rootDomain.id,
           root: rootDomain.name,
-          date: '21/09/2018',
+          date: rootDomain.createdAt,
           subdomain: [],
           messages: [],
           agent: []
@@ -1724,6 +1766,50 @@ export default ({
         result: finalSearchResult,
         size: finalSearchResult.length
       }
+    },
+    mapTargetFromServerToLocal: (state, getters) => (target) => {
+      const newTarget = {
+        id: target.id,
+        name: target.name,
+        primaryColor: target.primaryColor,
+        secondaryColor: target.secondaryColor,
+        date: new Date(),
+        rootDomains: getters.mapRootDomainsFromServerToLocal(target.rootDomains), // getters.mapRootDomains(target.rootDomains),
+        isPrivateProgram: target.isPrivate,
+        inScope: target.inScope,
+        outScope: target.outOfScope,
+        messages: [],
+        bugBountyUrl: target.bugBountyProgramUrl
+      }
+      return newTarget
+    },
+    mapTargetFromLocalToServer: (state, getters) => (target) => {
+      const mappedTarget = {
+        name: target.name,
+        primaryColor: target.primaryColor,
+        secondaryColor: target.secondaryColor,
+        rootDomains: getters.mapRootDomainsListFromLocalToServer(target.rootDomains),
+        isPrivate: target.isPrivateProgram,
+        inScope: target.inScope,
+        outScope: target.outOfScope,
+        messages: [],
+        bugBountyProgramUrl: target.bugBountyUrl
+      }
+      return mappedTarget
+    },
+    mapRootDomainFromLocalToServer: (state, getters) => (rootDomain) => {
+      const newRootDomain = {
+        name: rootDomain.root
+      }
+      return newRootDomain
+    },
+    mapRootDomainsListFromLocalToServer: (state, getters) => (rootDomainList) => {
+      const mappedRootDomains = []
+      rootDomainList.forEach(element => {
+        const newRootDomain = getters.mapRootDomainFromLocalToServer(element)
+        mappedRootDomains.push(newRootDomain)
+      })
+      return mappedRootDomains
     }
   }
 })
