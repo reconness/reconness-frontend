@@ -77,7 +77,7 @@
                             <div class="w-100 infobox-radius d-flex infobox-border-line infobox-padding-bordered d-flex align-items-center">
                             <span class="color-sample-area ml-1 info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+target.primaryColor+' '+ '0%,' + target.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco class="form-ico-size"/></span>
                             <div class="info-box-content info-box-content-custom ml-2">
-                            <span class="info-box-text domain-names-target">
+                            <span class="info-box-text domain-names-target entity-preview-cut">
                             {{target.name}}
                             </span>
                             <span v-if="editable"  class="agent-mini-agent-details pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>

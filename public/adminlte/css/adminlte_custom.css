@@ -1251,3 +1251,7 @@ html {
 .h-8vh{
   height: 8vh !important
 }
+.entity-preview-cut{
+  width: 118px;
+  text-overflow: ellipsis;
+}
