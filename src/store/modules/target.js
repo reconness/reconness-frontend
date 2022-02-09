@@ -1771,8 +1771,8 @@ export default ({
       const newTarget = {
         id: target.id,
         name: target.name,
-        primaryColor: target.primaryColor,
-        secondaryColor: target.secondaryColor,
+        primaryColor: target.primaryColor ? target.primaryColor : '#737be5',
+        secondaryColor: target.secondaryColor ? target.secondaryColor : '#7159d3',
         date: new Date(),
         rootDomains: getters.mapRootDomainsFromServerToLocal(target.rootDomains), // getters.mapRootDomains(target.rootDomains),
         isPrivateProgram: target.isPrivate,
