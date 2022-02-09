@@ -24,8 +24,8 @@
           <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.name} }"  class="text-dark" >{{item.name}}</router-link>
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-            <a href="#" class="color-blue" data-toggle="modal" data-target="#confirmation-modal">
-            <button class="dropdown-item" @click="updateConfirm(item.name)" type="button">Delete</button>
+            <a href="#" class="color-blue" data-toggle="modal" data-target="#message-box-modal">
+            <button class="dropdown-item" @click="updateConfirm($event, item.name)" :data-id="item.id" :data-name="item.name" type="button">Delete</button>
             </a>
           </div>
           </span>
@@ -42,13 +42,15 @@
 <script>
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import Confirmation from '@/components/Target/Confirmation.vue'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'HomeRigthSidebar',
   components: {
     BullseyeArrowIco,
     Confirmation
   },
+  mixins: [TargetMixin],
   data: function () {
     return {
       selectedTargetName: ''
@@ -59,13 +61,15 @@ export default {
     ...mapGetters('target', ['getLasTenTargets'])
   },
   methods: {
+    ...mapMutations('target', ['addEntityToDelete']),
     orderByNameDesc: function () {
       return this.targetListStore.sort(this.$compareNamesDesc)
     },
     orderByCalendar: function () {
       return this.targetListStore.sort(this.$orderByCalendarSplitting)
     },
-    updateConfirm (itemName) {
+    updateConfirm ($event, itemName) {
+      this.prepareToDelete($event, this.$agentType.TARGET)
       return this.$store.commit('agent/confirm', { name: itemName, route: 'target' })
     }
   }
