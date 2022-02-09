@@ -12,7 +12,7 @@
               {{name}}
             </span>
             <a class="nav-link target-detail-popover active agent-mini-agent-details pt-0 pb-0 black-text border-right-0 cursor-pointer" @click="showDetailsPopover" :data-id="id">Details</a>
-            <OverlayPanel class="target-list-popover" ref="op" :dismissable="false">
+            <OverlayPanel class="target-list-popover" ref="op">
               <DetailsAgentPopover/>
             </OverlayPanel>
             <div class="d-flex target-mosaic-options align-items-center">
