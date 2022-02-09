@@ -18,12 +18,12 @@
                 <div class="color-id-size" :style="{background: target.primaryColor}"></div>
             </div>
             <div class="col-2 my-auto d-flex">
-                <router-link class="black-text" :to="{ name: 'TargetDetail', params: {id: target.id, targetName: target.name} }">
+                <router-link class="black-text text-break" :to="{ name: 'TargetDetail', params: {id: target.id, targetName: target.name} }">
                     {{target.name}}
                 </router-link>
             </div>
             <div class="col-3 my-2">
-              <router-link class="agent-mini-color-gray target-detail-popover" v-for="(rootDomain, index) in target.rootDomains" :key="rootDomain.id" :to="{ name: 'RootDomainDetails', params: {idTarget: target.id , id: rootDomain.id, targetName: target.name,  rootdomainName: rootDomain.root } }">
+              <router-link class="text-break agent-mini-color-gray target-detail-popover" v-for="(rootDomain, index) in target.rootDomains" :key="rootDomain.id" :to="{ name: 'RootDomainDetails', params: {idTarget: target.id , id: rootDomain.id, targetName: target.name,  rootdomainName: rootDomain.root } }">
                   {{rootDomain.root}}{{showArraySeparatorByIndexAndList(index, target.rootDomains)}}
               </router-link>
             </div>
