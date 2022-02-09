@@ -128,7 +128,7 @@
                           <div class="col-12">
                             <div class="info-box color-sample-container">
                               <div class="info-box-content info-box-content-custom ml-2 mt-2">
-                                <span class="info-box-text font-weight-semibold agent-regular-font">
+                                <span class="info-box-text font-weight-semibold agent-regular-font cut-if-large">
                                   {{agent.name}}
                                 </span>
                                 <span v-if="editable"  class="agent-mini-agent-details agent-regular-font-11px pt-0 pb-0 black-text border-right-0 mt-1">Editing...</span>
@@ -584,6 +584,10 @@ export default {
 }
 </script>
 <style>
+.cut-if-large{
+  width: 118px;
+  text-overflow: ellipsis;
+}
 .color-sample-container{
   box-shadow: 0px 19px 27px #0C1F6A12 !important;
   border-radius: 12px !important;
