@@ -177,4 +177,9 @@ input[type="checkbox"]:checked + label:after {
 input[type="checkbox"] {
   display: none;
 }
+
+div.target-detail-popover-reference div.info-box-content{
+  width: 30%;
+}
+
 </style>

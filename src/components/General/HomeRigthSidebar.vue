@@ -76,6 +76,9 @@ export default {
 }
 </script>
 <style scoped>
+  div.homerigthsidebar-infobox div.info-box-content{
+    width: 30%;
+  }
   .homerigthsidebar-infobox{
     width:90%;
     margin: auto;
