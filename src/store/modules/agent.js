@@ -232,8 +232,8 @@ export default ({
     removeAgent (state, agentName) {
       const index = state.agentListStore.findIndex(agent => agent.name === agentName)
       if (index !== -1) {
-        const installerReference = parseInt(state.agentListStore[index].installedFrom)
-        if (!isNaN(installerReference)) {
+        const installerReference = state.agentListStore[index].installedFrom
+        if (installerReference) {
           const indexInstaller = state.agentsInstallers.findIndex(agent => agent.id === installerReference)
           if (indexInstaller !== -1) {
             state.agentsInstallers[indexInstaller].installed = !state.agentsInstallers[indexInstaller].installed
@@ -510,7 +510,7 @@ export default ({
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
-          state.agentListStore.splice(index, 1)
+          commit('removeAgent', entity.name)
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
