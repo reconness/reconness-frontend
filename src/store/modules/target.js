@@ -4,7 +4,7 @@ export default ({
   state: {
     targetListStore: [
       {
-        id: 1,
+        id: '1',
         name: 'my-target-1',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
@@ -365,7 +365,7 @@ export default ({
         ]
       },
       {
-        id: 2,
+        id: '2',
         name: 'my-target-2',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
@@ -629,7 +629,7 @@ export default ({
         ]
       },
       {
-        id: 3,
+        id: '3',
         name: 'my-target-3',
         primaryColor: '#F96767',
         secondaryColor: '#FF4343',
@@ -694,7 +694,7 @@ export default ({
         ]
       },
       {
-        id: 4,
+        id: '4',
         name: 'my-target-4',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
@@ -731,7 +731,7 @@ export default ({
         ]
       },
       {
-        id: 5,
+        id: '5',
         name: 'my-target-5',
         primaryColor: '#3adb99',
         secondaryColor: '#16c465',
@@ -768,7 +768,7 @@ export default ({
         ]
       },
       {
-        id: 6,
+        id: '6',
         name: 'my-target-6',
         primaryColor: '#FF9966',
         secondaryColor: '#f36a33',
@@ -801,7 +801,7 @@ export default ({
         ]
       },
       {
-        id: 7,
+        id: '7',
         name: 'my-target-7',
         primaryColor: '#737be5',
         secondaryColor: '#7159d3',
@@ -838,7 +838,7 @@ export default ({
         ]
       },
       {
-        id: 8,
+        id: '8',
         name: 'my-target-8',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
@@ -874,7 +874,7 @@ export default ({
         ]
       },
       {
-        id: 9,
+        id: '9',
         name: 'my-target-9',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',
@@ -910,7 +910,7 @@ export default ({
         ]
       },
       {
-        id: 10,
+        id: '10',
         name: 'my-target-10',
         primaryColor: '#3adb99',
         secondaryColor: '#16c465',
@@ -946,7 +946,7 @@ export default ({
         ]
       },
       {
-        id: 11,
+        id: '11',
         name: 'my-target-11',
         primaryColor: '#03dced',
         secondaryColor: '#0cb8e0',

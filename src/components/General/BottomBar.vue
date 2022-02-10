@@ -28,7 +28,7 @@ export default {
   data () {
     return {
       page: 0,
-      numberElementsInGroup: 3,
+      numberElementsInGroup: 20,
       manualPageEntered: null
     }
   },
