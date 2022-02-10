@@ -59,7 +59,7 @@ export default {
   computed: {
     ...mapState('target', ['entitiesToDelete', 'removeAll']),
     entityTypeDisplayed () {
-      if (this.isOnTargetView) {
+      if (this.isOnTargetView || this.$isOnHomeView) {
         return this.$entityTypeData.TARGET
       } else if (this.isOnTargetDetailView) {
         if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
@@ -137,8 +137,7 @@ export default {
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
-      if (this.isOnTargetView) {
-        this.processTarget()
+      if (this.isOnTargetView || this.$isOnHomeView()) {
         this.clearTargetEntitiesToDeleteToServer().then(success => {
           if (success) {
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)

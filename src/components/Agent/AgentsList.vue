@@ -6,13 +6,13 @@
         <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
         <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.AGENT.id)" :data-id="id" :data-name="name"></label>
         <div class="p-2">
-        <div class="info-box target-detail-popover-reference">
+        <div class="info-box target-detail-popover-reference agent-item-container">
           <div class="info-box-content">
             <span class="text-body info-box-text domain-names-target">
               {{name}}
             </span>
             <a class="nav-link target-detail-popover active agent-mini-agent-details pt-0 pb-0 black-text border-right-0 cursor-pointer" @click="showDetailsPopover" :data-id="id">Details</a>
-            <OverlayPanel class="target-list-popover" ref="op" :dismissable="false">
+            <OverlayPanel class="target-list-popover" ref="op">
               <DetailsAgentPopover/>
             </OverlayPanel>
             <div class="d-flex target-mosaic-options align-items-center">
@@ -205,5 +205,8 @@ input[type="checkbox"] {
   border-radius: 13px;
   box-shadow: 3px 12px 23px #eae9e9;
   opacity: 1;
+}
+div.agent-item-container div.info-box-content{
+  width: 30%;
 }
 </style>

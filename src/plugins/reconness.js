@@ -303,6 +303,10 @@ export default {
       return this.$route.name === 'Agent'
     }
 
+    app.config.globalProperties.$isOnHomeView = function () {
+      return this.$route.name === 'Home'
+    }
+
     app.config.globalProperties.$isOnRootDomainView = function () {
       return this.$route.name === 'RootDomainDetails'
     }

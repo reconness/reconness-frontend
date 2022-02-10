@@ -3,19 +3,19 @@
         <div class="card-body">
           <div class="d-flex align-items-center mt-1">
             <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
-            <span class="text-options-gray-color">{{getAgent.repository}}</span>
+            <span class="text-options-gray-color text-break">{{getAgent.repository}}</span>
           </div>
           <div class="d-flex align-items-center mt-1">
             <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
-            <span class="text-options-gray-color">{{getAgent.target}}</span>
+            <span class="text-options-gray-color text-break">{{getAgent.target}}</span>
           </div>
           <div class="d-flex align-items-center mt-1">
             <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
-            <span class="text-options-gray-color">{{getAgent.command}}</span>
+            <span class="text-options-gray-color text-break">{{getAgent.command}}</span>
           </div>
           <div class="d-flex align-items-center mt-1">
             <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
-            <span class="text-options-gray-color">Type: {{this.$getEntityTypeById(getAgent.type).description}}</span>
+            <span class="text-options-gray-color text-break">Type: {{this.$getEntityTypeById(getAgent.type).description}}</span>
           </div>
         </div>
         <!-- /.card-body -->

@@ -18,7 +18,7 @@
             <div class="col-1 my-auto d-flex justify-content-center">
                 <div class="color-id-size" :style="{background: agent.primaryColor}"></div>
             </div>
-            <div class="col-2 my-auto d-flex">
+            <div class="col-2 my-auto d-flex text-break">
                 {{agent.name}}
             </div>
             <div class="col-2 my-2">
