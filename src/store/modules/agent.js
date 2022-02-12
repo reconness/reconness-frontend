@@ -353,6 +353,9 @@ export default ({
     getAgentById: (state) => (id) => {
       return state.agentListStore.find(agent => agent.id === id)
     },
+    getAgentByName: (state) => (name) => {
+      return state.agentListStore.find(agent => agent.name === name)
+    },
     filterByColor (state) {
       return function (colour) {
         return state.agentListStore.filter(item => item.background.includes(colour))
@@ -500,7 +503,8 @@ export default ({
         createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
         triggerSubdomainIsAlive: agent.isAliveTrigger,
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
-        target: agent.target
+        target: agent.target,
+        imageName: agent.image
       }
       return mappedAgent
     }
@@ -556,6 +560,21 @@ export default ({
             return true
           })
           .catch(function () {
+            return false
+          })
+      }
+    },
+    uploadAgentImage ({ state, rootState, getters }, uploadData) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/uploadimage/' + uploadData.agentId, uploadData.image, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then(function (response) {
+            return true
+          })
+          .catch(function (response) {
             return false
           })
       }
