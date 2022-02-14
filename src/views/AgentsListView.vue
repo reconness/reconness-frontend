@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="overflow-y-clip">
   <!-- Contains navs-bar -->
   <NavBarTwo></NavBarTwo>
     <!-- Content Wrapper. Contains page content -->
