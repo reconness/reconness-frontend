@@ -137,7 +137,7 @@
                               <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor +' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
                                 <AccountCogIco v-if="!agent.image && this.$installedByUser(agent.createdBy)" class="form-ico-size"/>
                                 <ApplicationCogIco v-if="!agent.image && this.$installedBySystem(agent.createdBy)" class="form-ico-size"/>
-                                <img v-if="agent.image" class="logo-image w-75 h-75" :src="imageFileBuffer">
+                                <img v-if="agent.image" class="logo-image w-75 h-75" :src="agent.image">
                               </span>
                             </div> <!-- /.info-box -->
                           </div>
@@ -287,8 +287,6 @@ export default {
         lastRun: null,
         createdBy: this.$entitySource.USER.id
       },
-      imageFileBuffer: '',
-      imageFile: '',
       colorpickerData: '',
       isVisibleTopSection: true,
       isVisibleMiddleSection: false,
@@ -405,7 +403,6 @@ export default {
           this.agent.id = this.$store.getters['agent/idAgent']
           this.updateAgentToServer(this.agent).then(success => {
             if (success) {
-              this.uploadImageFn()
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentEdition)
               this.resetAgentForm()
             } else {
@@ -417,7 +414,6 @@ export default {
         } else {
           this.addAgentToServer(this.agent).then(success => {
             if (success) {
-              this.uploadImageFn()
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInsertion)
               this.resetAgentForm()
             } else {
@@ -562,9 +558,7 @@ export default {
       const reader = new FileReader()
       const vm = this
       reader.onload = (ev) => {
-        vm.imageFileBuffer = ev.target.result
-        vm.imageFile = files[0]
-        vm.agent.image = this.getFileNameExtension(files[0].name)
+        vm.agent.image = ev.target.result
       }
       reader.readAsDataURL(files[0])
     },

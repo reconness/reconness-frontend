@@ -477,7 +477,7 @@ export default ({
         isAliveTrigger: agent.triggerSubdomainIsAlive,
         isHttpOpenTrigger: agent.triggerSubdomainHasHttpOrHttpsOpen,
         script: '',
-        image: '',
+        image: agent.image,
         date: new Date(),
         installedFrom: '',
         lastRun: new Date(agent.lastRun),
@@ -504,7 +504,7 @@ export default ({
         triggerSubdomainIsAlive: agent.isAliveTrigger,
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
         target: agent.target,
-        imageName: agent.image
+        image: agent.image
       }
       return mappedAgent
     }
@@ -560,21 +560,6 @@ export default ({
             return true
           })
           .catch(function () {
-            return false
-          })
-      }
-    },
-    uploadAgentImage ({ state, rootState, getters }, uploadData) {
-      if (rootState.auth.authentication_token !== '') {
-        return axios.post('/agents/uploadimage/' + uploadData.agentId, uploadData.image, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-          .then(function (response) {
-            return true
-          })
-          .catch(function (response) {
             return false
           })
       }
