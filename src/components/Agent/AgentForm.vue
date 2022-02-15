@@ -364,14 +364,13 @@ export default {
         this.agent.primaryColor = value.primaryColor
         this.agent.secondaryColor = value.secondaryColor
       } else {
-        this.resetAgentForm()
         this.agent.script = ''
       }
     }
   },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
-    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer']),
+    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer', 'uploadAgentImage']),
     setBlueColor: function () {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
@@ -405,8 +404,10 @@ export default {
           this.updateAgentToServer(this.agent).then(success => {
             if (success) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentEdition)
+              this.resetAgentForm()
             } else {
               this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
+              this.resetAgentForm()
             }
           })
           this.$store.commit('agent/setIdAgent', -1)
@@ -414,12 +415,13 @@ export default {
           this.addAgentToServer(this.agent).then(success => {
             if (success) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInsertion)
+              this.resetAgentForm()
             } else {
               this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
+              this.resetAgentForm()
             }
           })
         }
-        this.resetAgentForm()
         jQuery('#exampleModalCenter').modal('hide')
         this.editable = false
       }
@@ -555,10 +557,13 @@ export default {
       }
       const reader = new FileReader()
       const vm = this
-      reader.onload = (e) => {
-        vm.agent.image = e.target.result
+      reader.onload = (ev) => {
+        vm.agent.image = ev.target.result
       }
       reader.readAsDataURL(files[0])
+    },
+    getFileNameExtension (fileName) {
+      return fileName.split('.').pop()
     },
     setRandomColor () {
       const predefinedColors = this.$store.state.agent.systemColors
@@ -579,6 +584,17 @@ export default {
     },
     switchNameInput () {
       this.showNameInput = !this.showNameInput
+    },
+    uploadImageFn () {
+      if (!this.$validateIsBlank(this.agent.image)) {
+        const insertedAgent = this.$store.getters['agent/getAgentByName'](this.agent.name)
+        const imageFormData = new FormData()
+        imageFormData.append('file', this.imageFile)
+        this.uploadAgentImage({
+          agentId: insertedAgent.id,
+          image: imageFormData
+        })
+      }
     }
   }
 }

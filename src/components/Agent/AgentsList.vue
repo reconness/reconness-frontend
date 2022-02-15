@@ -21,8 +21,9 @@
             </div> <!-- /.d-flex target-mosaic-options -->
           </div> <!-- /.info-box-content -->
           <span class="info-box-icon" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-            <AccountCogIco v-if="this.$installedByUser(createdBy)" class="w-50 h-50"/>
-            <ApplicationCogIco v-else-if="this.$installedBySystem(createdBy)" class="w-50 h-50"/>
+            <img v-if="image" class="logo-image w-75 h-75" :src="image">
+            <AccountCogIco v-if="!image && this.$installedByUser(createdBy)" class="w-50 h-50"/>
+            <ApplicationCogIco v-if="!image && this.$installedBySystem(createdBy)" class="w-50 h-50"/>
           </span>
           </div> <!-- /.info-box -->
           </div> <!-- /.p2 -->
@@ -59,7 +60,8 @@ export default {
     primaryColor: String,
     secondaryColor: String,
     id: String,
-    createdBy: Number
+    createdBy: Number,
+    image: String
   },
   data: function () {
     return {
@@ -208,5 +210,10 @@ input[type="checkbox"] {
 }
 div.agent-item-container div.info-box-content{
   width: 30%;
+}
+.logo-image{
+  max-width: 1.2rem;
+  max-height: 1.2rem;
+  width: 1.2rem;
 }
 </style>

@@ -1,20 +1,20 @@
 <template>
     <div class="card target-details-popover agent-details-popover rounded-corners">
         <div class="card-body">
-          <div class="d-flex align-items-center mt-1">
-            <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
+          <div v-if="isEmpty(getAgent.repository)" class="d-flex align-items-start mt-1">
+            <span  class="material-icons mt-1 font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
             <span class="text-options-gray-color text-break">{{getAgent.repository}}</span>
           </div>
-          <div class="d-flex align-items-center mt-1">
-            <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
+          <div v-if="isEmpty(getAgent.target)" class="d-flex align-items-start mt-1">
+            <span  class="material-icons mt-1 font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
             <span class="text-options-gray-color text-break">{{getAgent.target}}</span>
           </div>
-          <div class="d-flex align-items-center mt-1">
-            <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
+          <div v-if="isEmpty(getAgent.command)" class="d-flex align-items-start mt-1">
+            <span  class="material-icons mt-1 font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
             <span class="text-options-gray-color text-break">{{getAgent.command}}</span>
           </div>
-          <div class="d-flex align-items-center mt-1">
-            <span  class="material-icons font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
+          <div v-if="isEmpty(this.$getEntityTypeById(getAgent.type).description)" class="d-flex align-items-start mt-1">
+            <span  class="material-icons mt-1 font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
             <span class="text-options-gray-color text-break">Type: {{this.$getEntityTypeById(getAgent.type).description}}</span>
           </div>
         </div>
@@ -39,7 +39,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete'])
+    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    isEmpty (field) {
+      if (field === null) {
+        return false
+      }
+      return !this.$validateIsBlank(field)
+    }
 
   }
 }

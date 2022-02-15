@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="overflow-y-clip">
   <!-- Contains navs-bar -->
   <NavBarTwo></NavBarTwo>
     <!-- Content Wrapper. Contains page content -->
@@ -8,7 +8,7 @@
         <hr class="reset-margin-top" :class="{'mb-0': isOnAgentMinimalView}"/>
         <div :class="{'content': !isOnAgentMinimalView}">
           <div class="row" v-if="this.$store.state.agent.isDefaultViewOnAgent">
-              <AgentsList v-for="agent of filteredAgentList" :key="agent.id" :id="agent.id" :name="agent.name" :primaryColor="agent.primaryColor" :secondaryColor="agent.secondaryColor" :createdBy="agent.createdBy"/>
+              <AgentsList v-for="agent of filteredAgentList" :key="agent.id" :id="agent.id" :name="agent.name" :image="agent.image" :primaryColor="agent.primaryColor" :secondaryColor="agent.secondaryColor" :createdBy="agent.createdBy"/>
           </div>
           <div class="row" v-else>
             <AgentMiniList/>
