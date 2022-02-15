@@ -38,7 +38,7 @@
                             <span class="agent-regular-font">Add</span>
                             <span class="agent-regular-font">your logo</span>
                           </div>
-                          <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" type="file" @change="onFileChange">
+                          <input :disabled="this.$store.state.agent.fromDetailsLink" id="uploadimage" accept="image/*" type="file" @change="onFileChange">
                           <label for="uploadimage">
                             <FileCodeIco/>
                           </label>
