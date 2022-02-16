@@ -32,7 +32,7 @@ export default ({
     }
   },
   actions: {
-    login ({ commit, state }, credentials) {
+    login ({ commit, state, dispatch }, credentials) {
       return axios.post('/auth/login',
         {
           userName: credentials.username,
@@ -41,6 +41,11 @@ export default ({
         .then(function (response) {
           commit('updateAuthenticationToken', response.data.auth_token)
           axios.defaults.headers.common.Authorization = 'Bearer ' + state.authentication_token
+          if (response.data.auth_token) {
+            dispatch('referent/loadResources', null, { root: true })
+            dispatch('agent/loadAgents', null, { root: true })
+            dispatch('target/loadTargets', null, { root: true })
+          }
           return true
         })
         .catch(function () {

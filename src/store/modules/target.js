@@ -315,6 +315,7 @@ export default ({
       }
     },
     updateTargets (state, targets) {
+      state.targetListStore.splice(0, state.targetListStore.length)
       targets.forEach(target => {
         state.targetListStore.push(target)
       })
