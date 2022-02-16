@@ -141,13 +141,7 @@ export default {
   computed: {
     ...mapState('auth', ['authentication_token']),
     ...mapState('referent', ['resources']),
-    ...mapState('general', ['notificationMessageActionSelected']),
-    getApiUserName () {
-      return process.env.VUE_APP_API_RECONNES_USERNAME
-    },
-    getApiPassword () {
-      return process.env.VUE_APP_API_RECONNES_PASSWORD
-    }
+    ...mapState('general', ['notificationMessageActionSelected'])
   },
   watch: {
     resource: {
@@ -157,27 +151,13 @@ export default {
       },
       deep: true
     },
-    authentication_token: function (value) {
-      if (value !== '') {
-        this.loadResources()
-        this.loadAgents()
-        this.loadTargets()
-      }
-    },
     notificationMessageActionSelected: function (value) {
       if (value) {
         this.removeResource()
       }
     }
   },
-  created () {
-    this.login({
-      username: this.getApiUserName,
-      password: this.getApiPassword
-    })
-  },
   methods: {
-    ...mapActions('auth', ['login']),
     ...mapActions('referent', ['loadResources', 'addResource', 'deleteResource']),
     ...mapActions('agent', ['loadAgents']),
     ...mapActions('target', ['loadTargets']),

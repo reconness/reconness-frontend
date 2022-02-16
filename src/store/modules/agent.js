@@ -179,6 +179,7 @@ export default ({
       state.isDefaultViewOnAgent = value
     },
     updateAgents (state, agents) {
+      state.agentListStore.splice(0, state.agentListStore.length)
       agents.forEach(agent => {
         state.agentListStore.push(agent)
       })

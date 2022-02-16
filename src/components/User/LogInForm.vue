@@ -52,15 +52,29 @@ export default {
   computed: {
     areInputInBlank () {
       return (this.$validateIsBlank(this.user.username) || this.$validateIsBlank(this.user.password)) && this.wereWrittenInput
+    },
+    getApiUserName () {
+      return process.env.VUE_APP_API_RECONNES_USERNAME
+    },
+    getApiPassword () {
+      return process.env.VUE_APP_API_RECONNES_PASSWORD
     }
   },
   methods: {
     ...mapMutations('auth', ['goToForgotPasswordForm', 'updateIsUserLogged']),
     ...mapActions('auth', ['updateUserLogFlagAfterSeconds']),
+    ...mapActions('auth', ['login']),
     authenticate () {
       if (!this.areInputInBlank) {
-        this.$router.push({ name: 'Home' })
-        this.updateIsUserLogged(true)
+        this.login({
+          username: this.getApiUserName,
+          password: this.getApiPassword
+        }).then(success => {
+          if (success) {
+            this.$router.push({ name: 'Home' })
+            this.updateIsUserLogged(true)
+          }
+        })
       }
     },
     setWrittenInputFlag () {
