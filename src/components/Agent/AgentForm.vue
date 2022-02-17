@@ -32,7 +32,7 @@
                   <div class="col-12 col-sm-8" v-if="isVisibleTopSection">
                     <div class="col-12">
                       <div class="d-flex justify-content-between">
-                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository();setWrittenInputFlag()" class="ligth-gray-background form-control zero-borders mt-4 w-70 agent-form-placeholder-font" placeholder="Repository">
+                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="setWrittenInputFlag()" class="ligth-gray-background form-control zero-borders mt-4 w-70 agent-form-placeholder-font" placeholder="Repository">
                         <div class="d-flex flex-row justify-content-end file-import-container mt-2">
                           <div class="mr-2 logo d-flex flex-column">
                             <span class="agent-regular-font">Add</span>
@@ -45,10 +45,7 @@
                         </div><!-- /.d-flex -->
                       </div>
                     </div><!-- /.col-12 -->
-                    <div class="col-12" v-if="validators.blank.repository && wereWrittenInput">
-                      <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
-                    </div>
-                    <div class="col-12" v-if="!validators.blank.repository && validators.url.repository && wereWrittenInput">
+                    <div class="col-12" v-if="validators.url.repository && wereWrittenInput">
                       <span :class="{invalid: validators.url.repository}">The specified url is not valid</span>
                     </div>
                         <div class="col-12">
@@ -303,7 +300,6 @@ export default {
       validators: {
         blank: {
           name: false,
-          repository: false,
           target: false,
           command: false,
           type: false
@@ -335,7 +331,7 @@ export default {
       return this.$store.getters['agent/getAgentById'](id)
     },
     isFormInvalid () {
-      return (this.validators.blank.name || this.validators.blank.repository || this.validators.url.repository || this.validators.blank.target || this.validators.blank.command || this.validators.blank.type)
+      return (this.validators.blank.name || this.validators.url.repository || this.validators.blank.target || this.validators.blank.command || this.validators.blank.type)
     },
     isBlueColorSelected () {
       return this.agent.primaryColor === '#03DCED'
@@ -378,7 +374,7 @@ export default {
       }
     },
     'agent.repository': function (value) {
-      this.validators.url.repository = !this.$validateUrlWithoutProtocol(value)
+      this.validators.url.repository = (!this.$validateUrlWithoutProtocol(value) && !this.$validateIsBlank(value))
     }
   },
   methods: {
@@ -416,7 +412,7 @@ export default {
     },
     addAgent () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.url.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
+      if (!this.validators.blank.name && !this.validators.url.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
         if (this.editable) {
           this.agent.id = this.$store.getters['agent/idAgent']
           this.updateAgentToServer(this.agent).then(success => {
@@ -522,7 +518,6 @@ export default {
     enableValidationMessages () {
       this.enableValidationMessageName()
       this.enableValidationMessageTarget()
-      this.enableValidationMessageRepository()
       this.enableValidationMessageCommand()
       this.enableValidationMessageType()
     },
