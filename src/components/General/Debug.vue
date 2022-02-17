@@ -15,7 +15,7 @@
                     <p class="script-result">{{ executionResult }}</p>
                 </div>
                 <div class="modal-footer dialog-without-lines-footer">
-                    <button @click="executeCode" :disabled="btnValidations" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn">Run</button>
+                    <button @click="executeCode" :disabled="btnValidations || agentIsInDebug" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn">Run</button>
                     <button @click="clearContent" type="submit" data-dismiss="modal" class="blue-text agent-border btn create-agent-buttons-main-action">Done</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -35,7 +35,8 @@ export default {
     return {
       terminalOutput: '',
       terminalInput: '',
-      executionResult: ''
+      executionResult: '',
+      agentIsInDebug: false
     }
   },
   computed: {
@@ -52,16 +53,20 @@ export default {
       this.terminalOutput = ''
       this.terminalInput = ''
       this.executionResult = ''
+      this.agentIsInDebug = false
     },
     executeCode: function () {
       if (this.terminalInput !== '') {
+        this.agentIsInDebug = true
         this.debugCode({
           terminalOutput: this.terminalOutput,
           script: this.terminalInput
         }).then(success => {
           this.executionResult = success
+          this.agentIsInDebug = false
         }).catch(function (error) {
           this.executionResult = error
+          this.agentIsInDebug = false
         })
       }
     }
