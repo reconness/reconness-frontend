@@ -32,7 +32,7 @@
                   <div class="col-12 col-sm-8" v-if="isVisibleTopSection">
                     <div class="col-12">
                       <div class="d-flex justify-content-between">
-                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="ligth-gray-background form-control zero-borders mt-4 w-70 agent-form-placeholder-font" placeholder="Repository">
+                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository();setWrittenInputFlag()" class="ligth-gray-background form-control zero-borders mt-4 w-70 agent-form-placeholder-font" placeholder="Repository">
                         <div class="d-flex flex-row justify-content-end file-import-container mt-2">
                           <div class="mr-2 logo d-flex flex-column">
                             <span class="agent-regular-font">Add</span>
@@ -45,10 +45,10 @@
                         </div><!-- /.d-flex -->
                       </div>
                     </div><!-- /.col-12 -->
-                    <div class="col-12" v-if="validators.blank.repository">
+                    <div class="col-12" v-if="validators.blank.repository && wereWrittenInput">
                       <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
                     </div>
-                    <div class="col-12" v-if="!validators.blank.repository && validators.url.repository">
+                    <div class="col-12" v-if="!validators.blank.repository && validators.url.repository && wereWrittenInput">
                       <span :class="{invalid: validators.url.repository}">The specified url is not valid</span>
                     </div>
                         <div class="col-12">
@@ -314,7 +314,8 @@ export default {
       },
       nextAgentSequence: 30,
       showNameInput: false,
-      isRandomColorSelected: true
+      isRandomColorSelected: true,
+      wereWrittenInput: false
     }
   },
   mixins: [TargetMixin],
@@ -387,26 +388,31 @@ export default {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setVioletColor: function () {
       this.agent.primaryColor = '#737be5'
       this.agent.secondaryColor = '#7159d3'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setRedColor: function () {
       this.agent.primaryColor = '#F96767'
       this.agent.secondaryColor = '#FF4343'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setOrangeColor: function () {
       this.agent.primaryColor = '#FF9966'
       this.agent.secondaryColor = '#f36a33'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setGreenColor: function () {
       this.agent.primaryColor = '#3adb99'
       this.agent.secondaryColor = '#16c465'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     addAgent () {
       this.enableValidationMessages()
@@ -445,6 +451,7 @@ export default {
       this.$store.commit('agent/setDetailsLinks', false)
     },
     resetAgentForm () {
+      this.wereWrittenInput = false
       this.isRandomColorSelected = true
       this.agent = {
         name: 'My Agent',
@@ -610,6 +617,12 @@ export default {
           image: imageFormData
         })
       }
+    },
+    removeImage () {
+      this.agent.image = ''
+    },
+    setWrittenInputFlag () {
+      this.wereWrittenInput = true
     }
   }
 }
