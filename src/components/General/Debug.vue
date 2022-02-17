@@ -10,7 +10,7 @@
                 <div class="modal-body">
                   <!-- PARAMETERIZABLE -->
                     <input v-model="terminalOutput" class="mb-4 form-control agent-placeholder form-input-without-lines" placeholder="Terminal one line output">
-                    <span class="info-box-text"><b class="pr-2">Script</b><a href="https://docs.reconness.com/agents/debug-agent" class="blue-text">Learn more</a></span>
+                    <span class="info-box-text"><b class="pr-2">Script</b><a href="https://docs.reconness.com/agents/debug-agent" target="_blank" rel="noopener noreferrer" class="blue-text">Learn more</a></span>
                     <v-ace-editor v-model:value="terminalInput" lang="csharp" style="height:300px; margin-top: 6px;" theme="monokai"/>
                     <p class="script-result">{{ executionResult }}</p>
                 </div>
