@@ -363,6 +363,7 @@ export default {
         this.agent.createdBy = value.createdBy
         this.agent.primaryColor = value.primaryColor
         this.agent.secondaryColor = value.secondaryColor
+        this.agent.image = value.image
       } else {
         this.agent.script = ''
       }
