@@ -364,8 +364,9 @@ export default {
         this.agent.primaryColor = value.primaryColor
         this.agent.secondaryColor = value.secondaryColor
         this.agent.image = value.image
-      } else {
-        this.agent.script = ''
+        if (value.script === undefined || value.script === null) {
+          this.agent.script = ''
+        }
       }
     }
   },
