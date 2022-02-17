@@ -48,6 +48,9 @@
                     <div class="col-12" v-if="validators.blank.repository">
                       <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
                     </div>
+                    <div class="col-12" v-if="!validators.blank.repository && validators.url.repository">
+                      <span :class="{invalid: validators.url.repository}">The specified url is not valid</span>
+                    </div>
                         <div class="col-12">
                           <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="ligth-gray-background form-control zero-borders" placeholder="Target">
                         </div><!-- /.col-12 -->
@@ -232,7 +235,7 @@
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div class="border-top-none modal-footer">
-                  <button type="button" :disabled="isFormValid" @click="addAgent(this.agent)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                  <button type="button" :disabled="isFormInvalid" @click="addAgent(this.agent)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -302,7 +305,11 @@ export default {
           name: false,
           repository: false,
           target: false,
-          command: false
+          command: false,
+          type: false
+        },
+        url: {
+          repository: false
         }
       },
       nextAgentSequence: 30,
@@ -326,8 +333,8 @@ export default {
       const id = this.$store.getters['agent/idAgent']
       return this.$store.getters['agent/getAgentById'](id)
     },
-    isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
+    isFormInvalid () {
+      return (this.validators.blank.name || this.validators.blank.repository || this.validators.url.repository || this.validators.blank.target || this.validators.blank.command || this.validators.blank.type)
     },
     isBlueColorSelected () {
       return this.agent.primaryColor === '#03DCED'
@@ -368,6 +375,9 @@ export default {
           this.agent.script = ''
         }
       }
+    },
+    'agent.repository': function (value) {
+      this.validators.url.repository = !this.$validateUrlWithoutProtocol(value)
     }
   },
   methods: {
@@ -400,7 +410,7 @@ export default {
     },
     addAgent () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
+      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.url.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
         if (this.editable) {
           this.agent.id = this.$store.getters['agent/idAgent']
           this.updateAgentToServer(this.agent).then(success => {
@@ -461,6 +471,9 @@ export default {
           target: false,
           command: false,
           type: false
+        },
+        url: {
+          repository: false
         }
       }
     },
