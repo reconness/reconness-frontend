@@ -212,7 +212,7 @@ export default ({
     },
     filterByColor (state) {
       return function (colour) {
-        return state.agentListStore.filter(item => item.background.includes(colour))
+        return state.agentListStore.filter(item => item.primaryColor.includes(colour))
       }
     },
     getRandomColor: state => {
