@@ -51,9 +51,6 @@
                         <div class="col-12">
                           <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="ligth-gray-background form-control zero-borders" placeholder="Target">
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="validators.blank.target">
-                          <span :class="{invalid: validators.blank.target}">The field target is required</span>
-                        </div>
                         <div class="col-12">
                           <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="ligth-gray-background form-control zero-borders  mt-1" placeholder="Command">
                         </div>
@@ -76,7 +73,7 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
+                                <input @change="enableValidationMessageType()" :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox1">Target</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
@@ -300,7 +297,6 @@ export default {
       validators: {
         blank: {
           name: false,
-          target: false,
           command: false,
           type: false
         },
@@ -331,7 +327,7 @@ export default {
       return this.$store.getters['agent/getAgentById'](id)
     },
     isFormInvalid () {
-      return (this.validators.blank.name || this.validators.url.repository || this.validators.blank.target || this.validators.blank.command || this.validators.blank.type)
+      return (this.validators.blank.name || this.validators.url.repository || this.validators.blank.command || this.validators.blank.type)
     },
     isBlueColorSelected () {
       return this.agent.primaryColor === '#03DCED'
@@ -412,7 +408,7 @@ export default {
     },
     addAgent () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.url.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
+      if (!this.validators.blank.name && !this.validators.url.repository && !this.validators.blank.command && !this.validators.blank.type) {
         if (this.editable) {
           this.agent.id = this.$store.getters['agent/idAgent']
           this.updateAgentToServer(this.agent).then(success => {
@@ -470,8 +466,6 @@ export default {
       this.validators = {
         blank: {
           name: false,
-          repository: false,
-          target: false,
           command: false,
           type: false
         },
