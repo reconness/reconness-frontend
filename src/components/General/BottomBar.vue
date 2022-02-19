@@ -56,12 +56,18 @@ export default {
       return Math.ceil(this.entitiesAmount / this.numberElementsInGroup)
     },
     numberStartsRange () {
+      if (this.page === this.numberOfPages) {
+        return (this.page * this.numberElementsInGroup) - this.numberElementsInGroup
+      }
       if (this.activateThePager) {
         return this.numberEndRange - this.numberElementsInGroup
       }
       return 0
     },
     numberEndRange () {
+      if (this.numberElementsInGroup > this.entitiesAmount) {
+        return this.entitiesAmount
+      }
       if (this.page === this.numberOfPages) {
         return this.entitiesAmount
       }
@@ -71,6 +77,9 @@ export default {
       return this.numberElementsInGroup
     },
     showPageNumberFromOne () {
+      if (this.page === this.numberOfPages) {
+        return this.numberStartsRange
+      }
       return this.numberStartsRange + 1
     },
     activateThePager () {
@@ -91,10 +100,19 @@ export default {
   methods: {
     ...mapMutations('target', ['updatePaginator']),
     updatePaginatorInStore (page) {
+      let newStartRange = parseInt(this.numberStartsRange)
+      let newEndRange = parseInt(this.numberEndRange)
+      if (this.page === this.numberOfPages) {
+        newEndRange = this.page * this.numberElementsInGroup
+        newStartRange = newEndRange - this.numberElementsInGroup
+      }
+      if (this.page === this.numberOfPages) {
+        newEndRange = this.page * this.numberElementsInGroup
+      }
       this.updatePaginator({
         page: this.page,
-        startIndex: parseInt(this.numberStartsRange),
-        endIndex: parseInt(this.numberEndRange)
+        startIndex: newStartRange,
+        endIndex: newEndRange
       })
       if (page > 1) {
         this.removePaintFirstButtonOfPaginatorPage()

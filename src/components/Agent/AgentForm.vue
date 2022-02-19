@@ -32,7 +32,7 @@
                   <div class="col-12 col-sm-8" v-if="isVisibleTopSection">
                     <div class="col-12">
                       <div class="d-flex justify-content-between">
-                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="enableValidationMessageRepository" class="ligth-gray-background form-control zero-borders mt-4 w-70 agent-form-placeholder-font" placeholder="Repository">
+                        <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.repository" @keyup="setWrittenInputFlag()" class="ligth-gray-background form-control zero-borders mt-4 w-70 agent-form-placeholder-font" placeholder="Repository">
                         <div class="d-flex flex-row justify-content-end file-import-container mt-2">
                           <div class="mr-2 logo d-flex flex-column">
                             <span class="agent-regular-font">Add</span>
@@ -45,15 +45,12 @@
                         </div><!-- /.d-flex -->
                       </div>
                     </div><!-- /.col-12 -->
-                    <div class="col-12" v-if="validators.blank.repository">
-                      <span :class="{invalid: validators.blank.repository}">The field repository is required</span>
+                    <div class="col-12" v-if="validators.url.repository && wereWrittenInput">
+                      <span :class="{invalid: validators.url.repository}">The specified url is not valid</span>
                     </div>
                         <div class="col-12">
                           <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="ligth-gray-background form-control zero-borders" placeholder="Target">
                         </div><!-- /.col-12 -->
-                        <div class="col-12" v-if="validators.blank.target">
-                          <span :class="{invalid: validators.blank.target}">The field target is required</span>
-                        </div>
                         <div class="col-12">
                           <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="ligth-gray-background form-control zero-borders  mt-1" placeholder="Command">
                         </div>
@@ -61,7 +58,7 @@
                           <span :class="{invalid: validators.blank.command}">The field command is required</span>
                         </div>
                         <div class="col-12">
-                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" class="mb-3 blue-text d-flex agent-regular-font font-weight-light justify-content-end">Learn more</a>
+                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" target="_blank" rel="noopener noreferrer" class="mb-3 blue-text d-flex agent-regular-font font-weight-light justify-content-end">Learn more</a>
                         </div><!-- /.col-12 -->
                         <div class="row show multi-collapse">
                     <div class="col-12 col-md-6">
@@ -76,7 +73,7 @@
                             <div class="combo-box-left-padding">
                             <div class="form-group">
                                 <div class="custom-control custom-radio form-check">
-                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
+                                <input @change="enableValidationMessageType()" :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1" :value="this.$agentType.TARGET" v-model="agent.type">
                                 <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox1">Target</label>
                                 </div>
                                 <div class="custom-control custom-radio form-check">
@@ -232,7 +229,7 @@
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div class="border-top-none modal-footer">
-                  <button type="button" :disabled="isFormValid" @click="addAgent(this.agent)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                  <button type="button" :disabled="isFormInvalid" @click="addAgent(this.agent)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -300,14 +297,17 @@ export default {
       validators: {
         blank: {
           name: false,
-          repository: false,
-          target: false,
-          command: false
+          command: false,
+          type: false
+        },
+        url: {
+          repository: false
         }
       },
       nextAgentSequence: 30,
       showNameInput: false,
-      isRandomColorSelected: true
+      isRandomColorSelected: true,
+      wereWrittenInput: false
     }
   },
   mixins: [TargetMixin],
@@ -326,8 +326,8 @@ export default {
       const id = this.$store.getters['agent/idAgent']
       return this.$store.getters['agent/getAgentById'](id)
     },
-    isFormValid () {
-      return (this.validators.blank.name && this.validators.blank.repository && this.validators.blank.target && this.validators.blank.command)
+    isFormInvalid () {
+      return (this.validators.blank.name || this.validators.url.repository || this.validators.blank.command || this.validators.blank.type)
     },
     isBlueColorSelected () {
       return this.agent.primaryColor === '#03DCED'
@@ -363,9 +363,14 @@ export default {
         this.agent.createdBy = value.createdBy
         this.agent.primaryColor = value.primaryColor
         this.agent.secondaryColor = value.secondaryColor
-      } else {
-        this.agent.script = ''
+        this.agent.image = value.image
+        if (value.script === undefined || value.script === null) {
+          this.agent.script = ''
+        }
       }
+    },
+    'agent.repository': function (value) {
+      this.validators.url.repository = (!this.$validateUrlWithoutProtocol(value) && !this.$validateIsBlank(value))
     }
   },
   methods: {
@@ -375,30 +380,35 @@ export default {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setVioletColor: function () {
       this.agent.primaryColor = '#737be5'
       this.agent.secondaryColor = '#7159d3'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setRedColor: function () {
       this.agent.primaryColor = '#F96767'
       this.agent.secondaryColor = '#FF4343'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setOrangeColor: function () {
       this.agent.primaryColor = '#FF9966'
       this.agent.secondaryColor = '#f36a33'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     setGreenColor: function () {
       this.agent.primaryColor = '#3adb99'
       this.agent.secondaryColor = '#16c465'
       this.isRandomColorSelected = false
+      this.removeImage()
     },
     addAgent () {
       this.enableValidationMessages()
-      if (!this.validators.blank.name && !this.validators.blank.repository && !this.validators.blank.target && !this.validators.blank.command && !this.validators.blank.type) {
+      if (!this.validators.blank.name && !this.validators.url.repository && !this.validators.blank.command && !this.validators.blank.type) {
         if (this.editable) {
           this.agent.id = this.$store.getters['agent/idAgent']
           this.updateAgentToServer(this.agent).then(success => {
@@ -433,6 +443,7 @@ export default {
       this.$store.commit('agent/setDetailsLinks', false)
     },
     resetAgentForm () {
+      this.wereWrittenInput = false
       this.isRandomColorSelected = true
       this.agent = {
         name: 'My Agent',
@@ -455,10 +466,11 @@ export default {
       this.validators = {
         blank: {
           name: false,
-          repository: false,
-          target: false,
           command: false,
           type: false
+        },
+        url: {
+          repository: false
         }
       }
     },
@@ -500,7 +512,6 @@ export default {
     enableValidationMessages () {
       this.enableValidationMessageName()
       this.enableValidationMessageTarget()
-      this.enableValidationMessageRepository()
       this.enableValidationMessageCommand()
       this.enableValidationMessageType()
     },
@@ -595,6 +606,12 @@ export default {
           image: imageFormData
         })
       }
+    },
+    removeImage () {
+      this.agent.image = ''
+    },
+    setWrittenInputFlag () {
+      this.wereWrittenInput = true
     }
   }
 }

@@ -272,7 +272,7 @@ export default {
     ...mapState('agent', ['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
     ...mapState('target', ['entitiesToDelete']),
     arrayUniqueColours () {
-      return [...new Set(this.agentListStore.map(item => item.background))]
+      return [...new Set(this.agentListStore.map(item => item.primaryColor))]
     }
   },
   mounted () {
