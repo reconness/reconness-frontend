@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return {
-      page: 0,
+      page: 1,
       numberElementsInGroup: 20,
       manualPageEntered: null
     }
@@ -78,6 +78,9 @@ export default {
     },
     showPageNumberFromOne () {
       if (this.page === this.numberOfPages) {
+        if (this.numberStartsRange === 0) {
+          return this.numberStartsRange + 1
+        }
         return this.numberStartsRange
       }
       return this.numberStartsRange + 1
@@ -87,6 +90,14 @@ export default {
     },
     isEnteredPageValid () {
       return this.manualPageEntered >= 1 && this.manualPageEntered <= this.numberOfPages
+    }
+  },
+  watch: {
+    entitiesAmount: function (value) {
+      if (this.numberEndRange > value) {
+        this.page--
+      }
+      this.updatePaginatorInStore(this.page)
     }
   },
   mounted () {

@@ -370,7 +370,12 @@ export default {
       }
     },
     'agent.repository': function (value) {
-      this.validators.url.repository = (!this.$validateUrlWithoutProtocol(value) && !this.$validateIsBlank(value))
+      this.validators.url.repository = (!this.$validateUrl(value) && !this.$validateIsBlank(value))
+    },
+    'agent.type': function (value) {
+      if (typeof value === 'number') {
+        this.validators.blank.type = false
+      }
     }
   },
   methods: {
@@ -447,7 +452,6 @@ export default {
       this.isRandomColorSelected = true
       this.agent = {
         name: 'My Agent',
-        background: 'transparent linear-gradient(160deg,#737be5 0%, #7159d3 100%) 0% 0% no-repeat padding-box',
         repository: '',
         target: '',
         command: '',
@@ -461,7 +465,9 @@ export default {
         image: '',
         lastRun: null,
         status: this.$entityStatus.FINISHED,
-        createdBy: this.$entitySource.USER.id
+        createdBy: this.$entitySource.USER.id,
+        primaryColor: '#737be5',
+        secondaryColor: '#7159d3'
       }
       this.validators = {
         blank: {
