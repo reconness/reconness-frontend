@@ -59,7 +59,7 @@ export default {
   computed: {
     ...mapState('target', ['entitiesToDelete', 'removeAll']),
     entityTypeDisplayed () {
-      if (this.isOnTargetView || this.$isOnHomeView) {
+      if (this.isOnTargetView || this.$isOnHomeView()) {
         return this.$entityTypeData.TARGET
       } else if (this.isOnTargetDetailView) {
         if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
