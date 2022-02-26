@@ -336,5 +336,15 @@ export default {
     app.config.globalProperties.$getFormatedTime = function (time) {
       return time.toLocaleString('en-Us', { hour: 'numeric', minute: 'numeric', hour12: true })
     }
+
+    app.config.globalProperties.$niceBytes = function (bytes) {
+      const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+      let l = 0
+      let n = parseInt(bytes, 10) || 0
+      while (n >= 1024 && ++l) {
+        n = n / 1024
+      }
+      return (n.toFixed(n < 10 && l > 0 ? 1 : 0) + units[l])
+    }
   }
 }

@@ -47,7 +47,7 @@
                 <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
                   <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.filename}}</span></div>
                   <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.count}}</span></div>
-                  <div class="col-1"><span class="text-wrap break-word">{{wordlistItem.size}}kb</span></div>
+                  <div class="col-1"><span class="text-wrap break-word">{{this.$niceBytes(wordlistItem.size)}}</span></div>
                   <div class="col-4"><span class="text-break break-word">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
                   <div class="col-3">
                     <div class="d-flex justify-content-between">
@@ -62,8 +62,7 @@
           </div><!-- /.row -->
         </div>
         <div class="border-top-none modal-footer">
-          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Accept</button>
-          <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -159,7 +158,7 @@ export default {
       const reader = new FileReader()
       const self = this
       reader.onload = function () {
-        const sizeInkb = textfile.size / 1024
+        const fileSize = self.$niceBytes(textfile.size)
         self.loadedFileName = textfile.name
         const wordlistFormData = new FormData()
         wordlistFormData.append('file', textfile)
@@ -168,7 +167,7 @@ export default {
             const wordListItem = {
               id: -1,
               filename: textfile.name,
-              size: Math.round(sizeInkb),
+              size: fileSize,
               type: self.selectedPill,
               count: self.countLinesFromText(reader.result),
               path: ''
