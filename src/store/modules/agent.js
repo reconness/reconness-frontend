@@ -387,9 +387,9 @@ export default ({
         data: agentNames
       }).then(function (response) {
         dispatch('removeAgentsSelected')
-        return true
-      }).catch(function () {
-        return false
+        return { status: true, message: '' }
+      }).catch(function (error) {
+        return { status: false, message: error.response.data }
       })
     },
     loadMarketplace ({ state, commit, getters, rootState }) {
@@ -424,10 +424,10 @@ export default ({
           .then(function (response) {
             agent.id = response.data.id
             state.agentListStore.push(agent)
-            return true
+            return { status: true, message: '' }
           })
-          .catch(function (response) {
-            return false
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -437,9 +437,9 @@ export default ({
         return axios.delete('/agents/' + installer.nameInstaller)
           .then(function (response) {
             state.agentListStore.splice(index, 1)
-            return true
-          }).catch(function () {
-            return false
+            return { status: true, message: '' }
+          }).catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -448,10 +448,10 @@ export default ({
         return axios.put('/agents/' + agent.id, getters.mapAgentFromLocalToServer(agent))
           .then(function (response) {
             commit('updateAgent', agent)
-            return true
+            return { status: true, message: '' }
           })
-          .catch(function (response) {
-            return false
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -467,9 +467,9 @@ export default ({
             mappedAgent.createdBy = 2
             mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)
-            return true
-          }).catch(function () {
-            return false
+            return { status: true, message: '' }
+          }).catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },

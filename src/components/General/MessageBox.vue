@@ -138,11 +138,11 @@ export default {
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView || this.$isOnHomeView()) {
-        this.clearTargetEntitiesToDeleteToServer().then(success => {
-          if (success) {
+        this.clearTargetEntitiesToDeleteToServer().then(response => {
+          if (response.status) {
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
           } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAllPurpose)
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
           }
         })
       } else if (this.isOnTargetDetailView) {
@@ -153,11 +153,11 @@ export default {
           this.clearTargetRedirectToTargetListAndUpdateOperationStatus()
         }
       } else if (this.$isOnAgentView()) {
-        this.clearAgentEntitiesToDelete().then(success => {
-          if (success) {
+        this.clearAgentEntitiesToDelete().then(response => {
+          if (response.status) {
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
           } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAllPurpose)
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
           }
         })
       } else if (this.$isOnRootDomainView()) {

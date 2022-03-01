@@ -421,29 +421,30 @@ export default {
       if (!this.validators.blank.name && !this.validators.url.repository && !this.validators.blank.command && !this.validators.blank.type) {
         if (this.editable) {
           this.agent.id = this.$store.getters['agent/idAgent']
-          this.updateAgentToServer(this.agent).then(success => {
-            if (success) {
+          this.updateAgentToServer(this.agent).then(response => {
+            if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentEdition)
               this.resetAgentForm()
+              jQuery('#exampleModalCenter').modal('hide')
+              this.editable = false
+              this.$store.commit('agent/setIdAgent', -1)
             } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
-              this.resetAgentForm()
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
           })
-          this.$store.commit('agent/setIdAgent', -1)
         } else {
-          this.addAgentToServer(this.agent).then(success => {
-            if (success) {
+          this.addAgentToServer(this.agent).then(response => {
+            if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInsertion)
               this.resetAgentForm()
-            } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
+              jQuery('#exampleModalCenter').modal('hide')
+              this.editable = false
               this.resetAgentForm()
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
           })
         }
-        jQuery('#exampleModalCenter').modal('hide')
-        this.editable = false
       }
     },
     close () {

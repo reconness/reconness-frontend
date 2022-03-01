@@ -35,11 +35,11 @@ export default {
       this.removeAgentFromInstaller({
         idInstaller: this.installerOption,
         nameInstaller: this.installerOptionName
-      }).then(success => {
-        if (success) {
+      }).then(response => {
+        if (response.status) {
           this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentUninstallation)
         } else {
-          this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAgentUninstallation)
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
         }
       })
     }
