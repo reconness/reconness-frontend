@@ -72,6 +72,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import jQuery from 'jquery'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'WordList',
   data: function () {
@@ -82,6 +83,7 @@ export default {
       selectedFileName: ''
     }
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('wordlist', ['wordlists']),
     ...mapState('general', ['notificationMessageActionSelected']),
@@ -117,8 +119,12 @@ export default {
             filename: this.selectedFileName,
             id: this.selectedIdWordlist
           }
-        ).then(success => {
-          this.resetData()
+        ).then(response => {
+          if (response.status) {
+            this.resetData()
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
         })
       }
     }
@@ -203,7 +209,11 @@ export default {
         {
           wordListCode: this.selectedPill,
           formData: fileFormData
-        })
+        }).then(response => {
+        if (!response.status) {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     },
     downloadWordlist (e) {
       this.selectedFileName = e.currentTarget.getAttribute('data-name')
