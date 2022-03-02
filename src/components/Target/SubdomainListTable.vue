@@ -170,7 +170,7 @@ There are no subdomains associated with this root domain. <br>
 <script>
 import SubDomainInsertionForm from '@/components/Target/SubDomainInsertionForm.vue'
 import OverlayPanel from 'primevue/overlaypanel'
-import Confirmation from '@/components/Target/Confirmation.vue'
+import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
 import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'

@@ -234,7 +234,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import AgentForm from '@/components/Agent/AgentForm.vue'
-import Debug from '@/components/General/Debug.vue'
+import Debug from '@/components/General/AgentDebug.vue'
 import InstallOnDebug from '@/components/General/InstallOnDebug'
 import UninstallOnDebug from '@/components/General/UninstallOnDebug'
 import Toast from 'primevue/toast'

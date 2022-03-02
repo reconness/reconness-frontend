@@ -27,7 +27,7 @@
 import { VAceEditor } from 'vue3-ace-editor'
 import { mapActions } from 'vuex'
 export default {
-  name: 'Debug',
+  name: 'AgentDebug',
   components: {
     VAceEditor
   },

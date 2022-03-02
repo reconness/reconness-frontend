@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue'),
+    component: () => import('../views/SystemHome.vue'),
     meta: {
       guest: false
     }
@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    component: () => import(/* webpackChunkName: "about" */ '../views/SystemAbout.vue'),
     meta: {
       guest: false
     }
@@ -90,7 +90,7 @@ const routes = [
   {
     path: '/logs',
     name: 'Logs',
-    component: () => import('../views/Logs.vue'),
+    component: () => import('../views/SystemLogs.vue'),
     meta: {
       guest: false
     }
