@@ -287,7 +287,9 @@ export default {
         errorMessageForAgentInstallation: 'An error ocurred during installation',
         successMessageForNotificationUpdate: 'The notifications settings has been edited successfully',
         successMessageForAgentUninstallation: 'The agent has been installed successfully',
-        errorMessageForAgentUninstallation: 'An error ocurred during uninstallation'
+        errorMessageForAgentUninstallation: 'An error ocurred during uninstallation',
+        successMessageForImageUpload: 'The image was successfully uploaded',
+        successMessageForFileUpload: 'The file was successfully uploaded'
       }
     )
 

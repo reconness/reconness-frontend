@@ -210,7 +210,9 @@ export default {
           wordListCode: this.selectedPill,
           formData: fileFormData
         }).then(response => {
-        if (!response.status) {
+        if (response.status) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForFileUpload)
+        } else {
           this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
         }
       })
