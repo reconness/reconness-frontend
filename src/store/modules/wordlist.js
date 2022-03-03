@@ -73,7 +73,7 @@ export default ({
             'Content-Type': 'multipart/form-data'
           }
         }).then(function (response) {
-          return { status: true, message: '' }
+          return { status: true, message: '', data: response.data }
         }).catch(function (error) {
           return { status: false, message: error.response.data }
         })

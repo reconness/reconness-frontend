@@ -48,7 +48,7 @@
                   <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.filename}}</span></div>
                   <div class="col-1"><span class="text-wrap break-word">{{wordlistItem.count}}</span></div>
                   <div class="col-1"><span class="text-wrap break-word">{{this.$niceBytes(wordlistItem.size)}}</span></div>
-                  <div class="col-6"><span class="text-break break-word">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
+                  <div class="col-6"><span class="text-break break-word">{{wordlistItem.path}}</span></div>
                   <div class="col-2">
                     <div class="d-flex justify-content-between">
                       <button @click="downloadWordlist" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
@@ -164,19 +164,19 @@ export default {
       const reader = new FileReader()
       const self = this
       reader.onload = function () {
-        const fileSize = self.$niceBytes(textfile.size)
         self.loadedFileName = textfile.name
         const wordlistFormData = new FormData()
         wordlistFormData.append('file', textfile)
-        self.upload(wordlistFormData).then(success => {
-          if (success) {
+        self.upload(wordlistFormData).then(response => {
+          if (response.status) {
+            const fileSize = response.data.size
             const wordListItem = {
               id: -1,
               filename: textfile.name,
               size: fileSize,
               type: self.selectedPill,
-              count: self.countLinesFromText(reader.result),
-              path: ''
+              count: response.data.count,
+              path: response.data.path
             }
             self.addWordListItem(wordListItem)
           }
@@ -215,6 +215,7 @@ export default {
         } else {
           this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
         }
+        return response
       })
     },
     downloadWordlist (e) {
