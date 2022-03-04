@@ -2,7 +2,7 @@
     <div class="col-12">
         <form>
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content agent-containers poppins">
               <div class="modal-header remove-flex">
                 <div class="row">
