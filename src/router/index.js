@@ -11,14 +11,6 @@ const routes = [
     }
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/SystemAbout.vue'),
-    meta: {
-      guest: false
-    }
-  },
-  {
     path: '/agents',
     name: 'Agent',
     component: () => import('../views/AgentsListView.vue'),
@@ -83,14 +75,6 @@ const routes = [
     name: 'PipelineRunView',
     component: () => import('../views/PipelineRunView.vue'),
     props: true,
-    meta: {
-      guest: false
-    }
-  },
-  {
-    path: '/logs',
-    name: 'Logs',
-    component: () => import('../views/SystemLogs.vue'),
     meta: {
       guest: false
     }

@@ -234,15 +234,15 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import AgentForm from '@/components/Agent/AgentForm.vue'
-import Debug from '@/components/General/AgentDebug.vue'
-import InstallOnDebug from '@/components/General/InstallOnDebug'
-import UninstallOnDebug from '@/components/General/UninstallOnDebug'
+import Debug from '@/components/Agent/AgentDebug.vue'
+import InstallOnDebug from '@/components/Agent/InstallOnDebug'
+import UninstallOnDebug from '@/components/Agent/UninstallOnDebug'
 import Toast from 'primevue/toast'
 import OverlayPanel from 'primevue/overlaypanel'
 import ConfirmDeleteList from '@/components/General/ConfirmDeleteList.vue'
 import jQuery from 'jquery'
 import LocalMallIco from '@/components/Icons/LocalMallIco.vue'
-import Wordlist from '@/components/General/Wordlist.vue'
+import Wordlist from '@/components/Agent/Wordlist.vue'
 export default {
   name: 'NavBarTwo',
   components: {
