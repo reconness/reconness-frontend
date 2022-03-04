@@ -48,8 +48,8 @@
                     <div class="col-12" v-if="validators.url.repository && wereWrittenInput">
                       <span :class="{invalid: validators.url.repository}">The specified url is not valid</span>
                     </div>
-                        <div class="col-12">
-                          <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.target" @keyup="enableValidationMessageTarget" class="ligth-gray-background form-control zero-borders" placeholder="Target">
+                        <div class="col-12 target-chips">
+                          <Chips placeholder="Categories" v-model="agent.categories" :allowDuplicate="false" :addOnBlur="true" id="chips_el" :separator="','"/>
                         </div><!-- /.col-12 -->
                         <div class="col-12">
                           <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="ligth-gray-background form-control zero-borders  mt-1" placeholder="Command">
@@ -240,6 +240,7 @@
 </template>
 <script>
 import jQuery from 'jquery'
+import Chips from 'primevue/chips'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
@@ -253,7 +254,8 @@ export default {
     VAceEditor,
     AccountCogIco,
     FileCodeIco,
-    ApplicationCogIco
+    ApplicationCogIco,
+    Chips
   },
   props: {
     readOnly: {
@@ -268,14 +270,13 @@ export default {
         primaryColor: '#737be5',
         secondaryColor: '#7159d3',
         repository: '',
-        target: '',
         command: '',
         type: '',
         isRootDomainType: false,
         isSubDomainType: false,
         isAliveTrigger: false,
         isHttpOpenTrigger: false,
-        category: '',
+        categories: [],
         script: '',
         id: -1,
         creationDate: new Date().toString(),
@@ -315,7 +316,6 @@ export default {
     isValid () {
       if (this.agent.name !== '' &&
       this.agent.repository !== '' &&
-      this.agent.target !== '' &&
       this.agent.command !== '' &&
       this.agent.type !== '' && (this.agent.isAliveTrigger || this.agent.isHttpOpenTrigger)) {
         return false
@@ -352,7 +352,6 @@ export default {
         this.agent.name = value.name
         this.agent.background = value.background
         this.agent.repository = value.repository
-        this.agent.target = value.target
         this.agent.command = value.command
         this.agent.type = value.type
         this.agent.isAliveTrigger = value.isAliveTrigger
@@ -364,6 +363,7 @@ export default {
         this.agent.primaryColor = value.primaryColor
         this.agent.secondaryColor = value.secondaryColor
         this.agent.image = value.image
+        this.agent.categories = value.categories
         if (value.script === undefined || value.script === null) {
           this.agent.script = ''
         }
@@ -459,12 +459,11 @@ export default {
       this.agent = {
         name: 'My Agent',
         repository: '',
-        target: '',
         command: '',
         type: '',
         isAliveTrigger: false,
         isHttpOpenTrigger: false,
-        category: '',
+        categories: [],
         script: '',
         id: -1,
         creationDate: new Date().toString(),
@@ -523,7 +522,6 @@ export default {
     },
     enableValidationMessages () {
       this.enableValidationMessageName()
-      this.enableValidationMessageTarget()
       this.enableValidationMessageCommand()
       this.enableValidationMessageType()
     },

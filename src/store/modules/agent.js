@@ -325,7 +325,6 @@ export default ({
         secondaryColor: getters.getSecondaryColor(agent.secondaryColor),
         id: agent.id,
         repository: agent.repository,
-        target: agent.target,
         command: agent.command,
         type: getters.getEntityTypeByDescription(agent.agentType),
         isAliveTrigger: agent.triggerSubdomainIsAlive,
@@ -336,7 +335,7 @@ export default ({
         installedFrom: '',
         lastRun: new Date(agent.lastRun),
         createdBy: getters.getEntitySourceByDescription(agent.createdBy),
-        categories: []
+        categories: agent.categories
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -349,7 +348,6 @@ export default ({
         command: agent.command,
         repository: agent.repository,
         agentType: getters.getEntityTypeDescriptionByCode(agent.type),
-        categories: [],
         entitySource: agent.createdBy,
         primaryColor: agent.primaryColor,
         secondaryColor: agent.secondaryColor,
@@ -357,7 +355,7 @@ export default ({
         createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
         triggerSubdomainIsAlive: agent.isAliveTrigger,
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
-        target: agent.target,
+        categories: agent.categories,
         image: agent.image
       }
       return mappedAgent
