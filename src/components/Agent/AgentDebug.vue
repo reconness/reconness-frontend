@@ -12,7 +12,7 @@
                     <input v-model="terminalOutput" class="mb-4 form-control agent-placeholder form-input-without-lines" placeholder="Terminal one line output">
                     <span class="info-box-text"><b class="pr-2">Script</b><a href="https://docs.reconness.com/agents/debug-agent" target="_blank" rel="noopener noreferrer" class="blue-text">Learn more</a></span>
                     <v-ace-editor v-model:value="terminalInput" lang="csharp" style="height:300px; margin-top: 6px;" theme="monokai"/>
-                    <p class="script-result">{{ executionResult }}</p>
+                    <pre class="script-result h-25">{{ executionResult }}</pre>
                 </div>
                 <div class="modal-footer dialog-without-lines-footer">
                     <button @click="executeCode" :disabled="btnValidations || agentIsInDebug" type="button" class="agent-border btn create-agent-buttons-main-action btn-block btn-danger delete_btn">Run</button>
@@ -62,10 +62,10 @@ export default {
           terminalOutput: this.terminalOutput,
           script: this.terminalInput
         }).then(success => {
-          this.executionResult = success
+          this.executionResult = JSON.stringify(success, null, 2)
           this.agentIsInDebug = false
         }).catch(function (error) {
-          this.executionResult = error
+          this.executionResult = JSON.stringify(error, null, 2)
           this.agentIsInDebug = false
         })
       }
@@ -74,7 +74,8 @@ export default {
 }
 </script>
 <style>
-  p.script-result{
+  pre.script-result{
     margin-top: 6px;
+    max-height: 150px;
   }
 </style>
