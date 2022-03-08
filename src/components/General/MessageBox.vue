@@ -7,7 +7,7 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="d-flex justify-content-center mb-3">
-                      <HelpIco :variableClass="'mt-5 question-mark-size question-mark-color'"/>
+                      <HelpIco :variableClass="'mt-2 question-mark-size question-mark-color'"/>
                     </div>
                   </div>
                   <div class="col-12">
@@ -22,12 +22,15 @@
                   </div>
                   <div class="col-12">
                     <div class="d-flex justify-content-center pl-2 pr-2">
-                      <p v-if="multipleItemsToDelete"> Please, confirm typing <b>yes</b> before delete the selected items</p>
+                      <div v-if="multipleItemsToDelete">
+                        <p> Please, confirm typing <b>yes</b> before delete the selected items</p>
+                        <p class="overflow-y-auto red-text multipleselect">{{printAgentNamesToDelete}}</p>
+                      </div>
                       <p v-else>Please, confirm the name of the {{this.getLowerNameOfEntityTypeDisplayed}} <b>{{selectedName}}</b> before delete it</p>
                     </div>
                   </div>
                   <div class="col-12">
-                    <input class="form-control zero-borders" v-model="nameTyped" :placeholder="entityTypeDisplayed.description + ' name'">
+                    <input class="form-control zero-borders" v-model="nameTyped" :placeholder="nameToConfirmPlaceholder">
                   </div>
                 </div>
                 </div> <!-- /.modal-body -->
@@ -128,6 +131,19 @@ export default {
     },
     entitiesToRemoveContainAsubDomain () {
       return this.entitiesToDelete[0].type === this.$entityTypeData.SUBDOMAIN.id
+    },
+    printAgentNamesToDelete (agents) {
+      const namesList = []
+      this.entitiesToDelete.forEach(entity => {
+        namesList.push(entity.name)
+      })
+      return namesList.join(', ')
+    },
+    nameToConfirmPlaceholder () {
+      if (this.multipleItemsToDelete) {
+        return 'yes'
+      }
+      return this.entityTypeDisplayed.description + ' name'
     }
   },
   methods: {
@@ -280,6 +296,9 @@ export default {
 }
 </script>
 <style scoped>
+.multipleselect{
+  height: 55px;
+}
 .question-mark-size{
   width: 40%;
   height: 50%
