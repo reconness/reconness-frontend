@@ -38,13 +38,7 @@ export default ({
     styleLogsState: false,
     styleNotificationsState: false,
     colorDelete: '#000000',
-    agentsInstallers: [
-      { name: 'Subfinder', description: 'Breve descripcion del agente Subfinder', id: 1, installed: false },
-      { name: 'Amass', description: 'Breve descripcion del agente Amass', id: 2, installed: false },
-      { name: 'GoBusterMs', description: 'Breve descripcion del agente GoBusterMs', id: 3, installed: false },
-      { name: 'SubkisteD', description: 'Breve descripcion del agente SubkisteD', id: 4, installed: false },
-      { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: false }
-    ],
+    agentsInstallers: [],
     isNotesSectionOpened: false,
     isDeletetFromForm: false,
     isElementDeleted: false,
