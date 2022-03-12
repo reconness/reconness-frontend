@@ -34,11 +34,11 @@ export default {
   methods: {
     ...mapActions('agent', ['agentInstallerUninstaller']),
     installer () {
-      this.agentInstallerUninstaller(this.installerOption).then(success => {
-        if (success) {
+      this.agentInstallerUninstaller(this.installerOption).then(response => {
+        if (response.status) {
           this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInstallation)
         } else {
-          this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForAgentInstallation)
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
         }
       })
     }

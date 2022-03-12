@@ -1,7 +1,7 @@
 <template>
 <div class="col-12">
   <div class="modal fade" id="wordlistModal" tabindex="-1" role="dialog" aria-labelledby="wordlistModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
       <div class="modal-content agent-containers">
         <div class="modal-header remove-flex">
           <div class="row">
@@ -38,18 +38,18 @@
               <div class="wordlist-files-container wordlist-container-size border px-2 py-1 mt-2">
                 <div class="row">
                   <div class="col-2 border-bottom pb-1"><span class="font-weight-bold">Filename</span></div>
-                  <div class="col-2 border-left border-right border-bottom pb-1"><span class="font-weight-bold">Count</span></div>
+                  <div class="col-1 border-left border-right border-bottom pb-1"><span class="font-weight-bold">Count</span></div>
                   <div class="col-1 border-right border-bottom pb-1"><span class="font-weight-bold">Size</span></div>
-                  <div class="col-4 border-right border-bottom pb-1"><span class="font-weight-bold">Path</span></div>
-                  <div class="col-3 border-bottom pb-1"><span class="font-weight-bold">Actions</span></div>
+                  <div class="col-6 border-right border-bottom pb-1"><span class="font-weight-bold">Path</span></div>
+                  <div class="col-2 border-bottom pb-1"><span class="font-weight-bold">Actions</span></div>
                 </div>
                 <div class=" wordlist-data-container overflow-y-auto w-100">
                 <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
                   <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.filename}}</span></div>
-                  <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.count}}</span></div>
-                  <div class="col-1"><span class="text-wrap break-word">{{wordlistItem.size}}kb</span></div>
-                  <div class="col-4"><span class="text-break break-word">{{wordlistItem.path}}/{{wordlistItem.filename}}</span></div>
-                  <div class="col-3">
+                  <div class="col-1"><span class="text-wrap break-word">{{wordlistItem.count}}</span></div>
+                  <div class="col-1"><span class="text-wrap break-word">{{this.$niceBytes(wordlistItem.size)}}</span></div>
+                  <div class="col-6"><span class="text-break break-word">{{wordlistItem.path}}</span></div>
+                  <div class="col-2">
                     <div class="d-flex justify-content-between">
                       <button @click="downloadWordlist" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
                       <button @click="removeWordList" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
@@ -62,8 +62,7 @@
           </div><!-- /.row -->
         </div>
         <div class="border-top-none modal-footer">
-          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Accept</button>
-          <button type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
+          <button type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -73,6 +72,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import jQuery from 'jquery'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'WordList',
   data: function () {
@@ -83,6 +83,7 @@ export default {
       selectedFileName: ''
     }
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('wordlist', ['wordlists']),
     ...mapState('general', ['notificationMessageActionSelected']),
@@ -118,8 +119,12 @@ export default {
             filename: this.selectedFileName,
             id: this.selectedIdWordlist
           }
-        ).then(success => {
-          this.resetData()
+        ).then(response => {
+          if (response.status) {
+            this.resetData()
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
         })
       }
     }
@@ -159,19 +164,19 @@ export default {
       const reader = new FileReader()
       const self = this
       reader.onload = function () {
-        const sizeInkb = textfile.size / 1024
         self.loadedFileName = textfile.name
         const wordlistFormData = new FormData()
         wordlistFormData.append('file', textfile)
-        self.upload(wordlistFormData).then(success => {
-          if (success) {
+        self.upload(wordlistFormData).then(response => {
+          if (response.status) {
+            const fileSize = response.data.size
             const wordListItem = {
               id: -1,
               filename: textfile.name,
-              size: Math.round(sizeInkb),
+              size: fileSize,
               type: self.selectedPill,
-              count: self.countLinesFromText(reader.result),
-              path: ''
+              count: response.data.count,
+              path: response.data.path
             }
             self.addWordListItem(wordListItem)
           }
@@ -204,7 +209,14 @@ export default {
         {
           wordListCode: this.selectedPill,
           formData: fileFormData
-        })
+        }).then(response => {
+        if (response.status) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForFileUpload)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+        return response
+      })
     },
     downloadWordlist (e) {
       this.selectedFileName = e.currentTarget.getAttribute('data-name')

@@ -21,7 +21,7 @@
             </div> <!-- /.d-flex target-mosaic-options -->
           </div> <!-- /.info-box-content -->
           <span class="info-box-icon" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-            <img v-if="image" class="logo-image w-75 h-75" :src="image">
+            <img v-if="image" class="fill-logo-image" :src="image">
             <AccountCogIco v-if="!image && this.$installedByUser(createdBy)" class="w-50 h-50"/>
             <ApplicationCogIco v-if="!image && this.$installedBySystem(createdBy)" class="w-50 h-50"/>
           </span>

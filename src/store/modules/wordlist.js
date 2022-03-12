@@ -73,9 +73,9 @@ export default ({
             'Content-Type': 'multipart/form-data'
           }
         }).then(function (response) {
-          return true
-        }).catch(function () {
-          return false
+          return { status: true, message: '', data: response.data }
+        }).catch(function (error) {
+          return { status: false, message: error.response.data }
         })
       }
     },
@@ -84,10 +84,10 @@ export default ({
       return axios.delete('/wordlists/' + wordlistDescriptionType + '/' + wordlistData.filename)
         .then(function (response) {
           commit('removeWordListItem', wordlistData.id)
-          return true
+          return { status: true, message: '' }
         })
-        .catch(function () {
-          return false
+        .catch(function (error) {
+          return { status: false, message: error.response.data }
         })
     },
     downloadWordListFile ({ state, commit, getters, rootState }, wordlistData) {

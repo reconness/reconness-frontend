@@ -1258,3 +1258,9 @@ html {
 .overflow-y-clip{
   overflow-y: clip;
 }
+
+.fill-logo-image{
+  height: 56px!important;
+  width: 56px!important;
+  border-radius: 13px;
+}

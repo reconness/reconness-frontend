@@ -5,15 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue'),
-    meta: {
-      guest: false
-    }
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    component: () => import('../views/SystemHome.vue'),
     meta: {
       guest: false
     }
@@ -83,14 +75,6 @@ const routes = [
     name: 'PipelineRunView',
     component: () => import('../views/PipelineRunView.vue'),
     props: true,
-    meta: {
-      guest: false
-    }
-  },
-  {
-    path: '/logs',
-    name: 'Logs',
-    component: () => import('../views/Logs.vue'),
     meta: {
       guest: false
     }

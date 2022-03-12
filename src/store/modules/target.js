@@ -413,10 +413,10 @@ export default ({
           .then(function (response) {
             target.id = response.data.id
             state.targetListStore.push(target)
-            return true
+            return { status: true, message: '' }
           })
-          .catch(function (response) {
-            return false
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -425,10 +425,10 @@ export default ({
         return axios.put('/targets/' + target.id, getters.mapTargetFromLocalToServer(target))
           .then(function (response) {
             commit('updateTarget', target)
-            return true
+            return { status: true, message: '' }
           })
-          .catch(function (response) {
-            return false
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -455,9 +455,9 @@ export default ({
         data: targetNames
       }).then(function (response) {
         dispatch('removeTargetsSelected')
-        return true
-      }).catch(function () {
-        return false
+        return { status: true, message: '' }
+      }).catch(function (error) {
+        return { status: false, message: error.response.data }
       })
     }
   },

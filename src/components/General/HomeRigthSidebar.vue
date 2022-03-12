@@ -41,7 +41,7 @@
 </template>
 <script>
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
-import Confirmation from '@/components/Target/Confirmation.vue'
+import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
 export default {

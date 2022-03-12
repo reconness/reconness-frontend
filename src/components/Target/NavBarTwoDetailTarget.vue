@@ -147,7 +147,7 @@ import { mapMutations, mapState, mapGetters } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
 import NotesBtn from '@/components/General/NotesBtn.vue'
 import NotesSection from '@/components/General/NotesSection.vue'
-import Confirmation from '@/components/Target/Confirmation.vue'
+import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
 import NoteConfirmation from '@/components/Target/NoteConfirmation.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 

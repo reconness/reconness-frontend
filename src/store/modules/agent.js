@@ -38,13 +38,7 @@ export default ({
     styleLogsState: false,
     styleNotificationsState: false,
     colorDelete: '#000000',
-    agentsInstallers: [
-      { name: 'Subfinder', description: 'Breve descripcion del agente Subfinder', id: 1, installed: false },
-      { name: 'Amass', description: 'Breve descripcion del agente Amass', id: 2, installed: false },
-      { name: 'GoBusterMs', description: 'Breve descripcion del agente GoBusterMs', id: 3, installed: false },
-      { name: 'SubkisteD', description: 'Breve descripcion del agente SubkisteD', id: 4, installed: false },
-      { name: 'ForeingBot', description: 'Breve descripcion del agente ForeingBot', id: 5, installed: false }
-    ],
+    agentsInstallers: [],
     isNotesSectionOpened: false,
     isDeletetFromForm: false,
     isElementDeleted: false,
@@ -325,7 +319,6 @@ export default ({
         secondaryColor: getters.getSecondaryColor(agent.secondaryColor),
         id: agent.id,
         repository: agent.repository,
-        target: agent.target,
         command: agent.command,
         type: getters.getEntityTypeByDescription(agent.agentType),
         isAliveTrigger: agent.triggerSubdomainIsAlive,
@@ -336,7 +329,7 @@ export default ({
         installedFrom: '',
         lastRun: new Date(agent.lastRun),
         createdBy: getters.getEntitySourceByDescription(agent.createdBy),
-        categories: []
+        categories: agent.categories
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -349,7 +342,6 @@ export default ({
         command: agent.command,
         repository: agent.repository,
         agentType: getters.getEntityTypeDescriptionByCode(agent.type),
-        categories: [],
         entitySource: agent.createdBy,
         primaryColor: agent.primaryColor,
         secondaryColor: agent.secondaryColor,
@@ -357,7 +349,7 @@ export default ({
         createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
         triggerSubdomainIsAlive: agent.isAliveTrigger,
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
-        target: agent.target,
+        categories: agent.categories,
         image: agent.image
       }
       return mappedAgent
@@ -387,9 +379,9 @@ export default ({
         data: agentNames
       }).then(function (response) {
         dispatch('removeAgentsSelected')
-        return true
-      }).catch(function () {
-        return false
+        return { status: true, message: '' }
+      }).catch(function (error) {
+        return { status: false, message: error.response.data }
       })
     },
     loadMarketplace ({ state, commit, getters, rootState }) {
@@ -424,10 +416,10 @@ export default ({
           .then(function (response) {
             agent.id = response.data.id
             state.agentListStore.push(agent)
-            return true
+            return { status: true, message: '' }
           })
-          .catch(function (response) {
-            return false
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -437,9 +429,9 @@ export default ({
         return axios.delete('/agents/' + installer.nameInstaller)
           .then(function (response) {
             state.agentListStore.splice(index, 1)
-            return true
-          }).catch(function () {
-            return false
+            return { status: true, message: '' }
+          }).catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -448,10 +440,10 @@ export default ({
         return axios.put('/agents/' + agent.id, getters.mapAgentFromLocalToServer(agent))
           .then(function (response) {
             commit('updateAgent', agent)
-            return true
+            return { status: true, message: '' }
           })
-          .catch(function (response) {
-            return false
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -467,9 +459,9 @@ export default ({
             mappedAgent.createdBy = 2
             mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)
-            return true
-          }).catch(function () {
-            return false
+            return { status: true, message: '' }
+          }).catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },

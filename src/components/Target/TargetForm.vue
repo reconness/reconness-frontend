@@ -293,28 +293,31 @@ export default {
         if (this.editable) {
           this.target.id = this.$store.getters['target/idTarget']
           this.target.name = this.transformedName
-          this.updateTargetToServer(this.target).then(success => {
-            if (success) {
+          this.updateTargetToServer(this.target).then(response => {
+            if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetEdition)
+              this.resetTargetForm()
+              jQuery('#targetModalForm').modal('hide')
+              this.editable = false
             } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForEditionPurpose)
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
           })
           this.$store.commit('target/setIdTarget', -1)
         } else {
           this.target.id = this.nextTargetSequence++
           this.target.name = this.transformedName
-          this.addTargetToServer(this.target).then(success => {
-            if (success) {
+          this.addTargetToServer(this.target).then(response => {
+            if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetInsertion)
+              this.resetTargetForm()
+              jQuery('#targetModalForm').modal('hide')
+              this.editable = false
             } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, this.$message.errorMessageForInsertionPurpose)
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
           })
         }
-        this.resetTargetForm()
-        jQuery('#targetModalForm').modal('hide')
-        this.editable = false
       }
     },
     close () {
