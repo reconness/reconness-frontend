@@ -128,13 +128,23 @@ export default ({
   },
   actions: {
     clearUserEntitiesToDelete ({ state, commit, rootState }) {
+      let promiseResult
       rootState.target.entitiesToDelete.forEach(entity => {
         const index = state.users.findIndex(user => user.id === entity.id)
         if (index !== -1) {
-          state.users.splice(index, 1)
+          const idUser = state.users[index].id
+          promiseResult = axios.delete('/users/' + idUser)
+            .then(function (response) {
+              state.users.splice(index, 1)
+              return true
+            })
+            .catch(function () {
+              return false
+            })
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
+      return promiseResult
     },
     saveNotificationsSettingsToLoggedUserAction ({ state, commit, rootState }, notificationsSettings) {
       if (Math.random() < 0.5) {

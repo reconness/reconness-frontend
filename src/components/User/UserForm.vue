@@ -351,7 +351,8 @@ export default {
 .user-management-logo-avatar{
   max-width: 160px;
   max-height: 160px;
-  width: 160px;
+  width: 120px;
+  height: 120px;
   max: 160px;
 }
 .color-sample-container{
