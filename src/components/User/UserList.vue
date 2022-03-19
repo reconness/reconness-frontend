@@ -64,7 +64,7 @@
 </template>
 <script>
 import UserForm from '@/components/User/UserForm.vue'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import jQuery from 'jquery'
 export default {
@@ -78,15 +78,19 @@ export default {
     }
   },
   mixins: [AgentMixin],
+  mounted () {
+    this.loadUsers()
+  },
   computed: {
     ...mapState('user', ['users', 'loggedUser']),
     ...mapGetters('user', ['getLoggedUserData'])
   },
   methods: {
     ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapActions('user', ['loadUsers']),
     editUser (e) {
       const selectedUserId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('user/updateSelectedIdUser', parseInt(selectedUserId))
+      this.$store.commit('user/updateSelectedIdUser', selectedUserId)
     },
     removeUser (e) {
       const selectedUserId = e.currentTarget.getAttribute('data-id')

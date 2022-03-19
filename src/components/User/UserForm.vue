@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
-                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordWasWritten" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordData" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                           <span v-if="isPasswordInBlank && !editable" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
                     </div>
                     <div class="form-group">
@@ -111,7 +111,7 @@
     </div>
 </template>
 <script>
-import { mapMutations, mapState, mapGetters } from 'vuex'
+import { mapMutations, mapState, mapGetters, mapActions } from 'vuex'
 import jQuery from 'jquery'
 
 export default {
@@ -127,6 +127,7 @@ export default {
         lastname: '',
         email: '',
         password: '',
+        oldPassword: '',
         phone: 0,
         role: -1,
         profilePicture: '',
@@ -250,6 +251,7 @@ export default {
     ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateUserEntity', 'updateSelectedIdUser', 'updateLoggedUserRole']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageDescription']),
     ...mapMutations('auth', ['updateIsUserLogged']),
+    ...mapActions('user', ['addUserToServer', 'updateUserToServer']),
     updateUserNameWasWritten () {
       this.userNameWasWritten = true
     },
@@ -267,6 +269,10 @@ export default {
     },
     updatePasswordWasWritten () {
       this.passwordWasWritten = true
+    },
+    updatePasswordData () {
+      this.updatePasswordWasWritten()
+      this.user.oldPassword = this.user.password
     },
     switchNameInput () {
       if (!this.editable) {
@@ -290,9 +296,9 @@ export default {
       this.userTryToAdd = true
       if (!this.isUserFormInvalid && (this.isRoleSelected && this.userTryToAdd)) {
         if (this.editable) {
-          this.updateUserEntity(this.user)
+          this.updateUserToServer(this.user)
         } else {
-          this.addUserEntity(this.user)
+          this.addUserToServer(this.user)
         }
         if (this.editedUserIsNotSameLoggedIn && this.editedUserHasSameRoleLoggedIn && this.theNewRoleOfEditedUserIsOwner) {
           this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.$roles.ADMIN.id })
@@ -325,7 +331,7 @@ export default {
       this.userTryToAdd = false
       this.editable = false
       this.firstRoleSelection = false
-      this.updateSelectedIdUser(-1)
+      this.updateSelectedIdUser('-1')
       this.updateManageMyOwnProfile(false)
     },
     logoutUser () {
