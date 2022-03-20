@@ -82,7 +82,11 @@ export default {
     ...mapState('target', ['operationStatus'])
   },
   mounted () {
-    this.loadNotificationsSettings()
+    this.loadUserNotificationsSettings().then(response => {
+      if (response.status) {
+        this.loadNotificationsSettings()
+      }
+    })
   },
   data () {
     return {
@@ -117,7 +121,7 @@ export default {
   methods: {
     ...mapMutations('user', ['saveNotificationsSettingsToLoggedUser']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
-    ...mapActions('user', ['saveNotificationsSettingsToLoggedUserAction']),
+    ...mapActions('user', ['saveNotificationsSettingsToLoggedUserAction', 'loadUserNotificationsSettings']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
     },
