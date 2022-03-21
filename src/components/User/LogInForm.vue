@@ -23,7 +23,8 @@
                   <input v-model="user.username" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
                   <input type="password" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
                   <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text" @click="authenticate">LOGIN</button>
-                  <p v-if="areInputInBlank" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
+                  <p v-if="areInputInBlank && wereWrittenInput" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
+                  <p v-if="areCredentialsInvalid" class="mt-2 text-center invalid">Invalid Credentials</p>
                 </div>
               </div>
               <div class="col-12">
@@ -46,18 +47,22 @@ export default {
         username: '',
         password: ''
       },
-      wereWrittenInput: false
+      wereWrittenInput: false,
+      invalidCredentials: false
     }
   },
   computed: {
     areInputInBlank () {
-      return (this.$validateIsBlank(this.user.username) || this.$validateIsBlank(this.user.password)) && this.wereWrittenInput
+      return (this.$validateIsBlank(this.user.username) || this.$validateIsBlank(this.user.password))
     },
     getApiUserName () {
       return process.env.VUE_APP_API_RECONNES_USERNAME
     },
     getApiPassword () {
       return process.env.VUE_APP_API_RECONNES_PASSWORD
+    },
+    areCredentialsInvalid () {
+      return this.invalidCredentials && !(this.areInputInBlank && this.wereWrittenInput)
     }
   },
   methods: {
@@ -65,20 +70,34 @@ export default {
     ...mapActions('auth', ['updateUserLogFlagAfterSeconds']),
     ...mapActions('auth', ['login']),
     authenticate () {
-      if (!this.areInputInBlank) {
+      if (!this.areInputInBlank && this.wereWrittenInput) {
         this.login({
-          username: this.getApiUserName,
-          password: this.getApiPassword
+          username: this.user.username,
+          password: this.user.password
         }).then(success => {
           if (success) {
+            this.invalidCredentials = false
             this.$router.push({ name: 'Home' })
             this.updateIsUserLogged(true)
+          } else {
+            this.invalidCredentials = true
           }
         })
+      } else {
+        this.setWrittenInputFlag()
       }
     },
     setWrittenInputFlag () {
       this.wereWrittenInput = true
+    },
+    setWrittenInputFlagAndResetForm () {
+      this.setWrittenInputFlag()
+      this.resetForm()
+    },
+    resetForm () {
+      this.wereWrittenInput = false
+      this.user.username = ''
+      this.user.password = ''
     }
   }
 }
