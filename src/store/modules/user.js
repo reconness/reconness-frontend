@@ -247,6 +247,20 @@ export default ({
             return { status: false, message: error.response.data }
           })
       }
+    },
+    cleanLogInfoByNameFromServer ({ state, commit, getters, rootState }, logfileName) {
+      if (rootState.auth.authentication_token !== '') {
+        const logFileNameDto = {
+          logFileSelected: logfileName
+        }
+        return axios.post('/accounts/cleanLogfile', logFileNameDto)
+          .then(function (response) {
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
     }
   },
   getters: {

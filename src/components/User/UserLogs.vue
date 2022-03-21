@@ -62,7 +62,11 @@ export default {
   watch: {
     notificationMessageActionSelected: function (value) {
       if (value) {
-        this.removeUserLogByName(this.logName)
+        this.cleanLogInfoByNameFromServer(this.logName).then(response => {
+          if (response.status) {
+            this.logText = ''
+          }
+        })
         this.resetData()
       }
     }
@@ -73,7 +77,7 @@ export default {
   methods: {
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
     ...mapMutations('user', ['removeUserLogByName']),
-    ...mapActions('user', ['loadUserLogsNames', 'getLogInfoByNameFromServer']),
+    ...mapActions('user', ['loadUserLogsNames', 'getLogInfoByNameFromServer', 'cleanLogInfoByNameFromServer']),
     getLogData: function () {
       this.getLogInfoByNameFromServer(this.logName).then(response => {
         if (response.status) {
