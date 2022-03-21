@@ -72,7 +72,8 @@ export default ({
         name: '37sh2362293.txt',
         text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
       }
-    ]
+    ],
+    logId: 0
   },
   mutations: {
     goToLogsSection (state) {
@@ -123,6 +124,17 @@ export default ({
       state.users.splice(1, state.users.length)
       users.forEach(user => {
         state.users.push(user)
+      })
+    },
+    saveLogsNamesToLoggedUser (state, userData) {
+      userData.loggedUser.logs.splice(0, userData.loggedUser.logs.length)
+      userData.logsNamesResponse.forEach(logNameResponse => {
+        userData.loggedUser.logs.push(
+          {
+            id: state.logId++,
+            name: logNameResponse
+          }
+        )
       })
     }
   },
@@ -206,6 +218,33 @@ export default ({
           })
           .catch(function () {
             return false
+          })
+      }
+    },
+    loadUserLogsNames ({ state, commit, getters, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/accounts/logfiles')
+          .then(function (response) {
+            const logAndUserInfo = {
+              loggedUser: getters.getLoggedUserData,
+              logsNamesResponse: response.data
+            }
+            commit('saveLogsNamesToLoggedUser', logAndUserInfo)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    getLogInfoByNameFromServer ({ state, commit, getters, rootState }, logfileName) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/accounts/readLogfile/' + logfileName)
+          .then(function (response) {
+            return { status: true, message: response.data }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     }
@@ -300,7 +339,7 @@ export default ({
       }
       return newUser
     },
-    mapUserNotificationsFromServerToLocal: (state, getters) => (notificationsSettings) => {
+    mapUserNotificationsFromServerToLocal: (state) => (notificationsSettings) => {
       const mappedUserNotification = {
         url: notificationsSettings.url,
         method: notificationsSettings.method,

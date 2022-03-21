@@ -39,7 +39,7 @@
 </template>
 <script>
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'UserLogs',
   components: {
@@ -67,11 +67,21 @@ export default {
       }
     }
   },
+  mounted () {
+    this.loadUserLogsNames()
+  },
   methods: {
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
     ...mapMutations('user', ['removeUserLogByName']),
+    ...mapActions('user', ['loadUserLogsNames', 'getLogInfoByNameFromServer']),
     getLogData: function () {
-      this.logText = this.getLogInfoByName(this.logName)
+      this.getLogInfoByNameFromServer(this.logName).then(response => {
+        if (response.status) {
+          this.logText = response.message
+        } else {
+          this.logText = ''
+        }
+      })
     },
     updateNotificationMessage: function () {
       this.updateNotificationMessageType(this.$notificationMessageType.CONFIRM)
