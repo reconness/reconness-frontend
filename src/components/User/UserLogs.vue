@@ -52,7 +52,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', ['users', 'loggedUser']),
+    ...mapState('user', ['users']),
     ...mapState('general', ['notificationMessageActionSelected']),
     ...mapGetters('user', ['getLogInfoByName', 'getLoggedUserData']),
     isNotLogSelected () {

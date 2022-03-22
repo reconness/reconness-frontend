@@ -67,18 +67,23 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['goToForgotPasswordForm', 'updateIsUserLogged']),
+    ...mapMutations('user', ['updateLoggedUserName']),
     ...mapActions('auth', ['updateUserLogFlagAfterSeconds']),
     ...mapActions('auth', ['login']),
+    ...mapActions('user', ['loadUsers']),
     authenticate () {
       if (!this.areInputInBlank && this.wereWrittenInput) {
         this.login({
           username: this.user.username,
           password: this.user.password
-        }).then(success => {
-          if (success) {
-            this.invalidCredentials = false
-            this.$router.push({ name: 'Home' })
-            this.updateIsUserLogged(true)
+        }).then(response => {
+          this.updateLoggedUserName(response.message.userName)
+          if (response.status) {
+            this.loadUsers().then(response => {
+              this.invalidCredentials = false
+              this.updateIsUserLogged(true)
+              this.$router.push({ name: 'Home' })
+            })
           } else {
             this.invalidCredentials = true
           }

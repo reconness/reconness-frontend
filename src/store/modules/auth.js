@@ -46,10 +46,10 @@ export default ({
             dispatch('agent/loadAgents', null, { root: true })
             dispatch('target/loadTargets', null, { root: true })
           }
-          return true
+          return { status: true, message: response.data }
         })
-        .catch(function () {
-          return false
+        .catch(function (error) {
+          return { status: false, message: error.response.data }
         })
     },
     updateUserLogFlagAfterSeconds ({ state, commit }, loggedFlag) {

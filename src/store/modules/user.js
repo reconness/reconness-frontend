@@ -13,6 +13,7 @@ export default ({
         role: 1,
         profilePicture: '',
         id: '1',
+        oldPassword: '',
         logs: [
           {
             id: 1,
@@ -76,6 +77,9 @@ export default ({
     logId: 0
   },
   mutations: {
+    updateLoggedUserName (state, username) {
+      state.loggedUsername = username
+    },
     goToLogsSection (state) {
       state.showLogsSection = true
       state.showUsersSection = false
@@ -108,7 +112,7 @@ export default ({
       state.manageMyOwnProfile = status
     },
     removeUserLogByName (state, logName) {
-      const user = state.users.find(user => user.id === state.loggedUser.id)
+      const user = state.users.find(user => user.username === state.loggedUsername)
       const logIndexToRemove = user.logs.findIndex(log => log.name === logName)
       user.logs.splice(logIndexToRemove, 1)
     },
@@ -117,7 +121,7 @@ export default ({
       user.role = idUserAndIdRole.idRole
     },
     saveNotificationsSettingsToLoggedUser (state, notificationsSettings) {
-      const userItem = state.users.find(item => item.id === state.loggedUserId)
+      const userItem = state.users.find(item => item.username === state.loggedUsername)
       Object.assign(userItem.notification, notificationsSettings)
     },
     updateUsers (state, users) {
@@ -214,10 +218,10 @@ export default ({
           .then(function (response) {
             const usersMapped = getters.mapUsers(response.data)
             commit('updateUsers', usersMapped)
-            return true
+            return { status: true, message: '' }
           })
-          .catch(function () {
-            return false
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     },
@@ -272,7 +276,7 @@ export default ({
       return logFileText
     },
     getLoggedUserData: (state) => {
-      return state.users.find(user => user.id === state.loggedUserId)
+      return state.users.find(user => user.username === state.loggedUsername)
     },
     getRoleByShortName: (state, getters) => (roleShortName) => {
       switch (roleShortName) {
@@ -349,7 +353,9 @@ export default ({
         phone: 0,
         role: getters.getRoleByShortName(user.role).id,
         profilePicture: user.image === null ? '' : user.image,
-        id: user.id
+        id: user.id,
+        notification: {},
+        logs: []
       }
       return newUser
     },

@@ -53,11 +53,12 @@
         <li @mouseenter="showUserConfigurationMenu" @mouseleave="hideUserConfigurationMenu" class="nav-item dropdown">
           <div class="image nav-link cursor-pointer d-flex" data-toggle="dropdown">
             <div class="main-bar-user-data d-flex flex-column">
-              <span class="loged-user-name font-size-16px">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
-              <span class="font-size-10px font-weight-light">{{this.$getRoleById(getLoggedUserData.role).longName}}</span>
+              <span class="loged-user-name font-size-16px">{{getLoggedUserDataFirstName}} {{getLoggedUserDataLastName}}</span>
+              <span class="font-size-10px font-weight-light">{{this.$getRoleById(getLoggedUserDataRoleId).longName}}</span>
             </div>
             <div>
-            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="top-bar-logo img-circle elevation-2" alt="User Image">
+            <img v-if="!this.$validateIsBlank(getLoggedUserDataImage)" :src="getLoggedUserDataImage" class="top-bar-logo img-circle elevation-2" alt="User Image">
+            <img v-else :src="gravatarURL" class="top-bar-logo img-circle elevation-2" alt="User Image">
             <span v-if="isLoggedUserMember" class="green-text material-icons position-absolute top-bar-role-icon rounded-circle">person</span>
             <span v-else :class="{'blue-text': isLoggedUserOwner, 'green-text': isLoggedUserAdmin}" class="material-icons position-absolute top-bar-role-icon rounded-circle blue-text">manage_accounts</span>
             </div>
@@ -222,7 +223,7 @@ export default {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('target', ['routePreviousToSearch']),
     ...mapGetters('notification', ['getAllNewNotifications']),
-    ...mapGetters('user', ['getLoggedUserData']),
+    ...mapGetters('user', ['getLoggedUserData', 'roles']),
     ...mapState('notification', ['isNotificationMenuActive']),
     ...mapState('general', ['notificationTimeSelected']),
     ...mapState('auth', ['isUserLogged']),
@@ -233,20 +234,20 @@ export default {
       return this.$route.name === 'Users'
     },
     gravatarURL () {
-      const hashedUrl = md5(this.getLoggedUserData.email)
+      const hashedUrl = md5(this.getLoggedUserDataEmail)
       return this.$getGravatarUrlByEmail(hashedUrl)
     },
     isAnyPipelineRelatedPage () {
       return this.$route.name === 'Pipelines' || this.$route.name === 'PipelineDetail' || this.$route.name === 'PipelineRunView'
     },
     isLoggedUserOwner () {
-      return this.getLoggedUserData.role === this.$roles.OWNER.id
+      return this.getLoggedUserDataRoleId === this.roles.OWNER.id
     },
     isLoggedUserAdmin () {
-      return this.getLoggedUserData.role === this.$roles.ADMIN.id
+      return this.getLoggedUserDataRoleId === this.roles.ADMIN.id
     },
     isLoggedUserMember () {
-      return this.getLoggedUserData.role === this.$roles.MEMBER.id
+      return this.getLoggedUserDataRoleId === this.roles.MEMBER.id
     },
     isSearcherView () {
       return this.$route.name === 'SearchResult'
@@ -259,6 +260,38 @@ export default {
     },
     showTopAndLeftBars () {
       return this.isUserLogged && !this.isUserManagementPage && !(this.isLoginPage || this.isUserManagementPage)
+    },
+    getLoggedUserDataFirstName () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.firstname
+      }
+      return ''
+    },
+    getLoggedUserDataLastName () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.lastname
+      }
+      return ''
+    },
+    getLoggedUserDataEmail () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.email
+      }
+      return ''
+    },
+    getLoggedUserDataRoleId () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.role
+      }
+      return this.roles.MEMBER
+    },
+    getLoggedUserDataImage () {
+      if (this.getLoggedUserData) {
+        if (!this.$validateIsBlank(this.getLoggedUserData.profilePicture)) {
+          return this.getLoggedUserData.profilePicture
+        }
+      }
+      return ''
     }
   },
   watch: {

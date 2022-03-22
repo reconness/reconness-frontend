@@ -147,7 +147,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', ['loggedUser', 'selectedIdUser', 'manageMyOwnProfile']),
+    ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile']),
     ...mapState('general', ['notificationMessageActionSelected']),
     ...mapGetters('user', ['getUserById', 'getLoggedUserData']),
     isUserNameInBlank () {
@@ -181,13 +181,22 @@ export default {
       return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword
     },
     isLoggedUserOwner () {
-      return this.loggedUser.role === this.$roles.OWNER.id
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.role === this.$roles.OWNER.id
+      }
+      return false
     },
     isLoggedUserAdmin () {
-      return this.loggedUser.role === this.$roles.ADMIN.id
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.role === this.$roles.ADMIN.id
+      }
+      return false
     },
     isLoggedUserMember () {
-      return this.loggedUser.role === this.$roles.MEMBER.id
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.role === this.$roles.MEMBER.id
+      }
+      return false
     },
     getUserFormStatus () {
       if (this.editable) {
@@ -205,10 +214,16 @@ export default {
       return this.user.role >= 1
     },
     editedUserIsNotSameLoggedIn () {
-      return this.getLoggedUserData.id !== this.user.id
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.id !== this.user.id
+      }
+      return false
     },
     editedUserHasSameRoleLoggedIn () {
-      return this.getLoggedUserData.role === this.user.role
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.role === this.user.role
+      }
+      return false
     },
     theNewRoleOfEditedUserIsOwner () {
       return this.user.role === this.$roles.OWNER.id

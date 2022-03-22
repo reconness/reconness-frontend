@@ -209,7 +209,7 @@ export default ({
         id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
-        sender: state.loggedUser.name
+        sender: messageInfo.username
       }
       target.messages.push(note)
     },
@@ -220,7 +220,7 @@ export default ({
         id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
-        sender: state.loggedUser.name
+        sender: messageInfo.username
       }
       rootdomain.messages.push(note)
     },
@@ -232,7 +232,7 @@ export default ({
         id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
-        sender: state.loggedUser.name
+        sender: messageInfo.username
       }
       subdomain.messages.push(note)
     },
