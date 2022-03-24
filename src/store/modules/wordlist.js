@@ -28,7 +28,8 @@ export default ({
         path: '/app/Content/wordlists/dir_enum'
       }
     ],
-    idWordList: 1
+    idWordList: 1,
+    selectedWordListContent: ''
   },
   mutations: {
     removeWordListItem (state, idWordlist) {
@@ -49,6 +50,9 @@ export default ({
         word.id = state.idWordList
         state.wordlists.push(word)
       })
+    },
+    updateSelectedWordsContent (state, wordlistId) {
+      state.selectedWordList = wordlistId
     }
   },
   actions: {
@@ -99,6 +103,21 @@ export default ({
           filename: wordlistData.filename
         }
       })
+    },
+    getWordListFileContent ({ state, getters }, wordlistData) {
+      const wordlistDescriptionType = getters.getWordlistType(wordlistData.codeType)
+      return axios.get('/wordlists/content/', {
+        params: {
+          type: wordlistDescriptionType,
+          filename: wordlistData.filename
+        }
+      }).then(function (response) {
+        state.selectedWordListContent = response.data.data
+        return { status: true, message: '' }
+      })
+        .catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
     }
   },
   getters: {
@@ -138,6 +157,15 @@ export default ({
       } else {
         return 'dns_resolver_enum'
       }
+    },
+    niceBytes: (state) => (bytes) => {
+      const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+      let l = 0
+      let n = parseInt(bytes, 10) || 0
+      while (n >= 1024 && ++l) {
+        n = n / 1024
+      }
+      return (n.toFixed(n < 10 && l > 0 ? 1 : 0) + units[l])
     }
   }
 })

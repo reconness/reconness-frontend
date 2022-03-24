@@ -47,12 +47,15 @@
                 <div class="row pt-3" v-for="wordlistItem of getWordListByType" :key="wordlistItem.id">
                   <div class="col-2"><span class="text-wrap break-word">{{wordlistItem.filename}}</span></div>
                   <div class="col-1"><span class="text-wrap break-word">{{wordlistItem.count}}</span></div>
-                  <div class="col-1"><span class="text-wrap break-word">{{this.$niceBytes(wordlistItem.size)}}</span></div>
+                  <div class="col-1"><span class="text-wrap break-word">{{this.niceBytes(wordlistItem.size)}}</span></div>
                   <div class="col-6"><span class="text-break break-word">{{wordlistItem.path}}</span></div>
                   <div class="col-2">
                     <div class="d-flex justify-content-between">
                       <button @click="downloadWordlist" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
                       <button @click="removeWordList" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
+                    </div>
+                    <div v-if="isWordListFileSizeGreaterThan(parseInt(wordlistItem.size))" class="d-flex">
+                      <button type="button" @click="openWordListFileContent" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="mt-1 wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
                     </div>
                   </div>
                 </div>
@@ -67,14 +70,19 @@
       </div>
     </div>
   </div>
+  <WordlistFileContentEdition/>
 </div>
 </template>
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import WordlistFileContentEdition from '@/components/Agent/WordlistFileContentEdition'
 export default {
   name: 'WordList',
+  components: {
+    WordlistFileContentEdition
+  },
   data: function () {
     return {
       selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id,
@@ -88,6 +96,7 @@ export default {
     ...mapState('wordlist', ['wordlists']),
     ...mapState('general', ['notificationMessageActionSelected']),
     ...mapState('auth', ['authentication_token']),
+    ...mapGetters('wordlist', ['niceBytes']),
     isSubdomainEnumSelected () {
       return this.selectedPill === this.$wordlistType.SUBDOMAIN_ENUM.id
     },
@@ -133,9 +142,9 @@ export default {
     this.loadWordlist()
   },
   methods: {
-    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem']),
+    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem', 'updateSelectedWordsContent']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
-    ...mapActions('wordlist', ['loadWordlist', 'uploadWordListFile', 'removeWordListFromServer', 'downloadWordListFile']),
+    ...mapActions('wordlist', ['loadWordlist', 'uploadWordListFile', 'removeWordListFromServer', 'downloadWordListFile', 'getWordListFileContent']),
     resetLoadedFileName () {
       this.loadedFileName = ''
     },
@@ -231,6 +240,18 @@ export default {
         document.body.appendChild(fileLink)
         fileLink.click()
       })
+    },
+    openWordListFileContent (e) {
+      jQuery('#wordlistModal').modal('hide')
+      jQuery('#wordlist-file-content-edition').modal('hide')
+      const wordlistData = {
+        filename: e.currentTarget.getAttribute('data-name'),
+        codeType: this.selectedPill
+      }
+      this.getWordListFileContent(wordlistData)
+    },
+    isWordListFileSizeGreaterThan (valueInBytes) {
+      return valueInBytes < 5000000
     }
   }
 }
