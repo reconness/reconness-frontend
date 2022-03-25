@@ -289,7 +289,8 @@ export default {
         successMessageForAgentUninstallation: 'The agent has been installed successfully',
         errorMessageForAgentUninstallation: 'An error ocurred during uninstallation',
         successMessageForImageUpload: 'The image was successfully uploaded',
-        successMessageForFileUpload: 'The file was successfully uploaded'
+        successMessageForFileUpload: 'The file was successfully uploaded',
+        successMessageForWordlistEdition: 'The wordlist content has been edited successfully'
       }
     )
 

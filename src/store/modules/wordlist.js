@@ -29,7 +29,9 @@ export default ({
       }
     ],
     idWordList: 1,
-    selectedWordListContent: ''
+    selectedWordListContent: '',
+    selectedWordListDescriptionType: '',
+    selectedWordListFileName: ''
   },
   mutations: {
     removeWordListItem (state, idWordlist) {
@@ -106,6 +108,8 @@ export default ({
     },
     getWordListFileContent ({ state, getters }, wordlistData) {
       const wordlistDescriptionType = getters.getWordlistType(wordlistData.codeType)
+      state.selectedWordListDescriptionType = wordlistDescriptionType
+      state.selectedWordListFileName = wordlistData.filename
       return axios.get('/wordlists/content/', {
         params: {
           type: wordlistDescriptionType,
@@ -113,6 +117,16 @@ export default ({
         }
       }).then(function (response) {
         state.selectedWordListContent = response.data.data
+        return { status: true, message: '' }
+      })
+        .catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
+    },
+    saveWordListFileContent ({ state, getters }, wordlistContent) {
+      return axios.put('/wordlists/' + state.selectedWordListDescriptionType + '/' + state.selectedWordListFileName, {
+        data: wordlistContent
+      }).then(function (response) {
         return { status: true, message: '' }
       })
         .catch(function (error) {

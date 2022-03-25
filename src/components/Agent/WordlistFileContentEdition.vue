@@ -28,7 +28,8 @@
           </div><!-- /.row -->
         </div>
         <div class="border-top-none modal-footer">
-          <button @click="openWordListMainWindows" type="button" class="blue-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Close</button>
+          <button type="button" @click="saveWordListContent" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+          <button @click="openWordListMainWindows" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
@@ -38,7 +39,8 @@
 <script>
 import jQuery from 'jquery'
 import { VAceEditor } from 'vue3-ace-editor'
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'WordlistFileContentEdition',
   components: {
@@ -49,6 +51,7 @@ export default {
       wordlistFileContent: ''
     }
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('wordlist', ['selectedWordListContent'])
   },
@@ -60,8 +63,25 @@ export default {
     }
   },
   methods: {
+    ...mapActions('wordlist', ['saveWordListFileContent']),
     openWordListMainWindows () {
       jQuery('#wordlistModal').modal()
+    },
+    saveWordListContent () {
+      console.log('entro')
+      this.saveWordListFileContent(this.wordlistFileContent).then(response => {
+        if (response.status) {
+          this.resetWordlistContentForm()
+          jQuery('#wordlist-file-content-edition').modal('hide')
+          this.openWordListMainWindows()
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForWordlistEdition)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
+    },
+    resetWordlistContentForm () {
+      this.wordlistFileContent = ''
     }
   }
 }
