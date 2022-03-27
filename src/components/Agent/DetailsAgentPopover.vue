@@ -5,9 +5,9 @@
             <span  class="material-icons mt-1 font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
             <span class="text-options-gray-color text-break">{{getAgent.repository}}</span>
           </div>
-          <div v-if="isEmpty(getAgent.target)" class="d-flex align-items-start mt-1">
+          <div v-if="isEmpty(getAgent.categories)" class="d-flex align-items-start mt-1">
             <span  class="material-icons mt-1 font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
-            <span class="text-options-gray-color text-break">{{getAgent.target}}</span>
+            <span class="text-options-gray-color text-break">{{getAgent.categories.toString()}}</span>
           </div>
           <div v-if="isEmpty(getAgent.command)" class="d-flex align-items-start mt-1">
             <span  class="material-icons mt-1 font-size-16px chevron-gray-color cursor-pointer"> chevron_right </span>
@@ -43,6 +43,9 @@ export default {
     isEmpty (field) {
       if (field === null) {
         return false
+      }
+      if (typeof (field) === 'object') {
+        return field.length > 0
       }
       return !this.$validateIsBlank(field)
     }
