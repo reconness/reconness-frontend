@@ -3,8 +3,8 @@
         <div class="row">
           <div class="col-10">
         <div class="initial-info-box agent-mini-main-container rounded-corners w-100">
-        <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
-        <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.AGENT.id)" :data-id="id" :data-name="name"></label>
+        <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem" :value="id"  v-model="selectedItems" >
+        <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" :data-id="id" :data-name="name"></label>
         <div class="p-2">
         <div class="info-box target-detail-popover-reference agent-item-container">
           <div class="info-box-content">
@@ -41,7 +41,7 @@
     </div><!-- /.col -->
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
@@ -73,11 +73,29 @@ export default {
   },
   mixins: [AgentMixin],
   computed: {
-    ...mapState('agent', ['check', 'agentIdList']),
-    ...mapState('target', ['entitiesToDelete'])
+    ...mapState('agent', ['check', 'agentIdList', 'selectedAgents']),
+    ...mapState('target', ['entitiesToDelete']),
+    selectedItems: {
+      get () {
+        return this.selectedAgents
+      },
+      set (value) {
+        this.updateSelectedAgents(value)
+      }
+    }
+  },
+  watch: {
+    selectedItems: {
+      handler: function (value) {
+        this.addAndPrepareSelectedAgentIdsToRemove()
+      },
+      deep: true
+    }
   },
   methods: {
     ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('agent', ['updateSelectedAgents']),
+    ...mapActions('agent', ['addAndPrepareSelectedAgentIdsToRemove']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },

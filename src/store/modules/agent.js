@@ -45,7 +45,8 @@ export default ({
     nameRoute: '',
     valueDelete: '',
     isDefaultViewOnAgent: true,
-    agentSequence: 30
+    agentSequence: 30,
+    selectedAgents: []
   },
   mutations: {
     confirm (state, valueIN) {
@@ -192,6 +193,9 @@ export default ({
           state.agentListStore[foundedAgentindex].installedFrom = agentMarket.id
         }
       })
+    },
+    updateSelectedAgents (state, agents) {
+      state.selectedAgents = agents
     }
   },
   getters: {
@@ -475,6 +479,18 @@ export default ({
             return error.data
           })
       }
+    },
+    addAndPrepareSelectedAgentIdsToRemove ({ state, rootGetters, getters, commit }) {
+      commit('target/clearReferencesToDelete', null, { root: true })
+      state.selectedAgents.forEach(element => {
+        const name = getters.getAgentById(element).name
+        const entity = {
+          id: element,
+          name: name,
+          type: rootGetters['general/entityTypeData'].AGENT
+        }
+        commit('target/addEntityToDelete', entity, { root: true })
+      })
     }
   }
 })

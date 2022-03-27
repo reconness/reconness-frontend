@@ -11,8 +11,8 @@
         <div v-for="agent of filteredAgentList" :key="agent.id" class="row border-bottom">
             <div class="w-60px">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
-                  <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+ agent.id" :checked="this.$isItemOnList(agent.id, entitiesToDelete)">
-                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+ agent.id"  :data-id="agent.id" :data-name="agent.name" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.AGENT.id)"></label>
+                  <input class="form-check-input custom-control-input" type="checkbox" :value="agent.id"  v-model="selectedItems" name="checkitem" :id="'remove_customCheckbox'+ agent.id">
+                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+ agent.id"  :data-id="agent.id" :data-name="agent.name"></label>
                 </div>
             </div>
             <div class="col-1 my-auto d-flex justify-content-center">
@@ -46,7 +46,7 @@
     </div>
 </template>
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { AgentMixin } from '@/mixins/AgentMixin'
@@ -61,9 +61,17 @@ export default {
   },
   mixins: [AgentMixin],
   computed: {
-    ...mapState('agent', ['agentListStore', 'filterColour', 'check']),
+    ...mapState('agent', ['agentListStore', 'filterColour', 'check', 'selectedAgents']),
     ...mapState('target', ['entitiesToDelete', 'paginator']),
-    ...mapGetters('agent', ['filterByColor'])
+    ...mapGetters('agent', ['filterByColor']),
+    selectedItems: {
+      get () {
+        return this.selectedAgents
+      },
+      set (value) {
+        this.updateSelectedAgents(value)
+      }
+    }
   },
   watch: {
     entitiesToDelete: {
@@ -76,13 +84,21 @@ export default {
         }
       },
       deep: true
+    },
+    selectedItems: {
+      handler: function (value) {
+        this.addAndPrepareSelectedAgentIdsToRemove()
+      },
+      deep: true
     }
   },
   mounted () {
     this.enableTooltips()
   },
   methods: {
+    ...mapMutations('agent', ['updateSelectedAgents']),
     ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapActions('agent', ['addAndPrepareSelectedAgentIdsToRemove']),
     enableTooltips () {
       jQuery('[data-toggle="tooltip"]').tooltip()
     },

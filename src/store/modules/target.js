@@ -321,7 +321,10 @@ export default ({
       })
     },
     addEntityToDelete (state, entity) {
-      state.entitiesToDelete.push(entity)
+      const exist = state.entitiesToDelete.findIndex(element => element.id === entity.id)
+      if (exist < 0) {
+        state.entitiesToDelete.push(entity)
+      }
     },
     removeTargetEntityToDelete (state, idEntity) {
       const index = state.entitiesToDelete.findIndex(target => target.id === idEntity)

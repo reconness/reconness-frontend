@@ -68,7 +68,6 @@ export default {
       jQuery('#wordlistModal').modal()
     },
     saveWordListContent () {
-      console.log('entro')
       this.saveWordListFileContent(this.wordlistFileContent).then(response => {
         if (response.status) {
           this.resetWordlistContentForm()

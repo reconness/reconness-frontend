@@ -257,12 +257,7 @@ export default {
     }
 
     app.config.globalProperties.$isItemOnList = function (idItem, listItems) {
-      setTimeout(
-        function () {
-          return listItems.find(item => item.id === idItem)
-        },
-        1000
-      )
+      return listItems.findIndex(item => item.id === idItem) >= 0
     }
 
     app.config.globalProperties.$message = Object.freeze(

@@ -27,5 +27,16 @@ export default ({
     }
   },
   actions: {},
-  getters: {}
+  getters: {
+    entityTypeData (state) {
+      return {
+        TARGET: { id: 1, description: 'Target' },
+        ROOTDOMAIN: { id: 2, description: 'Root Domain' },
+        SUBDOMAIN: { id: 3, description: 'SubDomain' },
+        AGENT: { id: 4, description: 'Agent' },
+        PIPELINE: { id: 5, description: 'Pipeline' },
+        USER: { id: 6, description: 'User' }
+      }
+    }
+  }
 })
