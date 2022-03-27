@@ -3,8 +3,8 @@
         <div class="row">
           <div class="col-10">
         <div class="initial-info-box agent-mini-main-container infobox-radius w-100">
-        <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem"  :checked="this.$isItemOnList(id, entitiesToDelete)" >
-        <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.TARGET.id)" :data-id="id" :data-name="name"></label>
+        <input type="checkbox" :id="'remove_customCheckbox'+ id" name="checkitem" :value="id"  v-model="selectedItems">
+        <label class="float-right mb-0" :for="'remove_customCheckbox'+ id" v-show="check" :data-id="id" :data-name="name"></label>
           <div class="infobox-padding-bordered infobox-radius">
         <div class="info-box target-detail-popover-reference infobox-border-line infobox-radius infobox-padding-bordered">
           <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
@@ -40,7 +40,7 @@
 </template>
 <script>
 import DetailsTargetPopover from '@/components/Target/DetailsTargetPopover'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
@@ -70,10 +70,27 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['check', 'targetIdList', 'entitiesToDelete'])
+    ...mapState('target', ['check', 'targetIdList', 'entitiesToDelete', 'selectedTargets']),
+    selectedItems: {
+      get () {
+        return this.selectedTargets
+      },
+      set (value) {
+        this.updateSelectedTargets(value)
+      }
+    }
+  },
+  watch: {
+    selectedItems: {
+      handler: function (value) {
+        this.addAndPrepareSelectedTargetIdsToRemove()
+      },
+      deep: true
+    }
   },
   methods: {
-    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'addEntityToDelete', 'removeTargetEntityToDelete', 'updateSelectedTargets']),
+    ...mapActions('target', ['addAndPrepareSelectedTargetIdsToRemove']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },

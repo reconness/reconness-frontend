@@ -43,7 +43,8 @@ export default ({
     },
     removeAll: false,
     textToSearch: '',
-    routePreviousToSearch: ''
+    routePreviousToSearch: '',
+    selectedTargets: []
   },
   mutations: {
     updateRoutePreviousToSearch (state, route) {
@@ -394,6 +395,9 @@ export default ({
     },
     updateTextToSearch (state, newFilter) {
       state.textToSearch = newFilter
+    },
+    updateSelectedTargets (state, targets) {
+      state.selectedTargets = targets
     }
   },
   actions: {
@@ -461,6 +465,18 @@ export default ({
         return { status: true, message: '' }
       }).catch(function (error) {
         return { status: false, message: error.response.data }
+      })
+    },
+    addAndPrepareSelectedTargetIdsToRemove ({ state, rootGetters, getters, commit }) {
+      commit('clearReferencesToDelete')
+      state.selectedTargets.forEach(element => {
+        const name = getters.getTargetById(element).name
+        const entity = {
+          id: element,
+          name: name,
+          type: rootGetters['general/entityTypeData'].TARGET
+        }
+        commit('addEntityToDelete', entity)
       })
     }
   },
