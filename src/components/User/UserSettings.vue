@@ -3,13 +3,17 @@
               <div class="user-management-content-header mt-5 mx-5 d-flex justify-content-between align-items-center">
                     <div class="user-management-main-info d-flex align-items-center">
                       <div class="user-management-main-info-img rounded-circle user-border-admin-role">
-                          <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-logs-logo-avatar" alt="User Logo">
+                          <img v-if="!this.$validateIsBlank(getLoggedUserData.profilePicture)" :src="getLoggedUserData.profilePicture" class="rounded-circle user-logs-logo-avatar" alt="User Image">
+                          <img v-else :src="getGravatarUrlByEmail(getLoggedUserData.email)" class="rounded-circle user-logs-logo-avatar" alt="User Image">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
                           <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
                           <div class="user-management-roles">
-                              <AccountCogIco class="user-role-ico"/>
-                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.id).longName}}</span>
+                              <div class="user-management-roles d-flex align-items-center">
+                                <span class="material-icons font-size-16px green-text" v-if="getLoggedUserData.role === this.roles.MEMBER.id">person</span>
+                                <span v-else :class="{'blue-text': getLoggedUserData.role === this.roles.OWNER.id, 'green-text': getLoggedUserData.role === this.roles.ADMIN.id}" class="material-icons font-size-16px">manage_accounts</span>
+                                <span class="font-size-16px user-management-role-name ml-1">{{getRoleById(getLoggedUserData.role).longName}}</span>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -69,16 +73,12 @@
           </div>
 </template>
 <script>
-import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import jQuery from 'jquery'
 import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 export default {
   name: 'UserSettings',
-  components: {
-    AccountCogIco
-  },
   computed: {
-    ...mapGetters('user', ['getLoggedUserData']),
+    ...mapGetters('user', ['getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
     ...mapState('target', ['operationStatus'])
   },
   mounted () {

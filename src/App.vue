@@ -185,7 +185,6 @@
 import { mapState, mapMutations, mapGetters } from 'vuex'
 import UserForm from '@/components/User/UserForm.vue'
 import jQuery from 'jquery'
-import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import MessageBox from '@/components/General/MessageBox.vue'
 import MessageBoxNotification from '@/components/General/MessageBoxNotification.vue'
@@ -223,7 +222,7 @@ export default {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('target', ['routePreviousToSearch']),
     ...mapGetters('notification', ['getAllNewNotifications']),
-    ...mapGetters('user', ['getLoggedUserData', 'roles']),
+    ...mapGetters('user', ['getLoggedUserData', 'roles', 'getGravatarUrlByEmail', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember']),
     ...mapState('notification', ['isNotificationMenuActive']),
     ...mapState('general', ['notificationTimeSelected']),
     ...mapState('auth', ['isUserLogged']),
@@ -234,20 +233,10 @@ export default {
       return this.$route.name === 'Users'
     },
     gravatarURL () {
-      const hashedUrl = md5(this.getLoggedUserDataEmail)
-      return this.$getGravatarUrlByEmail(hashedUrl)
+      return this.getGravatarUrlByEmail(this.getLoggedUserDataEmail)
     },
     isAnyPipelineRelatedPage () {
       return this.$route.name === 'Pipelines' || this.$route.name === 'PipelineDetail' || this.$route.name === 'PipelineRunView'
-    },
-    isLoggedUserOwner () {
-      return this.getLoggedUserDataRoleId === this.roles.OWNER.id
-    },
-    isLoggedUserAdmin () {
-      return this.getLoggedUserDataRoleId === this.roles.ADMIN.id
-    },
-    isLoggedUserMember () {
-      return this.getLoggedUserDataRoleId === this.roles.MEMBER.id
     },
     isSearcherView () {
       return this.$route.name === 'SearchResult'

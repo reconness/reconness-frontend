@@ -79,7 +79,7 @@
                                     Owner
                                   </label>
                                 </div>
-                                <div class="ml-2 custom-control custom-radio form-check">
+                                <div v-if="isLoggedUserOwner || isLoggedUserAdmin" class="ml-2 custom-control custom-radio form-check">
                                   <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
@@ -149,7 +149,7 @@ export default {
   computed: {
     ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile']),
     ...mapState('general', ['notificationMessageActionSelected']),
-    ...mapGetters('user', ['getUserById', 'getLoggedUserData']),
+    ...mapGetters('user', ['getUserById', 'getLoggedUserData', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember']),
     isUserNameInBlank () {
       return this.$validateIsBlank(this.user.username)
     },
@@ -179,24 +179,6 @@ export default {
     },
     isUserFormInvalid () {
       return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword
-    },
-    isLoggedUserOwner () {
-      if (this.getLoggedUserData) {
-        return this.getLoggedUserData.role === this.$roles.OWNER.id
-      }
-      return false
-    },
-    isLoggedUserAdmin () {
-      if (this.getLoggedUserData) {
-        return this.getLoggedUserData.role === this.$roles.ADMIN.id
-      }
-      return false
-    },
-    isLoggedUserMember () {
-      if (this.getLoggedUserData) {
-        return this.getLoggedUserData.role === this.$roles.MEMBER.id
-      }
-      return false
     },
     getUserFormStatus () {
       if (this.editable) {

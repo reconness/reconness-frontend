@@ -3,14 +3,15 @@
               <div class="user-management-content-header mt-5 mx-5 d-flex justify-content-between align-items-center">
                     <div class="user-management-main-info d-flex align-items-center">
                       <div class="user-management-main-info-img rounded-circle user-border-admin-role">
-                          <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-management-logo-avatar" alt="User Logo">
+                          <img v-if="!this.$validateIsBlank(getLoggedUserData.profilePicture)" :src="getLoggedUserData.profilePicture" class="rounded-circle user-management-logo-avatar" alt="User Image">
+                          <img v-else :src="getGravatarUrlByEmail(getLoggedUserData.email)" class="rounded-circle user-management-logo-avatar" alt="User Image">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
                           <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
                           <div class="user-management-roles d-flex align-items-center">
-                              <span class="material-icons font-size-16px green-text" v-if="getLoggedUserData.role === this.$roles.MEMBER.id">person</span>
-                              <span v-else :class="{'blue-text': getLoggedUserData.role === this.$roles.OWNER.id, 'green-text': getLoggedUserData.role === this.$roles.ADMIN.id}" class="material-icons font-size-16px">manage_accounts</span>
-                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.role).longName}}</span>
+                              <span class="material-icons font-size-16px green-text" v-if="getLoggedUserData.role === this.roles.MEMBER.id">person</span>
+                              <span v-else :class="{'blue-text': getLoggedUserData.role === this.roles.OWNER.id, 'green-text': getLoggedUserData.role === this.roles.ADMIN.id}" class="material-icons font-size-16px">manage_accounts</span>
+                              <span class="font-size-16px user-management-role-name ml-1">{{getRoleById(getLoggedUserData.role).longName}}</span>
                           </div>
                       </div>
                   </div>
@@ -41,9 +42,9 @@
                       <td class="border-top-0 pl-4 font-size-14px">{{user.email}}</td>
                       <td class="border-top-0 pl-4 font-size-14px" :class="{'font-weight-medium': getLoggedUserData.id === user.id}">
                         <div class="d-flex align-items-center justify-content-between">
-                          {{this.$getRoleById(user.role).shortName}}
-                          <span class="material-icons font-size-16px green-text ml-2" v-if="user.role === this.$roles.MEMBER.id">person</span>
-                          <span v-else :class="{'blue-text': user.role === this.$roles.OWNER.id, 'green-text': user.role === this.$roles.ADMIN.id}" class="material-icons font-size-16px ml-2">manage_accounts</span>
+                          {{getRoleById(user.role).shortName}}
+                          <span class="material-icons font-size-16px green-text ml-2" v-if="user.role === this.roles.MEMBER.id">person</span>
+                          <span v-else :class="{'blue-text': user.role === this.roles.OWNER.id, 'green-text': user.role === this.roles.ADMIN.id}" class="material-icons font-size-16px ml-2">manage_accounts</span>
                         </div>
                       </td>
                       <td class="border-top-0 d-flex justify-content-between user-management-action-width">
@@ -80,7 +81,8 @@ export default {
   mixins: [AgentMixin],
   computed: {
     ...mapState('user', ['users']),
-    ...mapGetters('user', ['getLoggedUserData'])
+    ...mapGetters('user', ['getLoggedUserData']),
+    ...mapGetters('user', ['getGravatarUrlByEmail', 'getRoleById', 'roles'])
   },
   methods: {
     ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),

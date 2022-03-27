@@ -1,4 +1,5 @@
 import axios from 'axios'
+import md5 from 'md5'
 export default ({
   namespaced: true,
   state: {
@@ -370,6 +371,28 @@ export default ({
         isAlive: notificationsSettings.isAlivePayload
       }
       return mappedUserNotification
+    },
+    getGravatarUrlByEmail: (state) => (email) => {
+      const hashedEmail = md5(email)
+      return 'https://www.gravatar.com/avatar/' + hashedEmail
+    },
+    isLoggedUserOwner: (state, getters) => {
+      if (getters.getLoggedUserData) {
+        return getters.getLoggedUserData.role === getters.roles.OWNER.id
+      }
+      return false
+    },
+    isLoggedUserAdmin: (state, getters) => {
+      if (getters.getLoggedUserData) {
+        return getters.getLoggedUserData.role === getters.roles.ADMIN.id
+      }
+      return false
+    },
+    isLoggedUserMember: (state, getters) => {
+      if (getters.getLoggedUserData) {
+        return getters.getLoggedUserData.role === getters.roles.MEMBER.id
+      }
+      return false
     }
   }
 })
