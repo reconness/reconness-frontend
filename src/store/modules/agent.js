@@ -196,6 +196,9 @@ export default ({
     },
     updateSelectedAgents (state, agents) {
       state.selectedAgents = agents
+    },
+    clearSelectedAgentsList (state) {
+      state.selectedAgents.splice(0, state.selectedAgents.length)
     }
   },
   getters: {

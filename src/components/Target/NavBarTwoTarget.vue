@@ -213,7 +213,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget', 'clearReferencesToDelete']),
+    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget', 'clearReferencesToDelete', 'clearSelectedTargetsList']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -268,6 +268,7 @@ export default {
       this.nameTyped = ''
       this.cancelIdTarget()
       this.clearReferencesToDelete()
+      this.clearSelectedTargetsList()
     }
   }
 }

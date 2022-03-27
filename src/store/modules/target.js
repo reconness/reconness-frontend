@@ -398,6 +398,9 @@ export default ({
     },
     updateSelectedTargets (state, targets) {
       state.selectedTargets = targets
+    },
+    clearSelectedTargetsList (state) {
+      state.selectedTargets.splice(0, state.selectedTargets.length)
     }
   },
   actions: {
