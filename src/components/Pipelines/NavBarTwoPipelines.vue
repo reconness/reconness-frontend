@@ -93,7 +93,7 @@ export default {
     ...mapState('target', ['entitiesToDelete'])
   },
   methods: {
-    ...mapMutations('pipelines', ['editList', 'cancelIdPipelines']),
+    ...mapMutations('pipelines', ['editList', 'cancelIdPipelines', 'clearSelectedPipelinesList']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -137,6 +137,7 @@ export default {
       }
       this.nameTyped = ''
       this.cancelIdPipelines()
+      this.clearSelectedPipelinesList()
     }
   }
 }

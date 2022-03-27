@@ -429,7 +429,8 @@ export default {
     isTerminalHided: true,
     agent: Object,
     isAgentInfoOpenedForTerminal: true,
-    numberAgentsProcessing: 0
+    numberAgentsProcessing: 0,
+    selectedPipelines: []
   },
   mutations: {
     changeIsBranchFather (state, value) {
@@ -627,6 +628,12 @@ export default {
           })
         }
       })
+    },
+    updateSelectedPipelines (state, pipelines) {
+      state.selectedPipelines = pipelines
+    },
+    clearSelectedPipelinesList (state) {
+      state.selectedPipelines.splice(0, state.selectedPipelines.length)
     }
   },
   actions: {
@@ -638,6 +645,18 @@ export default {
         }
       })
       commit('target/clearReferencesToDelete', null, { root: true })
+    },
+    addAndPrepareSelectedPipelineIdsToRemove ({ state, rootGetters, getters, commit }) {
+      commit('target/clearReferencesToDelete', null, { root: true })
+      state.selectedPipelines.forEach(element => {
+        const name = getters.getPipelineById(element).name
+        const entity = {
+          id: element,
+          name: name,
+          type: rootGetters['general/entityTypeData'].PIPELINE
+        }
+        commit('target/addEntityToDelete', entity, { root: true })
+      })
     }
   },
   getters: {
