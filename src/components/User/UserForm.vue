@@ -131,7 +131,8 @@ export default {
         phone: 0,
         role: -1,
         profilePicture: '',
-        id: -1
+        id: -1,
+        owner: false
       },
       confirm_password: '',
       userNameWasWritten: false,
@@ -147,7 +148,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile']),
+    ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile', 'errorUpdatingOwnerRole']),
     ...mapState('general', ['notificationMessageActionSelected']),
     ...mapGetters('user', ['getUserById', 'getLoggedUserData', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember']),
     isUserNameInBlank () {
@@ -242,6 +243,11 @@ export default {
       if (value) {
         jQuery('#message-box-notification-modal').hide()
       }
+    },
+    errorUpdatingOwnerRole: function (errorOcurred) {
+      if (!errorOcurred) {
+        this.logoutUser()
+      }
     }
   },
   methods: {
@@ -296,10 +302,6 @@ export default {
           this.updateUserToServer(this.user)
         } else {
           this.addUserToServer(this.user)
-        }
-        if (this.editedUserIsNotSameLoggedIn && this.editedUserHasSameRoleLoggedIn && this.theNewRoleOfEditedUserIsOwner) {
-          this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.$roles.ADMIN.id })
-          this.logoutUser()
         }
         jQuery('#user-form-modal').modal('hide')
         this.resetUserForm()

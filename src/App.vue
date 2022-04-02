@@ -54,7 +54,7 @@
           <div class="image nav-link cursor-pointer d-flex" data-toggle="dropdown">
             <div class="main-bar-user-data d-flex flex-column">
               <span class="loged-user-name font-size-16px">{{getLoggedUserDataFirstName}} {{getLoggedUserDataLastName}}</span>
-              <span class="font-size-10px font-weight-light">{{this.$getRoleById(getLoggedUserDataRoleId).longName}}</span>
+              <span class="font-size-10px font-weight-light">{{getRoleById(getLoggedUserDataRoleId).longName}}</span>
             </div>
             <div>
             <img v-if="!this.$validateIsBlank(getLoggedUserDataImage)" :src="getLoggedUserDataImage" class="top-bar-logo img-circle elevation-2" alt="User Image">
@@ -222,7 +222,7 @@ export default {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('target', ['routePreviousToSearch']),
     ...mapGetters('notification', ['getAllNewNotifications']),
-    ...mapGetters('user', ['getLoggedUserData', 'roles', 'getGravatarUrlByEmail', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember']),
+    ...mapGetters('user', ['getLoggedUserData', 'roles', 'getGravatarUrlByEmail', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'getRoleById']),
     ...mapState('notification', ['isNotificationMenuActive']),
     ...mapState('general', ['notificationTimeSelected']),
     ...mapState('auth', ['isUserLogged']),

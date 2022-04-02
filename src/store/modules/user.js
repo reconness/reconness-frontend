@@ -3,39 +3,7 @@ import md5 from 'md5'
 export default ({
   namespaced: true,
   state: {
-    users: [
-      {
-        username: 'john.doe',
-        firstname: 'John',
-        lastname: 'Doe',
-        email: 'johndoe@gmail.com',
-        password: '123',
-        phone: 56823566,
-        role: 1,
-        profilePicture: '',
-        id: '1',
-        oldPassword: '',
-        logs: [
-          {
-            id: 1,
-            name: '3739362293.txt'
-          },
-          {
-            id: 2,
-            name: '37sh2362293.txt'
-          }
-        ],
-        notification: {
-          url: '10.45.56.34',
-          method: 'method',
-          payload: 'payload',
-          rootDomain: 'rootDomain',
-          subDomain: 'subDomain',
-          ipAddress: '10.45.56.34',
-          isAlive: 'alive'
-        }
-      }
-    ],
+    users: [],
     loggedUsername: 'john.doe',
     loggedUser: {
       username: 'john.doe',
@@ -75,7 +43,8 @@ export default ({
         text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
       }
     ],
-    logId: 0
+    logId: 0,
+    errorUpdatingOwnerRole: false
   },
   mutations: {
     updateLoggedUserName (state, username) {
@@ -175,12 +144,25 @@ export default ({
           })
       }
     },
-    addUserToServer ({ state, rootState, commit, getters }, user) {
+    addUserToServer ({ state, rootState, commit, getters, dispatch }, user) {
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/users', getters.mapUserFromLocalToServer(user))
           .then(function (response) {
             user.id = response.data.id
+            let userRole
+            if (user.role === getters.roles.OWNER.id) {
+              userRole = user.role
+              user.role = getters.roles.ADMIN.id
+            }
             commit('addUserEntity', user)
+            if (userRole === getters.roles.OWNER.id) {
+              user.role = userRole
+              dispatch('assignOwnerRoleToUser', user.id).then(function (response) {
+                if (!response.status) {
+                  user.role = getters.roles.ADMIN.id
+                }
+              })
+            }
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -188,11 +170,20 @@ export default ({
           })
       }
     },
-    updateUserToServer ({ state, rootState, commit, getters }, user) {
+    updateUserToServer ({ state, rootState, commit, getters, dispatch }, user) {
       if (rootState.auth.authentication_token !== '') {
         return axios.put('/users/' + user.id, getters.mapUserFromLocalToServer(user))
           .then(function (response) {
+            let userRole
+            if (user.role === getters.roles.OWNER.id) {
+              userRole = user.role
+              user.role = getters.roles.ADMIN.id
+            }
             commit('updateUserEntity', user)
+            if (userRole === getters.roles.OWNER.id) {
+              user.role = userRole
+              dispatch('assignOwnerRoleToUser', user.id)
+            }
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -266,11 +257,33 @@ export default ({
             return { status: false, message: error.response.data }
           })
       }
+    },
+    assignOwnerRoleToUser ({ state, getters, rootState, commit }, idUser) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.put('/users/assignOnwer/' + idUser)
+          .then(function (response) {
+            const newUserOwner = getters.getUserById(idUser)
+            newUserOwner.role = getters.roles.OWNER.id
+            commit('updateUserEntity', newUserOwner)
+            const loggedUser = getters.getLoggedUserData
+            loggedUser.role = getters.roles.ADMIN.id
+            commit('updateUserEntity', loggedUser)
+            state.errorUpdatingOwnerRole = false
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            state.errorUpdatingOwnerRole = true
+            return { status: false, message: error.response.data }
+          })
+      }
     }
   },
   getters: {
     getUserById: (state) => (id) => {
       return state.users.find(user => user.id === id)
+    },
+    getUserByUsername: (state) => (username) => {
+      return state.users.find(user => user.username === username)
     },
     getLogInfoByName: (state) => (logname) => {
       const logFileText = state.userLogsFiles.find(item => item.name === logname).text
@@ -313,6 +326,9 @@ export default ({
         confirmationPassword: user.password,
         image: user.profilePicture
       }
+      if (user.role === getters.roles.OWNER.id) {
+        mappedUser.role = getters.roles.ADMIN.shortName
+      }
       return mappedUser
     },
     mapUserNotificationsFromLocalToServer: (state) => (notificationsSettings) => {
@@ -344,6 +360,10 @@ export default ({
       return newUsers
     },
     mapUserFromServerToLocal: (state, getters) => (user) => {
+      let role = getters.getRoleByShortName(user.role).id
+      if (user.owner) {
+        role = getters.roles.OWNER.id
+      }
       const newUser = {
         username: user.userName === null ? '' : user.userName,
         firstname: user.firstName === null ? '' : user.firstName,
@@ -352,7 +372,7 @@ export default ({
         password: user.currentPassword === null ? '' : user.currentPassword,
         oldPassword: '',
         phone: 0,
-        role: getters.getRoleByShortName(user.role).id,
+        role: role,
         profilePicture: user.image === null ? '' : user.image,
         id: user.id,
         notification: {},
