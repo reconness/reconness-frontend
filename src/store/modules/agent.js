@@ -296,7 +296,7 @@ export default ({
         newMarkedAgent = {
           name: agent.name,
           description: 'Description of agent ' + agent.name,
-          id: agent.name,
+          id: agent.id,
           installed: getters.isAgentInstalled(agent.name),
           category: agent.category,
           command: agent.command,
@@ -360,6 +360,12 @@ export default ({
         image: agent.image
       }
       return mappedAgent
+    },
+    entitySource: (state, getters) => (agent) => {
+      return {
+        USER: { id: 1, description: 'User' },
+        SYSTEM: { id: 2, description: 'System' }
+      }
     }
   },
   actions: {
@@ -463,7 +469,7 @@ export default ({
             commit('installUninstallAgent', index)
             const agentDto = response.data
             const mappedAgent = getters.mapAgentFromServerToLocal(agentDto)
-            mappedAgent.createdBy = 2
+            mappedAgent.createdBy = getters.entitySource.SYSTEM.id
             mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)
             return { status: true, message: '' }
