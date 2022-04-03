@@ -578,7 +578,7 @@ font-weight: 600;
   margin-bottom: 10px !important;
 }
 .nav-sidebar>.nav-item ul a {
-  margin-top: 10px !important;
+  margin-top: 0px !important;
   margin-bottom: 0px;
 }
 .brand-link[data-v-7ba5bd90] {
