@@ -132,8 +132,7 @@
                                 <span v-else class="agent-mini-agent-details agent-regular-font-11px pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                               </div> <!-- /.info-box-content -->
                               <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor +' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-                                <AccountCogIco v-if="!agent.image && this.$installedByUser(agent.createdBy)" class="form-ico-size"/>
-                                <ApplicationCogIco v-if="!agent.image && this.$installedBySystem(agent.createdBy)" class="form-ico-size"/>
+                                <AccountCogIco v-if="!agent.image" class="form-ico-size"/>
                                 <img v-if="agent.image" class="fill-logo-image" :src="agent.image">
                               </span>
                             </div> <!-- /.info-box -->
@@ -244,9 +243,8 @@ import Chips from 'primevue/chips'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
-import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 
 export default {
   name: 'AgentForm',
@@ -254,7 +252,6 @@ export default {
     VAceEditor,
     AccountCogIco,
     FileCodeIco,
-    ApplicationCogIco,
     Chips
   },
   props: {
@@ -283,7 +280,7 @@ export default {
         image: '',
         status: this.$entityStatus.FINISHED,
         lastRun: null,
-        createdBy: this.$entitySource.USER.id
+        createdBy: ''
       },
       colorpickerData: '',
       isVisibleTopSection: true,
@@ -313,6 +310,7 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
+    ...mapGetters('user', ['getLoggedUserData']),
     isValid () {
       if (this.agent.name !== '' &&
       this.agent.repository !== '' &&
@@ -433,6 +431,7 @@ export default {
             }
           })
         } else {
+          this.agent.createdBy = this.getLoggedUserData.username
           this.addAgentToServer(this.agent).then(response => {
             if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInsertion)
@@ -470,7 +469,7 @@ export default {
         image: '',
         lastRun: null,
         status: this.$entityStatus.FINISHED,
-        createdBy: this.$entitySource.USER.id,
+        createdBy: '',
         primaryColor: '#737be5',
         secondaryColor: '#7159d3'
       }

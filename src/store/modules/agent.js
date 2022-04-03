@@ -335,7 +335,7 @@ export default ({
         date: new Date(),
         installedFrom: '',
         lastRun: new Date(agent.lastRun),
-        createdBy: getters.getEntitySourceByDescription(agent.createdBy),
+        createdBy: agent.createdBy,
         categories: agent.categories
       }
       if (agent.script != null) {
@@ -353,7 +353,7 @@ export default ({
         primaryColor: agent.primaryColor,
         secondaryColor: agent.secondaryColor,
         script: agent.script,
-        createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
+        createdBy: agent.createdBy,
         triggerSubdomainIsAlive: agent.isAliveTrigger,
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
         categories: agent.categories,
@@ -469,7 +469,6 @@ export default ({
             commit('installUninstallAgent', index)
             const agentDto = response.data
             const mappedAgent = getters.mapAgentFromServerToLocal(agentDto)
-            mappedAgent.createdBy = getters.entitySource.SYSTEM.id
             mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)
             return { status: true, message: '' }

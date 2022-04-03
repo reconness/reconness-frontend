@@ -22,13 +22,9 @@
                 {{agent.name}}
             </div>
             <div class="col-2 my-2">
-              <div v-if="this.$installedByUser(agent.createdBy)" class="d-inline-flex">
+              <div class="d-inline-flex">
                 <AccountCogIco class="fill-with-dark-gray"/>
-                <span class="ml-1 agent-mini-color-gray agent-minilist-source-size-user-ico">User</span>
-              </div>
-              <div v-else-if="this.$installedBySystem(agent.createdBy)" class="d-inline-flex">
-                <ApplicationCogIco class="fill-with-dark-gray agent-minilist-source-size-ico"/>
-                <span class="ml-1 agent-mini-color-gray">System</span>
+                <span class="ml-1 agent-mini-color-gray agent-minilist-source-size-user-ico">{{ agent.createdBy }}</span>
               </div>
             </div>
             <div class="col-2 my-2">
@@ -51,13 +47,11 @@ import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 export default {
   name: 'AgentMiniList',
   components: {
     TrashCanIco,
-    AccountCogIco,
-    ApplicationCogIco
+    AccountCogIco
   },
   mixins: [AgentMixin],
   computed: {

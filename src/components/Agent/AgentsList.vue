@@ -22,8 +22,7 @@
           </div> <!-- /.info-box-content -->
           <span class="info-box-icon" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
             <img v-if="image" class="fill-logo-image" :src="image">
-            <AccountCogIco v-if="!image && this.$installedByUser(createdBy)" class="w-50 h-50"/>
-            <ApplicationCogIco v-if="!image && this.$installedBySystem(createdBy)" class="w-50 h-50"/>
+            <AccountCogIco v-if="!image" class="w-50 h-50"/>
           </span>
           </div> <!-- /.info-box -->
           </div> <!-- /.p2 -->
@@ -43,7 +42,6 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import DetailsAgentPopover from '@/components/Agent/DetailsAgentPopover'
 import OverlayPanel from 'primevue/overlaypanel'
@@ -51,7 +49,6 @@ export default {
   name: 'AgentsList',
   components: {
     AccountCogIco,
-    ApplicationCogIco,
     DetailsAgentPopover,
     OverlayPanel
   },
