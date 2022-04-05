@@ -232,7 +232,7 @@
                         <div class="info-box-content d-flex px-2 border-radius-8px justify-content-between learn-more-border-line">
                           <span class="info-box-text">
                             <span class="mr-2 agent-title-sub-containers">Configuration</span>
-                            <a href="https://docs.reconness.com/agents/script-agent" target="_blank" rel="noopener noreferrer" class="blue-text agent-regular-font font-weight-light">Learn more</a>
+                            <a href="https://docs.reconness.com/agents/add-agent#agent-configuration" target="_blank" rel="noopener noreferrer" class="blue-text agent-regular-font font-weight-light">Learn more</a>
                           </span>
                           <a href="#" @click="showConfigSection">
                             <span v-show="arrow_up" class="material-icons learn-more-arrow-up">keyboard_arrow_up</span>
