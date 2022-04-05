@@ -57,7 +57,7 @@ export default {
     primaryColor: String,
     secondaryColor: String,
     id: String,
-    createdBy: Number,
+    createdBy: String,
     image: String
   },
   data: function () {

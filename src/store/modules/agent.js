@@ -336,7 +336,8 @@ export default ({
         installedFrom: '',
         lastRun: new Date(agent.lastRun),
         createdBy: agent.createdBy,
-        categories: agent.categories
+        categories: agent.categories,
+        configurationFile: agent.configurationFileName
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -357,7 +358,8 @@ export default ({
         triggerSubdomainIsAlive: agent.isAliveTrigger,
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
         categories: agent.categories,
-        image: agent.image
+        image: agent.image,
+        configurationFileName: agent.configurationFile
       }
       return mappedAgent
     },
@@ -366,6 +368,9 @@ export default ({
         USER: { id: 1, description: 'User' },
         SYSTEM: { id: 2, description: 'System' }
       }
+    },
+    getConfigurationFilesLocation: (state) => {
+      return '/app/Content/configurations/'
     }
   },
   actions: {
@@ -499,6 +504,19 @@ export default ({
         }
         commit('target/addEntityToDelete', entity, { root: true })
       })
+    },
+    uploadAgentConfigurationFile ({ state, rootState }, configurationFileData) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/upload/' + configurationFileData.agentName, configurationFileData.formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          return { status: true, message: '', data: response.data }
+        }).catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
+      }
     }
   }
 })
