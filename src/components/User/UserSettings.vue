@@ -9,11 +9,7 @@
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
                           <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
                           <div class="user-management-roles">
-                              <div class="user-management-roles d-flex align-items-center">
-                                <span class="material-icons font-size-16px green-text" v-if="getLoggedUserData.role === this.roles.MEMBER.id">person</span>
-                                <span v-else :class="{'blue-text': getLoggedUserData.role === this.roles.OWNER.id, 'green-text': getLoggedUserData.role === this.roles.ADMIN.id}" class="material-icons font-size-16px">manage_accounts</span>
-                                <span class="font-size-16px user-management-role-name ml-1">{{getRoleById(getLoggedUserData.role).longName}}</span>
-                              </div>
+                              <UserManagementHeader/>
                           </div>
                       </div>
                   </div>
@@ -75,8 +71,12 @@
 <script>
 import jQuery from 'jquery'
 import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
+import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 export default {
   name: 'UserSettings',
+  components: {
+    UserManagementHeader
+  },
   computed: {
     ...mapGetters('user', ['getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
     ...mapState('target', ['operationStatus'])
