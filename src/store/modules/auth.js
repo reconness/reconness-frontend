@@ -49,6 +49,9 @@ export default ({
           return { status: true, message: response.data }
         })
         .catch(function (error) {
+          if (!error.response) {
+            return { status: false, message: 'unknownError' }
+          }
           return { status: false, message: error.response.data }
         })
     },

@@ -25,6 +25,7 @@
                   <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text" @click="authenticate">LOGIN</button>
                   <p v-if="areInputInBlank && wereWrittenInput" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                   <p v-if="areCredentialsInvalid" class="mt-2 text-center invalid">Invalid Credentials</p>
+                  <p v-if="authenticationError" class="mt-2 text-center invalid">An error ocurred during the authentication process. Please contact the administrator</p>
                 </div>
               </div>
               <div class="col-12">
@@ -48,7 +49,8 @@ export default {
         password: ''
       },
       wereWrittenInput: false,
-      invalidCredentials: false
+      invalidCredentials: false,
+      authenticationError: false
     }
   },
   computed: {
@@ -73,6 +75,7 @@ export default {
     ...mapActions('user', ['loadUsers']),
     authenticate () {
       if (!this.areInputInBlank && this.wereWrittenInput) {
+        this.authenticationError = false
         this.login({
           username: this.user.username,
           password: this.user.password
@@ -85,7 +88,11 @@ export default {
               this.$router.push({ name: 'Home' })
             })
           } else {
-            this.invalidCredentials = true
+            if (response.message === 'unknownError') {
+              this.authenticationError = true
+            } else {
+              this.invalidCredentials = true
+            }
           }
         })
       } else {
