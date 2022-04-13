@@ -4,7 +4,7 @@
       <div :class="{'user-settings': showSettingsSection, 'pb-3': !showLogsSection}" class="user-management-container">
         <UserList v-if="showUsersSection"/>
         <UserLogs v-else-if="showLogsSection"/>
-        <UserSettings v-else/>
+        <NotificationSettings v-else/>
       </div>
     </div>
   </div>
@@ -13,13 +13,13 @@
 import { mapState } from 'vuex'
 import UserList from '@/components/User/UserList.vue'
 import UserLogs from '@/components/User/UserLogs.vue'
-import UserSettings from '@/components/User/UserSettings.vue'
+import NotificationSettings from '@/components/User/NotificationSettings.vue'
 export default {
   name: 'UserManagement',
   components: {
     UserList,
     UserLogs,
-    UserSettings
+    NotificationSettings
   },
   computed: {
     ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])

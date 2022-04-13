@@ -132,7 +132,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item" >
-                  <a href="#" class="nav-link" v-on:click="goToUserSettings" v-bind:class="{'nav2': styleNotificationsState}">
+                  <a href="#" class="nav-link" v-on:click="goToNotificationSettings" v-bind:class="{'nav2': styleNotificationsState}">
                     <span class="material-icons">circle_notifications</span>
                         <p>Notifications</p>
                   </a>
@@ -385,7 +385,7 @@ export default {
     goToPreviousPage () {
       this.$router.push({ name: this.routePreviousToSearch })
     },
-    goToUserSettings () {
+    goToNotificationSettings () {
       this.goToSettingsSection()
       this.$router.push({ name: 'Users' })
     }
