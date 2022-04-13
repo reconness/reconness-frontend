@@ -46,7 +46,8 @@ export default ({
     valueDelete: '',
     isDefaultViewOnAgent: true,
     agentSequence: 30,
-    selectedAgents: []
+    selectedAgents: [],
+    configFilePath: ''
   },
   mutations: {
     confirm (state, valueIN) {
@@ -368,9 +369,6 @@ export default ({
         USER: { id: 1, description: 'User' },
         SYSTEM: { id: 2, description: 'System' }
       }
-    },
-    getConfigurationFilesLocation: (state) => {
-      return '/app/Content/configurations/'
     }
   },
   actions: {
@@ -516,6 +514,20 @@ export default ({
         }).catch(function (error) {
           return { status: false, message: error.response.data }
         })
+      }
+    },
+    getConfigurationFilesLocation ({ state, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents/configuration/path')
+          .then(function (response) {
+            console.log(response)
+            state.configFilePath = response.data
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            state.configFilePath = ''
+            return { status: false, message: error.response.data }
+          })
       }
     }
   }

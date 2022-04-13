@@ -270,7 +270,7 @@ import Chips from 'primevue/chips'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapMutations, mapActions, mapGetters, mapState } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
 
 export default {
@@ -343,7 +343,7 @@ export default {
   mixins: [TargetMixin],
   computed: {
     ...mapGetters('user', ['getLoggedUserData']),
-    ...mapGetters('agent', ['getConfigurationFilesLocation']),
+    ...mapState('agent', ['configFilePath']),
     isValid () {
       if (this.agent.name !== '' &&
       this.agent.repository !== '' &&
@@ -382,8 +382,8 @@ export default {
       return 'Choose config file'
     },
     getFullFileConfigPath () {
-      if (this.agent) {
-        return this.getConfigurationFilesLocation + this.agent.configurationFile
+      if (this.agent && this.configFilePath !== '') {
+        return this.configFilePath + this.agent.configurationFile
       }
       return ''
     },
@@ -428,9 +428,12 @@ export default {
       }
     }
   },
+  mounted () {
+    this.getConfigurationFilesLocation()
+  },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
-    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer', 'uploadAgentImage', 'uploadAgentConfigurationFile']),
+    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer', 'uploadAgentImage', 'uploadAgentConfigurationFile', 'getConfigurationFilesLocation']),
     setBlueColor: function () {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
