@@ -121,7 +121,7 @@ export default {
   methods: {
     ...mapMutations('user', ['saveNotificationsSettingsToLoggedUser']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
-    ...mapActions('user', ['saveNotificationsSettingsToLoggedUserAction', 'loadUserNotificationsSettings']),
+    ...mapActions('notification', ['saveNotificationsSettingsToLoggedUserAction', 'loadUserNotificationsSettings']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
     },

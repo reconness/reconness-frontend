@@ -90,10 +90,6 @@ export default ({
       const user = state.users.find(user => user.id === idUserAndIdRole.idUser)
       user.role = idUserAndIdRole.idRole
     },
-    saveNotificationsSettingsToLoggedUser (state, notificationsSettings) {
-      const userItem = state.users.find(item => item.username === state.loggedUsername)
-      Object.assign(userItem.notification, notificationsSettings)
-    },
     updateUsers (state, users) {
       state.users.splice(1, state.users.length)
       users.forEach(user => {
@@ -131,18 +127,6 @@ export default ({
       })
       commit('general/clearReferencesToDelete', null, { root: true })
       return promiseResult
-    },
-    saveNotificationsSettingsToLoggedUserAction ({ state, commit, getters, rootState }, notificationsSettings) {
-      if (rootState.auth.authentication_token !== '') {
-        return axios.post('/accounts/saveNotification', getters.mapUserNotificationsFromLocalToServer(notificationsSettings))
-          .then(function (response) {
-            commit('saveNotificationsSettingsToLoggedUser', notificationsSettings)
-            return { status: true, message: '' }
-          })
-          .catch(function (error) {
-            return { status: false, message: error.response.data }
-          })
-      }
     },
     addUserToServer ({ state, rootState, commit, getters, dispatch }, user) {
       if (rootState.auth.authentication_token !== '') {
@@ -184,19 +168,6 @@ export default ({
               user.role = userRole
               dispatch('assignOwnerRoleToUser', user.id)
             }
-            return { status: true, message: '' }
-          })
-          .catch(function (error) {
-            return { status: false, message: error.response.data }
-          })
-      }
-    },
-    loadUserNotificationsSettings ({ state, commit, getters, rootState }) {
-      if (rootState.auth.authentication_token !== '') {
-        return axios.get('/accounts/notification')
-          .then(function (response) {
-            const userNotificationsMapped = getters.mapUserNotificationsFromServerToLocal(response.data)
-            commit('saveNotificationsSettingsToLoggedUser', userNotificationsMapped)
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -306,18 +277,6 @@ export default ({
       }
       return mappedUser
     },
-    mapUserNotificationsFromLocalToServer: (state) => (notificationsSettings) => {
-      const mappedUserNotification = {
-        url: notificationsSettings.url,
-        method: notificationsSettings.method,
-        payload: notificationsSettings.payload,
-        rootDomainPayload: notificationsSettings.rootDomain,
-        subdomainPayload: notificationsSettings.subDomain,
-        ipAddressPayload: notificationsSettings.ipAddress,
-        isAlivePayload: notificationsSettings.isAlive
-      }
-      return mappedUserNotification
-    },
     roles: (state) => {
       return {
         OWNER: { id: 1, longName: 'Administrator Owner', shortName: 'Owner' },
@@ -354,18 +313,6 @@ export default ({
         logs: []
       }
       return newUser
-    },
-    mapUserNotificationsFromServerToLocal: (state) => (notificationsSettings) => {
-      const mappedUserNotification = {
-        url: notificationsSettings.url,
-        method: notificationsSettings.method,
-        payload: notificationsSettings.payload,
-        rootDomain: notificationsSettings.rootDomainPayload,
-        subDomain: notificationsSettings.subdomainPayload,
-        ipAddress: notificationsSettings.ipAddressPayload,
-        isAlive: notificationsSettings.isAlivePayload
-      }
-      return mappedUserNotification
     },
     getGravatarUrlByEmail: (state) => (email) => {
       const hashedEmail = md5(email)
