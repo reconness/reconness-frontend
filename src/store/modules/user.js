@@ -188,22 +188,6 @@ export default ({
           })
       }
     },
-    loadUserLogsNames ({ state, commit, getters, rootState }) {
-      if (rootState.auth.authentication_token !== '') {
-        return axios.get('/accounts/logfiles')
-          .then(function (response) {
-            const logAndUserInfo = {
-              loggedUser: getters.getLoggedUserData,
-              logsNamesResponse: response.data
-            }
-            commit('saveLogsNamesToLoggedUser', logAndUserInfo)
-            return { status: true, message: '' }
-          })
-          .catch(function (error) {
-            return { status: false, message: error.response.data }
-          })
-      }
-    },
     assignOwnerRoleToUser ({ state, getters, rootState, commit }, idUser) {
       if (rootState.auth.authentication_token !== '') {
         return axios.put('/users/assignOnwer/' + idUser)

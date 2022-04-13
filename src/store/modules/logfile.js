@@ -28,6 +28,22 @@ export default ({
             return { status: false, message: error.response.data }
           })
       }
+    },
+    loadLogsNames ({ state, commit, getters, rootState, rootGetters }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/accounts/logfiles')
+          .then(function (response) {
+            const logAndUserInfo = {
+              loggedUser: rootGetters['user/getLoggedUserData'],
+              logsNamesResponse: response.data
+            }
+            commit('user/saveLogsNamesToLoggedUser', logAndUserInfo, { root: true })
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
     }
   },
   getters: {}

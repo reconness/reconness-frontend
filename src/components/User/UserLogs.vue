@@ -70,13 +70,12 @@ export default {
     }
   },
   mounted () {
-    this.loadUserLogsNames()
+    this.loadLogsNames()
   },
   methods: {
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
     ...mapMutations('user', ['removeUserLogByName']),
-    ...mapActions('user', ['loadUserLogsNames']),
-    ...mapActions('logfile', ['cleanLogInfoByNameFromServer', 'getLogInfoByNameFromServer']),
+    ...mapActions('logfile', ['cleanLogInfoByNameFromServer', 'getLogInfoByNameFromServer', 'loadLogsNames']),
     getLogData: function () {
       this.getLogInfoByNameFromServer(this.logName).then(response => {
         if (response.status) {
