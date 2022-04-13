@@ -75,7 +75,8 @@ export default {
   methods: {
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
     ...mapMutations('user', ['removeUserLogByName']),
-    ...mapActions('user', ['loadUserLogsNames', 'getLogInfoByNameFromServer', 'cleanLogInfoByNameFromServer']),
+    ...mapActions('user', ['loadUserLogsNames']),
+    ...mapActions('logfile', ['cleanLogInfoByNameFromServer', 'getLogInfoByNameFromServer']),
     getLogData: function () {
       this.getLogInfoByNameFromServer(this.logName).then(response => {
         if (response.status) {
