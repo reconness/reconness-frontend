@@ -56,7 +56,8 @@ export default {
   mixins: [AgentMixin],
   computed: {
     ...mapState('agent', ['agentListStore', 'filterColour', 'check', 'selectedAgents']),
-    ...mapState('target', ['entitiesToDelete', 'paginator']),
+    ...mapState('target', ['paginator']),
+    ...mapState('general', ['entitiesToDelete']),
     ...mapGetters('agent', ['filterByColor']),
     selectedItems: {
       get () {
@@ -91,7 +92,8 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['updateSelectedAgents']),
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('target', ['removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete']),
     ...mapActions('agent', ['addAndPrepareSelectedAgentIdsToRemove']),
     enableTooltips () {
       jQuery('[data-toggle="tooltip"]').tooltip()

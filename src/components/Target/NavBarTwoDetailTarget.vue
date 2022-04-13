@@ -188,7 +188,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc', 'addEntityToDelete']),
+    ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),
+    ...mapMutations('general', ['addEntityToDelete']),
     orderByCalendar: function () {
       this.targetListStore.find(item => item.id === parseInt(this.$route.params.id)).rootDomains.sort(this.$orderByCalendarSplitting)
     },

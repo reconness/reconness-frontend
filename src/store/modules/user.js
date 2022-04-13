@@ -129,7 +129,7 @@ export default ({
             })
         }
       })
-      commit('target/clearReferencesToDelete', null, { root: true })
+      commit('general/clearReferencesToDelete', null, { root: true })
       return promiseResult
     },
     saveNotificationsSettingsToLoggedUserAction ({ state, commit, getters, rootState }, notificationsSettings) {

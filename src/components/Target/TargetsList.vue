@@ -70,7 +70,8 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['check', 'targetIdList', 'entitiesToDelete', 'selectedTargets']),
+    ...mapState('target', ['check', 'targetIdList', 'selectedTargets']),
+    ...mapState('general', ['entitiesToDelete']),
     selectedItems: {
       get () {
         return this.selectedTargets
@@ -89,7 +90,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'addEntityToDelete', 'removeTargetEntityToDelete', 'updateSelectedTargets']),
+    ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'removeTargetEntityToDelete', 'updateSelectedTargets']),
+    ...mapMutations('general', ['addEntityToDelete']),
     ...mapActions('target', ['addAndPrepareSelectedTargetIdsToRemove']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex

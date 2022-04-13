@@ -270,7 +270,7 @@ export default {
   },
   computed: {
     ...mapState('agent', ['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
-    ...mapState('target', ['entitiesToDelete']),
+    ...mapState('general', ['entitiesToDelete']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.primaryColor))]
     }

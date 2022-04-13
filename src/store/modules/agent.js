@@ -373,17 +373,17 @@ export default ({
   },
   actions: {
     removeAgentsSelected ({ state, commit, rootState }) {
-      rootState.target.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
           commit('removeAgent', entity.name)
         }
       })
-      commit('target/clearReferencesToDelete', null, { root: true })
+      commit('general/clearReferencesToDelete', null, { root: true })
     },
     clearAgentEntitiesToDelete ({ state, commit, rootState, dispatch }) {
       const agentNames = []
-      rootState.target.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         let agentName
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
@@ -492,7 +492,7 @@ export default ({
       }
     },
     addAndPrepareSelectedAgentIdsToRemove ({ state, rootGetters, getters, commit }) {
-      commit('target/clearReferencesToDelete', null, { root: true })
+      commit('general/clearReferencesToDelete', null, { root: true })
       state.selectedAgents.forEach(element => {
         const name = getters.getAgentById(element).name
         const entity = {
@@ -500,7 +500,7 @@ export default ({
           name: name,
           type: rootGetters['general/entityTypeData'].AGENT
         }
-        commit('target/addEntityToDelete', entity, { root: true })
+        commit('general/addEntityToDelete', entity, { root: true })
       })
     },
     uploadAgentConfigurationFile ({ state, rootState }, configurationFileData) {
@@ -520,7 +520,6 @@ export default ({
       if (rootState.auth.authentication_token !== '') {
         return axios.get('/agents/configuration/path')
           .then(function (response) {
-            console.log(response)
             state.configFilePath = response.data
             return { status: true, message: '' }
           })

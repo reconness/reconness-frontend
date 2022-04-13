@@ -71,7 +71,7 @@ export default {
   mixins: [AgentMixin],
   computed: {
     ...mapState('agent', ['check', 'agentIdList', 'selectedAgents']),
-    ...mapState('target', ['entitiesToDelete']),
+    ...mapState('general', ['entitiesToDelete']),
     selectedItems: {
       get () {
         return this.selectedAgents
@@ -90,7 +90,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('target', ['removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete']),
     ...mapMutations('agent', ['updateSelectedAgents']),
     ...mapActions('agent', ['addAndPrepareSelectedAgentIdsToRemove']),
     hoverCard (selectedIndex) {

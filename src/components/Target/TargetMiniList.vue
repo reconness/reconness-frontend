@@ -50,7 +50,8 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['targetListStore', 'check', 'filterColour', 'entitiesToDelete', 'paginator', 'selectedTargets']),
+    ...mapState('target', ['targetListStore', 'check', 'filterColour', 'paginator', 'selectedTargets']),
+    ...mapState('general', ['entitiesToDelete']),
     ...mapGetters('target', ['filterByColor']),
     selectedItems: {
       get () {
@@ -84,7 +85,8 @@ export default {
     this.enableTooltips()
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete', 'updateSelectedTargets']),
+    ...mapMutations('target', ['removeTargetEntityToDelete', 'updateSelectedTargets']),
+    ...mapMutations('general', ['addEntityToDelete']),
     ...mapActions('target', ['addAndPrepareSelectedTargetIdsToRemove']),
     enableTooltips () {
       jQuery('[data-toggle="tooltip"]').tooltip()

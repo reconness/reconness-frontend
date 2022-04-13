@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     ...mapState('pipelines', ['pipelinesListStore', 'check', 'colorDelete', 'pipelinesIdList']),
-    ...mapState('target', ['entitiesToDelete'])
+    ...mapState('general', ['entitiesToDelete'])
   },
   methods: {
     ...mapMutations('pipelines', ['editList', 'cancelIdPipelines', 'clearSelectedPipelinesList']),

@@ -83,7 +83,8 @@ export default {
     ...mapGetters('user', ['getGravatarUrlByEmail', 'getRoleById', 'roles'])
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('target', ['removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete']),
     editUser (e) {
       const selectedUserId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('user/updateSelectedIdUser', selectedUserId)

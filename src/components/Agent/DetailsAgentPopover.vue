@@ -39,7 +39,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('target', ['removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete']),
     isEmpty (field) {
       if (field === null) {
         return false
