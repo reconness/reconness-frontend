@@ -39,7 +39,7 @@
 import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 export default {
-  name: 'UserLogs',
+  name: 'LogsFilesManagement',
   components: {
     UserManagementHeader
   },

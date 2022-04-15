@@ -73,7 +73,7 @@ import jQuery from 'jquery'
 import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 export default {
-  name: 'UserSettings',
+  name: 'NotificationManagement',
   components: {
     UserManagementHeader
   },
