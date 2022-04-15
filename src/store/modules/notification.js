@@ -91,12 +91,12 @@ export default ({
     }
   },
   actions: {
-    loadUserNotificationsSettings ({ state, dispatch, getters, rootState }) {
+    loadNotificationsSettings ({ state, dispatch, getters, rootState }) {
       if (rootState.auth.authentication_token !== '') {
         return axios.get('/accounts/notification')
           .then(function (response) {
-            const userNotificationsMapped = getters.mapUserNotificationsFromServerToLocal(response.data)
-            dispatch('saveNotificationsSettingsToLoggedUser', userNotificationsMapped)
+            const notificationsMapped = getters.mapNotificationsSettingsFromServerToLocal(response.data)
+            dispatch('saveNotificationsSettings', notificationsMapped)
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -104,11 +104,11 @@ export default ({
           })
       }
     },
-    saveNotificationsSettingsToLoggedUserAction ({ state, getters, rootState, dispatch }, notificationsSettings) {
+    saveNotificationsSettingsAction ({ state, getters, rootState, dispatch }, notificationsSettings) {
       if (rootState.auth.authentication_token !== '') {
-        return axios.post('/accounts/saveNotification', getters.mapUserNotificationsFromLocalToServer(notificationsSettings))
+        return axios.post('/accounts/saveNotification', getters.mapNotificationsSettingsFromLocalToServer(notificationsSettings))
           .then(function (response) {
-            dispatch('saveNotificationsSettingsToLoggedUser', notificationsSettings)
+            dispatch('saveNotificationsSettings', notificationsSettings)
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -116,7 +116,7 @@ export default ({
           })
       }
     },
-    saveNotificationsSettingsToLoggedUser ({ rootState, rootGetters }, notificationsSettings) {
+    saveNotificationsSettings ({ rootState, rootGetters }, notificationsSettings) {
       const userItem = rootState.user.users.find(item => item.username === rootGetters['user/getLoggedUserData'].username)
       Object.assign(userItem.notification, notificationsSettings)
     }
@@ -153,8 +153,8 @@ export default ({
     getAllNewNotifications (state) {
       return state.notifications.filter(item => item.readed === false)
     },
-    mapUserNotificationsFromLocalToServer: (state) => (notificationsSettings) => {
-      const mappedUserNotification = {
+    mapNotificationsSettingsFromLocalToServer: (state) => (notificationsSettings) => {
+      const mappedNotification = {
         url: notificationsSettings.url,
         method: notificationsSettings.method,
         payload: notificationsSettings.payload,
@@ -163,10 +163,10 @@ export default ({
         ipAddressPayload: notificationsSettings.ipAddress,
         isAlivePayload: notificationsSettings.isAlive
       }
-      return mappedUserNotification
+      return mappedNotification
     },
-    mapUserNotificationsFromServerToLocal: (state) => (notificationsSettings) => {
-      const mappedUserNotification = {
+    mapNotificationsSettingsFromServerToLocal: (state) => (notificationsSettings) => {
+      const mappedNotification = {
         url: notificationsSettings.url,
         method: notificationsSettings.method,
         payload: notificationsSettings.payload,
@@ -175,7 +175,7 @@ export default ({
         ipAddress: notificationsSettings.ipAddressPayload,
         isAlive: notificationsSettings.isAlivePayload
       }
-      return mappedUserNotification
+      return mappedNotification
     }
   }
 })

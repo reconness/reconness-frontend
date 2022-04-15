@@ -4,28 +4,6 @@ export default ({
   namespaced: true,
   state: {
     users: [],
-    loggedUsername: 'john.doe',
-    loggedUser: {
-      username: 'john.doe',
-      firstname: 'John',
-      lastname: 'Doe',
-      email: 'johndoe@gmail.com',
-      password: '123',
-      phone: 56823566,
-      role: 1,
-      profilePicture: '',
-      id: 1,
-      logs: [
-        {
-          id: 1,
-          name: '3739362293.txt'
-        },
-        {
-          id: 2,
-          name: '37sh2362293.txt'
-        }
-      ]
-    },
     loggedUserId: '1',
     showLogsSection: false,
     showUsersSection: true,
@@ -33,17 +11,7 @@ export default ({
     idUserSequence: 10,
     selectedIdUser: '-1',
     manageMyOwnProfile: false,
-    userLogsFiles: [
-      {
-        name: '3739362293.txt',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
-      },
-      {
-        name: '37sh2362293.txt',
-        text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'
-      }
-    ],
-    logId: 0,
+    userLogsFiles: [],
     errorUpdatingOwnerRole: false
   },
   mutations: {
@@ -94,17 +62,6 @@ export default ({
       state.users.splice(1, state.users.length)
       users.forEach(user => {
         state.users.push(user)
-      })
-    },
-    saveLogsNamesToLoggedUser (state, userData) {
-      userData.loggedUser.logs.splice(0, userData.loggedUser.logs.length)
-      userData.logsNamesResponse.forEach(logNameResponse => {
-        userData.loggedUser.logs.push(
-          {
-            id: state.logId++,
-            name: logNameResponse
-          }
-        )
       })
     }
   },

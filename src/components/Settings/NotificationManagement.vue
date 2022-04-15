@@ -61,7 +61,7 @@
                       </div>
                       <div class="col-12">
                         <div class="mt-5 d-flex justify-content-end">
-                            <button type="button" @click="saveNotificationsSettingsToLoggedUserAction(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                            <button type="button" @click="saveNotificationsSettingsAction(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
                         </div>
                       </div>
                   </div>
@@ -82,9 +82,9 @@ export default {
     ...mapState('target', ['operationStatus'])
   },
   mounted () {
-    this.loadUserNotificationsSettings().then(response => {
+    this.loadNotificationsSettings().then(response => {
       if (response.status) {
-        this.loadNotificationsSettings()
+        this.setNotificationsSettings()
       }
     })
   },
@@ -119,13 +119,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('user', ['saveNotificationsSettingsToLoggedUser']),
+    ...mapMutations('user', ['saveNotificationsSettings']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
-    ...mapActions('notification', ['saveNotificationsSettingsToLoggedUserAction', 'loadUserNotificationsSettings']),
+    ...mapActions('notification', ['saveNotificationsSettingsAction', 'loadNotificationsSettings']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
     },
-    loadNotificationsSettings () {
+    setNotificationsSettings () {
       this.notificationsSettings = this.getLoggedUserData.notification
     }
   }

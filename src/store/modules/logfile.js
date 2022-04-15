@@ -1,8 +1,22 @@
 import axios from 'axios'
 export default ({
   namespaced: true,
-  state: {},
-  mutations: {},
+  state: {
+    logId: 0
+  },
+  mutations: {
+    saveLogsNamesToLoggedUser (state, userData) {
+      userData.loggedUser.logs.splice(0, userData.loggedUser.logs.length)
+      userData.logsNamesResponse.forEach(logNameResponse => {
+        userData.loggedUser.logs.push(
+          {
+            id: state.logId++,
+            name: logNameResponse
+          }
+        )
+      })
+    }
+  },
   actions: {
     cleanLogInfoByNameFromServer ({ state, commit, getters, rootState }, logfileName) {
       if (rootState.auth.authentication_token !== '') {
@@ -37,7 +51,7 @@ export default ({
               loggedUser: rootGetters['user/getLoggedUserData'],
               logsNamesResponse: response.data
             }
-            commit('user/saveLogsNamesToLoggedUser', logAndUserInfo, { root: true })
+            commit('saveLogsNamesToLoggedUser', logAndUserInfo)
             return { status: true, message: '' }
           })
           .catch(function (error) {

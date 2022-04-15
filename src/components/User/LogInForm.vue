@@ -57,12 +57,6 @@ export default {
     areInputInBlank () {
       return (this.$validateIsBlank(this.user.username) || this.$validateIsBlank(this.user.password))
     },
-    getApiUserName () {
-      return process.env.VUE_APP_API_RECONNES_USERNAME
-    },
-    getApiPassword () {
-      return process.env.VUE_APP_API_RECONNES_PASSWORD
-    },
     areCredentialsInvalid () {
       return this.invalidCredentials && !(this.areInputInBlank && this.wereWrittenInput)
     }
