@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
-                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordWasWritten" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordData" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                           <span v-if="isPasswordInBlank && !editable" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
                     </div>
                     <div class="form-group">
@@ -79,7 +79,7 @@
                                     Owner
                                   </label>
                                 </div>
-                                <div class="ml-2 custom-control custom-radio form-check">
+                                <div v-if="isLoggedUserOwner || isLoggedUserAdmin" class="ml-2 custom-control custom-radio form-check">
                                   <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
@@ -111,7 +111,7 @@
     </div>
 </template>
 <script>
-import { mapMutations, mapState, mapGetters } from 'vuex'
+import { mapMutations, mapState, mapGetters, mapActions } from 'vuex'
 import jQuery from 'jquery'
 
 export default {
@@ -127,10 +127,12 @@ export default {
         lastname: '',
         email: '',
         password: '',
+        oldPassword: '',
         phone: 0,
         role: -1,
         profilePicture: '',
-        id: -1
+        id: -1,
+        owner: false
       },
       confirm_password: '',
       userNameWasWritten: false,
@@ -146,9 +148,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', ['loggedUser', 'selectedIdUser', 'manageMyOwnProfile']),
+    ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile', 'errorUpdatingOwnerRole']),
     ...mapState('general', ['notificationMessageActionSelected']),
-    ...mapGetters('user', ['getUserById', 'getLoggedUserData']),
+    ...mapGetters('user', ['getUserById', 'getLoggedUserData', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember']),
     isUserNameInBlank () {
       return this.$validateIsBlank(this.user.username)
     },
@@ -179,15 +181,6 @@ export default {
     isUserFormInvalid () {
       return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword
     },
-    isLoggedUserOwner () {
-      return this.loggedUser.role === this.$roles.OWNER.id
-    },
-    isLoggedUserAdmin () {
-      return this.loggedUser.role === this.$roles.ADMIN.id
-    },
-    isLoggedUserMember () {
-      return this.loggedUser.role === this.$roles.MEMBER.id
-    },
     getUserFormStatus () {
       if (this.editable) {
         return 'Edit User'
@@ -204,10 +197,16 @@ export default {
       return this.user.role >= 1
     },
     editedUserIsNotSameLoggedIn () {
-      return this.getLoggedUserData.id !== this.user.id
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.id !== this.user.id
+      }
+      return false
     },
     editedUserHasSameRoleLoggedIn () {
-      return this.getLoggedUserData.role === this.user.role
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.role === this.user.role
+      }
+      return false
     },
     theNewRoleOfEditedUserIsOwner () {
       return this.user.role === this.$roles.OWNER.id
@@ -244,12 +243,18 @@ export default {
       if (value) {
         jQuery('#message-box-notification-modal').hide()
       }
+    },
+    errorUpdatingOwnerRole: function (errorOcurred) {
+      if (!errorOcurred) {
+        this.logoutUser()
+      }
     }
   },
   methods: {
     ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateUserEntity', 'updateSelectedIdUser', 'updateLoggedUserRole']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageDescription']),
     ...mapMutations('auth', ['updateIsUserLogged']),
+    ...mapActions('user', ['addUserToServer', 'updateUserToServer']),
     updateUserNameWasWritten () {
       this.userNameWasWritten = true
     },
@@ -267,6 +272,10 @@ export default {
     },
     updatePasswordWasWritten () {
       this.passwordWasWritten = true
+    },
+    updatePasswordData () {
+      this.updatePasswordWasWritten()
+      this.user.oldPassword = this.user.password
     },
     switchNameInput () {
       if (!this.editable) {
@@ -290,13 +299,9 @@ export default {
       this.userTryToAdd = true
       if (!this.isUserFormInvalid && (this.isRoleSelected && this.userTryToAdd)) {
         if (this.editable) {
-          this.updateUserEntity(this.user)
+          this.updateUserToServer(this.user)
         } else {
-          this.addUserEntity(this.user)
-        }
-        if (this.editedUserIsNotSameLoggedIn && this.editedUserHasSameRoleLoggedIn && this.theNewRoleOfEditedUserIsOwner) {
-          this.updateLoggedUserRole({ idUser: this.getLoggedUserData.id, idRole: this.$roles.ADMIN.id })
-          this.logoutUser()
+          this.addUserToServer(this.user)
         }
         jQuery('#user-form-modal').modal('hide')
         this.resetUserForm()
@@ -325,7 +330,7 @@ export default {
       this.userTryToAdd = false
       this.editable = false
       this.firstRoleSelection = false
-      this.updateSelectedIdUser(-1)
+      this.updateSelectedIdUser('-1')
       this.updateManageMyOwnProfile(false)
     },
     logoutUser () {
@@ -345,7 +350,8 @@ export default {
 .user-management-logo-avatar{
   max-width: 160px;
   max-height: 160px;
-  width: 160px;
+  width: 120px;
+  height: 120px;
   max: 160px;
 }
 .color-sample-container{

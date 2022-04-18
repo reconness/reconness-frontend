@@ -3,14 +3,12 @@
               <div class="user-management-content-header mt-5 mx-5 d-flex justify-content-between align-items-center">
                     <div class="user-management-main-info d-flex align-items-center">
                       <div class="user-management-main-info-img rounded-circle user-border-admin-role">
-                          <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-logs-logo-avatar" alt="User Logo">
+                          <img v-if="!this.$validateIsBlank(getLoggedUserData.profilePicture)" :src="getLoggedUserData.profilePicture" class="rounded-circle user-logs-logo-avatar" alt="User Image">
+                          <img v-else :src="getGravatarUrlByEmail(getLoggedUserData.email)" class="rounded-circle user-logs-logo-avatar" alt="User Image">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
                           <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
-                          <div class="user-management-roles">
-                              <AccountCogIco class="user-role-ico"/>
-                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.id).longName}}</span>
-                          </div>
+                          <UserManagementHeader/>
                       </div>
                   </div>
               </div>
@@ -38,12 +36,12 @@
           </div>
 </template>
 <script>
-import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
+import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 export default {
-  name: 'UserLogs',
+  name: 'LogsFilesManagement',
   components: {
-    AccountCogIco
+    UserManagementHeader
   },
   data () {
     return {
@@ -52,9 +50,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', ['users', 'loggedUser']),
+    ...mapState('user', ['users']),
     ...mapState('general', ['notificationMessageActionSelected']),
-    ...mapGetters('user', ['getLogInfoByName', 'getLoggedUserData']),
+    ...mapGetters('user', ['getLogInfoByName', 'getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
     isNotLogSelected () {
       return this.$validateIsBlank(this.logName)
     }
@@ -62,16 +60,30 @@ export default {
   watch: {
     notificationMessageActionSelected: function (value) {
       if (value) {
-        this.removeUserLogByName(this.logName)
+        this.cleanLogInfoByNameFromServer(this.logName).then(response => {
+          if (response.status) {
+            this.logText = ''
+          }
+        })
         this.resetData()
       }
     }
   },
+  mounted () {
+    this.loadLogsNames()
+  },
   methods: {
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
     ...mapMutations('user', ['removeUserLogByName']),
+    ...mapActions('logfile', ['cleanLogInfoByNameFromServer', 'getLogInfoByNameFromServer', 'loadLogsNames']),
     getLogData: function () {
-      this.logText = this.getLogInfoByName(this.logName)
+      this.getLogInfoByNameFromServer(this.logName).then(response => {
+        if (response.status) {
+          this.logText = response.message
+        } else {
+          this.logText = ''
+        }
+      })
     },
     updateNotificationMessage: function () {
       this.updateNotificationMessageType(this.$notificationMessageType.CONFIRM)

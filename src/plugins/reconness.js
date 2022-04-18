@@ -257,12 +257,7 @@ export default {
     }
 
     app.config.globalProperties.$isItemOnList = function (idItem, listItems) {
-      setTimeout(
-        function () {
-          return listItems.find(item => item.id === idItem)
-        },
-        1000
-      )
+      return listItems.findIndex(item => item.id === idItem) >= 0
     }
 
     app.config.globalProperties.$message = Object.freeze(
@@ -289,7 +284,8 @@ export default {
         successMessageForAgentUninstallation: 'The agent has been installed successfully',
         errorMessageForAgentUninstallation: 'An error ocurred during uninstallation',
         successMessageForImageUpload: 'The image was successfully uploaded',
-        successMessageForFileUpload: 'The file was successfully uploaded'
+        successMessageForFileUpload: 'The file was successfully uploaded',
+        successMessageForWordlistEdition: 'The wordlist content has been edited successfully'
       }
     )
 
@@ -337,16 +333,6 @@ export default {
 
     app.config.globalProperties.$getFormatedTime = function (time) {
       return time.toLocaleString('en-Us', { hour: 'numeric', minute: 'numeric', hour12: true })
-    }
-
-    app.config.globalProperties.$niceBytes = function (bytes) {
-      const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-      let l = 0
-      let n = parseInt(bytes, 10) || 0
-      while (n >= 1024 && ++l) {
-        n = n / 1024
-      }
-      return (n.toFixed(n < 10 && l > 0 ? 1 : 0) + units[l])
     }
   }
 }

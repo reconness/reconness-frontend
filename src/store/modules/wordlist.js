@@ -2,33 +2,11 @@ import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
-    wordlists: [
-      {
-        id: 1,
-        filename: 'default.txt',
-        type: 3,
-        count: 1263,
-        size: '17',
-        path: '/app/Content/wordlists/dns_resolver_enum'
-      },
-      {
-        id: 2,
-        filename: 'default2.txt',
-        type: 1,
-        count: 1264,
-        size: '18',
-        path: '/app/Content/wordlists/subdomain_enum'
-      },
-      {
-        id: 3,
-        filename: 'default3.txt',
-        type: 2,
-        count: 1265,
-        size: '19',
-        path: '/app/Content/wordlists/dir_enum'
-      }
-    ],
-    idWordList: 1
+    wordlists: [],
+    idWordList: 1,
+    selectedWordListContent: '',
+    selectedWordListDescriptionType: '',
+    selectedWordListFileName: ''
   },
   mutations: {
     removeWordListItem (state, idWordlist) {
@@ -49,6 +27,9 @@ export default ({
         word.id = state.idWordList
         state.wordlists.push(word)
       })
+    },
+    updateSelectedWordsContent (state, wordlistId) {
+      state.selectedWordList = wordlistId
     }
   },
   actions: {
@@ -99,6 +80,33 @@ export default ({
           filename: wordlistData.filename
         }
       })
+    },
+    getWordListFileContent ({ state, getters }, wordlistData) {
+      const wordlistDescriptionType = getters.getWordlistType(wordlistData.codeType)
+      state.selectedWordListDescriptionType = wordlistDescriptionType
+      state.selectedWordListFileName = wordlistData.filename
+      return axios.get('/wordlists/content/', {
+        params: {
+          type: wordlistDescriptionType,
+          filename: wordlistData.filename
+        }
+      }).then(function (response) {
+        state.selectedWordListContent = response.data.data
+        return { status: true, message: '' }
+      })
+        .catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
+    },
+    saveWordListFileContent ({ state, getters }, wordlistContent) {
+      return axios.put('/wordlists/' + state.selectedWordListDescriptionType + '/' + state.selectedWordListFileName, {
+        data: wordlistContent
+      }).then(function (response) {
+        return { status: true, message: '' }
+      })
+        .catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
     }
   },
   getters: {
@@ -138,6 +146,15 @@ export default ({
       } else {
         return 'dns_resolver_enum'
       }
+    },
+    niceBytes: (state) => (bytes) => {
+      const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+      let l = 0
+      let n = parseInt(bytes, 10) || 0
+      while (n >= 1024 && ++l) {
+        n = n / 1024
+      }
+      return (n.toFixed(n < 10 && l > 0 ? 1 : 0) + units[l])
     }
   }
 })

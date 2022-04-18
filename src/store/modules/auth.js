@@ -46,10 +46,13 @@ export default ({
             dispatch('agent/loadAgents', null, { root: true })
             dispatch('target/loadTargets', null, { root: true })
           }
-          return true
+          return { status: true, message: response.data }
         })
-        .catch(function () {
-          return false
+        .catch(function (error) {
+          if (!error.response) {
+            return { status: false, message: 'unknownError' }
+          }
+          return { status: false, message: error.response.data }
         })
     },
     updateUserLogFlagAfterSeconds ({ state, commit }, loggedFlag) {

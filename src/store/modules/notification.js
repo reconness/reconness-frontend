@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
@@ -89,7 +90,37 @@ export default ({
       }
     }
   },
-  actions: {},
+  actions: {
+    loadNotificationsSettings ({ state, dispatch, getters, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/accounts/notification')
+          .then(function (response) {
+            const notificationsMapped = getters.mapNotificationsSettingsFromServerToLocal(response.data)
+            dispatch('saveNotificationsSettings', notificationsMapped)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    saveNotificationsSettingsAction ({ state, getters, rootState, dispatch }, notificationsSettings) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/accounts/saveNotification', getters.mapNotificationsSettingsFromLocalToServer(notificationsSettings))
+          .then(function (response) {
+            dispatch('saveNotificationsSettings', notificationsSettings)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    saveNotificationsSettings ({ rootState, rootGetters }, notificationsSettings) {
+      const userItem = rootState.user.users.find(item => item.username === rootGetters['user/getLoggedUserData'].username)
+      Object.assign(userItem.notification, notificationsSettings)
+    }
+  },
   getters: {
     getTodaysNotifications (state) {
       const today = new Date()
@@ -121,6 +152,30 @@ export default ({
     },
     getAllNewNotifications (state) {
       return state.notifications.filter(item => item.readed === false)
+    },
+    mapNotificationsSettingsFromLocalToServer: (state) => (notificationsSettings) => {
+      const mappedNotification = {
+        url: notificationsSettings.url,
+        method: notificationsSettings.method,
+        payload: notificationsSettings.payload,
+        rootDomainPayload: notificationsSettings.rootDomain,
+        subdomainPayload: notificationsSettings.subDomain,
+        ipAddressPayload: notificationsSettings.ipAddress,
+        isAlivePayload: notificationsSettings.isAlive
+      }
+      return mappedNotification
+    },
+    mapNotificationsSettingsFromServerToLocal: (state) => (notificationsSettings) => {
+      const mappedNotification = {
+        url: notificationsSettings.url,
+        method: notificationsSettings.method,
+        payload: notificationsSettings.payload,
+        rootDomain: notificationsSettings.rootDomainPayload,
+        subDomain: notificationsSettings.subdomainPayload,
+        ipAddress: notificationsSettings.ipAddressPayload,
+        isAlive: notificationsSettings.isAlivePayload
+      }
+      return mappedNotification
     }
   }
 })

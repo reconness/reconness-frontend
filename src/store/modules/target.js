@@ -28,7 +28,6 @@ export default ({
     },
     currentView: '',
     countSubdomainList: 0,
-    entitiesToDelete: [],
     targetEliminationStatus: 3,
     rootDomainEliminationStatus: 3,
     // General Store
@@ -43,7 +42,8 @@ export default ({
     },
     removeAll: false,
     textToSearch: '',
-    routePreviousToSearch: ''
+    routePreviousToSearch: '',
+    selectedTargets: []
   },
   mutations: {
     updateRoutePreviousToSearch (state, route) {
@@ -209,7 +209,7 @@ export default ({
         id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
-        sender: state.loggedUser.name
+        sender: messageInfo.username
       }
       target.messages.push(note)
     },
@@ -220,7 +220,7 @@ export default ({
         id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
-        sender: state.loggedUser.name
+        sender: messageInfo.username
       }
       rootdomain.messages.push(note)
     },
@@ -232,7 +232,7 @@ export default ({
         id: state.idNote++,
         message: messageInfo.message,
         sendDate: new Date(),
-        sender: state.loggedUser.name
+        sender: messageInfo.username
       }
       subdomain.messages.push(note)
     },
@@ -320,36 +320,33 @@ export default ({
         state.targetListStore.push(target)
       })
     },
-    addEntityToDelete (state, entity) {
-      state.entitiesToDelete.push(entity)
-    },
-    removeTargetEntityToDelete (state, idEntity) {
-      const index = state.entitiesToDelete.findIndex(target => target.id === idEntity)
+    removeTargetEntityToDelete ({ state, rootState }, idEntity) {
+      const index = rootState.general.entitiesToDelete.findIndex(target => target.id === idEntity)
       if (index !== -1) {
-        state.entitiesToDelete.splice(index, 1)
+        rootState.general.entitiesToDelete.splice(index, 1)
       }
     },
-    clearTargetEntitiesToDelete (state) {
-      state.entitiesToDelete.forEach(entity => {
+    clearTargetEntitiesToDelete ({ state, rootState }) {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.targetListStore.findIndex(target => target.id === entity.id)
         if (index !== -1) {
           state.targetListStore.splice(index, 1)
         }
       })
-      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
-    clearRootDomainEntitiesToDelete (state, entities) {
-      state.entitiesToDelete.forEach(entity => {
+    clearRootDomainEntitiesToDelete ({ state, rootState }, entities) {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const target = state.targetListStore.find(target => target.name === entities.targetName)
         const rootsIndex = target.rootDomains.findIndex(roots => roots.id === entity.id)
         if (rootsIndex !== -1) {
           target.rootDomains.splice(rootsIndex, 1)
         }
       })
-      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
-    clearSubDomainEntitiesToDelete (state, entities) {
-      state.entitiesToDelete.forEach(entity => {
+    clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const target = state.targetListStore.find(target => target.name === entities.targetName)
         const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
         const subDomainIndex = rootdomain.subdomain.findIndex(subdomain => subdomain.id === entity.id)
@@ -357,16 +354,13 @@ export default ({
           rootdomain.subdomain.splice(subDomainIndex, 1)
         }
       })
-      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
-    clearAllSubDomainEntitiesToDelete (state, entities) {
+    clearAllSubDomainEntitiesToDelete ({ state, rootState }, entities) {
       const target = state.targetListStore.find(target => target.name === entities.targetName)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
       rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
-      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
-    },
-    clearReferencesToDelete (state) {
-      state.entitiesToDelete.splice(0, state.entitiesToDelete.length)
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
     updateTargetEliminationStatus (state, status) {
       state.targetEliminationStatus = status
@@ -391,6 +385,12 @@ export default ({
     },
     updateTextToSearch (state, newFilter) {
       state.textToSearch = newFilter
+    },
+    updateSelectedTargets (state, targets) {
+      state.selectedTargets = targets
+    },
+    clearSelectedTargetsList (state) {
+      state.selectedTargets.splice(0, state.selectedTargets.length)
     }
   },
   actions: {
@@ -433,17 +433,17 @@ export default ({
       }
     },
     removeTargetsSelected ({ state, commit, rootState }) {
-      state.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.targetListStore.findIndex(target => target.id === entity.id)
         if (index !== -1) {
           state.targetListStore.splice(index, 1)
         }
       })
-      commit('clearReferencesToDelete')
+      commit('general/clearReferencesToDelete', null, { root: true })
     },
-    clearTargetEntitiesToDeleteToServer ({ state, dispatch }) {
+    clearTargetEntitiesToDeleteToServer ({ rootState, state, dispatch }) {
       const targetNames = []
-      state.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         let targetName
         const index = state.targetListStore.findIndex(target => target.id === entity.id)
         if (index !== -1) {
@@ -458,6 +458,18 @@ export default ({
         return { status: true, message: '' }
       }).catch(function (error) {
         return { status: false, message: error.response.data }
+      })
+    },
+    addAndPrepareSelectedTargetIdsToRemove ({ state, rootGetters, getters, commit }) {
+      commit('general/clearReferencesToDelete', null, { root: true })
+      state.selectedTargets.forEach(element => {
+        const name = getters.getTargetById(element).name
+        const entity = {
+          id: element,
+          name: name,
+          type: rootGetters['general/entityTypeData'].TARGET
+        }
+        commit('general/addEntityToDelete', entity, { root: true })
       })
     }
   },
@@ -730,10 +742,10 @@ export default ({
       })
       return newRootDomains
     },
-    isEntityOnListToRemove: (state) => (idItem) => {
+    isEntityOnListToRemove: ({ state, rootState }) => (idItem) => {
       setTimeout(
         function () {
-          const searchedElement = state.entitiesToDelete.find(item => parseInt(item.id) === parseInt(idItem))
+          const searchedElement = rootState.general.entitiesToDelete.find(item => parseInt(item.id) === parseInt(idItem))
           if (searchedElement) {
             return true
           }

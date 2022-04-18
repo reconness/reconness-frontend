@@ -94,7 +94,7 @@ export default {
     this.loadedTarget = this.getTargetById(parseInt(this.$route.params.idTarget))
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete']),
     updateConfirm (itemName) {
       return this.$store.commit('agent/confirm', { name: itemName, route: 'subdomains' })
     },

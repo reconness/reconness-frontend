@@ -302,7 +302,8 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['setCurrentView', 'addEntityToDelete']),
+    ...mapMutations('target', ['setCurrentView']),
+    ...mapMutations('general', ['addEntityToDelete']),
     updateOpenPortsInGraph () {
       this.optionsBar.xaxis.categories = this.getOpenPorts
     },

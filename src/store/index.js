@@ -8,6 +8,7 @@ import referent from './modules/referent'
 import general from './modules/general'
 import user from './modules/user'
 import notification from './modules/notification'
+import logfile from './modules/logfile'
 
 export default createStore({
   modules: {
@@ -19,6 +20,7 @@ export default createStore({
     wordlist,
     user,
     general,
-    notification
+    notification,
+    logfile
   }
 })

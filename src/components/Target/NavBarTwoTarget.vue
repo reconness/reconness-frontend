@@ -194,7 +194,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList', 'entitiesToDelete']),
+    ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList']),
+    ...mapState('general', ['entitiesToDelete']),
     arrayUniqueColours () {
       return [...new Set(this.targetListStore.map(item => 'linear-gradient(160deg,' + item.primaryColor + ' ' + '0%,' + item.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'))]
     }
@@ -213,7 +214,8 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget', 'clearReferencesToDelete']),
+    ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget', 'clearSelectedTargetsList']),
+    ...mapMutations('general', ['clearReferencesToDelete']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -268,6 +270,7 @@ export default {
       this.nameTyped = ''
       this.cancelIdTarget()
       this.clearReferencesToDelete()
+      this.clearSelectedTargetsList()
     }
   }
 }

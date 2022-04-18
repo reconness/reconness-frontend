@@ -61,7 +61,7 @@ export default {
     ...mapGetters('target', ['getLasTenTargets'])
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete']),
     orderByNameDesc: function () {
       return this.targetListStore.sort(this.$compareNamesDesc)
     },

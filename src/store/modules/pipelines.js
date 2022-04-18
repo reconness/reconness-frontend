@@ -429,7 +429,8 @@ export default {
     isTerminalHided: true,
     agent: Object,
     isAgentInfoOpenedForTerminal: true,
-    numberAgentsProcessing: 0
+    numberAgentsProcessing: 0,
+    selectedPipelines: []
   },
   mutations: {
     changeIsBranchFather (state, value) {
@@ -627,17 +628,35 @@ export default {
           })
         }
       })
+    },
+    updateSelectedPipelines (state, pipelines) {
+      state.selectedPipelines = pipelines
+    },
+    clearSelectedPipelinesList (state) {
+      state.selectedPipelines.splice(0, state.selectedPipelines.length)
     }
   },
   actions: {
     clearPipelineEntitiesToDelete ({ state, commit, rootState }) {
-      rootState.target.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.pipelinesListStore.findIndex(pipeline => pipeline.id === entity.id)
         if (index !== -1) {
           state.pipelinesListStore.splice(index, 1)
         }
       })
-      commit('target/clearReferencesToDelete', null, { root: true })
+      commit('general/clearReferencesToDelete', null, { root: true })
+    },
+    addAndPrepareSelectedPipelineIdsToRemove ({ state, rootGetters, getters, commit }) {
+      commit('general/clearReferencesToDelete', null, { root: true })
+      state.selectedPipelines.forEach(element => {
+        const name = getters.getPipelineById(element).name
+        const entity = {
+          id: element,
+          name: name,
+          type: rootGetters['general/entityTypeData'].PIPELINE
+        }
+        commit('general/addEntityToDelete', entity, { root: true })
+      })
     }
   },
   getters: {

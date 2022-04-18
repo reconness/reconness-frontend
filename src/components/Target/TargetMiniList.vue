@@ -10,8 +10,8 @@
         <div v-for="target of filteredTargetList" :key="target.id" class="row border-bottom">
             <div class="w-60px">
                 <div v-if="check" class="w-100 h-100 target-mini-list d-flex justify-content-center align-items-center custom-control custom-checkbox form-check private-program-container">
-                  <input class="form-check-input custom-control-input" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+target.id" :checked="this.$isItemOnList(target.id, entitiesToDelete)">
-                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+target.id"  :data-id="target.id" :data-name="target.name" @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.TARGET.id)"></label>
+                  <input class="form-check-input custom-control-input" :value="target.id"  v-model="selectedItems" type="checkbox" name="checkitem" :id="'remove_customCheckbox'+target.id">
+                  <label class="form-check-label custom-control-label float-right" :for="'remove_customCheckbox'+target.id"  :data-id="target.id" :data-name="target.name"></label>
                 </div>
             </div>
             <div class="col-1 my-auto d-flex justify-content-center">
@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
@@ -50,8 +50,17 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['targetListStore', 'check', 'filterColour', 'entitiesToDelete', 'paginator']),
-    ...mapGetters('target', ['filterByColor'])
+    ...mapState('target', ['targetListStore', 'check', 'filterColour', 'paginator', 'selectedTargets']),
+    ...mapState('general', ['entitiesToDelete']),
+    ...mapGetters('target', ['filterByColor']),
+    selectedItems: {
+      get () {
+        return this.selectedTargets
+      },
+      set (value) {
+        this.updateSelectedTargets(value)
+      }
+    }
   },
   watch: {
     entitiesToDelete: {
@@ -64,13 +73,21 @@ export default {
         }
       },
       deep: true
+    },
+    selectedItems: {
+      handler: function (value) {
+        this.addAndPrepareSelectedTargetIdsToRemove()
+      },
+      deep: true
     }
   },
   mounted () {
     this.enableTooltips()
   },
   methods: {
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('target', ['removeTargetEntityToDelete', 'updateSelectedTargets']),
+    ...mapMutations('general', ['addEntityToDelete']),
+    ...mapActions('target', ['addAndPrepareSelectedTargetIdsToRemove']),
     enableTooltips () {
       jQuery('[data-toggle="tooltip"]').tooltip()
     },

@@ -53,11 +53,12 @@
         <li @mouseenter="showUserConfigurationMenu" @mouseleave="hideUserConfigurationMenu" class="nav-item dropdown">
           <div class="image nav-link cursor-pointer d-flex" data-toggle="dropdown">
             <div class="main-bar-user-data d-flex flex-column">
-              <span class="loged-user-name font-size-16px">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
-              <span class="font-size-10px font-weight-light">{{this.$getRoleById(getLoggedUserData.role).longName}}</span>
+              <span class="loged-user-name font-size-16px">{{getLoggedUserDataFirstName}} {{getLoggedUserDataLastName}}</span>
+              <span class="font-size-10px font-weight-light">{{getRoleById(getLoggedUserDataRoleId).longName}}</span>
             </div>
             <div>
-            <img :src="gravatarURL" onerror="this.onerror=null;this.src='/adminlte/img/reconnes/user2-160x160.jpg'" class="top-bar-logo img-circle elevation-2" alt="User Image">
+            <img v-if="!this.$validateIsBlank(getLoggedUserDataImage)" :src="getLoggedUserDataImage" class="top-bar-logo img-circle elevation-2" alt="User Image">
+            <img v-else :src="gravatarURL" class="top-bar-logo img-circle elevation-2" alt="User Image">
             <span v-if="isLoggedUserMember" class="green-text material-icons position-absolute top-bar-role-icon rounded-circle">person</span>
             <span v-else :class="{'blue-text': isLoggedUserOwner, 'green-text': isLoggedUserAdmin}" class="material-icons position-absolute top-bar-role-icon rounded-circle blue-text">manage_accounts</span>
             </div>
@@ -131,7 +132,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item" >
-                  <a href="#" class="nav-link" v-on:click="goToUserSettings" v-bind:class="{'nav2': styleNotificationsState}">
+                  <a href="#" class="nav-link" v-on:click="goToNotificationSettings" v-bind:class="{'nav2': styleNotificationsState}">
                     <span class="material-icons">circle_notifications</span>
                         <p>Notifications</p>
                   </a>
@@ -184,7 +185,6 @@
 import { mapState, mapMutations, mapGetters } from 'vuex'
 import UserForm from '@/components/User/UserForm.vue'
 import jQuery from 'jquery'
-import md5 from 'md5'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import MessageBox from '@/components/General/MessageBox.vue'
 import MessageBoxNotification from '@/components/General/MessageBoxNotification.vue'
@@ -222,7 +222,7 @@ export default {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('target', ['routePreviousToSearch']),
     ...mapGetters('notification', ['getAllNewNotifications']),
-    ...mapGetters('user', ['getLoggedUserData']),
+    ...mapGetters('user', ['getLoggedUserData', 'roles', 'getGravatarUrlByEmail', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'getRoleById']),
     ...mapState('notification', ['isNotificationMenuActive']),
     ...mapState('general', ['notificationTimeSelected']),
     ...mapState('auth', ['isUserLogged']),
@@ -233,20 +233,10 @@ export default {
       return this.$route.name === 'Users'
     },
     gravatarURL () {
-      const hashedUrl = md5(this.getLoggedUserData.email)
-      return this.$getGravatarUrlByEmail(hashedUrl)
+      return this.getGravatarUrlByEmail(this.getLoggedUserDataEmail)
     },
     isAnyPipelineRelatedPage () {
       return this.$route.name === 'Pipelines' || this.$route.name === 'PipelineDetail' || this.$route.name === 'PipelineRunView'
-    },
-    isLoggedUserOwner () {
-      return this.getLoggedUserData.role === this.$roles.OWNER.id
-    },
-    isLoggedUserAdmin () {
-      return this.getLoggedUserData.role === this.$roles.ADMIN.id
-    },
-    isLoggedUserMember () {
-      return this.getLoggedUserData.role === this.$roles.MEMBER.id
     },
     isSearcherView () {
       return this.$route.name === 'SearchResult'
@@ -259,6 +249,38 @@ export default {
     },
     showTopAndLeftBars () {
       return this.isUserLogged && !this.isUserManagementPage && !(this.isLoginPage || this.isUserManagementPage)
+    },
+    getLoggedUserDataFirstName () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.firstname
+      }
+      return ''
+    },
+    getLoggedUserDataLastName () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.lastname
+      }
+      return ''
+    },
+    getLoggedUserDataEmail () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.email
+      }
+      return ''
+    },
+    getLoggedUserDataRoleId () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.role
+      }
+      return this.roles.MEMBER
+    },
+    getLoggedUserDataImage () {
+      if (this.getLoggedUserData) {
+        if (!this.$validateIsBlank(this.getLoggedUserData.profilePicture)) {
+          return this.getLoggedUserData.profilePicture
+        }
+      }
+      return ''
     }
   },
   watch: {
@@ -363,7 +385,7 @@ export default {
     goToPreviousPage () {
       this.$router.push({ name: this.routePreviousToSearch })
     },
-    goToUserSettings () {
+    goToNotificationSettings () {
       this.goToSettingsSection()
       this.$router.push({ name: 'Users' })
     }

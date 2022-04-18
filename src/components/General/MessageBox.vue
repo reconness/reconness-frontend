@@ -60,7 +60,8 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('target', ['entitiesToDelete', 'removeAll']),
+    ...mapState('target', ['removeAll']),
+    ...mapState('general', ['entitiesToDelete']),
     entityTypeDisplayed () {
       if (this.isOnTargetView || this.$isOnHomeView()) {
         return this.$entityTypeData.TARGET
@@ -147,7 +148,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearReferencesToDelete', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption']),
+    ...mapMutations('general', ['clearReferencesToDelete']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
     ...mapActions('target', ['clearTargetEntitiesToDeleteToServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),

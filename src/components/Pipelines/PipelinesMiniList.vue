@@ -3,8 +3,8 @@
     <div v-for="item of pipelinesListStore" :key="item.id"
     class=" col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3 p-3">
         <div class="card initial-info-box agent-mini-main-container rounded-corners container-card" @mouseover="hoverCard(item.id)" @mouseout="hoverCard(-1)">
-        <input type="checkbox" :id="'remove_customCheckbox'+ item.id"  name="checkitem" :checked="this.$isItemOnList(item.id, pipelinesIdList)">
-        <label :for="'remove_customCheckbox'+ item.id" v-show="check"  @click="prepareToDeleteFromMultipleSelections($event, this.$entityTypeData.PIPELINE)" :data-id="item.id" :data-name="item.name" class="mb-0"></label>
+        <input type="checkbox" :id="'remove_customCheckbox'+ item.id" :value="item.id"  v-model="selectedItems" name="checkitem">
+        <label :for="'remove_customCheckbox'+ item.id" v-show="check" :data-id="item.id" :data-name="item.name" class="mb-0"></label>
         <div class="card-header border-bottom-0 mb-1 mt-3 p-0 pl-2 pr-3 ">
            <span  class="material-icons main_reconnes_text-color mr-1 float-left"> chevron_right </span>
             <router-link :to="{ name: 'PipelineDetail', params: {id: item.id, pipelineName: item.name} }" class="text-body card-title domain-names-target">
@@ -54,7 +54,7 @@
 </div>
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import RocketIco from '@/components/Icons/RocketIco.vue'
 import GearIcon from '@/components/Icons/GearIcon.vue'
 import PipelinesForm from '@/components/Pipelines/PipelinesForm.vue'
@@ -75,11 +75,29 @@ export default {
   },
   mixins: [PipelineMixin],
   computed: {
-    ...mapState('pipelines', ['pipelinesListStore', 'pipelinesIdList', 'check'])
+    ...mapState('pipelines', ['pipelinesListStore', 'pipelinesIdList', 'check', 'selectedPipelines']),
+    selectedItems: {
+      get () {
+        return this.selectedPipelines
+      },
+      set (value) {
+        this.updateSelectedPipelines(value)
+      }
+    }
+  },
+  watch: {
+    selectedItems: {
+      handler: function (value) {
+        this.addAndPrepareSelectedPipelineIdsToRemove()
+      },
+      deep: true
+    }
   },
   methods: {
-    ...mapMutations('pipelines', ['addIdPipeline', 'removebyIdPipelines']),
-    ...mapMutations('target', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('pipelines', ['addIdPipeline', 'removebyIdPipelines', 'updateSelectedPipelines']),
+    ...mapMutations('target', ['removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete']),
+    ...mapActions('pipelines', ['addAndPrepareSelectedPipelineIdsToRemove']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
     },

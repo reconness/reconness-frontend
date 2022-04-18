@@ -3,13 +3,13 @@
               <div class="user-management-content-header mt-5 mx-5 d-flex justify-content-between align-items-center">
                     <div class="user-management-main-info d-flex align-items-center">
                       <div class="user-management-main-info-img rounded-circle user-border-admin-role">
-                          <img src="/adminlte/img/reconnes/user2-160x160.jpg" class="rounded-circle user-logs-logo-avatar" alt="User Logo">
+                          <img v-if="!this.$validateIsBlank(getLoggedUserData.profilePicture)" :src="getLoggedUserData.profilePicture" class="rounded-circle user-logs-logo-avatar" alt="User Image">
+                          <img v-else :src="getGravatarUrlByEmail(getLoggedUserData.email)" class="rounded-circle user-logs-logo-avatar" alt="User Image">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
                           <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
                           <div class="user-management-roles">
-                              <AccountCogIco class="user-role-ico"/>
-                              <span class="font-size-16px user-management-role-name ml-1">{{this.$getRoleById(getLoggedUserData.id).longName}}</span>
+                              <UserManagementHeader/>
                           </div>
                       </div>
                   </div>
@@ -61,7 +61,7 @@
                       </div>
                       <div class="col-12">
                         <div class="mt-5 d-flex justify-content-end">
-                            <button type="button" @click="saveNotificationsSettingsToLoggedUserAction(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                            <button type="button" @click="saveNotificationsSettingsAction(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
                         </div>
                       </div>
                   </div>
@@ -69,20 +69,24 @@
           </div>
 </template>
 <script>
-import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import jQuery from 'jquery'
 import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
+import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 export default {
-  name: 'UserSettings',
+  name: 'NotificationManagement',
   components: {
-    AccountCogIco
+    UserManagementHeader
   },
   computed: {
-    ...mapGetters('user', ['getLoggedUserData']),
+    ...mapGetters('user', ['getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
     ...mapState('target', ['operationStatus'])
   },
   mounted () {
-    this.loadNotificationsSettings()
+    this.loadNotificationsSettings().then(response => {
+      if (response.status) {
+        this.setNotificationsSettings()
+      }
+    })
   },
   data () {
     return {
@@ -115,13 +119,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('user', ['saveNotificationsSettingsToLoggedUser']),
+    ...mapMutations('user', ['saveNotificationsSettings']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
-    ...mapActions('user', ['saveNotificationsSettingsToLoggedUserAction']),
+    ...mapActions('notification', ['saveNotificationsSettingsAction', 'loadNotificationsSettings']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
     },
-    loadNotificationsSettings () {
+    setNotificationsSettings () {
       this.notificationsSettings = this.getLoggedUserData.notification
     }
   }

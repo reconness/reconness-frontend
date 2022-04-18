@@ -270,7 +270,7 @@ export default {
   },
   computed: {
     ...mapState('agent', ['agentListStore', 'check', 'colorDelete', 'agentsInstallers', 'agentIdList']),
-    ...mapState('target', ['entitiesToDelete']),
+    ...mapState('general', ['entitiesToDelete']),
     arrayUniqueColours () {
       return [...new Set(this.agentListStore.map(item => item.primaryColor))]
     }
@@ -291,7 +291,7 @@ export default {
     mouseleave: function () {
       this.active = !this.active
     },
-    ...mapMutations('agent', ['isFilter', 'editList']),
+    ...mapMutations('agent', ['isFilter', 'editList', 'clearSelectedAgentsList']),
     ...mapActions('agent', ['loadMarketplace']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
@@ -335,6 +335,7 @@ export default {
       }
       this.nameTyped = ''
       this.$store.commit('agent/cancelIdAgent')
+      this.clearSelectedAgentsList()
     },
     activeNavButton: function (valueIn) {
       if (valueIn === 'isMiniView') {

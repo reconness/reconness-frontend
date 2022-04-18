@@ -132,8 +132,7 @@
                                 <span v-else class="agent-mini-agent-details agent-regular-font-11px pt-0 pb-0 black-text border-right-0 mt-1">Creating...</span>
                               </div> <!-- /.info-box-content -->
                               <span class="info-box-icon icon-style mr-2" :style ="{background: 'linear-gradient(135deg,'+agent.primaryColor +' '+ '0%,' + agent.secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}">
-                                <AccountCogIco v-if="!agent.image && this.$installedByUser(agent.createdBy)" class="form-ico-size"/>
-                                <ApplicationCogIco v-if="!agent.image && this.$installedBySystem(agent.createdBy)" class="form-ico-size"/>
+                                <AccountCogIco v-if="!agent.image" class="form-ico-size"/>
                                 <img v-if="agent.image" class="fill-logo-image" :src="agent.image">
                               </span>
                             </div> <!-- /.info-box -->
@@ -227,6 +226,33 @@
                       <v-ace-editor v-model:value="agent.script" lang="csharp" class="mt-4" style="height:300px" theme="monokai"/>
                     </div>
                   </div><!-- /.row -->
+                  <div class="row" v-if="isVisibleTopSection || isVisibleConfigSection">
+                    <div class="col-12">
+                      <div :class="{'mt-4': isVisibleConfigSection}" class="my-3 agent-containers min-height-auto">
+                        <div class="info-box-content d-flex px-2 border-radius-8px justify-content-between learn-more-border-line">
+                          <span class="info-box-text">
+                            <span class="mr-2 agent-title-sub-containers">Configuration</span>
+                            <a href="https://docs.reconness.com/agents/add-agent#agent-configuration" target="_blank" rel="noopener noreferrer" class="blue-text agent-regular-font font-weight-light">Learn more</a>
+                          </span>
+                          <a href="#" @click="showConfigSection">
+                            <span v-show="arrow_up" class="material-icons learn-more-arrow-up">keyboard_arrow_up</span>
+                            <span v-show="arrow_down" class="learn-more-arrow-down material-icons">keyboard_arrow_down</span>
+                          </a>
+                        </div>
+                        <!-- /.info-box-content -->
+                      </div>
+                    </div><!-- /.col-12 -->
+                    <div v-if="isVisibleConfigSection" class="col-12">
+                      <div class="custom-file agent-upload-config">
+                        <input type="file" class="custom-file-input" id="uploadconfigfile" @change="loadConfigTextFile">
+                        <label class="custom-file-label font-size-16px" for="uploadconfigfile">{{ loadedFileNameOrPlaceholder }}</label>
+                      </div>
+                      <span v-if="showFileConfigLocation" class="mt-1 ml-2">{{ getFullFileConfigPath }}</span>
+                    </div>
+                    <div v-if="isVisibleConfigSection"  id="config-section" class="col-12">
+                      <v-ace-editor v-model:value="configurationFileContent" lang="csharp" class="mt-4" style="height:300px" theme="monokai"/>
+                    </div>
+                  </div><!-- /.row -->
                 </div><!-- /.modal-body -->
                 <div class="border-top-none modal-footer">
                   <button type="button" :disabled="isFormInvalid" @click="addAgent(this.agent)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
@@ -244,9 +270,8 @@ import Chips from 'primevue/chips'
 import { VAceEditor } from 'vue3-ace-editor'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import FileCodeIco from '@/components/Icons/FileCodeIco.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters, mapState } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
-import ApplicationCogIco from '@/components/Icons/ApplicationCogIco.vue'
 
 export default {
   name: 'AgentForm',
@@ -254,7 +279,6 @@ export default {
     VAceEditor,
     AccountCogIco,
     FileCodeIco,
-    ApplicationCogIco,
     Chips
   },
   props: {
@@ -283,12 +307,14 @@ export default {
         image: '',
         status: this.$entityStatus.FINISHED,
         lastRun: null,
-        createdBy: this.$entitySource.USER.id
+        createdBy: '',
+        configurationFile: ''
       },
       colorpickerData: '',
       isVisibleTopSection: true,
       isVisibleMiddleSection: false,
       isVisibleBottomSection: false,
+      isVisibleConfigSection: false,
       middleSection: 'collapse',
       editable: false,
       arrow_down: false,
@@ -308,11 +334,16 @@ export default {
       nextAgentSequence: 30,
       showNameInput: false,
       isRandomColorSelected: true,
-      wereWrittenInput: false
+      wereWrittenInput: false,
+      configurationFileContent: '',
+      loadedNewConfigFile: false,
+      configurationFileFormData: null
     }
   },
   mixins: [TargetMixin],
   computed: {
+    ...mapGetters('user', ['getLoggedUserData']),
+    ...mapState('agent', ['configFilePath']),
     isValid () {
       if (this.agent.name !== '' &&
       this.agent.repository !== '' &&
@@ -343,6 +374,24 @@ export default {
     },
     isGreenColorSelected () {
       return this.agent.primaryColor === '#3adb99'
+    },
+    loadedFileNameOrPlaceholder () {
+      if (this.loadedNewConfigFile) {
+        return this.agent.configurationFile
+      }
+      return 'Choose config file'
+    },
+    getFullFileConfigPath () {
+      if (this.agent && this.configFilePath !== '') {
+        return this.configFilePath + this.agent.configurationFile
+      }
+      return ''
+    },
+    showFileConfigLocation () {
+      if (this.agent.configurationFile) {
+        return this.editable && !this.$validateIsBlank(this.agent.configurationFile)
+      }
+      return ''
     }
   },
   watch: {
@@ -364,6 +413,7 @@ export default {
         this.agent.secondaryColor = value.secondaryColor
         this.agent.image = value.image
         this.agent.categories = value.categories
+        this.agent.configurationFile = value.configurationFile
         if (value.script === undefined || value.script === null) {
           this.agent.script = ''
         }
@@ -378,9 +428,12 @@ export default {
       }
     }
   },
+  mounted () {
+    this.getConfigurationFilesLocation()
+  },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
-    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer', 'uploadAgentImage']),
+    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer', 'uploadAgentImage', 'uploadAgentConfigurationFile', 'getConfigurationFilesLocation']),
     setBlueColor: function () {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
@@ -423,6 +476,13 @@ export default {
           this.agent.id = this.$store.getters['agent/idAgent']
           this.updateAgentToServer(this.agent).then(response => {
             if (response.status) {
+              if (this.loadedNewConfigFile) {
+                const configData = {
+                  agentName: this.agent.name,
+                  formData: this.configurationFileFormData
+                }
+                this.uploadAgentConfigurationFile(configData)
+              }
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentEdition)
               this.resetAgentForm()
               jQuery('#exampleModalCenter').modal('hide')
@@ -433,8 +493,16 @@ export default {
             }
           })
         } else {
+          this.agent.createdBy = this.getLoggedUserData.username
           this.addAgentToServer(this.agent).then(response => {
             if (response.status) {
+              if (this.loadedNewConfigFile) {
+                const configData = {
+                  agentName: this.agent.name,
+                  formData: this.configurationFileFormData
+                }
+                this.uploadAgentConfigurationFile(configData)
+              }
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentInsertion)
               this.resetAgentForm()
               jQuery('#exampleModalCenter').modal('hide')
@@ -456,6 +524,9 @@ export default {
     resetAgentForm () {
       this.wereWrittenInput = false
       this.isRandomColorSelected = true
+      this.loadedNewConfigFile = false
+      this.configurationFileFormData = null
+      this.configurationFileContent = ''
       this.agent = {
         name: 'My Agent',
         repository: '',
@@ -470,9 +541,10 @@ export default {
         image: '',
         lastRun: null,
         status: this.$entityStatus.FINISHED,
-        createdBy: this.$entitySource.USER.id,
+        createdBy: '',
         primaryColor: '#737be5',
-        secondaryColor: '#7159d3'
+        secondaryColor: '#7159d3',
+        configurationFile: ''
       }
       this.validators = {
         blank: {
@@ -528,11 +600,17 @@ export default {
     enableBottomSection () {
       this.isVisibleBottomSection = true
     },
+    enableConfigSection () {
+      this.isVisibleConfigSection = true
+    },
     enableMiddleSection () {
       this.isVisibleMiddleSection = true
     },
     disableBottomSection () {
       this.isVisibleBottomSection = false
+    },
+    disableConfigSection () {
+      this.isVisibleConfigSection = false
     },
     disableMiddleSection () {
       this.isVisibleMiddleSection = false
@@ -550,6 +628,18 @@ export default {
         this.disableTopSection()
       } else {
         this.disableBottomSection()
+        this.enableTopSection()
+      }
+      this.arrow_down = !this.arrow_down
+      this.arrow_up = !this.arrow_up
+    },
+    showConfigSection () {
+      if (this.isVisibleTopSection) {
+        this.disableMiddleSection()
+        this.enableConfigSection()
+        this.disableTopSection()
+      } else {
+        this.disableConfigSection()
         this.enableTopSection()
       }
       this.arrow_down = !this.arrow_down
@@ -623,11 +713,34 @@ export default {
     },
     setWrittenInputFlag () {
       this.wereWrittenInput = true
+    },
+    loadConfigTextFile (e) {
+      const textfile = e.target.files[0]
+      const reader = new FileReader()
+      reader.readAsText(textfile, 'UTF-8')
+      const self = this
+      reader.onload = function (evt) {
+        self.configurationFileContent = evt.target.result
+        self.agent.configurationFile = textfile.name
+        self.loadedNewConfigFile = true
+        self.configurationFileFormData = new FormData()
+        self.configurationFileFormData.append('file', textfile)
+      }
     }
   }
 }
 </script>
 <style>
+.agent-upload-config label{
+  width: 50%;
+  border: 1px solid #F1F3F5;
+  background-color: unset;
+  color: #000000 !important;
+}
+.agent-upload-config label::after{
+  font-size: 16px;
+  font-weight: 400;
+}
 .color-sample-container{
   box-shadow: 0px 19px 27px #0C1F6A12 !important;
   border-radius: 12px !important;

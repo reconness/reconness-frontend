@@ -88,6 +88,7 @@ export default {
     ...mapGetters('target', ['getTargetNotes', 'getRootDomainNotes', 'getSubDomainNotes']),
     ...mapState('target', ['idNote', 'currentView']),
     ...mapState('agent', ['isNotesSectionOpened']),
+    ...mapState('user', ['loggedUsername']),
     getNotes: function () {
       if (this.order_by_date) {
         if (this.active_arrow_down_note) {
@@ -186,20 +187,23 @@ export default {
       if (this.$route.name === 'TargetDetail') {
         this.sendTargetNote({
           idTarget: parseInt(this.$route.params.id),
-          message: this.note
+          message: this.note,
+          username: this.loggedUsername
         })
       } else if (this.$route.name === 'RootDomainDetails') {
         this.sendRootDomainNote({
           idTarget: parseInt(this.$route.params.idTarget),
           idRootDomain: parseInt(this.$route.params.id),
-          message: this.note
+          message: this.note,
+          username: this.loggedUsername
         })
       } else if (this.$route.name === 'SubDomainDetails') {
         this.sendSubDomainNote({
           idTarget: parseInt(this.$route.params.idTarget),
           idRootDomain: parseInt(this.$route.params.id),
           idSubDomain: parseInt(this.$route.params.idsubdomain),
-          message: this.note
+          message: this.note,
+          username: this.loggedUsername
         })
       }
       this.note = ''

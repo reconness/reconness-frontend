@@ -219,7 +219,7 @@ export default {
   computed: {
     ...mapGetters('target', ['getSubdomainSize']),
     ...mapState('agent', ['isElementDeleted']),
-    ...mapState('target', ['entitiesToDelete'])
+    ...mapState('general', ['entitiesToDelete'])
   },
   mounted () {
     if (this.isElementDeleted) {
@@ -370,7 +370,8 @@ export default {
       })
     },
     ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['addEntityToDelete', 'updateRemoveAllOption'])
+    ...mapMutations('target', ['updateRemoveAllOption']),
+    ...mapMutations('general', ['addEntityToDelete'])
   }
 }
 </script>

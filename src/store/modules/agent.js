@@ -45,7 +45,9 @@ export default ({
     nameRoute: '',
     valueDelete: '',
     isDefaultViewOnAgent: true,
-    agentSequence: 30
+    agentSequence: 30,
+    selectedAgents: [],
+    configFilePath: ''
   },
   mutations: {
     confirm (state, valueIN) {
@@ -192,6 +194,12 @@ export default ({
           state.agentListStore[foundedAgentindex].installedFrom = agentMarket.id
         }
       })
+    },
+    updateSelectedAgents (state, agents) {
+      state.selectedAgents = agents
+    },
+    clearSelectedAgentsList (state) {
+      state.selectedAgents.splice(0, state.selectedAgents.length)
     }
   },
   getters: {
@@ -289,7 +297,7 @@ export default ({
         newMarkedAgent = {
           name: agent.name,
           description: 'Description of agent ' + agent.name,
-          id: agent.name,
+          id: agent.id,
           installed: getters.isAgentInstalled(agent.name),
           category: agent.category,
           command: agent.command,
@@ -328,8 +336,9 @@ export default ({
         date: new Date(),
         installedFrom: '',
         lastRun: new Date(agent.lastRun),
-        createdBy: getters.getEntitySourceByDescription(agent.createdBy),
-        categories: agent.categories
+        createdBy: agent.createdBy,
+        categories: agent.categories,
+        configurationFile: agent.configurationFileName
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -346,28 +355,35 @@ export default ({
         primaryColor: agent.primaryColor,
         secondaryColor: agent.secondaryColor,
         script: agent.script,
-        createdBy: getters.getEntitySourceDescriptionByCode(agent.createdBy),
+        createdBy: agent.createdBy,
         triggerSubdomainIsAlive: agent.isAliveTrigger,
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
         categories: agent.categories,
-        image: agent.image
+        image: agent.image,
+        configurationFileName: agent.configurationFile
       }
       return mappedAgent
+    },
+    entitySource: (state, getters) => (agent) => {
+      return {
+        USER: { id: 1, description: 'User' },
+        SYSTEM: { id: 2, description: 'System' }
+      }
     }
   },
   actions: {
     removeAgentsSelected ({ state, commit, rootState }) {
-      rootState.target.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
           commit('removeAgent', entity.name)
         }
       })
-      commit('target/clearReferencesToDelete', null, { root: true })
+      commit('general/clearReferencesToDelete', null, { root: true })
     },
     clearAgentEntitiesToDelete ({ state, commit, rootState, dispatch }) {
       const agentNames = []
-      rootState.target.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         let agentName
         const index = state.agentListStore.findIndex(agent => agent.id === entity.id)
         if (index !== -1) {
@@ -456,7 +472,6 @@ export default ({
             commit('installUninstallAgent', index)
             const agentDto = response.data
             const mappedAgent = getters.mapAgentFromServerToLocal(agentDto)
-            mappedAgent.createdBy = 2
             mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)
             return { status: true, message: '' }
@@ -473,6 +488,44 @@ export default ({
           })
           .catch(function (error) {
             return error.data
+          })
+      }
+    },
+    addAndPrepareSelectedAgentIdsToRemove ({ state, rootGetters, getters, commit }) {
+      commit('general/clearReferencesToDelete', null, { root: true })
+      state.selectedAgents.forEach(element => {
+        const name = getters.getAgentById(element).name
+        const entity = {
+          id: element,
+          name: name,
+          type: rootGetters['general/entityTypeData'].AGENT
+        }
+        commit('general/addEntityToDelete', entity, { root: true })
+      })
+    },
+    uploadAgentConfigurationFile ({ state, rootState }, configurationFileData) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/upload/' + configurationFileData.agentName, configurationFileData.formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          return { status: true, message: '', data: response.data }
+        }).catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
+      }
+    },
+    getConfigurationFilesLocation ({ state, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents/configuration/path')
+          .then(function (response) {
+            state.configFilePath = response.data
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            state.configFilePath = ''
+            return { status: false, message: error.response.data }
           })
       }
     }

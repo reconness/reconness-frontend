@@ -42,12 +42,12 @@
       </div>
     </div>
     <div class="row">
-          <UserManagement class="mt-5"/>
+          <SettingsManagement class="mt-5"/>
     </div>
   </div>
 </template>
 <script>
-import UserManagement from '@/components/User/UserManagement.vue'
+import SettingsManagement from '@/components/Settings/SettingsManagement.vue'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import ExportIco from '@/components/Icons/ExportIco.vue'
 import AlphaABoxIco from '@/components/Icons/AlphaABoxIco.vue'
@@ -60,7 +60,7 @@ export default {
     ExportIco,
     AlphaABoxIco,
     CodeNotEqualVariantIco,
-    UserManagement
+    SettingsManagement
   },
   computed: {
     ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])
