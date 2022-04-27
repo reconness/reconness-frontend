@@ -81,35 +81,14 @@ export default ({
     },
     removeAgent (state, agentName) {
       const index = state.agentListStore.findIndex(agent => agent.name === agentName)
-      if (index !== -1) {
-        const installerReference = state.agentListStore[index].installedFrom
-        if (installerReference) {
-          const indexInstaller = state.agentsInstallers.findIndex(agent => agent.id === installerReference)
-          if (indexInstaller !== -1) {
-            state.agentsInstallers[indexInstaller].installed = !state.agentsInstallers[indexInstaller].installed
-          }
+      const agentId = state.agentListStore[index].id
+      if (index > 0) {
+        const indexInstaller = state.agentsInstallers.findIndex(agentInstaller => agentInstaller.id === agentId)
+        if (indexInstaller !== -1) {
+          state.agentsInstallers[indexInstaller].installed = false
         }
         state.agentListStore.splice(index, 1)
       }
-    },
-    removeAgents (state) {
-      for (const index1 in state.agentIdList) {
-        const index = state.agentListStore.findIndex(agent => agent.id === state.agentIdList[index1].id)
-        if (index !== -1) {
-          const installerReference = parseInt(state.agentListStore[index].installedFrom)
-          if (!isNaN(installerReference)) {
-            const indexInstaller = state.agentsInstallers.findIndex(agent => agent.id === installerReference)
-            if (indexInstaller !== -1) {
-              state.agentsInstallers[indexInstaller].installed = !state.agentsInstallers[indexInstaller].installed
-            }
-          }
-          state.agentListStore.splice(index, 1)
-        }
-      }
-      state.agentIdList = []
-      state.check = false
-      state.styleList = '1.25rem'
-      state.colorDelete = '#000000'
     },
     setDetailsLinks (state, isSelected) {
       state.fromDetailsLink = isSelected
@@ -184,15 +163,6 @@ export default ({
       state.agentsInstallers.splice(0, state.agentsInstallers.length)
       agentsInstallersMapped.forEach(agent => {
         state.agentsInstallers.push(agent)
-      })
-    },
-    updateInstalledFromFieldOnAgentList (state, agentsMarketMapped) {
-      let foundedAgentindex
-      agentsMarketMapped.forEach(agentMarket => {
-        foundedAgentindex = state.agentListStore.findIndex(agent => agent.name === agentMarket.id)
-        if (foundedAgentindex !== -1) {
-          state.agentListStore[foundedAgentindex].installedFrom = agentMarket.id
-        }
       })
     },
     updateSelectedAgents (state, agents) {
@@ -286,8 +256,8 @@ export default ({
         return 'subdomain'
       }
     },
-    isAgentInstalled: (state, getters) => (agentName) => {
-      const index = state.agentListStore.findIndex(agent => agent.name === agentName)
+    isAgentInstalled: (state, getters) => (agentId) => {
+      const index = state.agentListStore.findIndex(agent => agent.id === agentId)
       return index >= 0
     },
     mapServerAgentMarket: (state, getters) => (agents) => {
@@ -298,7 +268,7 @@ export default ({
           name: agent.name,
           description: 'Description of agent ' + agent.name,
           id: agent.id,
-          installed: getters.isAgentInstalled(agent.name),
+          installed: getters.isAgentInstalled(agent.id),
           category: agent.category,
           command: agent.command,
           isByRootDomain: agent.isByRootDomain,
@@ -334,7 +304,6 @@ export default ({
         script: '',
         image: agent.image,
         date: new Date(),
-        installedFrom: '',
         lastRun: new Date(agent.lastRun),
         createdBy: agent.createdBy,
         categories: agent.categories,
@@ -405,7 +374,6 @@ export default ({
         return axios.get('/agents/marketplace')
           .then(function (response) {
             const agentsMarketMapped = getters.mapServerAgentMarket(response.data)
-            commit('updateInstalledFromFieldOnAgentList', agentsMarketMapped)
             commit('updateAgentsInstallers', agentsMarketMapped)
             return true
           }).catch(function () {
@@ -439,12 +407,12 @@ export default ({
           })
       }
     },
-    removeAgentFromInstaller ({ state }, installer) {
-      const index = state.agentListStore.findIndex(agent => agent.installedFrom === installer.idInstaller)
+    removeAgentFromInstaller ({ state, commit }, installer) {
+      const index = state.agentListStore.findIndex(agent => agent.id === installer.idInstaller)
       if (index !== -1) {
         return axios.delete('/agents/' + installer.nameInstaller)
           .then(function (response) {
-            state.agentListStore.splice(index, 1)
+            commit('removeAgent', installer.nameInstaller)
             return { status: true, message: '' }
           }).catch(function (error) {
             return { status: false, message: error.response.data }
@@ -472,7 +440,6 @@ export default ({
             commit('installUninstallAgent', index)
             const agentDto = response.data
             const mappedAgent = getters.mapAgentFromServerToLocal(agentDto)
-            mappedAgent.installedFrom = agentInstaller.id
             state.agentListStore.push(mappedAgent)
             return { status: true, message: '' }
           }).catch(function (error) {

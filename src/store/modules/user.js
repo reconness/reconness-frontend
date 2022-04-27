@@ -68,7 +68,7 @@ export default ({
   actions: {
     clearUserEntitiesToDelete ({ state, commit, rootState }) {
       let promiseResult
-      rootState.target.entitiesToDelete.forEach(entity => {
+      rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.users.findIndex(user => user.id === entity.id)
         if (index !== -1) {
           const idUser = state.users[index].id
