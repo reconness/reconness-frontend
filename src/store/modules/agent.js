@@ -495,6 +495,17 @@ export default ({
             return { status: false, message: error.response.data }
           })
       }
+    },
+    getConfigurationContent ({ state, rootState }, agentName) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents/' + agentName)
+          .then(function (response) {
+            return { status: true, message: '', data: response.data.configurationContent }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
     }
   }
 })

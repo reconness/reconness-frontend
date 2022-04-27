@@ -383,7 +383,7 @@ export default {
     },
     getFullFileConfigPath () {
       if (this.agent && this.configFilePath !== '') {
-        return this.configFilePath + this.agent.configurationFile
+        return this.configFilePath + '/' + this.agent.configurationFile
       }
       return ''
     },
@@ -417,6 +417,11 @@ export default {
         if (value.script === undefined || value.script === null) {
           this.agent.script = ''
         }
+        this.getConfigurationContent(this.agent.name).then(response => {
+          if (response.status) {
+            this.configurationFileContent = response.data
+          }
+        })
       }
     },
     'agent.repository': function (value) {
@@ -433,7 +438,7 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsDeletetFromForm']),
-    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer', 'uploadAgentImage', 'uploadAgentConfigurationFile', 'getConfigurationFilesLocation']),
+    ...mapActions('agent', ['addAgentToServer', 'updateAgentToServer', 'uploadAgentImage', 'uploadAgentConfigurationFile', 'getConfigurationFilesLocation', 'getConfigurationContent']),
     setBlueColor: function () {
       this.agent.primaryColor = '#03DCED'
       this.agent.secondaryColor = '#0cb8e0'
