@@ -287,7 +287,8 @@ export default {
         errorMessageForAgentUninstallation: 'An error ocurred during uninstallation',
         successMessageForImageUpload: 'The image was successfully uploaded',
         successMessageForFileUpload: 'The file was successfully uploaded',
-        successMessageForWordlistEdition: 'The wordlist content has been edited successfully'
+        successMessageForWordlistEdition: 'The wordlist content has been edited successfully',
+        successMessageForNotificationsSettingsEdition: 'The notifications settings has been edited successfully'
       }
     )
 

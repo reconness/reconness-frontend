@@ -61,7 +61,7 @@
                       </div>
                       <div class="col-12">
                         <div class="mt-5 d-flex justify-content-end">
-                            <button type="button" @click="saveNotificationsSettingsAction(notificationsSettings)" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
+                            <button type="button" @click="saveNotificationsSettingsData()" class="blue-text agent-border btn create-agent-buttons-main-action">Accept</button>
                         </div>
                       </div>
                   </div>
@@ -72,11 +72,13 @@
 import jQuery from 'jquery'
 import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'NotificationManagement',
   components: {
     UserManagementHeader
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapGetters('user', ['getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
     ...mapState('target', ['operationStatus'])
@@ -127,6 +129,15 @@ export default {
     },
     setNotificationsSettings () {
       this.notificationsSettings = this.getLoggedUserData.notification
+    },
+    saveNotificationsSettingsData () {
+      this.saveNotificationsSettingsAction(this.notificationsSettings).then(response => {
+        if (response.status) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForNotificationsSettingsEdition)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     }
   }
 }

@@ -35,7 +35,7 @@ export default {
       return this.operationStatus.status === this.$entityStatus.FAILED
     },
     showStatusBar () {
-      return this.operationStatus.status !== this.$entityStatus.WAITING
+      return (this.operationStatus.status !== this.$entityStatus.WAITING) && !this.showSettingsSection
     }
   }
 }
