@@ -75,10 +75,10 @@ export default ({
           promiseResult = axios.delete('/users/' + idUser)
             .then(function (response) {
               state.users.splice(index, 1)
-              return true
+              return { status: true, message: '' }
             })
-            .catch(function () {
-              return false
+            .catch(function (error) {
+              return { status: false, message: error.response.data }
             })
         }
       })

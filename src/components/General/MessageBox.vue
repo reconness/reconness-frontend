@@ -196,8 +196,13 @@ export default {
         this.clearPipelineEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
       } else if (this.$isOnUserManagementView()) {
-        this.clearUserEntitiesToDelete()
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserDeletion)
+        this.clearUserEntitiesToDelete().then(response => {
+          if (response.status) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserDeletion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
+        })
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')

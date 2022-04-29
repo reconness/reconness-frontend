@@ -5,6 +5,10 @@
         <UserList v-if="showUsersSection"/>
         <LogsFilesManagement v-else-if="showLogsSection"/>
         <NotificationManagement v-else/>
+        <div v-if="showStatusBar" class="d-flex justify-content-center w-100">
+          <span :class="{'blue-text': successOperation, 'red-text': failedOperation}" class="material-icons mr-2 align-self-center">check</span>
+          <p class="mt-4 text-center">{{operationStatus.message}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -22,7 +26,17 @@ export default {
     NotificationManagement
   },
   computed: {
-    ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection'])
+    ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection']),
+    ...mapState('target', ['operationStatus']),
+    successOperation () {
+      return this.operationStatus.status === this.$entityStatus.SUCCESS
+    },
+    failedOperation () {
+      return this.operationStatus.status === this.$entityStatus.FAILED
+    },
+    showStatusBar () {
+      return this.operationStatus.status !== this.$entityStatus.WAITING
+    }
   }
 }
 </script>
