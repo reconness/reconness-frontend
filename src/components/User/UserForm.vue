@@ -113,11 +113,10 @@
 <script>
 import { mapMutations, mapState, mapGetters, mapActions } from 'vuex'
 import jQuery from 'jquery'
-
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'UserForm',
-  components: {},
-  props: {},
+  mixins: [TargetMixin],
   data () {
     return {
       showNameInput: false,
@@ -299,9 +298,21 @@ export default {
       this.userTryToAdd = true
       if (!this.isUserFormInvalid && (this.isRoleSelected && this.userTryToAdd)) {
         if (this.editable) {
-          this.updateUserToServer(this.user)
+          this.updateUserToServer(this.user).then(response => {
+            if (response.status) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserEdition)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+            }
+          })
         } else {
-          this.addUserToServer(this.user)
+          this.addUserToServer(this.user).then(response => {
+            if (response.status) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserInsertion)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+            }
+          })
         }
         jQuery('#user-form-modal').modal('hide')
         this.resetUserForm()

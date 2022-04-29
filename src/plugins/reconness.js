@@ -278,6 +278,8 @@ export default {
         successMessageForAgentInsertion: 'The agent has been inserted successfully',
         successMessageForPipelineDeletion: 'The pipeline has been deleted successfully',
         successMessageForUserDeletion: 'The user has been deleted successfully',
+        successMessageForUserInsertion: 'The user has been inserted successfully',
+        successMessageForUserEdition: 'The user has been edited successfully',
         successMessageForAgentInstallation: 'The agent was installed successfully',
         errorMessageForAgentInstallation: 'An error ocurred during installation',
         successMessageForNotificationUpdate: 'The notifications settings has been edited successfully',
