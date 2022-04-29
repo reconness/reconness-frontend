@@ -38,6 +38,7 @@
 <script>
 import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
+import { TargetMixin } from '@/mixins/TargetMixin'
 export default {
   name: 'LogsFilesManagement',
   components: {
@@ -49,6 +50,7 @@ export default {
       logName: ''
     }
   },
+  mixins: [TargetMixin],
   computed: {
     ...mapState('user', ['users']),
     ...mapState('general', ['notificationMessageActionSelected']),
@@ -63,6 +65,9 @@ export default {
         this.cleanLogInfoByNameFromServer(this.logName).then(response => {
           if (response.status) {
             this.logText = ''
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForLogFileCleaning)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
           }
         })
         this.resetData()

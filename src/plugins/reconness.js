@@ -288,7 +288,8 @@ export default {
         successMessageForImageUpload: 'The image was successfully uploaded',
         successMessageForFileUpload: 'The file was successfully uploaded',
         successMessageForWordlistEdition: 'The wordlist content has been edited successfully',
-        successMessageForNotificationsSettingsEdition: 'The notifications settings has been edited successfully'
+        successMessageForNotificationsSettingsEdition: 'The notifications settings has been edited successfully',
+        successMessageForLogFileCleaning: 'The log file has been cleaned successfully'
       }
     )
 
