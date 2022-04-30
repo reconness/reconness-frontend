@@ -172,6 +172,10 @@ export default ({
     getUserByUsername: (state) => (username) => {
       return state.users.find(user => user.username === username)
     },
+    isUsernameAlreadyUsed: (state) => (username) => {
+      const index = state.users.findIndex(user => user.username === username)
+      return index > 0
+    },
     getLogInfoByName: (state) => (logname) => {
       const logFileText = state.userLogsFiles.find(item => item.name === logname).text
       return logFileText

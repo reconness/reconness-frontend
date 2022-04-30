@@ -9,13 +9,16 @@
                   <div class="col-12">
                     <div class="row">
                       <div class="col-8">
-                        <div class="d-flex">
+                        <div class="d-flex flex-column">
                           <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
                             <input v-if="showNameInput" v-model="user.username" :placeholder="user.username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
                             <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
-                          <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
+                          <div class="d-flex flex-column">
+                            <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
+                            <span v-if="isUsernameAlreadyUsed(user.username)" class="mt-2 invalid">The username is already being used</span>
+                          </div>
                         </div><!-- /.d-flex -->
                       </div><!-- /.col-12 -->
                       <div class="col-4">
@@ -149,7 +152,7 @@ export default {
   computed: {
     ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile', 'errorUpdatingOwnerRole']),
     ...mapState('general', ['notificationMessageActionSelected']),
-    ...mapGetters('user', ['getUserById', 'getLoggedUserData', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember']),
+    ...mapGetters('user', ['getUserById', 'getLoggedUserData', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'isUsernameAlreadyUsed']),
     isUserNameInBlank () {
       return this.$validateIsBlank(this.user.username)
     },
@@ -178,7 +181,7 @@ export default {
       return this.user.password === this.confirm_password
     },
     isUserFormInvalid () {
-      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword
+      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsed(this.user.username)
     },
     getUserFormStatus () {
       if (this.editable) {
