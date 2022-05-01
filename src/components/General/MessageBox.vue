@@ -148,8 +148,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption', 'clearSelectedTargetsList']),
+    ...mapMutations('agent', ['clearSelectedAgentsList']),
     ...mapMutations('general', ['clearReferencesToDelete']),
+    ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
     ...mapActions('target', ['clearTargetEntitiesToDeleteToServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
@@ -267,10 +269,21 @@ export default {
       this.nameTyped = ''
     },
     clearReferences () {
+      if (this.$isOnAgentView()) {
+        this.clearSelectedAgentsList()
+      } else if (this.isOnTargetView) {
+        this.clearSelectedTargetsList()
+      } else if (this.$isOnPipelineView()) {
+        this.clearSelectedPipelinesList()
+      }
       this.clearReferencesToDelete()
       this.clearInput()
       if (this.removeAll) {
         this.updateRemoveAllOption(false)
+      }
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = false
       }
     },
     redirectToTargetsList () {
