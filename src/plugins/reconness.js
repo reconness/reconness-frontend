@@ -338,5 +338,12 @@ export default {
     app.config.globalProperties.$getFormatedTime = function (time) {
       return time.toLocaleString('en-Us', { hour: 'numeric', minute: 'numeric', hour12: true })
     }
+
+    app.config.globalProperties.$hideCheckboxesMultiple = function () {
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = false
+      }
+    }
   }
 }

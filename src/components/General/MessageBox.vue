@@ -281,10 +281,7 @@ export default {
       if (this.removeAll) {
         this.updateRemoveAllOption(false)
       }
-      const checkboxes = document.getElementsByName('checkitem')
-      for (let i = 0, n = checkboxes.length; i < n; i++) {
-        checkboxes[i].checked = false
-      }
+      this.$hideCheckboxesMultiple()
     },
     redirectToTargetsList () {
       this.$router.push({ name: 'Targets' })
