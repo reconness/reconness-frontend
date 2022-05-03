@@ -27,10 +27,10 @@
 </template>
 <script>
 import { mapGetters, mapState, mapMutations } from 'vuex'
-import { AgentMixin } from '@/mixins/AgentMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'DetailsAgentPopover',
-  mixins: [AgentMixin],
+  mixins: [RemoveEntitiesMixin],
   computed: {
     ...mapState('agent', ['idAgent']),
     ...mapGetters('agent', ['getAgentById']),

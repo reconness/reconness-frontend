@@ -43,6 +43,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 import { AgentMixin } from '@/mixins/AgentMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 import DetailsAgentPopover from '@/components/Agent/DetailsAgentPopover'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
@@ -68,7 +69,7 @@ export default {
       selectedCard: -1
     }
   },
-  mixins: [AgentMixin],
+  mixins: [AgentMixin, RemoveEntitiesMixin],
   computed: {
     ...mapState('agent', ['check', 'agentIdList', 'selectedAgents']),
     ...mapState('general', ['entitiesToDelete']),

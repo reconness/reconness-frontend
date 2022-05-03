@@ -34,7 +34,7 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!showRootDomains">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete" :data-id="getTargetId" :data-name="this.$route.params.targetName">Delete Target</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.TARGET.id)" :data-id="getTargetId" :data-name="this.$route.params.targetName">Delete Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getTargetId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
@@ -150,6 +150,7 @@ import NotesSection from '@/components/General/NotesSection.vue'
 import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
 import NoteConfirmation from '@/components/Target/NoteConfirmation.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 
 export default {
   name: 'NavBarTwoDetailTarget',
@@ -160,7 +161,7 @@ export default {
     NotesSection,
     NoteConfirmation
   },
-  mixins: [TargetMixin],
+  mixins: [TargetMixin, RemoveEntitiesMixin],
   props: {
     TargetName: String,
     gradient: String,
