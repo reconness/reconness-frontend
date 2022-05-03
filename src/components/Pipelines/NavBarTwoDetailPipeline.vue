@@ -91,10 +91,7 @@ export default {
       this.$store.commit('pipelines/updatePipelineName', { id: parseInt(this.$route.params.id), name: this.name })
     },
     close () {
-      const checkboxes = document.getElementsByName('checkitem')
-      for (let i = 0, n = checkboxes.length; i < n; i++) {
-        checkboxes[i].checked = false
-      }
+      this.$hideCheckboxesMultiple()
       this.nameTyped = ''
       this.cancelIdAgentPipelinesDetail()
     },

@@ -176,6 +176,7 @@ import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
@@ -215,7 +216,7 @@ export default {
       isFilterResultEmpty: false
     }
   },
-  mixins: [TargetMixin],
+  mixins: [RemoveEntitiesMixin, TargetMixin],
   computed: {
     ...mapGetters('target', ['getSubdomainSize']),
     ...mapState('agent', ['isElementDeleted']),

@@ -148,8 +148,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption', 'clearSelectedTargetsList']),
+    ...mapMutations('agent', ['clearSelectedAgentsList']),
     ...mapMutations('general', ['clearReferencesToDelete']),
+    ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete']),
     ...mapActions('target', ['clearTargetEntitiesToDeleteToServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
@@ -196,8 +198,13 @@ export default {
         this.clearPipelineEntitiesToDelete()
         this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
       } else if (this.$isOnUserManagementView()) {
-        this.clearUserEntitiesToDelete()
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserDeletion)
+        this.clearUserEntitiesToDelete().then(response => {
+          if (response.status) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserDeletion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
+        })
       }
       this.clearInput()
       jQuery('#message-box-modal').modal('hide')
@@ -262,11 +269,19 @@ export default {
       this.nameTyped = ''
     },
     clearReferences () {
+      if (this.$isOnAgentView()) {
+        this.clearSelectedAgentsList()
+      } else if (this.isOnTargetView) {
+        this.clearSelectedTargetsList()
+      } else if (this.$isOnPipelineView()) {
+        this.clearSelectedPipelinesList()
+      }
       this.clearReferencesToDelete()
       this.clearInput()
       if (this.removeAll) {
         this.updateRemoveAllOption(false)
       }
+      this.$hideCheckboxesMultiple()
     },
     redirectToTargetsList () {
       this.$router.push({ name: 'Targets' })

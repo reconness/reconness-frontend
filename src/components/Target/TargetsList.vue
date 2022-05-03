@@ -44,6 +44,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 import OverlayPanel from 'primevue/overlaypanel'
 export default {
   name: 'TargetMiniList',
@@ -68,7 +69,7 @@ export default {
       selectedCard: -1
     }
   },
-  mixins: [TargetMixin],
+  mixins: [TargetMixin, RemoveEntitiesMixin],
   computed: {
     ...mapState('target', ['check', 'targetIdList', 'selectedTargets']),
     ...mapState('general', ['entitiesToDelete']),

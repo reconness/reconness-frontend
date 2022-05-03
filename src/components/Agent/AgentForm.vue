@@ -561,6 +561,7 @@ export default {
           repository: false
         }
       }
+      this.showTopSection()
     },
     enableValidationMessageName () {
       if (this.agent.name === '') {
@@ -658,6 +659,8 @@ export default {
     showTopSection () {
       this.enableTopSection()
       this.disableMiddleSection()
+      this.disableConfigSection()
+      this.disableBottomSection()
     },
     setData (nameExt) {
       this.agent.name = nameExt

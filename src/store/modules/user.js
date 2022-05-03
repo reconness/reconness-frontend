@@ -75,10 +75,10 @@ export default ({
           promiseResult = axios.delete('/users/' + idUser)
             .then(function (response) {
               state.users.splice(index, 1)
-              return true
+              return { status: true, message: '' }
             })
-            .catch(function () {
-              return false
+            .catch(function (error) {
+              return { status: false, message: error.response.data }
             })
         }
       })
@@ -171,6 +171,10 @@ export default ({
     },
     getUserByUsername: (state) => (username) => {
       return state.users.find(user => user.username === username)
+    },
+    isUsernameAlreadyUsed: (state) => (username) => {
+      const index = state.users.findIndex(user => user.username === username)
+      return index > 0
     },
     getLogInfoByName: (state) => (logname) => {
       const logFileText = state.userLogsFiles.find(item => item.name === logname).text

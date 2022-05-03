@@ -22,7 +22,7 @@
 </template>
 <script>
 import { mapGetters, mapState, mapMutations } from 'vuex'
-import { TargetMixin } from '@/mixins/TargetMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'DetailsTargetPopover',
   data () {
@@ -30,7 +30,7 @@ export default {
       target: {}
     }
   },
-  mixins: [TargetMixin],
+  mixins: [RemoveEntitiesMixin],
   computed: {
     ...mapState('target', ['idTarget']),
     ...mapGetters('target', ['getTargetById']),

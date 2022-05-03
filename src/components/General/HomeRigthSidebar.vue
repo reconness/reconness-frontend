@@ -43,14 +43,14 @@
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
 import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
-import { TargetMixin } from '@/mixins/TargetMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'HomeRigthSidebar',
   components: {
     BullseyeArrowIco,
     Confirmation
   },
-  mixins: [TargetMixin],
+  mixins: [RemoveEntitiesMixin],
   data: function () {
     return {
       selectedTargetName: ''

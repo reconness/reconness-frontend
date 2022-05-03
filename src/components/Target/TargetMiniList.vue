@@ -43,12 +43,13 @@ import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'TargetMiniList',
   components: {
     TrashCanIco
   },
-  mixins: [TargetMixin],
+  mixins: [TargetMixin, RemoveEntitiesMixin],
   computed: {
     ...mapState('target', ['targetListStore', 'check', 'filterColour', 'paginator', 'selectedTargets']),
     ...mapState('general', ['entitiesToDelete']),

@@ -46,6 +46,7 @@ import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import jQuery from 'jquery'
 import { AgentMixin } from '@/mixins/AgentMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 import AccountCogIco from '@/components/Icons/AccountCogIco.vue'
 export default {
   name: 'AgentMiniList',
@@ -53,7 +54,7 @@ export default {
     TrashCanIco,
     AccountCogIco
   },
-  mixins: [AgentMixin],
+  mixins: [AgentMixin, RemoveEntitiesMixin],
   computed: {
     ...mapState('agent', ['agentListStore', 'filterColour', 'check', 'selectedAgents']),
     ...mapState('target', ['paginator']),

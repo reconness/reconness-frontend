@@ -137,7 +137,7 @@ import TargetsHighestInteraction from '@/components/General/TargetsHighestIntera
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
-import { TargetMixin } from '@/mixins/TargetMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 import RootDomainInsertionForm from '@/components/Target/RootDomainInsertionForm.vue'
 import jQuery from 'jquery'
 import BottomBar from '@/components/General/BottomBar'
@@ -266,7 +266,7 @@ export default {
       }
     }
   },
-  mixins: [TargetMixin],
+  mixins: [RemoveEntitiesMixin],
   computed: {
     ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),

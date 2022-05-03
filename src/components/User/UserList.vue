@@ -63,7 +63,7 @@
 import UserForm from '@/components/User/UserForm.vue'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
-import { AgentMixin } from '@/mixins/AgentMixin'
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 import jQuery from 'jquery'
 export default {
   name: 'UserList',
@@ -76,7 +76,7 @@ export default {
       idUserSelected: -1
     }
   },
-  mixins: [AgentMixin],
+  mixins: [RemoveEntitiesMixin],
   computed: {
     ...mapState('user', ['users']),
     ...mapGetters('user', ['getLoggedUserData']),

@@ -71,8 +71,7 @@
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { TargetMixin } from '@/mixins/TargetMixin'
-
+import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'SubDomainDetailsDashboard',
   data: function () {
@@ -81,7 +80,7 @@ export default {
       loadedTarget: {}
     }
   },
-  mixins: [TargetMixin],
+  mixins: [RemoveEntitiesMixin],
   computed: {
     ...mapGetters('target', ['getSubDomain', 'getTargetById'])
   },

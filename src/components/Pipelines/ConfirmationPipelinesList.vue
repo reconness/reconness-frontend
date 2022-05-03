@@ -74,10 +74,7 @@ export default {
       }
     },
     close () {
-      const checkboxes = document.getElementsByName('checkitem')
-      for (let i = 0, n = checkboxes.length; i < n; i++) {
-        checkboxes[i].checked = false
-      }
+      this.$hideCheckboxesMultiple()
       this.nameTyped = ''
       this.$store.commit('pipelines/cancelElementSelected', this.nameRoute)
     }

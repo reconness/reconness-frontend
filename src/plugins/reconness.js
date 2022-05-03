@@ -278,6 +278,8 @@ export default {
         successMessageForAgentInsertion: 'The agent has been inserted successfully',
         successMessageForPipelineDeletion: 'The pipeline has been deleted successfully',
         successMessageForUserDeletion: 'The user has been deleted successfully',
+        successMessageForUserInsertion: 'The user has been inserted successfully',
+        successMessageForUserEdition: 'The user has been edited successfully',
         successMessageForAgentInstallation: 'The agent was installed successfully',
         errorMessageForAgentInstallation: 'An error ocurred during installation',
         successMessageForNotificationUpdate: 'The notifications settings has been edited successfully',
@@ -285,7 +287,9 @@ export default {
         errorMessageForAgentUninstallation: 'An error ocurred during uninstallation',
         successMessageForImageUpload: 'The image was successfully uploaded',
         successMessageForFileUpload: 'The file was successfully uploaded',
-        successMessageForWordlistEdition: 'The wordlist content has been edited successfully'
+        successMessageForWordlistEdition: 'The wordlist content has been edited successfully',
+        successMessageForNotificationsSettingsEdition: 'The notifications settings has been edited successfully',
+        successMessageForLogFileCleaning: 'The log file has been cleaned successfully'
       }
     )
 
@@ -333,6 +337,13 @@ export default {
 
     app.config.globalProperties.$getFormatedTime = function (time) {
       return time.toLocaleString('en-Us', { hour: 'numeric', minute: 'numeric', hour12: true })
+    }
+
+    app.config.globalProperties.$hideCheckboxesMultiple = function () {
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = false
+      }
     }
   }
 }
