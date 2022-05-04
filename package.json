@@ -25,7 +25,7 @@
     "primevue": "3.8.2",
     "typography": "0.16.21",
     "vue": "3.2.12",
-    "vue-router": "4.0.11",
+    "vue-router": "4.0.15",
     "vue3-ace-editor": "1.0.2",
     "vue3-apexcharts": "1.4.1",
     "vue3-circle-progress": "1.0.6",
