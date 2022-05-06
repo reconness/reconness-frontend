@@ -15,7 +15,7 @@
     "bootstrap": "4.6.1",
     "core-js": "3.19.1",
     "jquery": "3.6.0",
-    "material-icons": "1.10.1",
+    "material-icons": "1.10.11",
     "md5": "2.3.0",
     "mdbvue": "6.7.3",
     "mitt": "3.0.0",
