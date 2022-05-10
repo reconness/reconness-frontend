@@ -11,13 +11,13 @@
                       <div class="col-8">
                         <div class="d-flex flex-column">
                           <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
-                            <input v-if="showNameInput" v-model="user.username" :placeholder="user.username" @change="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
+                            <input v-if="showNameInput" v-model="user.username" :placeholder="user.username" @keyup="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
                             <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
                           <div class="d-flex flex-column">
                             <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
-                            <span v-if="isUsernameAlreadyUsed(user.username)" class="mt-2 invalid">The username is already being used</span>
+                            <span v-if="isUsernameAlreadyUsedAndIsDifferentFromSaved && this.userNameWasWritten" class="mt-2 invalid">The username is already being used</span>
                           </div>
                         </div><!-- /.d-flex -->
                       </div><!-- /.col-12 -->
@@ -146,7 +146,8 @@ export default {
       userTryToAdd: false,
       editable: false,
       manageHisProfile: false,
-      firstRoleSelection: false
+      firstRoleSelection: false,
+      oldUserName: ''
     }
   },
   computed: {
@@ -181,7 +182,7 @@ export default {
       return this.user.password === this.confirm_password
     },
     isUserFormInvalid () {
-      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsed(this.user.username)
+      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsedAndIsDifferentFromSaved
     },
     getUserFormStatus () {
       if (this.editable) {
@@ -212,6 +213,9 @@ export default {
     },
     theNewRoleOfEditedUserIsOwner () {
       return this.user.role === this.$roles.OWNER.id
+    },
+    isUsernameAlreadyUsedAndIsDifferentFromSaved () {
+      return this.isUsernameAlreadyUsed(this.user.username) && this.userNameWasWritten && this.oldUserName !== this.user.username
     }
   },
   watch: {
@@ -239,6 +243,7 @@ export default {
         this.user.profilePicture = selectedUser.profilePicture
         this.user.id = selectedUser.id
         this.editable = true
+        this.oldUserName = selectedUser.username
       }
     },
     notificationMessageActionSelected: function (value) {
@@ -344,6 +349,7 @@ export default {
       this.userTryToAdd = false
       this.editable = false
       this.firstRoleSelection = false
+      this.oldUserName = ''
       this.updateSelectedIdUser('-1')
       this.updateManageMyOwnProfile(false)
     },
