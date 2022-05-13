@@ -58,7 +58,9 @@
                           <span :class="{invalid: validators.blank.command}">The field command is required</span>
                         </div>
                         <div class="col-12">
-                        <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" target="_blank" rel="noopener noreferrer" class="mb-3 blue-text d-flex agent-regular-font font-weight-light justify-content-end">Learn more</a>
+                          <span class="d-flex justify-content-end">
+                            <a href="https://docs.reconness.com/agents/add-agent#add-new-agent" target="_blank" rel="noopener noreferrer" class="mb-3 blue-text agent-regular-font font-weight-light">Learn more</a>
+                          </span>
                         </div><!-- /.col-12 -->
                         <div class="row show multi-collapse">
                     <div class="col-12 col-md-6">
