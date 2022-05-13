@@ -399,6 +399,7 @@ export default ({
         return axios.post('/agents', getters.mapAgentFromLocalToServer(agent))
           .then(function (response) {
             agent.id = response.data.id
+            agent.script = response.data.script
             state.agentListStore.push(agent)
             return { status: true, message: '' }
           })
