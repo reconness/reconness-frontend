@@ -81,7 +81,8 @@ export default {
   mixins: [TargetMixin],
   computed: {
     ...mapGetters('user', ['getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
-    ...mapState('target', ['operationStatus'])
+    ...mapState('target', ['operationStatus']),
+    ...mapState('notification', ['notificationSettingData'])
   },
   mounted () {
     this.loadNotificationsSettings().then(response => {
@@ -121,14 +122,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('user', ['saveNotificationsSettings']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
     ...mapActions('notification', ['saveNotificationsSettingsAction', 'loadNotificationsSettings']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
     },
     setNotificationsSettings () {
-      this.notificationsSettings = this.getLoggedUserData.notification
+      this.notificationsSettings = this.notificationSettingData
     },
     saveNotificationsSettingsData () {
       this.saveNotificationsSettingsAction(this.notificationsSettings).then(response => {

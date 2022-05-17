@@ -2,7 +2,6 @@ import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
-    logId: 0,
     logs: []
   },
   mutations: {

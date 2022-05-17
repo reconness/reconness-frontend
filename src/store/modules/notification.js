@@ -26,7 +26,16 @@ export default ({
       }
     ],
     notificationSequence: 34,
-    isNotificationMenuActive: false
+    isNotificationMenuActive: false,
+    notificationSettingData: {
+      url: '',
+      method: '',
+      payload: '',
+      rootDomain: '',
+      subDomain: '',
+      ipAddress: '',
+      isAlive: ''
+    }
   },
   mutations: {
     showNotificationsMenu (state) {
@@ -88,15 +97,18 @@ export default ({
         const notificationIndex = state.notifications.findIndex(notification => notification.id === olderNotifications[index].id)
         state.notifications.splice(notificationIndex, 1)
       }
+    },
+    saveNotificationsSettings (state, notificationsSettings) {
+      state.notificationSettingData = notificationsSettings
     }
   },
   actions: {
-    loadNotificationsSettings ({ state, dispatch, getters, rootState }) {
+    loadNotificationsSettings ({ state, getters, rootState, commit }) {
       if (rootState.auth.authentication_token !== '') {
         return axios.get('/accounts/notification')
           .then(function (response) {
             const notificationsMapped = getters.mapNotificationsSettingsFromServerToLocal(response.data)
-            dispatch('saveNotificationsSettings', notificationsMapped)
+            commit('saveNotificationsSettings', notificationsMapped)
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -104,21 +116,17 @@ export default ({
           })
       }
     },
-    saveNotificationsSettingsAction ({ state, getters, rootState, dispatch }, notificationsSettings) {
+    saveNotificationsSettingsAction ({ state, getters, rootState, commit, dispatch }, notificationsSettings) {
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/accounts/saveNotification', getters.mapNotificationsSettingsFromLocalToServer(notificationsSettings))
           .then(function (response) {
-            dispatch('saveNotificationsSettings', notificationsSettings)
+            commit('saveNotificationsSettings', notificationsSettings)
             return { status: true, message: '' }
           })
           .catch(function (error) {
             return { status: false, message: error.response.data }
           })
       }
-    },
-    saveNotificationsSettings ({ rootState, rootGetters }, notificationsSettings) {
-      const userItem = rootState.user.users.find(item => item.username === rootGetters['user/getLoggedUserData'].username)
-      Object.assign(userItem.notification, notificationsSettings)
     }
   },
   getters: {
