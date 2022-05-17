@@ -152,7 +152,7 @@ export default {
     ...mapMutations('agent', ['clearSelectedAgentsList']),
     ...mapMutations('general', ['clearReferencesToDelete']),
     ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
-    ...mapActions('agent', ['clearAgentEntitiesToDelete']),
+    ...mapActions('agent', ['clearAgentEntitiesToDelete', 'clearSingleAgentEntityToDelete']),
     ...mapActions('target', ['clearTargetEntitiesToDeleteToServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
@@ -173,13 +173,23 @@ export default {
           this.clearTargetRedirectToTargetListAndUpdateOperationStatus()
         }
       } else if (this.$isOnAgentView()) {
-        this.clearAgentEntitiesToDelete().then(response => {
-          if (response.status) {
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
-          } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
-          }
-        })
+        if (this.entitiesToDelete.length > 1) {
+          this.clearAgentEntitiesToDelete().then(response => {
+            if (response.status) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+            }
+          })
+        } else {
+          this.clearSingleAgentEntityToDelete().then(response => {
+            if (response.status) {
+              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+            } else {
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+            }
+          })
+        }
       } else if (this.$isOnRootDomainView()) {
         if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
           if (this.removeAll) {

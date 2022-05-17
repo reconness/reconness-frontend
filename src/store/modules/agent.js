@@ -82,7 +82,7 @@ export default ({
     removeAgent (state, agentName) {
       const index = state.agentListStore.findIndex(agent => agent.name === agentName)
       const agentId = state.agentListStore[index].id
-      if (index > 0) {
+      if (index >= 0) {
         const indexInstaller = state.agentsInstallers.findIndex(agentInstaller => agentInstaller.id === agentId)
         if (indexInstaller !== -1) {
           state.agentsInstallers[indexInstaller].installed = false
@@ -349,6 +349,7 @@ export default ({
         }
       })
       commit('general/clearReferencesToDelete', null, { root: true })
+      commit('clearSelectedAgentsList')
     },
     clearAgentEntitiesToDelete ({ state, commit, rootState, dispatch }) {
       const agentNames = []
@@ -366,8 +367,29 @@ export default ({
         dispatch('removeAgentsSelected')
         return { status: true, message: '' }
       }).catch(function (error) {
+        commit('general/clearReferencesToDelete', null, { root: true })
+        commit('clearSelectedAgentsList')
         return { status: false, message: error.response.data }
       })
+    },
+    clearSingleAgentEntityToDelete ({ state, commit, rootState, dispatch }) {
+      let promiseResult
+      const entityId = rootState.general.entitiesToDelete[0].id
+      const index = state.agentListStore.findIndex(agent => agent.id === entityId)
+      if (index !== -1) {
+        const agentName = state.agentListStore[index].name
+        promiseResult = axios.delete('/agents/' + agentName)
+          .then(function (response) {
+            dispatch('removeAgentsSelected')
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            commit('general/clearReferencesToDelete', null, { root: true })
+            commit('clearSelectedAgentsList')
+            return { status: false, message: error.response.data }
+          })
+      }
+      return promiseResult
     },
     loadMarketplace ({ state, commit, getters, rootState }) {
       if (rootState.auth.authentication_token !== '') {
