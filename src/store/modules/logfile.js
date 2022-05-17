@@ -2,19 +2,13 @@ import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
-    logId: 0
+    logId: 0,
+    logs: []
   },
   mutations: {
-    saveLogsNamesToLoggedUser (state, userData) {
-      userData.loggedUser.logs.splice(0, userData.loggedUser.logs.length)
-      userData.logsNamesResponse.forEach(logNameResponse => {
-        userData.loggedUser.logs.push(
-          {
-            id: state.logId++,
-            name: logNameResponse
-          }
-        )
-      })
+    saveLogsNamesToLogsList (state, logsListResponse) {
+      state.logs.splice(0, state.logs.length)
+      state.logs = logsListResponse
     }
   },
   actions: {
@@ -47,11 +41,7 @@ export default ({
       if (rootState.auth.authentication_token !== '') {
         return axios.get('/accounts/logfiles')
           .then(function (response) {
-            const logAndUserInfo = {
-              loggedUser: rootGetters['user/getLoggedUserData'],
-              logsNamesResponse: response.data
-            }
-            commit('saveLogsNamesToLoggedUser', logAndUserInfo)
+            commit('saveLogsNamesToLogsList', response.data)
             return { status: true, message: '' }
           })
           .catch(function (error) {

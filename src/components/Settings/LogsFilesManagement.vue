@@ -19,7 +19,7 @@
                               <label class="user-logs-label-select font-weight-medium font-size-14px">Log files</label>
                               <select class="form-control" @change="getLogData" v-model="logName">
                                 <option value="" disabled hidden selected>Please select an option</option>
-                                <option v-for="log of getLoggedUserData.logs" :value="log.name" :key="log.id">{{log.name}}</option>
+                                <option v-for="log of logs" :value="log" :key="log">{{log}}</option>
                               </select>
                           </div>
                       </div>
@@ -52,9 +52,9 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('user', ['users']),
     ...mapState('general', ['notificationMessageActionSelected']),
-    ...mapGetters('user', ['getLogInfoByName', 'getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
+    ...mapState('logfile', ['logs']),
+    ...mapGetters('user', ['getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
     isNotLogSelected () {
       return this.$validateIsBlank(this.logName)
     }
