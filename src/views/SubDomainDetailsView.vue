@@ -95,9 +95,9 @@ export default {
     ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain']),
     getSubdomainSize () {
       const loadedSubdomain = this.getSubDomain({
-        idtarget: parseInt(this.idTarget),
-        idrootdomain: parseInt(this.id),
-        idsubdomain: parseInt(this.idsubdomain)
+        idtarget: this.idTarget,
+        idrootdomain: this.id,
+        idsubdomain: this.idsubdomain
       })
       if (loadedSubdomain) {
         return [loadedSubdomain.agent.length, loadedSubdomain.services.length, loadedSubdomain.directories.length]

@@ -202,8 +202,8 @@ export default {
     return {
       dataColor: '',
       routeParams: {
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRootDomain: parseInt(this.$route.params.id)
+        idTarget: this.$route.params.idTarget,
+        idRootDomain: this.$route.params.id
       },
       showHeader: true,
       isElementSelected: true,

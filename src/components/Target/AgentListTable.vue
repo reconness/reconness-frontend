@@ -72,8 +72,8 @@ export default {
     ...mapState('agent', ['agentListStore']),
     listAgents: function () {
       return this.listRootDomainsAgents({
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id)
+        idTarget: this.$route.params.idTarget,
+        idRoot: this.$route.params.id
       })
     },
     isRunningAgent: function () {
@@ -82,8 +82,8 @@ export default {
     agentsList: function () {
       const rootDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(this.$agentType.ROOTDOMAIN)))
       const rootDoaminsAgentsCurentView = this.listRootDomainsAgents({
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id)
+        idTarget: this.$route.params.idTarget,
+        idRoot: this.$route.params.id
       })
       let searchedAgent = null
       rootDomainAgentsType.forEach(element => {
