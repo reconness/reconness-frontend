@@ -27,7 +27,7 @@ export default {
   methods: {
     removeNoteFn: function () {
       if (this.$route.name === 'TargetDetail') {
-        this.removeTargetNote(parseInt(this.$route.params.id))
+        this.removeTargetNote(this.$route.params.id)
       } else if (this.$route.name === 'RootDomainDetails') {
         this.removeRootDomainNote({
           idTarget: parseInt(this.$route.params.idTarget),

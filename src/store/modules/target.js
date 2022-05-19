@@ -186,8 +186,8 @@ export default ({
       state.idNote = parseInt(id)
     },
     removeTargetNote (state, idTarget) {
-      const target = state.targetListStore.find(item => item.id === parseInt(idTarget))
-      const noteIndex = target.messages.findIndex(message => message.id === parseInt(state.idNote))
+      const target = state.targetListStore.find(item => item.id === idTarget)
+      const noteIndex = target.messages.findIndex(message => message.id === state.idNote)
       target.messages.splice(noteIndex, 1)
     },
     removeRootDomainNote (state, params) {
@@ -495,7 +495,11 @@ export default ({
       return state.targetListStore.find(target => target.id === id)
     },
     getTargetNotes: (state) => (id) => {
-      return state.targetListStore.find(target => target.id === id).messages
+      const searchedTarget = state.targetListStore.find(target => target.id === id)
+      if (searchedTarget) {
+        return searchedTarget.messages
+      }
+      return []
     },
     getRootDomainNotes: (state) => (params) => {
       const target = state.targetListStore.find(target => target.id === params.idTarget)
@@ -745,7 +749,7 @@ export default ({
     isEntityOnListToRemove: ({ state, rootState }) => (idItem) => {
       setTimeout(
         function () {
-          const searchedElement = rootState.general.entitiesToDelete.find(item => parseInt(item.id) === parseInt(idItem))
+          const searchedElement = rootState.general.entitiesToDelete.find(item => item.id === idItem)
           if (searchedElement) {
             return true
           }

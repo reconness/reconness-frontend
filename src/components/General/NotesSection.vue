@@ -93,42 +93,42 @@ export default {
       if (this.order_by_date) {
         if (this.active_arrow_down_note) {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(this.$route.params.id).sort(
               this.sortDescendingOrderByDateFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id
             }).sort(
               this.sortDescendingOrderByDateFn
             )
           } else {
             return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id,
+              idSubDomain: this.$route.params.idsubdomain
             }).sort(
               this.sortDescendingOrderByDateFn
             )
           }
         } else {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(this.$route.params.id).sort(
               this.sortAscendingOrderByDateFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id
             }).sort(
               this.sortAscendingOrderByDateFn
             )
           } else {
             return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id,
+              idSubDomain: this.$route.params.idsubdomain
             }).sort(
               this.sortAscendingOrderByDateFn
             )
@@ -137,42 +137,42 @@ export default {
       } else { // order by user
         if (this.active_arrow_down_note) {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(this.$route.params.id).sort(
               this.sortDescendingOrderByUserNameFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id
             }).sort(
               this.sortDescendingOrderByUserNameFn
             )
           } else {
             return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id,
+              idSubDomain: this.$route.params.idsubdomain
             }).sort(
               this.sortDescendingOrderByUserNameFn
             )
           }
         } else {
           if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
+            return this.getTargetNotes(this.$route.params.id).sort(
               this.sortAscendingOrderByUserNameFn
             )
           } else if (this.currentView === 'RootDomainDetails') {
             return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id
             }).sort(
               this.sortAscendingOrderByUserNameFn
             )
           } else {
             return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
+              idTarget: this.$route.params.idTarget,
+              idRootDomain: this.$route.params.id,
+              idSubDomain: this.$route.params.idsubdomain
             }).sort(
               this.sortAscendingOrderByUserNameFn
             )
@@ -186,22 +186,22 @@ export default {
     sendNotes: function () {
       if (this.$route.name === 'TargetDetail') {
         this.sendTargetNote({
-          idTarget: parseInt(this.$route.params.id),
+          idTarget: this.$route.params.id,
           message: this.note,
           username: this.loggedUsername
         })
       } else if (this.$route.name === 'RootDomainDetails') {
         this.sendRootDomainNote({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
+          idTarget: this.$route.params.idTarget,
+          idRootDomain: this.$route.params.id,
           message: this.note,
           username: this.loggedUsername
         })
       } else if (this.$route.name === 'SubDomainDetails') {
         this.sendSubDomainNote({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
-          idSubDomain: parseInt(this.$route.params.idsubdomain),
+          idTarget: this.$route.params.idTarget,
+          idRootDomain: this.$route.params.id,
+          idSubDomain: this.$route.params.idsubdomain,
           message: this.note,
           username: this.loggedUsername
         })

@@ -169,7 +169,8 @@ export default {
         inScope: '',
         outScope: '',
         primaryColor: '#737be5',
-        secondaryColor: '#7159d3'
+        secondaryColor: '#7159d3',
+        messages: []
       },
       rootDomainsTextItems: [],
       isVisibleTopSection: true,
