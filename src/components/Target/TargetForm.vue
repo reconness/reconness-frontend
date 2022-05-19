@@ -447,7 +447,7 @@ export default {
         this.target.rootDomains.push(
           {
             root: urlElem,
-            id: this.target.rootDomains.length,
+            id: this.target.rootDomains.length.toString(),
             date: new Date(),
             subdomain: [],
             agent: []
