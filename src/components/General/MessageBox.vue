@@ -148,12 +148,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'clearAllSubDomainEntitiesToDelete', 'updateRemoveAllOption', 'clearSelectedTargetsList']),
+    ...mapMutations('target', ['clearTargetEntitiesToDelete', 'clearRootDomainEntitiesToDelete', 'updateTargetEliminationStatus', 'updateRootDomainEliminationStatus', 'updateRemoveAllOption', 'clearSelectedTargetsList']),
     ...mapMutations('agent', ['clearSelectedAgentsList']),
     ...mapMutations('general', ['clearReferencesToDelete']),
     ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete', 'clearSingleAgentEntityToDelete']),
-    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer']),
+    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearAllSubDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
@@ -196,6 +196,7 @@ export default {
             this.clearAllSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
             this.updateRemoveAllOption(false)
           } else {
+            console.log(this.entitiesToDelete)
             this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
             this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
           }

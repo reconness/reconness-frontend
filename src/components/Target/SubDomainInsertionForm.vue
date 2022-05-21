@@ -142,8 +142,8 @@ export default {
       }
       if (!this.enableValidationMessageSubDomainBlankNameManual() && !this.enableValidationMessageSubDomainUniqueNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
-          idTarget: parseInt(this.target.id),
-          idRootDomain: parseInt(this.rootDomain.id),
+          idTarget: this.target.id,
+          idRootDomain: this.rootDomain.id,
           subdomainsItems: this.subdomains
         }
         this.addSubdomain(params)
@@ -232,8 +232,8 @@ export default {
       let index = 0
       const params = {
         name: '',
-        idtarget: parseInt(this.target.id),
-        idrootdomain: parseInt(this.rootDomain.id)
+        idtarget: this.target.id,
+        idrootdomain: this.rootDomain.id
       }
       while (index < this.subdomains.length && !founded) {
         params.name = this.subdomains[index].name

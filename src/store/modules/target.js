@@ -345,23 +345,6 @@ export default ({
       })
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
-    clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
-      rootState.general.entitiesToDelete.forEach(entity => {
-        const target = state.targetListStore.find(target => target.name === entities.targetName)
-        const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-        const subDomainIndex = rootdomain.subdomain.findIndex(subdomain => subdomain.id === entity.id)
-        if (subDomainIndex !== -1) {
-          rootdomain.subdomain.splice(subDomainIndex, 1)
-        }
-      })
-      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
-    },
-    clearAllSubDomainEntitiesToDelete ({ state, rootState }, entities) {
-      const target = state.targetListStore.find(target => target.name === entities.targetName)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-      rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
-      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
-    },
     updateTargetEliminationStatus (state, status) {
       state.targetEliminationStatus = status
     },
@@ -471,6 +454,27 @@ export default ({
         }
         commit('general/addEntityToDelete', entity, { root: true })
       })
+    },
+    clearAllSubDomainEntitiesToDelete ({ state, rootState }, entities) {
+      const target = state.targetListStore.find(target => target.name === entities.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
+      rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+    },
+    clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
+      console.log(rootState.general.entitiesToDelete)
+      rootState.general.entitiesToDelete.forEach(entity => {
+        const target = state.targetListStore.find(target => target.name === entities.targetName)
+        console.log(target)
+        const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
+        console.log(rootdomain)
+        const subDomainIndex = rootdomain.subdomain.findIndex(subdomain => subdomain.id === entity.id)
+        console.log(subDomainIndex)
+        if (subDomainIndex !== -1) {
+          rootdomain.subdomain.splice(subDomainIndex, 1)
+        }
+      })
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     }
   },
   modules: {

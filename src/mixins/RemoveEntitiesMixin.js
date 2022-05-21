@@ -3,6 +3,8 @@ const RemoveEntitiesMixin = {
     prepareToDelete (e, entityType) {
       const entityName = e.currentTarget.getAttribute('data-name')
       const entityId = e.currentTarget.getAttribute('data-id')
+      console.log(entityName)
+      console.log(entityId)
       this.addEntityToDelete(
         {
           id: entityId,
