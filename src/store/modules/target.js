@@ -462,14 +462,10 @@ export default ({
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
     clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
-      console.log(rootState.general.entitiesToDelete)
       rootState.general.entitiesToDelete.forEach(entity => {
         const target = state.targetListStore.find(target => target.name === entities.targetName)
-        console.log(target)
         const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-        console.log(rootdomain)
         const subDomainIndex = rootdomain.subdomain.findIndex(subdomain => subdomain.id === entity.id)
-        console.log(subDomainIndex)
         if (subDomainIndex !== -1) {
           rootdomain.subdomain.splice(subDomainIndex, 1)
         }

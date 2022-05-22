@@ -158,67 +158,21 @@ export default {
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
       if (this.isOnTargetView || this.$isOnHomeView()) {
-        this.clearTargetEntitiesToDeleteToServer().then(response => {
-          if (response.status) {
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
-          } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
-          }
-        })
+        this.removeTargetsAndDisplayOperationStatus()
       } else if (this.isOnTargetDetailView) {
-        if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
-          this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
-          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
-        } else {
-          this.clearTargetRedirectToTargetListAndUpdateOperationStatus()
-        }
+        this.removeTargetsOrRootDomainsOnTargetDetailViewAndDisplayOperationStatus()
       } else if (this.$isOnAgentView()) {
-        if (this.entitiesToDelete.length > 1) {
-          this.clearAgentEntitiesToDelete().then(response => {
-            if (response.status) {
-              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
-            } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
-            }
-          })
-        } else {
-          this.clearSingleAgentEntityToDelete().then(response => {
-            if (response.status) {
-              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
-            } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
-            }
-          })
-        }
+        this.removeAgentsAndDisplayOperationStatus()
       } else if (this.$isOnRootDomainView()) {
-        if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
-          if (this.removeAll) {
-            this.clearAllSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
-            this.updateRemoveAllOption(false)
-          } else {
-            console.log(this.entitiesToDelete)
-            this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
-          }
-        } else {
-          this.clearRootdomainsRedirectToTargetDetailsAndUpdateOperationStatus()
-        }
+        this.removeRootDomainsOrSubDomainsOnRootDomainViewAndDisplayOperationStatus()
       } else if (this.$isOnSubDomainView()) {
         this.clearSubdomainsRedirectToRootDomainAndUpdateOperationStatus()
       } else if (this.$isOnPipelineView()) {
-        this.clearPipelineEntitiesToDelete()
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
+        this.removePipelinesAndDisplayOperationStatus()
       } else if (this.$isOnUserManagementView()) {
-        this.clearUserEntitiesToDelete().then(response => {
-          if (response.status) {
-            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserDeletion)
-          } else {
-            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
-          }
-        })
+        this.removeUsersAndDisplayOperationStatus()
       }
-      this.clearInput()
-      jQuery('#message-box-modal').modal('hide')
+      this.clearInputAndCloseModal()
     },
     setWaitingStatusOnTargetEliminationStatusAfterSeconds () {
       const self = this
@@ -319,6 +273,84 @@ export default {
       this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
       this.redirectToTargetDetails()
       this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+    },
+    removeTargetsAndDisplayOperationStatus () {
+      this.clearTargetEntitiesToDeleteToServer().then(response => {
+        if (response.status) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForTargetDeletion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
+    },
+    removeAgentsAndDisplayOperationStatus () {
+      if (this.entitiesToDelete.length > 1) {
+        this.clearAgentEntitiesToDelete().then(response => {
+          if (response.status) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
+        })
+      } else {
+        this.clearSingleAgentEntityToDelete().then(response => {
+          if (response.status) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
+        })
+      }
+    },
+    removeUsersAndDisplayOperationStatus () {
+      this.clearUserEntitiesToDelete().then(response => {
+        if (response.status) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserDeletion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
+    },
+    removePipelinesAndDisplayOperationStatus () {
+      this.clearPipelineEntitiesToDelete()
+      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForPipelineDeletion)
+    },
+    removeTargetsOrRootDomainsOnTargetDetailViewAndDisplayOperationStatus () {
+      if (this.isNotEmpty && this.entitiesToRemoveContainArootDomain) {
+        this.removeRootDomainsOnTargetDetailViewAndDisplayOperationStatus()
+      } else {
+        this.clearTargetRedirectToTargetListAndUpdateOperationStatus()
+      }
+    },
+    removeRootDomainsOrSubDomainsOnRootDomainViewAndDisplayOperationStatus () {
+      if (this.isNotEmpty && this.entitiesToRemoveContainAsubDomain) {
+        this.removeSubDomainsOnRootDomainView()
+      } else {
+        this.clearRootdomainsRedirectToTargetDetailsAndUpdateOperationStatus()
+      }
+    },
+    removeRootDomainsOnTargetDetailViewAndDisplayOperationStatus () {
+      this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
+      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+    },
+    removeSubDomainsOnRootDomainView () {
+      if (this.removeAll) {
+        this.batchSubDomainsRemove()
+      } else {
+        this.singleSubDomainRemove()
+      }
+    },
+    batchSubDomainsRemove () {
+      this.clearAllSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+      this.updateRemoveAllOption(false)
+    },
+    singleSubDomainRemove () {
+      this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
+    },
+    clearInputAndCloseModal () {
+      this.clearInput()
+      jQuery('#message-box-modal').modal('hide')
     }
   }
 }
