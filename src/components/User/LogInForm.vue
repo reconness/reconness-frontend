@@ -30,7 +30,7 @@
               </div>
               <div class="col-12">
                   <div class="bottom-border-radius-12px mt-5 login-bottom-section d-flex justify-content-center ligth-gray-background">
-                      <span @click="goToForgotPasswordForm" class="cursor-pointer blue-text my-3 login-form-footer-link">Forgot Password?</span>
+                      <span @click="goToForgotPasswordForm" class="d-none cursor-pointer blue-text my-3 login-form-footer-link">Forgot Password?</span>
                   </div>
               </div>
           </div>
