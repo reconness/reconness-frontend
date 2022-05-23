@@ -27,17 +27,17 @@ export default {
   methods: {
     removeNoteFn: function () {
       if (this.$route.name === 'TargetDetail') {
-        this.removeTargetNote(parseInt(this.$route.params.id))
+        this.removeTargetNote(this.$route.params.targetName)
       } else if (this.$route.name === 'RootDomainDetails') {
         this.removeRootDomainNote({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id)
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName
         })
       } else if (this.$route.name === 'SubDomainDetails') {
         this.removeSubDomainNote({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
-          idSubDomain: parseInt(this.$route.params.idsubdomain)
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName,
+          subdomainName: this.$route.params.subdomainName
         })
       }
       jQuery('#note-confirmation-modal').modal('hide')

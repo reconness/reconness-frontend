@@ -55,8 +55,8 @@ export default {
       shadowAg: '',
       secondaryColor: '',
       routeParams: {
-        idTarget: parseInt(this.idTarget),
-        idRootDomain: parseInt(this.id)
+        idTarget: this.idTarget,
+        idRootDomain: this.id
       }
     }
   },
@@ -73,8 +73,8 @@ export default {
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.Target = this.getTargetById(parseInt(this.idTarget))
-    this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.id))
+    this.Target = this.getTargetById(this.idTarget)
+    this.RootDomains = this.Target.rootDomains.find(item => item.id === this.id)
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor

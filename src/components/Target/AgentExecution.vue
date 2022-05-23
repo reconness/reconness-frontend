@@ -91,7 +91,7 @@ export default {
     CircleProgress
   },
   props: {
-    idAgent: Number,
+    idAgent: String,
     nameAgent: String,
     status: {
       type: Number,
@@ -167,20 +167,20 @@ export default {
       if (this.$route.name === 'RootDomainDetails') {
         this.updateStatusRootDomainAgent({
           status: event,
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
-          idAgent: parseInt(this.idAgent)
+          idTarget: this.$route.params.idTarget,
+          idRoot: this.$route.params.id,
+          idAgent: this.idAgent
         })
       } else {
         this.updateStatusSubDomainAgent({
           status: this.$entityStatus.RUNNING,
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
-          idAgent: parseInt(this.idAgent),
-          idSubDomain: parseInt(this.$route.params.idsubdomain)
+          idTarget: this.$route.params.idTarget,
+          idRoot: this.$route.params.id,
+          idAgent: this.idAgent,
+          idSubDomain: this.$route.params.idsubdomain
         })
       }
-      this.setAgentStatus({ status: event, id: parseInt(this.idAgent) })
+      this.setAgentStatus({ status: event, id: this.idAgent })
     },
     minimizeWindow () {
       jQuery('#agentExecutionModalForm').modal('hide')
@@ -193,17 +193,17 @@ export default {
         if (this.$route.name === 'RootDomainDetails') {
           this.updateStatusRootDomainAgent({
             status: this.$entityStatus.FINISHED,
-            idTarget: parseInt(this.$route.params.idTarget),
-            idRoot: parseInt(this.$route.params.id),
-            idAgent: parseInt(this.idAgent)
+            idTarget: this.$route.params.idTarget,
+            idRoot: this.$route.params.id,
+            idAgent: this.idAgent
           })
         } else {
           this.updateStatusSubDomainAgent({
             status: this.$entityStatus.FINISHED,
-            idTarget: parseInt(this.$route.params.idTarget),
-            idRoot: parseInt(this.$route.params.id),
-            idAgent: parseInt(this.idAgent),
-            idSubDomain: parseInt(this.$route.params.idsubdomain)
+            idTarget: this.$route.params.idTarget,
+            idRoot: this.$route.params.id,
+            idAgent: this.idAgent,
+            idSubDomain: this.$route.params.idsubdomain
           })
         }
         this.stopClock()

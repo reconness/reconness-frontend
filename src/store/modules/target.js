@@ -185,26 +185,26 @@ export default ({
     setIdNote (state, id) {
       state.idNote = parseInt(id)
     },
-    removeTargetNote (state, idTarget) {
-      const target = state.targetListStore.find(item => item.id === parseInt(idTarget))
-      const noteIndex = target.messages.findIndex(message => message.id === parseInt(state.idNote))
+    removeTargetNote (state, targetName) {
+      const target = state.targetListStore.find(item => item.name === targetName)
+      const noteIndex = target.messages.findIndex(message => message.id === state.idNote)
       target.messages.splice(noteIndex, 1)
     },
     removeRootDomainNote (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
       const noteIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
       rootdomain.messages.splice(noteIndex, 1)
     },
     removeSubDomainNote (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
-      const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.id === params.idSubDomain)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
+      const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.subdomainName === params.subdomainName)
       const noteIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
       subdomain.messages.splice(noteIndex, 1)
     },
     sendTargetNote (state, messageInfo, rootGetters) {
-      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
+      const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
       const note = {
         id: state.idNote++,
         message: messageInfo.message,
@@ -214,8 +214,8 @@ export default ({
       target.messages.push(note)
     },
     sendRootDomainNote (state, messageInfo) {
-      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
+      const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootdomainName)
       const note = {
         id: state.idNote++,
         message: messageInfo.message,
@@ -225,9 +225,9 @@ export default ({
       rootdomain.messages.push(note)
     },
     sendSubDomainNote (state, messageInfo) {
-      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
-      const subdomain = rootdomain.subdomain.find(subDomain => subDomain.id === messageInfo.idSubDomain)
+      const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootdomainName)
+      const subdomain = rootdomain.subdomain.find(subDomain => subDomain.name === messageInfo.subdomainName)
       const note = {
         id: state.idNote++,
         message: messageInfo.message,
@@ -345,23 +345,6 @@ export default ({
       })
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
-    clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
-      rootState.general.entitiesToDelete.forEach(entity => {
-        const target = state.targetListStore.find(target => target.name === entities.targetName)
-        const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-        const subDomainIndex = rootdomain.subdomain.findIndex(subdomain => subdomain.id === entity.id)
-        if (subDomainIndex !== -1) {
-          rootdomain.subdomain.splice(subDomainIndex, 1)
-        }
-      })
-      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
-    },
-    clearAllSubDomainEntitiesToDelete ({ state, rootState }, entities) {
-      const target = state.targetListStore.find(target => target.name === entities.targetName)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-      rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
-      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
-    },
     updateTargetEliminationStatus (state, status) {
       state.targetEliminationStatus = status
     },
@@ -471,6 +454,23 @@ export default ({
         }
         commit('general/addEntityToDelete', entity, { root: true })
       })
+    },
+    clearAllSubDomainEntitiesToDelete ({ state, rootState }, entities) {
+      const target = state.targetListStore.find(target => target.name === entities.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
+      rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+    },
+    clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
+      rootState.general.entitiesToDelete.forEach(entity => {
+        const target = state.targetListStore.find(target => target.name === entities.targetName)
+        const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
+        const subDomainIndex = rootdomain.subdomain.findIndex(subdomain => subdomain.id === entity.id)
+        if (subDomainIndex !== -1) {
+          rootdomain.subdomain.splice(subDomainIndex, 1)
+        }
+      })
+      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     }
   },
   modules: {
@@ -494,23 +494,27 @@ export default ({
     getTargetById: (state) => (id) => {
       return state.targetListStore.find(target => target.id === id)
     },
-    getTargetNotes: (state) => (id) => {
-      return state.targetListStore.find(target => target.id === id).messages
+    getTargetNotes: (state) => (targetName) => {
+      const searchedTarget = state.targetListStore.find(target => target.name === targetName)
+      if (searchedTarget) {
+        return searchedTarget.messages
+      }
+      return []
     },
     getRootDomainNotes: (state) => (params) => {
-      const target = state.targetListStore.find(target => target.id === params.idTarget)
+      const target = state.targetListStore.find(target => target.name === params.targetName)
       if (target) {
-        return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
+        return target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName).messages
       } else {
         return []
       }
     },
     getSubDomainNotes: (state) => (params) => {
-      const target = state.targetListStore.find(target => target.id === params.idTarget)
+      const target = state.targetListStore.find(target => target.name === params.targetName)
       if (target) {
-        const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+        const rootDomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
         if (rootDomain) {
-          const subdomain = rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain)
+          const subdomain = rootDomain.subdomain.find(subdomain => subdomain.name === params.subdomainName)
           if (subdomain) {
             return subdomain.messages
           } else {
@@ -745,7 +749,7 @@ export default ({
     isEntityOnListToRemove: ({ state, rootState }) => (idItem) => {
       setTimeout(
         function () {
-          const searchedElement = rootState.general.entitiesToDelete.find(item => parseInt(item.id) === parseInt(idItem))
+          const searchedElement = rootState.general.entitiesToDelete.find(item => item.id === idItem)
           if (searchedElement) {
             return true
           }

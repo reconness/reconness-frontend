@@ -91,93 +91,9 @@ export default {
     ...mapState('user', ['loggedUsername']),
     getNotes: function () {
       if (this.order_by_date) {
-        if (this.active_arrow_down_note) {
-          if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
-              this.sortDescendingOrderByDateFn
-            )
-          } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
-            }).sort(
-              this.sortDescendingOrderByDateFn
-            )
-          } else {
-            return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
-            }).sort(
-              this.sortDescendingOrderByDateFn
-            )
-          }
-        } else {
-          if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
-              this.sortAscendingOrderByDateFn
-            )
-          } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
-            }).sort(
-              this.sortAscendingOrderByDateFn
-            )
-          } else {
-            return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
-            }).sort(
-              this.sortAscendingOrderByDateFn
-            )
-          }
-        }
-      } else { // order by user
-        if (this.active_arrow_down_note) {
-          if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
-              this.sortDescendingOrderByUserNameFn
-            )
-          } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
-            }).sort(
-              this.sortDescendingOrderByUserNameFn
-            )
-          } else {
-            return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
-            }).sort(
-              this.sortDescendingOrderByUserNameFn
-            )
-          }
-        } else {
-          if (this.currentView === 'TargetDetail') {
-            return this.getTargetNotes(parseInt(this.$route.params.id)).sort(
-              this.sortAscendingOrderByUserNameFn
-            )
-          } else if (this.currentView === 'RootDomainDetails') {
-            return this.getRootDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id)
-            }).sort(
-              this.sortAscendingOrderByUserNameFn
-            )
-          } else {
-            return this.getSubDomainNotes({
-              idTarget: parseInt(this.$route.params.idTarget),
-              idRootDomain: parseInt(this.$route.params.id),
-              idSubDomain: parseInt(this.$route.params.idsubdomain)
-            }).sort(
-              this.sortAscendingOrderByUserNameFn
-            )
-          }
-        }
+        return this.orderNotesByDate()
+      } else {
+        return this.orderNotesByUser()
       }
     }
   },
@@ -186,22 +102,22 @@ export default {
     sendNotes: function () {
       if (this.$route.name === 'TargetDetail') {
         this.sendTargetNote({
-          idTarget: parseInt(this.$route.params.id),
+          targetName: this.$route.params.targetName,
           message: this.note,
           username: this.loggedUsername
         })
       } else if (this.$route.name === 'RootDomainDetails') {
         this.sendRootDomainNote({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName,
           message: this.note,
           username: this.loggedUsername
         })
       } else if (this.$route.name === 'SubDomainDetails') {
         this.sendSubDomainNote({
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRootDomain: parseInt(this.$route.params.id),
-          idSubDomain: parseInt(this.$route.params.idsubdomain),
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName,
+          subdomainName: this.$route.params.subdomainName,
           message: this.note,
           username: this.loggedUsername
         })
@@ -261,6 +177,152 @@ export default {
         return 1
       }
       return 0
+    },
+    orderNotesByDate () {
+      if (this.active_arrow_down_note) {
+        return this.orderDescendingByDate()
+      } else {
+        return this.orderAscendingByDate()
+      }
+    },
+    orderNotesByUser () {
+      if (this.active_arrow_down_note) {
+        return this.orderDescendingByUser()
+      } else {
+        return this.orderAscendingByUser()
+      }
+    },
+    orderDescendingByDate () {
+      if (this.$isOnTargetDetailView()) {
+        return this.orderTargetsNotesDescendingByDate()
+      }
+      if (this.$isOnRootDetailsView()) {
+        return this.orderRootDomainsNotesDescendingByDate()
+      }
+      if (this.$isOnSubDomainView()) {
+        return this.orderSubDomainsNotesDescendingByDate()
+      }
+    },
+    orderAscendingByDate () {
+      if (this.$isOnTargetDetailView()) {
+        return this.orderTargetsNotesAscendingByDate()
+      }
+      if (this.$isOnRootDetailsView()) {
+        return this.orderRootDomainNotesAscendingByDate()
+      }
+      if (this.$isOnSubDomainView()) {
+        return this.orderSubDomainNotesAscendingByDate()
+      }
+    },
+    orderTargetsNotesAscendingByDate () {
+      return this.getTargetNotes(this.$route.params.targetName).sort(
+        this.sortAscendingOrderByDateFn
+      )
+    },
+    orderRootDomainNotesAscendingByDate () {
+      return this.getRootDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName
+      }).sort(
+        this.sortAscendingOrderByDateFn
+      )
+    },
+    orderSubDomainNotesAscendingByDate () {
+      return this.getSubDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName,
+        subdomainName: this.$route.params.subdomainName
+      }).sort(
+        this.sortAscendingOrderByDateFn
+      )
+    },
+    orderTargetsNotesDescendingByDate () {
+      return this.getTargetNotes(this.$route.params.targetName).sort(
+        this.sortDescendingOrderByDateFn
+      )
+    },
+    orderRootDomainsNotesDescendingByDate () {
+      return this.getRootDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName
+      }).sort(
+        this.sortDescendingOrderByDateFn
+      )
+    },
+    orderSubDomainsNotesDescendingByDate () {
+      return this.getSubDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName,
+        subdomainName: this.$route.params.subdomainName
+      }).sort(
+        this.sortDescendingOrderByDateFn
+      )
+    },
+    orderDescendingByUser () {
+      if (this.$isOnTargetDetailView()) {
+        return this.orderTargetsNotesDescendingByUser()
+      }
+      if (this.$isOnRootDetailsView()) {
+        return this.orderRootDomainsNotesDescendingByUser()
+      }
+      if (this.$isOnSubDomainView()) {
+        return this.orderSubDomainsNotesDescendingByUser()
+      }
+    },
+    orderAscendingByUser () {
+      if (this.$isOnTargetDetailView()) {
+        return this.orderTargetsNotesAscendingByUser()
+      }
+      if (this.$isOnRootDetailsView()) {
+        return this.orderRootDomainsNotesAscendingByUser()
+      }
+      if (this.$isOnSubDomainView()) {
+        return this.orderSubDomainsNotesAscendingByUser()
+      }
+    },
+    orderTargetsNotesAscendingByUser () {
+      return this.getTargetNotes(this.$route.params.targetName).sort(
+        this.sortAscendingOrderByUserNameFn
+      )
+    },
+    orderRootDomainsNotesAscendingByUser () {
+      return this.getRootDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName
+      }).sort(
+        this.sortAscendingOrderByUserNameFn
+      )
+    },
+    orderSubDomainsNotesAscendingByUser () {
+      return this.getSubDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName,
+        subdomainName: this.$route.params.subdomainName
+      }).sort(
+        this.sortAscendingOrderByUserNameFn
+      )
+    },
+    orderTargetsNotesDescendingByUser () {
+      return this.getTargetNotes(this.$route.params.targetName).sort(
+        this.sortDescendingOrderByUserNameFn
+      )
+    },
+    orderRootDomainsNotesDescendingByUser () {
+      return this.getRootDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName
+      }).sort(
+        this.sortDescendingOrderByUserNameFn
+      )
+    },
+    orderSubDomainsNotesDescendingByUser () {
+      return this.getSubDomainNotes({
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName,
+        subdomainName: this.$route.params.subdomainName
+      }).sort(
+        this.sortDescendingOrderByUserNameFn
+      )
     }
   },
   directives: {

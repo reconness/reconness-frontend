@@ -313,6 +313,18 @@ export default {
       return this.$route.name === 'RootDomainDetails'
     }
 
+    app.config.globalProperties.$isOnTargetDetailView = function () {
+      return this.$route.name === 'TargetDetail'
+    }
+
+    app.config.globalProperties.$isOnTargetView = function () {
+      return this.$route.name === 'Targets'
+    }
+
+    app.config.globalProperties.$isOnRootDetailsView = function () {
+      return this.$route.name === 'RootDomainDetails'
+    }
+
     app.config.globalProperties.$isOnSubDomainView = function () {
       return this.$route.name === 'SubDomainDetails'
     }

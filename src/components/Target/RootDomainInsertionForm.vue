@@ -118,7 +118,7 @@ export default {
       }
       if (!this.enableValidationMessageRootDomainBlankNameManual() && !this.enableValidationMessageRootDomainUniqueNameManual() && this.validators.url.rootDomainName.indexOf(true) < 0 && this.validators.exist.rootDomainName.indexOf(true) < 0 && this.validators.blank.rootDomainName.indexOf(true) < 0) {
         const params = {
-          idTarget: parseInt(this.target.id),
+          idTarget: this.target.id,
           rootdomainsItems: this.rootdomains
         }
         this.addRootDomain(params)
@@ -198,7 +198,7 @@ export default {
       let index = 0
       const params = {
         name: '',
-        idtarget: parseInt(this.target.id)
+        idtarget: this.target.id
       }
       while (index < this.rootdomains.length && !founded) {
         params.name = this.rootdomains[index].root
@@ -221,7 +221,7 @@ export default {
     },
     ...mapMutations('target', ['addRootDomain']),
     removeRootDomainName: function (e) {
-      const rootdomainIndex = parseInt(e.currentTarget.getAttribute('data-index'))
+      const rootdomainIndex = e.currentTarget.getAttribute('data-index')
       if (rootdomainIndex !== 0) {
         this.rootdomains.splice(rootdomainIndex, 1)
         this.validators.blank.rootDomainName.splice(rootdomainIndex, 1)

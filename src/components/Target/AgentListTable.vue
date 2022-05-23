@@ -62,7 +62,7 @@ export default {
       lastrun_arrow_down: true,
       lastrun_arrow_up: false,
       selectedAgentName: '',
-      selectedAgentId: -1
+      selectedAgentId: '-1'
     }
   },
   computed: {
@@ -72,18 +72,18 @@ export default {
     ...mapState('agent', ['agentListStore']),
     listAgents: function () {
       return this.listRootDomainsAgents({
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id)
+        idTarget: this.$route.params.idTarget,
+        idRoot: this.$route.params.id
       })
     },
     isRunningAgent: function () {
-      return this.listCurrentRunningRootDomainsAgent({ idTarget: parseInt(this.$route.params.idTarget), idRoot: parseInt(this.$route.params.id), idAgent: parseInt(this.selectedAgentId) })
+      return this.listCurrentRunningRootDomainsAgent({ idTarget: this.$route.params.idTarget, idRoot: this.$route.params.id, idAgent: this.selectedAgentId })
     },
     agentsList: function () {
       const rootDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(this.$agentType.ROOTDOMAIN)))
       const rootDoaminsAgentsCurentView = this.listRootDomainsAgents({
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id)
+        idTarget: this.$route.params.idTarget,
+        idRoot: this.$route.params.id
       })
       let searchedAgent = null
       rootDomainAgentsType.forEach(element => {
@@ -105,22 +105,22 @@ export default {
     },
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
-      this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.addNewNotification('Running agent' + ' ' + this.selectedAgentName)
       this.insertAgentIfNotExistInRootDomain(
         {
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
+          idTarget: this.$route.params.idTarget,
+          idRoot: this.$route.params.id,
           agentData: this.agentListStore.find(item => item.id === this.selectedAgentId)
         }
       )
       this.updateStatusRootDomainAgent({
         status: this.$entityStatus.RUNNING,
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id),
-        idAgent: parseInt(this.selectedAgentId)
+        idTarget: this.$route.params.idTarget,
+        idRoot: this.$route.params.id,
+        idAgent: this.selectedAgentId
       })
-      this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: parseInt(this.selectedAgentId) })
+      this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: this.selectedAgentId })
     },
     orderByNameAsc: function () {
       this.active_arrow_down = true

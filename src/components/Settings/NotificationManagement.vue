@@ -29,7 +29,10 @@
                             </div>
                             <div class="mt-1">
                                 <label class="font-size-16px font-weight-normal" for="user-settings-method">Method</label>
-                                <input v-model="notificationsSettings.method" class="border-ligth-gray border-radius-6px form-control" id="user-settings-method">
+                                <select class="form-control border-ligth-gray border-radius-6px" v-model="notificationsSettings.method" id="user-settings-method">
+                                  <option value="POST">POST</option>
+                                  <option value="GET">GET</option>
+                                </select>
                             </div>
                             <div class="mt-1">
                                 <label class="font-size-16px font-weight-normal" for="user-settings-payload">Payload</label>
@@ -37,7 +40,7 @@
                             </div>
                           </div>
                           <div class="mt-2 text-right font-size-14px font-italic">
-                            <span>To know more about settings the notifications check the</span><a href="#" class="blue-text"> documentation</a>
+                            <span>To know more about settings the notifications check the</span><a href="https://docs.reconness.com/account/notifications"  target="_blank" rel="noopener noreferrer" class="blue-text"> documentation</a>
                           </div>
                           </div>
                         <div v-else class="p-3 form-settings-main-container mt-4">
@@ -81,7 +84,8 @@ export default {
   mixins: [TargetMixin],
   computed: {
     ...mapGetters('user', ['getLoggedUserData', 'getGravatarUrlByEmail', 'getRoleById', 'roles']),
-    ...mapState('target', ['operationStatus'])
+    ...mapState('target', ['operationStatus']),
+    ...mapState('notification', ['notificationSettingData'])
   },
   mounted () {
     this.loadNotificationsSettings().then(response => {
@@ -95,7 +99,7 @@ export default {
       isUserNotificationSettingsSelected: true,
       notificationsSettings: {
         url: '',
-        method: '',
+        method: 'POST',
         payload: '',
         rootDomain: '',
         subDomain: '',
@@ -121,14 +125,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('user', ['saveNotificationsSettings']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageActionSelected', 'updateNotificationMessageDescription']),
     ...mapActions('notification', ['saveNotificationsSettingsAction', 'loadNotificationsSettings']),
     updateIsUserNotificationSettingsSelected (flag) {
       this.isUserNotificationSettingsSelected = flag
     },
     setNotificationsSettings () {
-      this.notificationsSettings = this.getLoggedUserData.notification
+      this.notificationsSettings = this.notificationSettingData
     },
     saveNotificationsSettingsData () {
       this.saveNotificationsSettingsAction(this.notificationsSettings).then(response => {

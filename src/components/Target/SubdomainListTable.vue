@@ -128,7 +128,7 @@
     </div>
     <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
-          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: parseInt(item.id), subdomainName: item.name} }">
+          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: item.id, subdomainName: item.name} }">
           <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: color}">forward</span>
           </router-link>
         </div>
@@ -202,8 +202,8 @@ export default {
     return {
       dataColor: '',
       routeParams: {
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRootDomain: parseInt(this.$route.params.id)
+        idTarget: this.$route.params.idTarget,
+        idRootDomain: this.$route.params.id
       },
       showHeader: true,
       isElementSelected: true,
@@ -238,7 +238,7 @@ export default {
     selectRow (id, name) {
       if (document.getElementById('remove_customCheckbox' + id).checked) {
         document.getElementById('row' + id).style.background = 'rgb(242, 244, 246)'
-        this.$store.commit('target/addSelectedList', { idTarget: parseInt(this.$route.params.idTarget), idRoot: this.rootDomain.id, idSubdom: id, nameSubdom: name })
+        this.$store.commit('target/addSelectedList', { idTarget: this.$route.params.idTarget, idRoot: this.rootDomain.id, idSubdom: id, nameSubdom: name })
         this.$store.commit('target/addCountElementSelected')
       } else {
         document.getElementById('row' + id).style.background = '#fff'
@@ -258,7 +258,7 @@ export default {
         this.isElementSelected = false
         document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
         const subdom = this.rootDomain.subdomain.find(item => item.id === Number(checkboxes[i].id.substr(14)))
-        this.$store.commit('target/addSelectedList', { idTarget: parseInt(this.$route.params.idTarget), idRoot: this.rootDomain.id, idSubdom: checkboxes[i].id.substr(14), nameSubdom: subdom.name })
+        this.$store.commit('target/addSelectedList', { idTarget: this.$route.params.idTarget, idRoot: this.rootDomain.id, idSubdom: checkboxes[i].id.substr(14), nameSubdom: subdom.name })
         this.$store.commit('target/addCountElementSelected')
       }
     },
@@ -365,7 +365,7 @@ export default {
     removeAllSubDomains () {
       this.updateRemoveAllOption(true)
       this.addEntityToDelete({
-        id: parseInt(this.rootDomain.subdomain[0].id),
+        id: this.rootDomain.subdomain[0].id,
         name: this.rootDomain.subdomain[0].name,
         type: this.$entityTypeData.SUBDOMAIN.id // this.$agentType.TARGET
       })
