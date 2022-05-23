@@ -20,8 +20,8 @@
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
-                  <input v-model="user.username" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
-                  <input type="password" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
+                  <input v-model="user.username" @keyup.enter="authenticate" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
+                  <input type="password" @keyup.enter="authenticate" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
                   <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text" @click="authenticate">LOGIN</button>
                   <p v-if="areInputInBlank && wereWrittenInput" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                   <p v-if="areCredentialsInvalid" class="mt-2 text-center invalid">Invalid Credentials</p>
