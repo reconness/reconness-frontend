@@ -185,26 +185,26 @@ export default ({
     setIdNote (state, id) {
       state.idNote = parseInt(id)
     },
-    removeTargetNote (state, idTarget) {
-      const target = state.targetListStore.find(item => item.id === idTarget)
+    removeTargetNote (state, targetName) {
+      const target = state.targetListStore.find(item => item.name === targetName)
       const noteIndex = target.messages.findIndex(message => message.id === state.idNote)
       target.messages.splice(noteIndex, 1)
     },
     removeRootDomainNote (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
       const noteIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
       rootdomain.messages.splice(noteIndex, 1)
     },
     removeSubDomainNote (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
-      const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.id === params.idSubDomain)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
+      const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.subdomainName === params.subdomainName)
       const noteIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
       subdomain.messages.splice(noteIndex, 1)
     },
     sendTargetNote (state, messageInfo, rootGetters) {
-      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
+      const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
       const note = {
         id: state.idNote++,
         message: messageInfo.message,
@@ -214,8 +214,8 @@ export default ({
       target.messages.push(note)
     },
     sendRootDomainNote (state, messageInfo) {
-      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
+      const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootdomainName)
       const note = {
         id: state.idNote++,
         message: messageInfo.message,
@@ -225,9 +225,9 @@ export default ({
       rootdomain.messages.push(note)
     },
     sendSubDomainNote (state, messageInfo) {
-      const target = state.targetListStore.find(item => item.id === messageInfo.idTarget)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.id === messageInfo.idRootDomain)
-      const subdomain = rootdomain.subdomain.find(subDomain => subDomain.id === messageInfo.idSubDomain)
+      const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootdomainName)
+      const subdomain = rootdomain.subdomain.find(subDomain => subDomain.name === messageInfo.subdomainName)
       const note = {
         id: state.idNote++,
         message: messageInfo.message,

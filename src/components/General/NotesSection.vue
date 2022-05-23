@@ -102,22 +102,22 @@ export default {
     sendNotes: function () {
       if (this.$route.name === 'TargetDetail') {
         this.sendTargetNote({
-          idTarget: this.$route.params.id,
+          targetName: this.$route.params.targetName,
           message: this.note,
           username: this.loggedUsername
         })
       } else if (this.$route.name === 'RootDomainDetails') {
         this.sendRootDomainNote({
-          idTarget: this.$route.params.idTarget,
-          idRootDomain: this.$route.params.id,
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName,
           message: this.note,
           username: this.loggedUsername
         })
       } else if (this.$route.name === 'SubDomainDetails') {
         this.sendSubDomainNote({
-          idTarget: this.$route.params.idTarget,
-          idRootDomain: this.$route.params.id,
-          idSubDomain: this.$route.params.idsubdomain,
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName,
+          subdomainName: this.$route.params.subdomainName,
           message: this.note,
           username: this.loggedUsername
         })
