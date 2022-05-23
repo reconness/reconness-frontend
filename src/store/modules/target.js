@@ -494,27 +494,27 @@ export default ({
     getTargetById: (state) => (id) => {
       return state.targetListStore.find(target => target.id === id)
     },
-    getTargetNotes: (state) => (id) => {
-      const searchedTarget = state.targetListStore.find(target => target.id === id)
+    getTargetNotes: (state) => (targetName) => {
+      const searchedTarget = state.targetListStore.find(target => target.name === targetName)
       if (searchedTarget) {
         return searchedTarget.messages
       }
       return []
     },
     getRootDomainNotes: (state) => (params) => {
-      const target = state.targetListStore.find(target => target.id === params.idTarget)
+      const target = state.targetListStore.find(target => target.name === params.targetName)
       if (target) {
-        return target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain).messages
+        return target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName).messages
       } else {
         return []
       }
     },
     getSubDomainNotes: (state) => (params) => {
-      const target = state.targetListStore.find(target => target.id === params.idTarget)
+      const target = state.targetListStore.find(target => target.name === params.targetName)
       if (target) {
-        const rootDomain = target.rootDomains.find(rootdomain => rootdomain.id === params.idRootDomain)
+        const rootDomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
         if (rootDomain) {
-          const subdomain = rootDomain.subdomain.find(subdomain => subdomain.id === params.idSubDomain)
+          const subdomain = rootDomain.subdomain.find(subdomain => subdomain.name === params.subdomainName)
           if (subdomain) {
             return subdomain.messages
           } else {
