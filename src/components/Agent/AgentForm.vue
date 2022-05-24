@@ -249,9 +249,11 @@
                         <input type="file" class="custom-file-input" id="uploadconfigfile" @change="loadConfigTextFile">
                         <label class="custom-file-label font-size-16px" for="uploadconfigfile">{{ loadedFileNameOrPlaceholder }}</label>
                       </div>
-                      <span v-if="showFileConfigLocation" class="mt-1 ml-2">{{ getFullFileConfigPath }}</span>
+                      <div class="d-flex">
+                        <span v-if="showFileConfigLocation" class="mt-1 ml-2 text-truncate">{{ getFullFileConfigPath }}</span>
+                      </div>
                     </div>
-                    <div v-if="isVisibleConfigSection"  id="config-section" class="col-12">
+                    <div v-if="isVisibleConfigSection && !this.$validateIsBlank(this.agent.configurationFile)"  id="config-section" class="col-12">
                       <v-ace-editor v-model:value="configurationFileContent" lang="csharp" class="mt-4" style="height:300px" theme="monokai"/>
                     </div>
                   </div><!-- /.row -->
