@@ -20,11 +20,11 @@
               </div>
               <div class="col-12">
                 <div class="pt-4 d-flex flex-column align-items-center">
-                  <input v-model="user.username" @keyup.enter="authenticate" placeholder="username" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control">
-                  <input type="password" @keyup.enter="authenticate" v-model="user.password" placeholder="password" @change="setWrittenInputFlag" class="ph-center login-input w-75 form-control mt-2">
+                  <input v-model="user.username" @keyup.enter="authenticate" placeholder="username" class="ph-center login-input w-75 form-control">
+                  <input type="password" @keyup.enter="authenticate" v-model="user.password" placeholder="password" class="ph-center login-input w-75 form-control mt-2">
                   <button type="button" class="mt-4 btn btn-block login-button login-form-action-button w-50pc white-text" @click="authenticate">LOGIN</button>
-                  <p v-if="areInputInBlank && wereWrittenInput" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
-                  <p v-if="areCredentialsInvalid" class="mt-2 text-center invalid">Invalid Credentials</p>
+                  <p v-if="validators.emptyInputs" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
+                  <p v-if="invalidCredentials && !validators.emptyInputs" class="mt-2 text-center invalid">Invalid Credentials</p>
                   <p v-if="authenticationError" class="mt-2 text-center invalid">An error ocurred during the authentication process. Please contact the administrator</p>
                 </div>
               </div>
@@ -48,9 +48,11 @@ export default {
         username: '',
         password: ''
       },
-      wereWrittenInput: false,
       invalidCredentials: false,
-      authenticationError: false
+      authenticationError: false,
+      validators: {
+        emptyInputs: false
+      }
     }
   },
   computed: {
@@ -58,7 +60,7 @@ export default {
       return (this.$validateIsBlank(this.user.username) || this.$validateIsBlank(this.user.password))
     },
     areCredentialsInvalid () {
-      return this.invalidCredentials && !(this.areInputInBlank && this.wereWrittenInput)
+      return this.invalidCredentials && !this.areInputInBlank
     }
   },
   methods: {
@@ -68,7 +70,8 @@ export default {
     ...mapActions('auth', ['login']),
     ...mapActions('user', ['loadUsers']),
     authenticate () {
-      if (!this.areInputInBlank && this.wereWrittenInput) {
+      this.validateEntryData()
+      if (!this.areInputInBlank) {
         this.authenticationError = false
         this.login({
           username: this.user.username,
@@ -89,21 +92,14 @@ export default {
             }
           }
         })
-      } else {
-        this.setWrittenInputFlag()
       }
     },
-    setWrittenInputFlag () {
-      this.wereWrittenInput = true
-    },
-    setWrittenInputFlagAndResetForm () {
-      this.setWrittenInputFlag()
-      this.resetForm()
-    },
     resetForm () {
-      this.wereWrittenInput = false
       this.user.username = ''
       this.user.password = ''
+    },
+    validateEntryData () {
+      this.validators.emptyInputs = this.areInputInBlank
     }
   }
 }
