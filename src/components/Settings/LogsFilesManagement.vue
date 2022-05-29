@@ -25,9 +25,9 @@
                       </div>
                       <div class="col-12">
                           <div class="form-group">
-                            <textarea readonly class="form-control user-logs-files-content" rows="6" v-model="logText"></textarea>
+                            <textarea readonly class="form-control user-logs-files-content" rows="17" v-model="logText"></textarea>
                           </div>
-                          <div class="d-flex justify-content-end">
+                          <div class="d-flex justify-content-end mb-2">
                             <button :disabled="isNotLogSelected" @click="updateNotificationMessage" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-toggle="modal" data-target="#message-box-notification-modal" data-dismiss="modal">Clean</button>
                           </div>
                       </div>

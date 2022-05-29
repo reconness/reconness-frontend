@@ -117,7 +117,7 @@ table.user-management-users-list.table thead th{
     border-bottom: 1px solid #E5E9EC;
 }
 .user-management-listing-users{
-    height: 212px;
+    height: 460px;
 }
 
 .user-management-plus-logo{
