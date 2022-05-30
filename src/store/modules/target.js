@@ -424,7 +424,7 @@ export default ({
       })
       commit('general/clearReferencesToDelete', null, { root: true })
     },
-    clearTargetEntitiesToDeleteToServer ({ rootState, state, dispatch }) {
+    clearTargetEntitiesToDeleteToServer ({ rootState, state, dispatch, commit }) {
       const targetNames = []
       rootState.general.entitiesToDelete.forEach(entity => {
         let targetName
@@ -440,8 +440,29 @@ export default ({
         dispatch('removeTargetsSelected')
         return { status: true, message: '' }
       }).catch(function (error) {
+        commit('general/clearReferencesToDelete', null, { root: true })
+        commit('clearSelectedTargetsList')
         return { status: false, message: error.response.data }
       })
+    },
+    clearSingleTargetEntityToDeleteToServer ({ state, commit, rootState, dispatch }) {
+      let promiseResult
+      const entityId = rootState.general.entitiesToDelete[0].id
+      const index = state.targetListStore.findIndex(agent => agent.id === entityId)
+      if (index !== -1) {
+        const targetName = state.targetListStore[index].name
+        promiseResult = axios.delete('/targets/' + targetName)
+          .then(function (response) {
+            dispatch('removeTargetsSelected')
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            commit('general/clearReferencesToDelete', null, { root: true })
+            commit('clearSelectedTargetsList')
+            return { status: false, message: error.response.data }
+          })
+      }
+      return promiseResult
     },
     addAndPrepareSelectedTargetIdsToRemove ({ state, rootGetters, getters, commit }) {
       commit('general/clearReferencesToDelete', null, { root: true })

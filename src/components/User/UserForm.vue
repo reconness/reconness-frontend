@@ -75,7 +75,7 @@
                             </div>
                             <div class="userform-role-title">
                               <div class="form-group ml-3user mt-2">
-                                <div v-if="isLoggedUserOwner" class="ml-2 custom-control custom-radio form-check">
+                                <div v-if="isLoggedUserOwner" class="d-none ml-2 custom-control custom-radio form-check">
                                   <input :disabled="this.$store.state.user.manageMyOwnProfile" @click="userSelectARole" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                                     <span class="material-icons blue-text">manage_accounts</span>
