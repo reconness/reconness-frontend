@@ -50,12 +50,14 @@
                   <div class="col-1"><span class="text-wrap break-word">{{this.niceBytes(wordlistItem.size)}}</span></div>
                   <div class="col-6"><span class="text-break break-word">{{wordlistItem.path}}</span></div>
                   <div class="col-2">
-                    <div class="d-flex justify-content-between">
-                      <button @click="downloadWordlist" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
-                      <button @click="removeWordList" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
-                    </div>
-                    <div v-if="isWordListFileSizeGreaterThan(parseInt(wordlistItem.size))" class="d-flex">
-                      <button type="button" @click="openWordListFileContent" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="mt-1 wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
+                    <div>
+                      <span title="Download" data-toggle="tooltip" data-placement="bottom" class="blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">download</span>
+                      <span @click="openWordListFileContent" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename">
+                        <span v-if="isWordListFileSizeGreaterThan(parseInt(wordlistItem.size))" title="Edit" data-toggle="tooltip" data-placement="bottom" class="m-1 blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">edit</span>
+                      </span>
+                      <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="m-1 border-icos-border trash-btn" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" @click="removeWordList">
+                        <TrashCanIco class="icons-wordlistitems-margin fill-with-red cursor-pointer trash-size"/>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -78,10 +80,12 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import WordlistFileContentEdition from '@/components/Agent/WordlistFileContentEdition'
+import TrashCanIco from '@/components/Icons/TrashCanIco'
 export default {
   name: 'WordList',
   components: {
-    WordlistFileContentEdition
+    WordlistFileContentEdition,
+    TrashCanIco
   },
   data: function () {
     return {
@@ -136,6 +140,14 @@ export default {
           }
         })
       }
+    },
+    getWordListByType: {
+      handler: function () {
+        this.$nextTick(() => {
+          this.enableTooltips()
+        })
+      },
+      deep: true
     }
   },
   mounted () {
@@ -252,6 +264,9 @@ export default {
     },
     isWordListFileSizeGreaterThan (valueInBytes) {
       return valueInBytes < 5000000
+    },
+    enableTooltips () {
+      jQuery('[data-toggle="tooltip"]').tooltip()
     }
   }
 }
@@ -325,5 +340,28 @@ label.wordlists-files-label{
 }
 button.wordlist-download-btn{
   padding: unset !important
+}
+.border-icos-border{
+  border: 1px solid #F1F3F5;
+}
+.trash-btn{
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.icons-wordlistitems-margin{
+  margin: 0.375rem 0.75rem;
 }
 </style>
