@@ -1,7 +1,7 @@
 <template>
 <div class="col-12">
   <div class="modal fade" id="wordlist-file-content-edition" tabindex="-1" role="dialog" aria-labelledby="wordlistModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
       <div class="modal-content agent-containers">
         <div class="modal-header remove-flex">
           <div class="row">
@@ -21,9 +21,7 @@
         <div class="modal-body ligth-gray-background">
           <div class="row" id="middle-section">
             <div class="col-12">
-              <!-- <div class="wordlist-files-container wordlist-container-size border px-2 py-1 mt-2">
-              </div> -->
-              <v-ace-editor v-model:value="wordlistFileContent" lang="csharp" style="height:300px" theme="monokai"/>
+              <v-ace-editor v-model:value="wordlistFileContent" lang="csharp" style="height:400px" theme="monokai"/>
             </div>
           </div><!-- /.row -->
         </div>
