@@ -26,6 +26,7 @@
                   <p v-if="validators.emptyInputs" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                   <p v-if="invalidCredentials && !validators.emptyInputs" class="mt-2 text-center invalid">Invalid Credentials</p>
                   <p v-if="authenticationError" class="mt-2 text-center invalid">An error ocurred during the authentication process. Please contact the administrator</p>
+                  <SpinnerCircle addCss="blue-text spinner-circle-size mt-3" :show="showLoadingSpinner"/>
                 </div>
               </div>
               <div class="col-12">
@@ -40,8 +41,12 @@
 </template>
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import SpinnerCircle from '@/components/General/SpinnerCircle.vue'
 export default {
   name: 'LogInForm',
+  components: {
+    SpinnerCircle
+  },
   data () {
     return {
       user: {
@@ -52,7 +57,8 @@ export default {
       authenticationError: false,
       validators: {
         emptyInputs: false
-      }
+      },
+      showLoadingSpinner: false
     }
   },
   computed: {
@@ -73,10 +79,13 @@ export default {
       this.validateEntryData()
       if (!this.areInputInBlank) {
         this.authenticationError = false
+        this.invalidCredentials = false
+        this.showLoadingSpinner = true
         this.login({
           username: this.user.username,
           password: this.user.password
         }).then(response => {
+          this.showLoadingSpinner = false
           this.updateLoggedUserName(response.message.userName)
           if (response.status) {
             this.loadUsers().then(response => {
@@ -168,5 +177,10 @@ div.avatar_container span.material-icons {
 .login-form-header-welcome-font{
   font: normal normal normal 27px/22px Poppins;
   letter-spacing: 0px;
+}
+
+.spinner-circle-size{
+  height: 20px;
+  width: 20px;
 }
 </style>
