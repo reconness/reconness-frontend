@@ -52,7 +52,7 @@
                   <div class="col-2">
                     <div>
                       <span title="Download" data-toggle="tooltip" data-placement="bottom" class="blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">download</span>
-                      <span @click="openWordListFileContent" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename">
+                      <span @click="openWordListFileContentAndUpdateStatePath" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename">
                         <span v-if="isWordListFileSizeGreaterThan(parseInt(wordlistItem.size))" title="Edit" data-toggle="tooltip" data-placement="bottom" class="m-1 blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">edit</span>
                       </span>
                       <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="m-1 border-icos-border trash-btn" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" @click="removeWordList">
@@ -154,7 +154,7 @@ export default {
     this.loadWordlist()
   },
   methods: {
-    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem', 'updateSelectedWordsContent']),
+    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem', 'updateSelectedWordsContent', 'updateSelectedWordListPath']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
     ...mapActions('wordlist', ['loadWordlist', 'uploadWordListFile', 'removeWordListFromServer', 'downloadWordListFile', 'getWordListFileContent']),
     resetLoadedFileName () {
@@ -252,6 +252,11 @@ export default {
         document.body.appendChild(fileLink)
         fileLink.click()
       })
+    },
+    openWordListFileContentAndUpdateStatePath (e) {
+      this.openWordListFileContent(e)
+      const wordlistId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.updateSelectedWordListPath(wordlistId)
     },
     openWordListFileContent (e) {
       jQuery('#wordlistModal').modal('hide')

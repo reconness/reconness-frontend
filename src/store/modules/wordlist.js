@@ -6,7 +6,8 @@ export default ({
     idWordList: 1,
     selectedWordListContent: '',
     selectedWordListDescriptionType: '',
-    selectedWordListFileName: ''
+    selectedWordListFileName: '',
+    selectedWordListPath: ''
   },
   mutations: {
     removeWordListItem (state, idWordlist) {
@@ -30,6 +31,10 @@ export default ({
     },
     updateSelectedWordsContent (state, wordlistId) {
       state.selectedWordList = wordlistId
+    },
+    updateSelectedWordListPath (state, wordlistId) {
+      const wordlistItem = state.wordlists.find(item => item.id === wordlistId)
+      state.selectedWordListPath = wordlistItem.path
     }
   },
   actions: {

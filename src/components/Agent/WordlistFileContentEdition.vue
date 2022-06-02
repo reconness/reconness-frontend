@@ -21,6 +21,7 @@
         <div class="modal-body ligth-gray-background">
           <div class="row" id="middle-section">
             <div class="col-12">
+              <p class="text-break">{{ selectedWordListPath }}</p>
               <v-ace-editor v-model:value="wordlistFileContent" lang="csharp" style="height:400px" theme="monokai"/>
             </div>
           </div><!-- /.row -->
@@ -51,7 +52,7 @@ export default {
   },
   mixins: [TargetMixin],
   computed: {
-    ...mapState('wordlist', ['selectedWordListContent'])
+    ...mapState('wordlist', ['selectedWordListContent', 'selectedWordListPath'])
   },
   watch: {
     selectedWordListContent: function (wordlistContent) {
