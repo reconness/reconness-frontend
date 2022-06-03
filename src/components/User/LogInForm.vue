@@ -26,7 +26,7 @@
                   <p v-if="validators.emptyInputs" class="mt-2 text-center invalid">You need to specify your username and password to access the system</p>
                   <p v-if="invalidCredentials && !validators.emptyInputs" class="mt-2 text-center invalid">Invalid Credentials</p>
                   <p v-if="authenticationError" class="mt-2 text-center invalid">An error ocurred during the authentication process. Please contact the administrator</p>
-                  <SpinnerCircle addCss="blue-text spinner-circle-size mt-3" :show="showLoadingSpinner"/>
+                  <SpinnerCircle addCss="blue-text spinner-circle-size mt-3" :show="isBackgroundProcessRunning"/>
                 </div>
               </div>
               <div class="col-12">
@@ -58,7 +58,7 @@ export default {
       validators: {
         emptyInputs: false
       },
-      showLoadingSpinner: false
+      isBackgroundProcessRunning: false
     }
   },
   computed: {
@@ -80,12 +80,12 @@ export default {
       if (!this.areInputInBlank) {
         this.authenticationError = false
         this.invalidCredentials = false
-        this.showLoadingSpinner = true
+        this.isBackgroundProcessRunning = true
         this.login({
           username: this.user.username,
           password: this.user.password
         }).then(response => {
-          this.showLoadingSpinner = false
+          this.isBackgroundProcessRunning = false
           this.updateLoggedUserName(response.message.userName)
           if (response.status) {
             this.loadUsers().then(response => {
