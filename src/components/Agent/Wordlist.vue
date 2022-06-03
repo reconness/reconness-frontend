@@ -26,12 +26,13 @@
               <span @click="setDnsResolverSelected" class="pills-border-gray p-2 ml-4 rounded cursor-pointer" :class="{'box-shadow': isDnsResolverSelected, 'background-color-white': isDnsResolverSelected}">DNS Resolvers</span>
             </div>
             <div class="col-12">
-              <div class="form-group mt-4">
-                <div class="custom-file">
-                  <input type="file" accept=".txt" id="wordlists-files" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
+              <div class="form-group mt-4 d-flex align-items-center">
+                <div class="custom-file wordlist-file-input">
+                  <input type="file" accept=".txt" id="wordlists-files" @click="resetInputFile" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
                   <label v-if="loadedFileName === ''" class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add {{this.getWordListEnumByType.description }} Files</label>
                   <label v-else class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">{{loadedFileName}}</label>
                 </div>
+                <SpinnerCircle addCss="blue-text spinner-circle-size ml-3" :show="isBackgroundProcessRunning"/>
               </div>
             </div>
             <div class="col-12">
@@ -81,18 +82,21 @@ import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import WordlistFileContentEdition from '@/components/Agent/WordlistFileContentEdition'
 import TrashCanIco from '@/components/Icons/TrashCanIco'
+import SpinnerCircle from '@/components/General/SpinnerCircle.vue'
 export default {
   name: 'WordList',
   components: {
     WordlistFileContentEdition,
-    TrashCanIco
+    TrashCanIco,
+    SpinnerCircle
   },
   data: function () {
     return {
       selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id,
       loadedFileName: '',
       selectedIdWordlist: -1,
-      selectedFileName: ''
+      selectedFileName: '',
+      isBackgroundProcessRunning: false
     }
   },
   mixins: [TargetMixin],
@@ -185,6 +189,7 @@ export default {
       const reader = new FileReader()
       const self = this
       reader.onload = function () {
+        self.isBackgroundProcessRunning = true
         self.loadedFileName = textfile.name
         const wordlistFormData = new FormData()
         wordlistFormData.append('file', textfile)
@@ -201,6 +206,7 @@ export default {
             }
             self.addWordListItem(wordListItem)
           }
+          self.isBackgroundProcessRunning = false
         })
       }
       reader.readAsText(textfile)
@@ -272,6 +278,9 @@ export default {
     },
     enableTooltips () {
       jQuery('[data-toggle="tooltip"]').tooltip()
+    },
+    resetInputFile (e) {
+      e.target.value = null
     }
   }
 }
@@ -368,5 +377,12 @@ button.wordlist-download-btn{
 }
 .icons-wordlistitems-margin{
   margin: 0.375rem 0.75rem;
+}
+.wordlist-file-input{
+  width: 95%
+}
+.spinner-circle-size{
+  height: 20px;
+  width: 20px;
 }
 </style>
