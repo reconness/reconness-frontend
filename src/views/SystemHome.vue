@@ -69,7 +69,7 @@
                                   </div>
                                 </div>
                                 <div class="col-lg-5">
-                                  <button type="submit" class="btn button-clolour rounded btn-block height-40px" @click="addReference">Add</button></div>
+                                  <button :disabled="areReferentsInputInvalid" type="submit" class="btn button-clolour rounded btn-block height-40px add-submit-btn" @click="addReference">Add</button></div>
                                 </div><!--./col-lg-5-->
                               </div><!--./row -->
                             </div><!--./col-lg-6 -->
@@ -141,7 +141,10 @@ export default {
   computed: {
     ...mapState('auth', ['authentication_token']),
     ...mapState('referent', ['resources']),
-    ...mapState('general', ['notificationMessageActionSelected'])
+    ...mapState('general', ['notificationMessageActionSelected']),
+    areReferentsInputInvalid () {
+      return (this.validators.url.name || this.validators.blank.name || this.resource.categories.length === 0)
+    }
   },
   watch: {
     resource: {
@@ -332,6 +335,12 @@ blockquote {
 }
 .reference-text-color{
   color: #007bff;
+}
+.add-submit-btn:disabled{
+  color: #a9a9a9
+}
+.target-details-trashcan:hover{
+  fill: #FF4545
 }
 
 @media (min-width: 2560px) {

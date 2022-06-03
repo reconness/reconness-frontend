@@ -26,12 +26,13 @@
               <span @click="setDnsResolverSelected" class="pills-border-gray p-2 ml-4 rounded cursor-pointer" :class="{'box-shadow': isDnsResolverSelected, 'background-color-white': isDnsResolverSelected}">DNS Resolvers</span>
             </div>
             <div class="col-12">
-              <div class="form-group mt-4">
-                <div class="custom-file">
-                  <input type="file" accept=".txt" id="wordlists-files" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
+              <div class="form-group mt-4 d-flex align-items-center">
+                <div class="custom-file wordlist-file-input">
+                  <input type="file" accept=".txt" id="wordlists-files" @click="resetInputFile" @change="getFileMetadata" :placeholder="'Add ' + this.getWordListEnumByType.description + ' Files'"/>
                   <label v-if="loadedFileName === ''" class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">Add {{this.getWordListEnumByType.description }} Files</label>
                   <label v-else class="agent-mini-color-gray wordlists-files-label ligth-gray-background custom-file-label" for="wordlists-files">{{loadedFileName}}</label>
                 </div>
+                <SpinnerCircle addCss="blue-text spinner-circle-size ml-3" :show="isBackgroundProcessRunning"/>
               </div>
             </div>
             <div class="col-12">
@@ -50,12 +51,14 @@
                   <div class="col-1"><span class="text-wrap break-word">{{this.niceBytes(wordlistItem.size)}}</span></div>
                   <div class="col-6"><span class="text-break break-word">{{wordlistItem.path}}</span></div>
                   <div class="col-2">
-                    <div class="d-flex justify-content-between">
-                      <button @click="downloadWordlist" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Download</button>
-                      <button @click="removeWordList" type="button" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="wordlist-btn-size red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
-                    </div>
-                    <div v-if="isWordListFileSizeGreaterThan(parseInt(wordlistItem.size))" class="d-flex">
-                      <button type="button" @click="openWordListFileContent" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" class="mt-1 wordlist-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
+                    <div>
+                      <span title="Download" data-toggle="tooltip" data-placement="bottom" class="blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">download</span>
+                      <span @click="openWordListFileContentAndUpdateStatePath" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename">
+                        <span v-if="isWordListFileSizeGreaterThan(parseInt(wordlistItem.size))" title="Edit" data-toggle="tooltip" data-placement="bottom" class="m-1 blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">edit</span>
+                      </span>
+                      <span title="Delete" data-toggle="tooltip" data-placement="bottom" class="m-1 border-icos-border trash-btn" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" @click="removeWordList">
+                        <TrashCanIco class="icons-wordlistitems-margin fill-with-red cursor-pointer trash-size"/>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -78,17 +81,22 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import jQuery from 'jquery'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import WordlistFileContentEdition from '@/components/Agent/WordlistFileContentEdition'
+import TrashCanIco from '@/components/Icons/TrashCanIco'
+import SpinnerCircle from '@/components/General/SpinnerCircle.vue'
 export default {
   name: 'WordList',
   components: {
-    WordlistFileContentEdition
+    WordlistFileContentEdition,
+    TrashCanIco,
+    SpinnerCircle
   },
   data: function () {
     return {
       selectedPill: this.$wordlistType.SUBDOMAIN_ENUM.id,
       loadedFileName: '',
       selectedIdWordlist: -1,
-      selectedFileName: ''
+      selectedFileName: '',
+      isBackgroundProcessRunning: false
     }
   },
   mixins: [TargetMixin],
@@ -136,13 +144,21 @@ export default {
           }
         })
       }
+    },
+    getWordListByType: {
+      handler: function () {
+        this.$nextTick(() => {
+          this.enableTooltips()
+        })
+      },
+      deep: true
     }
   },
   mounted () {
     this.loadWordlist()
   },
   methods: {
-    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem', 'updateSelectedWordsContent']),
+    ...mapMutations('wordlist', ['removeWordListItem', 'addWordListItem', 'updateSelectedWordsContent', 'updateSelectedWordListPath']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
     ...mapActions('wordlist', ['loadWordlist', 'uploadWordListFile', 'removeWordListFromServer', 'downloadWordListFile', 'getWordListFileContent']),
     resetLoadedFileName () {
@@ -173,6 +189,7 @@ export default {
       const reader = new FileReader()
       const self = this
       reader.onload = function () {
+        self.isBackgroundProcessRunning = true
         self.loadedFileName = textfile.name
         const wordlistFormData = new FormData()
         wordlistFormData.append('file', textfile)
@@ -189,6 +206,7 @@ export default {
             }
             self.addWordListItem(wordListItem)
           }
+          self.isBackgroundProcessRunning = false
         })
       }
       reader.readAsText(textfile)
@@ -241,6 +259,11 @@ export default {
         fileLink.click()
       })
     },
+    openWordListFileContentAndUpdateStatePath (e) {
+      this.openWordListFileContent(e)
+      const wordlistId = parseInt(e.currentTarget.getAttribute('data-id'))
+      this.updateSelectedWordListPath(wordlistId)
+    },
     openWordListFileContent (e) {
       jQuery('#wordlistModal').modal('hide')
       jQuery('#wordlist-file-content-edition').modal('hide')
@@ -252,6 +275,12 @@ export default {
     },
     isWordListFileSizeGreaterThan (valueInBytes) {
       return valueInBytes < 5000000
+    },
+    enableTooltips () {
+      jQuery('[data-toggle="tooltip"]').tooltip()
+    },
+    resetInputFile (e) {
+      e.target.value = null
     }
   }
 }
@@ -325,5 +354,35 @@ label.wordlists-files-label{
 }
 button.wordlist-download-btn{
   padding: unset !important
+}
+.border-icos-border{
+  border: 1px solid #F1F3F5;
+}
+.trash-btn{
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.icons-wordlistitems-margin{
+  margin: 0.375rem 0.75rem;
+}
+.wordlist-file-input{
+  width: 95%
+}
+.spinner-circle-size{
+  height: 20px;
+  width: 20px;
 }
 </style>
