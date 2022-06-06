@@ -15,12 +15,13 @@
               <div class="user-management-content-body mt-3 mx-5">
                   <div class="row">
                       <div class="col-12">
-                          <div class="form-group">
-                              <label class="user-logs-label-select font-weight-medium font-size-14px">Log files</label>
-                              <select class="form-control" @change="getLogData" v-model="logName">
+                          <div class="form-group d-flex align-items-center">
+                              <label class="user-logs-label-select font-weight-medium font-size-14px mr-1">Log files</label>
+                              <select class="form-control logs-files-management-select" @change="getLogData" v-model="logName">
                                 <option value="" disabled hidden selected>Please select an option</option>
                                 <option v-for="log of logs" :value="log" :key="log">{{log}}</option>
                               </select>
+                              <SpinnerCircle addCss="blue-text spinner-circle-size ml-3" :show="isBackgroundProcessRunning"/>
                           </div>
                       </div>
                       <div class="col-12">
@@ -39,15 +40,18 @@
 import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import SpinnerCircle from '@/components/General/SpinnerCircle.vue'
 export default {
   name: 'LogsFilesManagement',
   components: {
-    UserManagementHeader
+    UserManagementHeader,
+    SpinnerCircle
   },
   data () {
     return {
       logText: '',
-      logName: ''
+      logName: '',
+      isBackgroundProcessRunning: false
     }
   },
   mixins: [TargetMixin],
@@ -82,12 +86,14 @@ export default {
     ...mapMutations('user', ['removeUserLogByName']),
     ...mapActions('logfile', ['cleanLogInfoByNameFromServer', 'getLogInfoByNameFromServer', 'loadLogsNames']),
     getLogData: function () {
+      this.isBackgroundProcessRunning = true
       this.getLogInfoByNameFromServer(this.logName).then(response => {
         if (response.status) {
           this.logText = response.message
         } else {
           this.logText = ''
         }
+        this.isBackgroundProcessRunning = false
       })
     },
     updateNotificationMessage: function () {
@@ -163,6 +169,13 @@ textarea, select{
 .user-logs-cancel-btn{
   width: 77px;
   height: 36px;
+}
+.spinner-circle-size{
+  height: 20px;
+  width: 20px;
+}
+.logs-files-management-select{
+  width: 90%
 }
 
 </style>

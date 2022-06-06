@@ -48,8 +48,11 @@
                     <div class="col-12" v-if="validators.url.repository && wereWrittenInput">
                       <span :class="{invalid: validators.url.repository}">The specified url is not valid</span>
                     </div>
-                        <div class="col-12 target-chips">
-                          <Chips placeholder="Categories" v-model="agent.categories" :allowDuplicate="false" :addOnBlur="true" id="chips_el" :separator="','"/>
+                        <div class="col-12 target-chips position-relative">
+                          <Chips placeholder="Categories" v-model="agent.categories" :allowDuplicate="false" :addOnBlur="true" id="chips_el_agent" :separator="','" @keyup="getData(); isCategoriesMenuClosed=false"/>
+                          <div v-click-outside="closeMenu" class="dropdown-menu" v-if="search_data.length && !isCategoriesMenuClosed">
+                            <button class="dropdown-item" v-for="item in search_data" :key="item" @click="getName(item)">{{ item }}</button>
+                          </div>
                         </div><!-- /.col-12 -->
                         <div class="col-12">
                           <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.command" @keyup="enableValidationMessageCommand" class="ligth-gray-background form-control zero-borders  mt-1" placeholder="Command">
@@ -341,13 +344,15 @@ export default {
       wereWrittenInput: false,
       configurationFileContent: '',
       loadedNewConfigFile: false,
-      configurationFileFormData: null
+      configurationFileFormData: null,
+      search_data: [],
+      isCategoriesMenuClosed: false
     }
   },
   mixins: [TargetMixin],
   computed: {
     ...mapGetters('user', ['getLoggedUserData']),
-    ...mapState('agent', ['configFilePath']),
+    ...mapState('agent', ['configFilePath', 'agentListStore']),
     isValid () {
       if (this.agent.name !== '' &&
       this.agent.repository !== '' &&
@@ -738,6 +743,30 @@ export default {
         self.configurationFileFormData = new FormData()
         self.configurationFileFormData.append('file', textfile)
       }
+    },
+    getData () {
+      const filterItem = document.getElementById('chips_el_agent').value
+      this.search_data = this.getUniqueCategories().filter(item => filterItem && item.includes(filterItem))
+    },
+    getName: function (name) {
+      this.agent.categories.pop()
+      this.agent.categories.push(name)
+      this.search_data = []
+    },
+    getUniqueCategories () {
+      const mergedCategories = []
+      this.agentListStore.forEach(agent => {
+        agent.categories.forEach(category => {
+          mergedCategories.push(category)
+        })
+      })
+      this.agent.categories.forEach(element => {
+        mergedCategories.push(element)
+      })
+      return [...new Set(mergedCategories)]
+    },
+    closeMenu () {
+      this.isCategoriesMenuClosed = true
     }
   }
 }
@@ -1040,6 +1069,11 @@ textarea {
 
 .line-height-1-7{
   line-height: 1.7rem;
+}
+
+.dropdown-menu{
+  display: inherit !important;
+  width: 100%;
 }
 
 @media (max-width: 480px) {
