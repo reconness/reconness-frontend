@@ -492,6 +492,20 @@ export default ({
         }
       })
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+    },
+    getTargetNotesFromServer ({ state, getters }, targetName) {
+      if (state.authentication_token !== '') {
+        return axios.get('/notes/target/' + targetName)
+          .then(function (response) {
+            const targetNotesMapped = getters.mapTargetNotesFromServerToLocal(response.data)
+            const targetEntity = getters.getTargetByName(targetName)
+            targetEntity.messages = targetNotesMapped
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
     }
   },
   modules: {
@@ -832,7 +846,7 @@ export default ({
         primaryColor: target.primaryColor ? target.primaryColor : '#737be5',
         secondaryColor: target.secondaryColor ? target.secondaryColor : '#7159d3',
         date: new Date(),
-        rootDomains: getters.mapRootDomainsFromServerToLocal(target.rootDomains), // getters.mapRootDomains(target.rootDomains),
+        rootDomains: getters.mapRootDomainsFromServerToLocal(target.rootDomains),
         isPrivateProgram: target.isPrivate,
         inScope: target.inScope,
         outScope: target.outOfScope,
@@ -868,6 +882,23 @@ export default ({
         mappedRootDomains.push(newRootDomain)
       })
       return mappedRootDomains
+    },
+    mapTargetNotesFromServerToLocal: (state, getters) => (targetNotes) => {
+      const mappedTargetNotes = []
+      targetNotes.forEach(note => {
+        const mappedNote = getters.mapSingleTargetNoteFromServerToLocal(note)
+        mappedTargetNotes.push(mappedNote)
+      })
+      return mappedTargetNotes
+    },
+    mapSingleTargetNoteFromServerToLocal: (state) => (serverNote) => {
+      const localNote = {
+        id: serverNote.id,
+        message: serverNote.comment,
+        sendDate: new Date(),
+        sender: serverNote.createdBy
+      }
+      return localNote
     }
   }
 })
