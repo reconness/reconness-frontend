@@ -18,16 +18,17 @@
 </template>
 <script>
 import jQuery from 'jquery'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'NoteConfirmation',
   computed: {
     ...mapState('target', ['idNote'])
   },
   methods: {
+    ...mapActions('target', ['removeTargetNoteFromServer']),
     removeNoteFn: function () {
       if (this.$route.name === 'TargetDetail') {
-        this.removeTargetNote(this.$route.params.targetName)
+        this.removeTargetNoteFromServer(this.$route.params.targetName)
       } else if (this.$route.name === 'RootDomainDetails') {
         this.removeRootDomainNote({
           targetName: this.$route.params.targetName,
@@ -43,7 +44,7 @@ export default {
       jQuery('#note-confirmation-modal').modal('hide')
     },
     setSelectedNote (e) {
-      this.$store.commit('agent/setIdNote', -1)
+      this.$store.commit('agent/setIdNote', '')
     },
     ...mapMutations('target', ['setIdNote', 'removeTargetNote', 'removeRootDomainNote', 'removeSubDomainNote'])
   }

@@ -9,7 +9,7 @@ export default ({
     check: false,
     targetIdList: [],
     colorDelete: '#000000',
-    idNote: -1,
+    idNote: '',
     loggedUser: {
       name: 'John Doe',
       email: 'johndoe@gmail.com',
@@ -183,7 +183,7 @@ export default ({
       return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
     },
     setIdNote (state, id) {
-      state.idNote = parseInt(id)
+      state.idNote = id
     },
     removeTargetNote (state, targetName) {
       const target = state.targetListStore.find(item => item.name === targetName)
@@ -193,20 +193,21 @@ export default ({
     removeRootDomainNote (state, params) {
       const target = state.targetListStore.find(item => item.name === params.targetName)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
-      const noteIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
+      const noteIndex = rootdomain.messages.findIndex(message => message.id === state.idNote)
       rootdomain.messages.splice(noteIndex, 1)
     },
     removeSubDomainNote (state, params) {
       const target = state.targetListStore.find(item => item.name === params.targetName)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
       const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.subdomainName === params.subdomainName)
-      const noteIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
+      const noteIndex = subdomain.messages.findIndex(message => message.id === state.idNote)
       subdomain.messages.splice(noteIndex, 1)
     },
-    sendTargetNote (state, messageInfo, rootGetters) {
+    sendTargetNote (state, messageInfo) {
       const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
+      const noteIncrementedId = state.idNote++
       const note = {
-        id: state.idNote++,
+        id: noteIncrementedId.toString(),
         message: messageInfo.message,
         sendDate: new Date(),
         sender: messageInfo.username
@@ -500,6 +501,18 @@ export default ({
             const targetNotesMapped = getters.mapTargetNotesFromServerToLocal(response.data)
             const targetEntity = getters.getTargetByName(targetName)
             targetEntity.messages = targetNotesMapped
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
+    removeTargetNoteFromServer ({ state, commit }, targetName) {
+      if (state.authentication_token !== '') {
+        return axios.delete('/notes/' + state.idNote + '/target/' + targetName)
+          .then(function (response) {
+            commit('removeTargetNote', targetName)
             return { status: true, message: '' }
           })
           .catch(function (error) {
