@@ -205,9 +205,8 @@ export default ({
     },
     sendTargetNote (state, messageInfo) {
       const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
-      const noteIncrementedId = state.idNote++
       const note = {
-        id: noteIncrementedId.toString(),
+        id: messageInfo.id,
         message: messageInfo.message,
         sendDate: new Date(),
         sender: messageInfo.username
@@ -517,6 +516,20 @@ export default ({
           })
           .catch(function (error) {
             return { status: false, message: error.response }
+          })
+      }
+    },
+    sendNoteToServer ({ state, commit }, noteData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/notes/target/' + noteData.targetName, {
+          comment: noteData.message
+        }).then(function (response) {
+          noteData.id = response.data.id
+          commit('sendTargetNote', noteData)
+          return { status: true, message: '' }
+        })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
           })
       }
     }
