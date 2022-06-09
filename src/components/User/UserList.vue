@@ -45,7 +45,7 @@
                       </td>
                       <td class="border-top-0 d-flex justify-content-between user-management-action-width">
                         <button @click="editUser" data-toggle="modal" data-target="#user-form-modal" :data-id="user.id" type="button" class="font-size-14px user-management-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
-                        <button @click="removeSelectedUser($event, this.$entityTypeData.USER.id)" type="button" :data-name="user.username" :data-id="user.id" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
+                        <button @click="removeSelectedUser($event, this.$entityTypeData.USER.id)" :disabled="isCurrentUserOwner(user.id, user.role)" type="button" :data-name="user.username" :data-id="user.id" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                       </td>
                     </tr>
                   </tbody>
@@ -100,6 +100,12 @@ export default {
         jQuery('#message-box-modal').modal()
         this.prepareToDelete(event, this.$entityTypeData.USER.id)
       }
+    },
+    isCurrentUserOwner (userId, role) {
+      if (this.getLoggedUserData.id === userId && this.getLoggedUserData.role === this.roles.OWNER.id) {
+        return true
+      }
+      return false
     }
   }
 }
