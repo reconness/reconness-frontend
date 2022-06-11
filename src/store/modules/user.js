@@ -5,6 +5,7 @@ export default ({
   state: {
     users: [],
     loggedUserId: '1',
+    loggedUserPassword: '',
     showLogsSection: false,
     showUsersSection: true,
     showSettingsSection: false,
@@ -17,6 +18,9 @@ export default ({
   mutations: {
     updateLoggedUserName (state, username) {
       state.loggedUsername = username
+    },
+    updateLoggedUserPassword (state, password) {
+      state.loggedUserPassword = password
     },
     goToLogsSection (state) {
       state.showLogsSection = true
@@ -38,8 +42,8 @@ export default ({
     },
     updateUserEntity (state, user) {
       const item = state.users.find(item => item.id === user.id)
-      if (user.password.match(/^ *$/) !== null) {
-        user.password = item.password
+      if (user.newPassword.match(/^ *$/) !== null) {
+        user.newPassword = item.newPassword
       }
       Object.assign(item, user)
     },
@@ -59,7 +63,7 @@ export default ({
       user.role = idUserAndIdRole.idRole
     },
     updateUsers (state, users) {
-      state.users.splice(1, state.users.length)
+      state.users.splice(0, state.users.length)
       users.forEach(user => {
         state.users.push(user)
       })
@@ -212,9 +216,9 @@ export default ({
         firstName: user.firstname,
         lastName: user.lastname,
         role: getters.getRoleById(user.role).shortName,
-        currentPassword: user.oldPassword,
-        newPassword: user.password,
-        confirmationPassword: user.password,
+        currentPassword: user.currentPassword,
+        newPassword: user.newPassword,
+        confirmationPassword: user.confirmationPassword,
         image: user.profilePicture
       }
       if (user.role === getters.roles.OWNER.id) {
@@ -248,8 +252,9 @@ export default ({
         firstname: user.firstName === null ? '' : user.firstName,
         lastname: user.lastName === null ? '' : user.lastName,
         email: user.email === null ? '' : user.email,
-        password: user.currentPassword === null ? '' : user.currentPassword,
-        oldPassword: '',
+        currentPassword: user.currentPassword,
+        newPassword: '',
+        confirmationPassword: '',
         phone: 0,
         role: role,
         profilePicture: user.image === null ? '' : user.image,

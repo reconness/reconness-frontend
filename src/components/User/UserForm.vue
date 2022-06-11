@@ -11,7 +11,7 @@
                       <div class="col-8">
                         <div class="d-flex flex-column">
                           <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
-                            <input v-if="showNameInput" v-model="user.username" :placeholder="user.username" @keyup="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
+                            <input v-if="showNameInput" :disabled="!canEditTheField" v-model="user.username" :placeholder="user.username" @keyup="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
                             <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
@@ -35,26 +35,26 @@
                   <div class="col-12 col-sm-8">
                     <div class="form-group">
                       <label for="user-form-email" class="font-weight-regular black-text font-size-16px">Email</label>
-                      <input id="user-form-email" @blur="updateEmailWasWritten" @change="updateEmailWasWritten" v-model="user.email" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input :disabled="!canEditTheField" id="user-form-email" @blur="updateEmailWasWritten" @change="updateEmailWasWritten" v-model="user.email" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                           <span v-if="(isEmailInBlank && this.emailWasWritten) || (isEmailInBlank && userTryToAdd)" :class="{invalid: isEmailInBlank}" class="mt-2">The field email is required</span>
                           <span v-if="(isInValidEmail && this.emailWasWritten) || (isInValidEmail && userTryToAdd)" :class="{invalid: isInValidEmail}" class="mt-2">The specified email is not correct</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-firstname" class="font-weight-regular black-text font-size-16px">First Name</label>
-                      <input id="user-form-firstname" @blur="updateFirstNameWasWritten" @change="updateFirstNameWasWritten" v-model="user.firstname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input :disabled="!canEditTheField" id="user-form-firstname" @blur="updateFirstNameWasWritten" @change="updateFirstNameWasWritten" v-model="user.firstname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                     </div>
                     <div class="form-group">
                       <label for="user-form-lastname" class="font-weight-regular black-text font-size-16px">Last Name</label>
-                      <input id="user-form-lastname" @blur="updateLastNameWasWritten" @change="updateLastNameWasWritten" v-model="user.lastname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input :disabled="!canEditTheField" id="user-form-lastname" @blur="updateLastNameWasWritten" @change="updateLastNameWasWritten" v-model="user.lastname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                     </div>
                     <div class="form-group">
                       <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
-                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordData" v-model="user.password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordData" v-model="user.newPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                           <span v-if="isPasswordInBlank && !editable" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-confirm_password" class="font-weight-regular black-text font-size-16px">Confirmation Password</label>
-                      <input type="password" id="user-form-confirm_password" v-model="confirm_password" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input type="password" id="user-form-confirm_password" v-model="user.confirmationPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                       <span v-if="!isConfirmPasswordEqualToPassword" :class="{invalid: !isConfirmPasswordEqualToPassword}" class="mt-2">The field confirm password must be equal to the password field</span>
                     </div>
                   </div><!-- /.col-12 col-sm-8 -->
@@ -75,15 +75,15 @@
                             </div>
                             <div class="userform-role-title">
                               <div class="form-group ml-3user mt-2">
-                                <div v-if="isLoggedUserOwner" class="d-none ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" @click="userSelectARole" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
+                                <div class="d-none ml-2 custom-control custom-radio form-check">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" @click="userSelectARole" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
                                     <span class="material-icons blue-text">manage_accounts</span>
                                     Owner
                                   </label>
                                 </div>
-                                <div v-if="isLoggedUserOwner || isLoggedUserAdmin" class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                <div class="ml-2 custom-control custom-radio form-check">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
                                     Administrator
@@ -128,8 +128,9 @@ export default {
         firstname: '',
         lastname: '',
         email: '',
-        password: '',
-        oldPassword: '',
+        currentPassword: '',
+        newPassword: '',
+        confirmationPassword: '',
         phone: 0,
         role: -1,
         profilePicture: '',
@@ -151,7 +152,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile', 'errorUpdatingOwnerRole']),
+    ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile', 'errorUpdatingOwnerRole', 'loggedUserPassword']),
     ...mapState('general', ['notificationMessageActionSelected']),
     ...mapGetters('user', ['getUserById', 'getLoggedUserData', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'isUsernameAlreadyUsed']),
     isUserNameInBlank () {
@@ -176,10 +177,10 @@ export default {
       return this.$validateIsBlank(this.user.phone) && this.phoneWasWritten
     },
     isPasswordInBlank () {
-      return this.$validateIsBlank(this.user.password) && this.passwordWasWritten
+      return this.$validateIsBlank(this.user.newPassword) && this.passwordWasWritten
     },
     isConfirmPasswordEqualToPassword () {
-      return this.user.password === this.confirm_password
+      return this.user.newPassword === this.user.confirmationPassword
     },
     isUserFormInvalid () {
       return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsedAndIsDifferentFromSaved
@@ -199,9 +200,9 @@ export default {
     isRoleSelected () {
       return this.user.role >= 1
     },
-    editedUserIsNotSameLoggedIn () {
+    editedUserSameLoggedIn () {
       if (this.getLoggedUserData) {
-        return this.getLoggedUserData.id !== this.user.id
+        return this.getLoggedUserData.id === this.user.id
       }
       return false
     },
@@ -216,6 +217,15 @@ export default {
     },
     isUsernameAlreadyUsedAndIsDifferentFromSaved () {
       return this.isUsernameAlreadyUsed(this.user.username) && this.userNameWasWritten && this.oldUserName !== this.user.username
+    },
+    canEditTheField () {
+      if ((this.editedUserSameLoggedIn || this.isLoggedUserOwner) && this.editable) {
+        return true
+      }
+      if (!this.editable && (this.isLoggedUserOwner || this.isLoggedUserAdmin)) {
+        return true
+      }
+      return false
     }
   },
   watch: {
@@ -242,6 +252,8 @@ export default {
         this.user.role = selectedUser.role
         this.user.profilePicture = selectedUser.profilePicture
         this.user.id = selectedUser.id
+        // this.user.newPassword = selectedUser.newPassword
+        this.user.currentPassword = this.loggedUserPassword
         this.editable = true
         this.oldUserName = selectedUser.username
       }
@@ -282,13 +294,14 @@ export default {
     },
     updatePasswordData () {
       this.updatePasswordWasWritten()
-      this.user.oldPassword = this.user.password
     },
     switchNameInput () {
       if (!this.editable) {
         this.user.username = ''
       }
-      this.showNameInput = !this.showNameInput
+      if (this.canEditTheField) {
+        this.showNameInput = !this.showNameInput
+      }
     },
     onFileChange (e) {
       const files = e.target.files || e.dataTransfer.files
@@ -332,7 +345,9 @@ export default {
         firstname: '',
         lastname: '',
         email: '',
-        password: '',
+        newPassword: '',
+        confirmationPassword: '',
+        currentPassword: '',
         phone: 0,
         role: -1,
         profilePicture: '',
