@@ -9,7 +9,7 @@ export default ({
     check: false,
     targetIdList: [],
     colorDelete: '#000000',
-    idNote: -1,
+    idNote: '',
     loggedUser: {
       name: 'John Doe',
       email: 'johndoe@gmail.com',
@@ -183,7 +183,7 @@ export default ({
       return (state.targetListStore.find(item => item.id === id)).rootDomains.sort(compare)
     },
     setIdNote (state, id) {
-      state.idNote = parseInt(id)
+      state.idNote = id
     },
     removeTargetNote (state, targetName) {
       const target = state.targetListStore.find(item => item.name === targetName)
@@ -193,20 +193,20 @@ export default ({
     removeRootDomainNote (state, params) {
       const target = state.targetListStore.find(item => item.name === params.targetName)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
-      const noteIndex = rootdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
+      const noteIndex = rootdomain.messages.findIndex(message => message.id === state.idNote)
       rootdomain.messages.splice(noteIndex, 1)
     },
     removeSubDomainNote (state, params) {
       const target = state.targetListStore.find(item => item.name === params.targetName)
       const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === params.rootdomainName)
       const subdomain = rootdomain.subdomain.find(subdomainItem => subdomainItem.subdomainName === params.subdomainName)
-      const noteIndex = subdomain.messages.findIndex(message => message.id === parseInt(state.idNote))
+      const noteIndex = subdomain.messages.findIndex(message => message.id === state.idNote)
       subdomain.messages.splice(noteIndex, 1)
     },
-    sendTargetNote (state, messageInfo, rootGetters) {
+    sendTargetNote (state, messageInfo) {
       const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
       const note = {
-        id: state.idNote++,
+        id: messageInfo.id,
         message: messageInfo.message,
         sendDate: new Date(),
         sender: messageInfo.username
@@ -492,6 +492,46 @@ export default ({
         }
       })
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+    },
+    getTargetNotesFromServer ({ state, getters }, targetName) {
+      if (state.authentication_token !== '') {
+        return axios.get('/notes/target/' + targetName)
+          .then(function (response) {
+            const targetNotesMapped = getters.mapTargetNotesFromServerToLocal(response.data)
+            const targetEntity = getters.getTargetByName(targetName)
+            targetEntity.messages = targetNotesMapped
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
+    removeTargetNoteFromServer ({ state, commit }, targetName) {
+      if (state.authentication_token !== '') {
+        return axios.delete('/notes/' + state.idNote + '/target/' + targetName)
+          .then(function (response) {
+            commit('removeTargetNote', targetName)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
+    sendNoteToServer ({ state, commit }, noteData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/notes/target/' + noteData.targetName, {
+          comment: noteData.message
+        }).then(function (response) {
+          noteData.id = response.data.id
+          commit('sendTargetNote', noteData)
+          return { status: true, message: '' }
+        })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
     }
   },
   modules: {
@@ -832,7 +872,7 @@ export default ({
         primaryColor: target.primaryColor ? target.primaryColor : '#737be5',
         secondaryColor: target.secondaryColor ? target.secondaryColor : '#7159d3',
         date: new Date(),
-        rootDomains: getters.mapRootDomainsFromServerToLocal(target.rootDomains), // getters.mapRootDomains(target.rootDomains),
+        rootDomains: getters.mapRootDomainsFromServerToLocal(target.rootDomains),
         isPrivateProgram: target.isPrivate,
         inScope: target.inScope,
         outScope: target.outOfScope,
@@ -868,6 +908,23 @@ export default ({
         mappedRootDomains.push(newRootDomain)
       })
       return mappedRootDomains
+    },
+    mapTargetNotesFromServerToLocal: (state, getters) => (targetNotes) => {
+      const mappedTargetNotes = []
+      targetNotes.forEach(note => {
+        const mappedNote = getters.mapSingleTargetNoteFromServerToLocal(note)
+        mappedTargetNotes.push(mappedNote)
+      })
+      return mappedTargetNotes
+    },
+    mapSingleTargetNoteFromServerToLocal: (state) => (serverNote) => {
+      const localNote = {
+        id: serverNote.id,
+        message: serverNote.comment,
+        sendDate: new Date(),
+        sender: serverNote.createdBy
+      }
+      return localNote
     }
   }
 })

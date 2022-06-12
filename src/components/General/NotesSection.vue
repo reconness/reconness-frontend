@@ -63,7 +63,7 @@
 </template>
 <script>
 import CommentIco from '@/components/Icons/CommentIco.vue'
-import { mapMutations, mapGetters, mapState } from 'vuex'
+import { mapMutations, mapGetters, mapState, mapActions } from 'vuex'
 export default {
   name: 'NotesSection',
   components: {
@@ -99,12 +99,15 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsNotesSectionOpened']),
+    ...mapActions('target', ['sendNoteToServer']),
+    ...mapMutations('target', ['sendTargetNote', 'setIdNote', 'sendRootDomainNote', 'sendSubDomainNote']),
     sendNotes: function () {
       if (this.$route.name === 'TargetDetail') {
-        this.sendTargetNote({
+        this.sendNoteToServer({
           targetName: this.$route.params.targetName,
           message: this.note,
-          username: this.loggedUsername
+          username: this.loggedUsername,
+          id: ''
         })
       } else if (this.$route.name === 'RootDomainDetails') {
         this.sendRootDomainNote({
@@ -136,7 +139,6 @@ export default {
         this.setIsNotesSectionOpened(false)
       }
     },
-    ...mapMutations('target', ['sendTargetNote', 'setIdNote', 'sendRootDomainNote', 'sendSubDomainNote']),
     orderByUserName: function () {
       this.order_by_date = false
       this.changeArrowDirection()

@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['goToForgotPasswordForm', 'updateIsUserLogged']),
-    ...mapMutations('user', ['updateLoggedUserName']),
+    ...mapMutations('user', ['updateLoggedUserName', 'updateLoggedUserPassword']),
     ...mapActions('auth', ['updateUserLogFlagAfterSeconds']),
     ...mapActions('auth', ['login']),
     ...mapActions('user', ['loadUsers']),
@@ -87,6 +87,7 @@ export default {
         }).then(response => {
           this.isBackgroundProcessRunning = false
           this.updateLoggedUserName(response.message.userName)
+          this.updateLoggedUserPassword(this.user.password)
           if (response.status) {
             this.loadUsers().then(response => {
               this.invalidCredentials = false

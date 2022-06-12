@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
 import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
@@ -299,11 +299,13 @@ export default {
     }
     this.setCurrentView(this.$route.name)
     jQuery('[data-toggle="tooltip"]').tooltip()
+    this.getTargetNotesFromServer(this.$route.params.targetName)
   },
   methods: {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['setCurrentView']),
     ...mapMutations('general', ['addEntityToDelete']),
+    ...mapActions('target', ['getTargetNotesFromServer']),
     updateOpenPortsInGraph () {
       this.optionsBar.xaxis.categories = this.getOpenPorts
     },
