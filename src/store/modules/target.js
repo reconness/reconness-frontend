@@ -507,6 +507,25 @@ export default ({
           })
       }
     },
+    removeSingleRootDomainFromServer ({ state, commit, rootState }, targetName) {
+      if (state.authentication_token !== '') {
+        const entity = rootState.general.entitiesToDelete[0]
+        return axios.delete('/rootdomains/deleteSubdomians/' + targetName + '/' + entity.name)
+          .then(function () {
+            const target = state.targetListStore.find(target => target.name === targetName)
+            const rootsIndex = target.rootDomains.findIndex(roots => roots.id === entity.id)
+            if (rootsIndex !== -1) {
+              target.rootDomains.splice(rootsIndex, 1)
+            }
+            rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+            return { status: false, message: error.response }
+          })
+      }
+    },
     removeTargetNoteFromServer ({ state, commit }, targetName) {
       if (state.authentication_token !== '') {
         return axios.delete('/notes/' + state.idNote + '/target/' + targetName)
