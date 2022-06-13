@@ -46,7 +46,7 @@
     </div>
 </template>
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import jQuery from 'jquery'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
@@ -94,6 +94,8 @@ export default {
     })
   },
   methods: {
+    ...mapMutations('target', ['addRootDomain']),
+    ...mapActions('target', ['updateTargetToServer']),
     createRootDomains: function () {
       if (this.isFormValid || !this.enableValidationMessageRootDomainBlankNameManual()) {
         this.rootdomains.push({
@@ -118,11 +120,18 @@ export default {
       }
       if (!this.enableValidationMessageRootDomainBlankNameManual() && !this.enableValidationMessageRootDomainUniqueNameManual() && this.validators.url.rootDomainName.indexOf(true) < 0 && this.validators.exist.rootDomainName.indexOf(true) < 0 && this.validators.blank.rootDomainName.indexOf(true) < 0) {
         const params = {
-          idTarget: this.target.id,
-          rootdomainsItems: this.rootdomains
+          targetId: this.target.id,
+          rootdomainsItems: this.rootdomains,
+          targetName: this.$route.params.targetName
         }
         this.addRootDomain(params)
-        this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
+        this.updateTargetToServer(this.target).then(response => {
+          if (response.status) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
+        })
         this.validators.exist.rootDomainName.length = this.validators.exist.rootDomainName.length + 1
         jQuery('#rootDomainInsertionForm').modal('hide')
         this.resetForm()
@@ -219,7 +228,6 @@ export default {
       this.enableValidationMessageRootDomainUrlName(e)
       this.enableValidationMessageRootDomainBlankName(e)
     },
-    ...mapMutations('target', ['addRootDomain']),
     removeRootDomainName: function (e) {
       const rootdomainIndex = e.currentTarget.getAttribute('data-index')
       if (rootdomainIndex !== 0) {

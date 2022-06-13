@@ -251,7 +251,7 @@ export default ({
       for (let index = 0; index < params.rootdomainsItems.length; index++) {
         params.rootdomainsItems[index].id = state.idRootdomain++
       }
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
+      const target = state.targetListStore.find(item => item.id === params.targetId)
       target.rootDomains = target.rootDomains.concat(params.rootdomainsItems)
     },
     addSelectedList (state, ObjectIn) {
@@ -545,6 +545,20 @@ export default ({
         }).then(function (response) {
           noteData.id = response.data.id
           commit('sendTargetNote', noteData)
+          return { status: true, message: '' }
+        })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    addRootDomainsToServer ({ state, commit, getters }, rootDomainData) {
+      if (state.authentication_token !== '') {
+        const mappedRootDomains = getters.mapRootDomainsListFromLocalToServer(rootDomainData.rootdomainsItems)
+        return axios.put('/targets/' + rootDomainData.targetId, {
+          rootDomains: mappedRootDomains,
+          name: rootDomainData.targetName
+        }).then(function (response) {
           return { status: true, message: '' }
         })
           .catch(function (error) {
