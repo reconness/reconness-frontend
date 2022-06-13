@@ -52,7 +52,7 @@
                   <div class="col-6"><span class="text-break break-word">{{wordlistItem.path}}</span></div>
                   <div class="col-2">
                     <div>
-                      <span title="Download" data-toggle="tooltip" data-placement="bottom" class="blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">download</span>
+                      <span title="Download" data-toggle="tooltip" @click="downloadWordlist" :data-id="wordlistItem.id" :data-name="wordlistItem.filename" data-placement="bottom" class="blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">download</span>
                       <span @click="openWordListFileContentAndUpdateStatePath" data-toggle="modal" data-target="#wordlist-file-content-edition" :data-id="wordlistItem.id" :data-name="wordlistItem.filename">
                         <span v-if="isWordListFileSizeGreaterThan(parseInt(wordlistItem.size))" title="Edit" data-toggle="tooltip" data-placement="bottom" class="m-1 blue-text border-icos-border btn create-agent-buttons-main-action rounded wordlist-download-btn material-icons">edit</span>
                       </span>
