@@ -19,9 +19,6 @@ export default ({
     updateLoggedUserName (state, username) {
       state.loggedUsername = username
     },
-    updateLoggedUserPassword (state, password) {
-      state.loggedUserPassword = password
-    },
     goToLogsSection (state) {
       state.showLogsSection = true
       state.showUsersSection = false
@@ -252,7 +249,7 @@ export default ({
         firstname: user.firstName === null ? '' : user.firstName,
         lastname: user.lastName === null ? '' : user.lastName,
         email: user.email === null ? '' : user.email,
-        currentPassword: user.currentPassword,
+        currentPassword: '',
         newPassword: '',
         confirmationPassword: '',
         phone: 0,
