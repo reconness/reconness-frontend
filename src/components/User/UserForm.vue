@@ -57,7 +57,7 @@
                       <input type="password" id="user-form-confirm_password" v-model="user.confirmationPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                       <span v-if="!isConfirmPasswordEqualToPassword" :class="{invalid: !isConfirmPasswordEqualToPassword}" class="mt-2">The field confirm password must be equal to the password field</span>
                     </div>
-                    <div v-if="previousPasswordsFieldsAreWritten" class="form-group">
+                    <div v-if="previousPasswordsFieldsAreWritten && editedUserSameLoggedIn" class="form-group">
                       <label for="user-form-current-password" class="font-weight-regular black-text font-size-16px">Current Password</label>
                       <input type="password" id="user-form-current-password" v-model="user.currentPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                       <span v-if="isCurrentPasswordInValid" :class="{invalid: isCurrentPasswordInValid}" class="mt-2">The field current password is required</span>
@@ -185,7 +185,7 @@ export default {
       return this.$validateIsBlank(this.user.newPassword) && this.passwordWasWritten
     },
     isCurrentPasswordInValid () {
-      return this.$validateIsBlank(this.user.currentPassword) && this.passwordWasWritten && this.previousPasswordsFieldsAreWritten
+      return this.$validateIsBlank(this.user.currentPassword) && this.passwordWasWritten && this.previousPasswordsFieldsAreWritten && this.editedUserSameLoggedIn
     },
     isConfirmPasswordEqualToPassword () {
       return this.user.newPassword === this.user.confirmationPassword
