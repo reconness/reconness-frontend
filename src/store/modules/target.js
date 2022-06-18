@@ -254,6 +254,10 @@ export default ({
       const target = state.targetListStore.find(item => item.id === params.targetId)
       target.rootDomains = target.rootDomains.concat(params.rootdomainsItems)
     },
+    addSingleRootDomain (state, params) {
+      const target = state.targetListStore.find(item => item.id === params.targetId)
+      target.rootDomains.push(params.rootdomain)
+    },
     addSelectedList (state, ObjectIn) {
       state.elementSelectedList.push(ObjectIn)
     },
@@ -565,6 +569,21 @@ export default ({
             return { status: false, message: error.response.data }
           })
       }
+    },
+    uploadRootDomainFileToServer ({ state, getters, commit }, targetAndRootData) {
+      return axios.post('rootdomains/import/' + targetAndRootData.targetName, targetAndRootData.formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        commit('addSingleRootDomain', {
+          rootdomain: getters.mapSingleRootDomainFromServerToLocal(response.data),
+          targetId: getters.getTargetByName(targetAndRootData.targetName).id
+        })
+        return { status: true, message: '' }
+      }).catch(function (error) {
+        return { status: false, message: error.response.data }
+      })
     }
   },
   modules: {
@@ -831,14 +850,31 @@ export default ({
         newRootDomain = {
           id: rootDomain.id,
           root: rootDomain.name,
-          date: rootDomain.createdAt,
+          date: new Date(),
           subdomain: [],
           messages: [],
           agent: []
         }
+        if (rootDomain.createdAt) {
+          newRootDomain.date = rootDomain.createdAt
+        }
         newRootDomains.push(newRootDomain)
       })
       return newRootDomains
+    },
+    mapSingleRootDomainFromServerToLocal: (state) => (rootDomain) => {
+      const newRootDomain = {
+        id: rootDomain.id,
+        root: rootDomain.name,
+        date: new Date(),
+        subdomain: [],
+        messages: [],
+        agent: []
+      }
+      if (rootDomain.createdAt) {
+        newRootDomain.date = rootDomain.createdAt
+      }
+      return newRootDomain
     },
     isEntityOnListToRemove: ({ state, rootState }) => (idItem) => {
       setTimeout(
