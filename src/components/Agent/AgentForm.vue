@@ -102,17 +102,13 @@
                                 </h3>
                             </div>
                             </div><!-- /.card-header -->
-                            <div class="combo-box-left-padding">
+                            <div class="combo-box-left-padding agent-triggers">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
-                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox6" v-model="agent.skipIfRunBeforeTrigger">
+                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox6">Skip if Run Before</label>
                                 </div>
-                                <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
-                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox5">Run Only if has Http Open</label>
-                                </div>
-                                <div class="form-check text-right more-option-padding">
+                                <div class="form-check text-right triggers-main-area more-option-padding">
                                 <a href="#" @click="showMiddleSection"><span class="form-check-label blue-text agent-regular-font font-weight-light">More Options</span></a>
                                 </div>
                             </div>
@@ -196,15 +192,109 @@
                           <span class="material-icons line-height-1-7 triggers-label-arrow-space">keyboard_arrow_down</span>
                         </a>
                       </div>
-                      <div class="triggers-border-container combo-box-left-padding rounded-corners triggers-more-options-area-size">
+                      <div class="overflow-x-hidden triggers-border-container combo-box-left-padding rounded-corners triggers-more-options-area-size">
                         <div class="form-group triggers-options-space">
-                            <div class="custom-control custom-checkbox form-check">
-                            <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
-                            <label class="opacity-none form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                            <div v-if="isRootDomainTypeSelected" class="row">
+                              <div class="col-6">
+                                <label class="font-weight-medium font-size-14px mr-1">Include/Exclude RegExp RootDomain</label>
+                                <select class="form-control agent-regex-select">
+                                  <option value="" disabled hidden selected>Please select an option</option>
+                                  <option value="include">Include</option>
+                                  <option value="exclude">Exclude</option>
+                                </select>
+                              </div>
+                              <div class="col-6">
+                                <input :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp RootDomain">
+                              </div>
                             </div>
-                            <div class="custom-control custom-checkbox form-check">
-                            <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
-                            <label class="form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox5">Run Only if has Http Open</label>
+                            <div v-else-if="isSubDomainTypeSelected" class="row">
+                              <div class="col-12">
+                                  <div class="form-group">
+                                    <div class="custom-control custom-checkbox form-check">
+                                      <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
+                                      <label class="opacity-none form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox form-check">
+                                      <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
+                                      <label class="form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox5">Run Only if has Http Open</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6">
+                                    <label class="font-weight-medium mr-1">Include/Exclude RegExp SubDomain</label>
+                                    <select class="form-control agent-regex-select">
+                                      <option value="" disabled hidden selected>Please select an option</option>
+                                      <option value="include">Include</option>
+                                      <option value="exclude">Exclude</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp SubDomain">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp Service/Port</label>
+                                  <select class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="include">Include</option>
+                                    <option value="exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp Service/Port">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp IP</label>
+                                  <select class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="include">Include</option>
+                                    <option value="exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp IP">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp Technology</label>
+                                  <select class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="include">Include</option>
+                                    <option value="exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp Technology">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp Label</label>
+                                  <select class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="include">Include</option>
+                                    <option value="exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp Label">
+                                  </div>
+                                  </div>
+                                </div>
                             </div>
                         </div><!-- /.form-group -->
                       </div><!-- /.combo-box-left-padding -->
@@ -307,6 +397,7 @@ export default {
         isSubDomainType: false,
         isAliveTrigger: false,
         isHttpOpenTrigger: false,
+        skipIfRunBeforeTrigger: false,
         categories: [],
         script: '',
         id: -1,
@@ -401,6 +492,15 @@ export default {
         return this.editable && !this.$validateIsBlank(this.agent.configurationFile)
       }
       return ''
+    },
+    isTargetTypeSelected () {
+      return this.agent.type === this.$agentType.TARGET
+    },
+    isRootDomainTypeSelected () {
+      return this.agent.type === this.$agentType.ROOTDOMAIN
+    },
+    isSubDomainTypeSelected () {
+      return this.agent.type === this.$agentType.SUBDOMAIN
     }
   },
   watch: {
@@ -772,6 +872,15 @@ export default {
 }
 </script>
 <style>
+.w-95{
+  width: 95%;
+}
+.mt-2rem{
+  margin-top: 2rem;
+}
+.mt-2point5rem{
+  margin-top: 2.5rem;
+}
 .agent-upload-config label{
   width: 50%;
   border: 1px solid #F1F3F5;
@@ -879,12 +988,16 @@ div.modal-content.agent-containers{
         padding-left: 19px;
     }
 
+    .agent-triggers{
+      height: 105px;
+    }
+
     .combo-box-right-padding{
         padding-right: 15px;
     }
 
-    .more-option-padding{
-      padding-top: 12px;
+    div.triggers-main-area.more-option-padding{
+      padding-top: 36px;
       margin-right: 15px;
     }
 
@@ -924,6 +1037,17 @@ div.modal-content.agent-containers{
 
     button.delete-left-align{
       margin-right: auto;
+    }
+
+    select{
+      border: 1px solid #E5E9EC;
+      border-radius: 6px;
+    }
+    select.agent-regex-select.form-control {
+      background-color: transparent;
+    }
+    select.agent-regex-select.form-control option {
+      background-color: transparent !important;
     }
 
 </style>

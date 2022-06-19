@@ -1261,3 +1261,7 @@ a.target-detail-popover:hover{
   width: 56px!important;
   border-radius: 13px;
 }
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
