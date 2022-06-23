@@ -514,7 +514,7 @@ export default ({
     removeSingleRootDomainFromServer ({ state, commit, rootState }, targetName) {
       if (state.authentication_token !== '') {
         const entity = rootState.general.entitiesToDelete[0]
-        return axios.delete('/rootdomains/deleteSubdomians/' + targetName + '/' + entity.name)
+        return axios.delete('/rootdomains/' + targetName + '/' + entity.name)
           .then(function () {
             const target = state.targetListStore.find(target => target.name === targetName)
             const rootsIndex = target.rootDomains.findIndex(roots => roots.id === entity.id)

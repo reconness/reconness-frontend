@@ -337,7 +337,7 @@ export default {
     removeRootDomainsOnTargetDetailViewAndDisplayOperationStatus () {
       this.removeSingleRootDomainFromServer(this.getTargetName).then(response => {
         if (response.status) {
-          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForAgentDeletion)
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
         } else {
           this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
         }
