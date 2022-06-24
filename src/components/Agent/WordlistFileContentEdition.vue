@@ -155,3 +155,8 @@ button.wordlist-download-btn{
   padding: unset !important
 }
 </style>
+<style scoped>
+html{
+  overflow-x: hidden;
+}
+</style>

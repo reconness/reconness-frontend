@@ -48,14 +48,19 @@
                       <input :disabled="!canEditTheField" id="user-form-lastname" @blur="updateLastNameWasWritten" @change="updateLastNameWasWritten" v-model="user.lastname" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                     </div>
                     <div class="form-group">
-                      <label for="user-form-password" class="font-weight-regular black-text font-size-16px">Password</label>
-                      <input type="password" id="user-form-password" @blur="updatePasswordWasWritten" @change="updatePasswordData" v-model="user.newPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
-                          <span v-if="isPasswordInBlank && !editable" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
+                      <label for="user-form-new-password" class="font-weight-regular black-text font-size-16px">New Password</label>
+                      <input type="password" id="user-form-new-password" @blur="updatePasswordWasWritten" @change="updatePasswordData" v-model="user.newPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <span v-if="isPasswordInBlank && !editable" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
                     </div>
                     <div class="form-group">
-                      <label for="user-form-confirm_password" class="font-weight-regular black-text font-size-16px">Confirmation Password</label>
+                      <label for="user-form-confirm_password" class="font-weight-regular black-text font-size-16px">Confirm New Password</label>
                       <input type="password" id="user-form-confirm_password" v-model="user.confirmationPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                       <span v-if="!isConfirmPasswordEqualToPassword" :class="{invalid: !isConfirmPasswordEqualToPassword}" class="mt-2">The field confirm password must be equal to the password field</span>
+                    </div>
+                    <div v-if="previousPasswordsFieldsAreWritten && editedUserSameLoggedIn" class="form-group">
+                      <label for="user-form-current-password" class="font-weight-regular black-text font-size-16px">Current Password</label>
+                      <input type="password" id="user-form-current-password" v-model="user.currentPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <span v-if="isCurrentPasswordInValid" :class="{invalid: isCurrentPasswordInValid}" class="mt-2">The field current password is required</span>
                     </div>
                   </div><!-- /.col-12 col-sm-8 -->
                     <div class="col-12 col-sm-4 pt-1">
@@ -69,7 +74,7 @@
                           <input id="uploadimage" type="file" @change="onFileChange"/>
                           <span class="agent-mini-color-gray mt-3 mb-4 font-weight-normal">Profile Picture</span>
                         </label>
-                        <div class="userform-roles-container border mb-1">
+                        <div v-if="!isLoggedUserMember" class="userform-roles-container border mb-1">
                             <div class="userform-roles-title-container border-bottom pb-3 pt-2">
                             <span class="font-weight-regular black-text font-size-16px ml-3">Role</span>
                             </div>
@@ -179,11 +184,14 @@ export default {
     isPasswordInBlank () {
       return this.$validateIsBlank(this.user.newPassword) && this.passwordWasWritten
     },
+    isCurrentPasswordInValid () {
+      return this.$validateIsBlank(this.user.currentPassword) && this.passwordWasWritten && this.previousPasswordsFieldsAreWritten && this.editedUserSameLoggedIn
+    },
     isConfirmPasswordEqualToPassword () {
       return this.user.newPassword === this.user.confirmationPassword
     },
     isUserFormInvalid () {
-      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsedAndIsDifferentFromSaved
+      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsedAndIsDifferentFromSaved || this.isCurrentPasswordInValid
     },
     getUserFormStatus () {
       if (this.editable) {
@@ -226,6 +234,9 @@ export default {
         return true
       }
       return false
+    },
+    previousPasswordsFieldsAreWritten () {
+      return !this.isPasswordInBlank && this.isConfirmPasswordEqualToPassword && this.editable && this.passwordWasWritten
     }
   },
   watch: {
@@ -252,8 +263,6 @@ export default {
         this.user.role = selectedUser.role
         this.user.profilePicture = selectedUser.profilePicture
         this.user.id = selectedUser.id
-        // this.user.newPassword = selectedUser.newPassword
-        this.user.currentPassword = this.loggedUserPassword
         this.editable = true
         this.oldUserName = selectedUser.username
       }

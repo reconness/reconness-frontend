@@ -307,7 +307,22 @@ export default ({
         lastRun: new Date(agent.lastRun),
         createdBy: agent.createdBy,
         categories: agent.categories,
-        configurationFile: agent.configurationFileName
+        configurationFile: agent.configurationFileName,
+        triggerSubdomainIncExcServicePort: agent.triggerSubdomainIncExcServicePort,
+        triggerSubdomainServicePort: agent.triggerSubdomainServicePort,
+        triggerSubdomainIncExcName: agent.triggerSubdomainIncExcName,
+        triggerSubdomainName: agent.triggerSubdomainName,
+        triggerSubdomainIncExcIP: agent.triggerSubdomainIncExcIP,
+        triggerSubdomainIP: agent.triggerSubdomainIP,
+        triggerSubdomainIncExcTechnology: agent.triggerSubdomainIncExcTechnology,
+        triggerSubdomainTechnology: agent.triggerSubdomainTechnology,
+        triggerSubdomainIncExcLabel: agent.triggerSubdomainIncExcLabel,
+        triggerSubdomainLabel: agent.triggerSubdomainLabel,
+        triggerSkipIfRunBefore: agent.triggerSkipIfRunBefore,
+        triggerRootdomainName: agent.triggerRootdomainName,
+        triggerRootdomainIncExcName: agent.triggerRootdomainIncExcName,
+        triggerSubdomainIsMainPortal: agent.triggerSubdomainIsMainPortal
+
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -329,7 +344,21 @@ export default ({
         triggerSubdomainHasHttpOrHttpsOpen: agent.isHttpOpenTrigger,
         categories: agent.categories,
         image: agent.image,
-        configurationFileName: agent.configurationFile
+        configurationFileName: agent.configurationFile,
+        triggerSubdomainIncExcServicePort: agent.triggerSubdomainIncExcServicePort,
+        triggerSubdomainServicePort: agent.triggerSubdomainServicePort,
+        triggerSubdomainIncExcName: agent.triggerSubdomainIncExcName,
+        triggerSubdomainName: agent.triggerSubdomainName,
+        triggerSubdomainIncExcIP: agent.triggerSubdomainIncExcIP,
+        triggerSubdomainIP: agent.triggerSubdomainIP,
+        triggerSubdomainIncExcTechnology: agent.triggerSubdomainIncExcTechnology,
+        triggerSubdomainTechnology: agent.triggerSubdomainTechnology,
+        triggerSubdomainIncExcLabel: agent.triggerSubdomainIncExcLabel,
+        triggerSubdomainLabel: agent.triggerSubdomainLabel,
+        triggerSkipIfRunBefore: agent.triggerSkipIfRunBefore,
+        triggerRootdomainName: agent.triggerRootdomainName,
+        triggerRootdomainIncExcName: agent.triggerRootdomainIncExcName,
+        triggerSubdomainIsMainPortal: agent.triggerSubdomainIsMainPortal
       }
       return mappedAgent
     },

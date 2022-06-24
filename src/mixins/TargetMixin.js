@@ -10,7 +10,7 @@ const TargetMixin = {
     isOnRootDetailsView () {
       return this.$route.name === 'RootDomainDetails'
     },
-    arrayFilterList () {
+    arrayTargetFilterList () {
       if (this.filterColour === '') {
         return this.targetListStore
       } else {
@@ -18,7 +18,7 @@ const TargetMixin = {
       }
     },
     filteredTargetList () {
-      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
+      return this.arrayTargetFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
     }
   },
   methods: {

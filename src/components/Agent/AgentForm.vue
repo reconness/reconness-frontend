@@ -102,18 +102,14 @@
                                 </h3>
                             </div>
                             </div><!-- /.card-header -->
-                            <div class="combo-box-left-padding">
+                            <div class="combo-box-left-padding agent-triggers">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
-                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox6" v-model="agent.triggerSkipIfRunBefore">
+                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox6">Skip if Run Before</label>
                                 </div>
-                                <div class="custom-control custom-checkbox form-check">
-                                <input :disabled="this.$store.state.agent.fromDetailsLink" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
-                                <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth" for="agent_customCheckbox5">Run Only if has Http Open</label>
-                                </div>
-                                <div class="form-check text-right more-option-padding">
-                                <a href="#" @click="showMiddleSection"><span class="form-check-label blue-text agent-regular-font font-weight-light">More Options</span></a>
+                                <div class="form-check text-right triggers-main-area more-option-padding">
+                                <a href="#" @click="showMiddleSection"><span :class="{'disabled-text': isTargetTypeSelected, 'blue-text': !isTargetTypeSelected}" class="form-check-label agent-regular-font font-weight-light">More Options</span></a>
                                 </div>
                             </div>
                             </div><!-- /.card-body -->
@@ -196,15 +192,113 @@
                           <span class="material-icons line-height-1-7 triggers-label-arrow-space">keyboard_arrow_down</span>
                         </a>
                       </div>
-                      <div class="triggers-border-container combo-box-left-padding rounded-corners triggers-more-options-area-size">
+                      <div class="overflow-x-hidden triggers-border-container combo-box-left-padding rounded-corners triggers-more-options-area-size">
                         <div class="form-group triggers-options-space">
-                            <div class="custom-control custom-checkbox form-check">
-                            <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
-                            <label class="opacity-none form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox4">Run Only if it is Alive</label>
+                            <div v-if="isRootDomainTypeSelected" class="row">
+                              <div class="col-6">
+                                <label class="font-weight-medium font-size-14px mr-1">Include/Exclude RegExp RootDomain</label>
+                                <select v-model="agent.triggerRootdomainIncExcName" class="form-control agent-regex-select">
+                                  <option value="" disabled hidden selected>Please select an option</option>
+                                  <option value="include">Include</option>
+                                  <option value="exclude">Exclude</option>
+                                </select>
+                              </div>
+                              <div class="col-6">
+                                <input v-model="agent.triggerRootdomainName" :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp RootDomain">
+                              </div>
                             </div>
-                            <div class="custom-control custom-checkbox form-check">
-                            <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
-                            <label class="form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox5">Run Only if has Http Open</label>
+                            <div v-else-if="isSubDomainTypeSelected" class="row">
+                              <div class="col-12">
+                                  <div class="form-group">
+                                    <div class="custom-control custom-checkbox form-check">
+                                      <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox4" v-model="agent.isAliveTrigger">
+                                      <label class="opacity-none form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox4">Is Alive</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox form-check">
+                                      <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox7" v-model="agent.triggerSubdomainIsMainPortal">
+                                      <label class="form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox7">Is Main Portal</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox form-check">
+                                      <input class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox5" v-model="agent.isHttpOpenTrigger">
+                                      <label class="form-check-label custom-control-label agent-disable-weigth" for="agent_customCheckbox5">Has Http/HTTPS Open</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6">
+                                    <label class="font-weight-medium mr-1">Include/Exclude RegExp SubDomain</label>
+                                    <select v-model="agent.triggerSubdomainIncExcName" class="form-control agent-regex-select">
+                                      <option value="" disabled hidden selected>Please select an option</option>
+                                      <option value="include">Include</option>
+                                      <option value="exclude">Exclude</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input v-model="agent.triggerSubdomainName" :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp SubDomain">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp Service/Port</label>
+                                  <select v-model="agent.triggerSubdomainIncExcServicePort" class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="Include">Include</option>
+                                    <option value="Exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input :readonly="this.$store.state.agent.fromDetailsLink" v-model="agent.triggerSubdomainServicePort" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp Service/Port">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp IP</label>
+                                  <select v-model="agent.triggerSubdomainIncExcIP" class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="include">Include</option>
+                                    <option value="exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input v-model="agent.triggerSubdomainIP" :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp IP">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp Technology</label>
+                                  <select v-model="agent.triggerSubdomainIncExcTechnology" class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="include">Include</option>
+                                    <option value="exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input v-model="agent.triggerSubdomainTechnology" :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp Technology">
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-12">
+                                  <div class="row">
+                                  <div class="col-6">
+                                    <label class="font-weight-medium mr-1 mt-2">Include/Exclude RegExp Label</label>
+                                  <select v-model="agent.triggerSubdomainIncExcLabel" class="form-control agent-regex-select">
+                                    <option value="" disabled hidden selected>Please select an option</option>
+                                    <option value="include">Include</option>
+                                    <option value="exclude">Exclude</option>
+                                  </select>
+                                  </div>
+                                  <div class="col-6">
+                                  <input v-model="agent.triggerSubdomainLabel" :readonly="this.$store.state.agent.fromDetailsLink" class="mt-2point5rem w-95 ligth-gray-background form-control zero-borders" placeholder="RegExp Label">
+                                  </div>
+                                  </div>
+                                </div>
                             </div>
                         </div><!-- /.form-group -->
                       </div><!-- /.combo-box-left-padding -->
@@ -307,6 +401,7 @@ export default {
         isSubDomainType: false,
         isAliveTrigger: false,
         isHttpOpenTrigger: false,
+        triggerSkipIfRunBefore: false,
         categories: [],
         script: '',
         id: -1,
@@ -315,7 +410,16 @@ export default {
         status: this.$entityStatus.FINISHED,
         lastRun: null,
         createdBy: '',
-        configurationFile: ''
+        configurationFile: '',
+        triggerSubdomainIncExcServicePort: null,
+        triggerSubdomainServicePort: '',
+        triggerSubdomainIncExcIP: null,
+        triggerSubdomainIP: '',
+        triggerSubdomainIncExcTechnology: null,
+        triggerSubdomainTechnology: '',
+        triggerRootdomainIncExcName: null,
+        triggerRootdomainName: '',
+        triggerSubdomainIsMainPortal: false
       },
       colorpickerData: '',
       isVisibleTopSection: true,
@@ -401,6 +505,15 @@ export default {
         return this.editable && !this.$validateIsBlank(this.agent.configurationFile)
       }
       return ''
+    },
+    isTargetTypeSelected () {
+      return this.agent.type === this.$agentType.TARGET
+    },
+    isRootDomainTypeSelected () {
+      return this.agent.type === this.$agentType.ROOTDOMAIN
+    },
+    isSubDomainTypeSelected () {
+      return this.agent.type === this.$agentType.SUBDOMAIN
     }
   },
   watch: {
@@ -423,6 +536,22 @@ export default {
         this.agent.image = value.image
         this.agent.categories = value.categories
         this.agent.configurationFile = value.configurationFile
+        this.agent.triggerSubdomainIncExcServicePort = value.triggerSubdomainIncExcServicePort
+        this.agent.triggerSubdomainServicePort = value.triggerSubdomainServicePort
+        this.agent.triggerSubdomainIncExcName = value.triggerSubdomainIncExcName
+        this.agent.triggerSubdomainName = value.triggerSubdomainName
+        this.agent.triggerSubdomainIncExcIP = value.triggerSubdomainIncExcIP
+        this.agent.triggerSubdomainIP = value.triggerSubdomainIP
+        this.agent.triggerSubdomainIP = value.triggerSubdomainIP
+        this.agent.triggerSubdomainIncExcTechnology = value.triggerSubdomainIncExcTechnology
+        this.agent.triggerSubdomainTechnology = value.triggerSubdomainTechnology
+        this.agent.triggerSubdomainIncExcLabel = value.triggerSubdomainIncExcLabel
+        this.agent.triggerSubdomainLabel = value.triggerSubdomainLabel
+        this.agent.triggerSkipIfRunBefore = value.triggerSkipIfRunBefore
+        this.agent.triggerRootdomainName = value.triggerRootdomainName
+        this.agent.triggerRootdomainIncExcName = value.triggerRootdomainIncExcName
+        this.agent.triggerSubdomainIsMainPortal = value.triggerSubdomainIsMainPortal
+
         if (value.script === undefined || value.script === null) {
           this.agent.script = ''
         }
@@ -558,7 +687,21 @@ export default {
         createdBy: '',
         primaryColor: '#737be5',
         secondaryColor: '#7159d3',
-        configurationFile: ''
+        configurationFile: '',
+        triggerSubdomainIncExcServicePort: null,
+        triggerSubdomainServicePort: null,
+        triggerSubdomainIncExcName: null,
+        triggerSubdomainName: null,
+        triggerSubdomainIncExcIP: null,
+        triggerSubdomainIP: null,
+        triggerSubdomainIncExcTechnology: null,
+        triggerSubdomainTechnology: null,
+        triggerSubdomainIncExcLabel: null,
+        triggerSubdomainLabel: null,
+        triggerSkipIfRunBefore: null,
+        triggerRootdomainName: null,
+        triggerRootdomainIncExcName: null,
+        triggerSubdomainIsMainPortal: null
       }
       this.validators = {
         blank: {
@@ -661,9 +804,11 @@ export default {
       this.arrow_up = !this.arrow_up
     },
     showMiddleSection () {
-      this.enableMiddleSection()
-      this.disableBottomSection()
-      this.disableTopSection()
+      if (!this.isTargetTypeSelected) {
+        this.enableMiddleSection()
+        this.disableBottomSection()
+        this.disableTopSection()
+      }
     },
     showTopSection () {
       this.enableTopSection()
@@ -772,6 +917,15 @@ export default {
 }
 </script>
 <style>
+.w-95{
+  width: 95%;
+}
+.mt-2rem{
+  margin-top: 2rem;
+}
+.mt-2point5rem{
+  margin-top: 2.5rem;
+}
 .agent-upload-config label{
   width: 50%;
   border: 1px solid #F1F3F5;
@@ -879,12 +1033,16 @@ div.modal-content.agent-containers{
         padding-left: 19px;
     }
 
+    .agent-triggers{
+      height: 105px;
+    }
+
     .combo-box-right-padding{
         padding-right: 15px;
     }
 
-    .more-option-padding{
-      padding-top: 12px;
+    div.triggers-main-area.more-option-padding{
+      padding-top: 36px;
       margin-right: 15px;
     }
 
@@ -924,6 +1082,20 @@ div.modal-content.agent-containers{
 
     button.delete-left-align{
       margin-right: auto;
+    }
+
+    select{
+      border: 1px solid #E5E9EC;
+      border-radius: 6px;
+    }
+    select.agent-regex-select.form-control {
+      background-color: transparent;
+    }
+    select.agent-regex-select.form-control option {
+      background-color: transparent !important;
+    }
+    .disabled-text{
+      color: #a9a9a9;
     }
 
 </style>

@@ -22,8 +22,8 @@
                       <div class="col-12 d-flex justify-content-center">
                         <div :title="import_message" data-toggle="tooltip" data-placement="bottom" class="target-details-import-files border-radios-8px w-50 d-flex flex-column align-items-center m-3 border pt-2 pb-2">
                           <FileImportIco />
-                          <label for="export-target" class="mb-0 font-weight-normal"> Import </label>
-                          <input type="file" id="export-target"/>
+                          <label for="import-rootdomains-targetdetails" class="mb-0 font-weight-normal"> Import </label>
+                          <input type="file" id="import-rootdomains-targetdetails" @click="resetInputFile" @change="uploadRootDomainDataToServer" accept=".json"/>
                         </div>
                       </div>
                     </div>
@@ -138,6 +138,7 @@ import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import TrashCanIco from '@/components/Icons/TrashCanIco.vue'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
+import { TargetMixin } from '@/mixins/TargetMixin'
 import RootDomainInsertionForm from '@/components/Target/RootDomainInsertionForm.vue'
 import jQuery from 'jquery'
 import BottomBar from '@/components/General/BottomBar'
@@ -266,7 +267,7 @@ export default {
       }
     }
   },
-  mixins: [RemoveEntitiesMixin],
+  mixins: [RemoveEntitiesMixin, TargetMixin],
   computed: {
     ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),
@@ -305,7 +306,7 @@ export default {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['setCurrentView']),
     ...mapMutations('general', ['addEntityToDelete']),
-    ...mapActions('target', ['getTargetNotesFromServer']),
+    ...mapActions('target', ['getTargetNotesFromServer', 'uploadRootDomainFileToServer']),
     updateOpenPortsInGraph () {
       this.optionsBar.xaxis.categories = this.getOpenPorts
     },
@@ -339,6 +340,30 @@ export default {
     },
     updateLinearGradient () {
       this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
+    },
+    uploadRootDomainDataToServer (e) {
+      const rootDataFile = e.target.files[0]
+      const reader = new FileReader()
+      const self = this
+      reader.onload = function () {
+        const rootFileFormData = new FormData()
+        rootFileFormData.append('file', rootDataFile)
+        const targetAndRootData = {
+          targetName: self.Target.name,
+          formData: rootFileFormData
+        }
+        self.uploadRootDomainFileToServer(targetAndRootData).then(response => {
+          if (response.status) {
+            self.updateOperationStatus(self.$entityStatus.SUCCESS, self.$message.successMessageForFileUpload)
+          } else {
+            self.updateOperationStatus(self.$entityStatus.FAILED, response.message)
+          }
+        })
+      }
+      reader.readAsText(rootDataFile)
+    },
+    resetInputFile (e) {
+      e.target.value = null
     }
   }
 }
@@ -427,7 +452,7 @@ blockquote > p{
 .font-size-16px{
   font-size: 16px;
 }
-#export-target {
+#import-rootdomains-targetdetails {
   opacity: 0;
   position: absolute;
   z-index: -1;

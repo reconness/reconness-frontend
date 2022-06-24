@@ -153,7 +153,7 @@ export default {
     ...mapMutations('general', ['clearReferencesToDelete']),
     ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete', 'clearSingleAgentEntityToDelete']),
-    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearAllSubDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete']),
+    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearAllSubDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'removeSingleRootDomainFromServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
@@ -335,8 +335,13 @@ export default {
       }
     },
     removeRootDomainsOnTargetDetailViewAndDisplayOperationStatus () {
-      this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
-      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+      this.removeSingleRootDomainFromServer(this.getTargetName).then(response => {
+        if (response.status) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     },
     removeSubDomainsOnRootDomainView () {
       if (this.removeAll) {

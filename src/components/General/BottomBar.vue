@@ -15,7 +15,7 @@
 </div>
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import VPagination from '@hennge/vue3-pagination'
@@ -34,8 +34,9 @@ export default {
   },
   mixins: [AgentMixin, TargetMixin],
   computed: {
-    ...mapState('target', ['operationStatus', 'targetListStore']),
+    ...mapState('target', ['operationStatus', 'targetListStore', 'filterColour', 'paginator']),
     ...mapState('agent', ['agentListStore']),
+    ...mapGetters('target', ['filterByColor']),
     showStatusBar () {
       return this.operationStatus.status !== this.$entityStatus.WAITING
     },
@@ -46,11 +47,19 @@ export default {
       return this.operationStatus.status === this.$entityStatus.FAILED
     },
     entitiesAmount () {
+      if (this.filterColour !== '' && this.isOnTargetView) {
+        return this.arrayTargetFilterList.length
+      }
+      if (this.filterColour !== '' && this.isOnAgentView) {
+        return this.arrayAgentFilterList.length
+      }
       if (this.isOnTargetView) {
         return this.targetListStore.length
-      } else {
+      }
+      if (this.$isOnAgentView) {
         return this.agentListStore.length
       }
+      return 0
     },
     numberOfPages () {
       return Math.ceil(this.entitiesAmount / this.numberElementsInGroup)

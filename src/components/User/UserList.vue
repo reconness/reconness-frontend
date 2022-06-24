@@ -11,7 +11,7 @@
                           <UserManagementHeader/>
                       </div>
                   </div>
-                  <div class="user-management-new-container d-flex flex-column align-items-center">
+                  <div v-if="!isLoggedUserMember" class="user-management-new-container d-flex flex-column align-items-center">
                      <img src="@/assets/user-icon.png" class="rounded-circle user-management-plus-logo" alt="User Logo">
                       <div class="user-management-new-container-action-btn d-flex align-items-center">
                         <span class="material-icons blue-text font-size-16px m-auto">add</span>
@@ -43,9 +43,9 @@
                           <span v-else :class="{'blue-text': user.role === this.roles.OWNER.id, 'green-text': user.role === this.roles.ADMIN.id}" class="material-icons font-size-16px ml-2">manage_accounts</span>
                         </div>
                       </td>
-                      <td class="border-top-0 d-flex justify-content-between user-management-action-width">
+                      <td :class="{'justify-content-center': isLoggedUserMember, 'justify-content-between': !isLoggedUserMember}" class="border-top-0 d-flex user-management-action-width">
                         <button @click="editUser" data-toggle="modal" data-target="#user-form-modal" :data-id="user.id" type="button" class="font-size-14px user-management-btn-size blue-text agent-border btn create-agent-buttons-main-action rounded wordlist-download-btn">Edit</button>
-                        <button @click="removeSelectedUser($event, this.$entityTypeData.USER.id)" :disabled="disableBy(user.id, user.role)" type="button" :data-name="user.username" :data-id="user.id" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
+                        <button v-if="!isLoggedUserMember" @click="removeSelectedUser($event, this.$entityTypeData.USER.id)" :disabled="disableBy(user.id, user.role)" type="button" :data-name="user.username" :data-id="user.id" class="user-management-btn-size font-size-14px ml-1 red-text agent-border btn create-agent-buttons-main-action rounded">Delete</button>
                       </td>
                     </tr>
                   </tbody>
@@ -79,7 +79,7 @@ export default {
   mixins: [RemoveEntitiesMixin],
   computed: {
     ...mapState('user', ['users']),
-    ...mapGetters('user', ['getGravatarUrlByEmail', 'getRoleById', 'roles', 'isLoggedUserAdmin', 'getLoggedUserData'])
+    ...mapGetters('user', ['getGravatarUrlByEmail', 'getRoleById', 'roles', 'isLoggedUserAdmin', 'getLoggedUserData', 'isLoggedUserMember'])
   },
   methods: {
     ...mapMutations('target', ['removeTargetEntityToDelete']),
