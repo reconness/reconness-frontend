@@ -380,6 +380,8 @@ export default {
     logoutUser () {
       this.updateIsUserLogged(false)
       this.$router.push('LogIn')
+      localStorage.setItem('token', '')
+      this.updateAuthenticationToken('')
     },
     close () {
       this.resetUserForm()

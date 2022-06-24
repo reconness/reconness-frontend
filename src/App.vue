@@ -182,7 +182,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import UserForm from '@/components/User/UserForm.vue'
 import jQuery from 'jquery'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
@@ -310,12 +310,17 @@ export default {
   },
   mounted () {
     this.location = this.viewloc
+    this.updateSystemData()
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
     ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
+    ...mapActions('referent', ['loadResources']),
+    ...mapActions('agent', ['loadAgents']),
+    ...mapActions('target', ['loadTargets']),
+    ...mapActions('user', ['loadUsers']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -388,6 +393,17 @@ export default {
     goToNotificationSettings () {
       this.goToSettingsSection()
       this.$router.push({ name: 'Users' })
+    },
+    updateSystemData () {
+      if (localStorage.getItem('token')) {
+        this.updateIsUserLogged(true)
+        this.loadResources()
+        this.loadAgents()
+        this.loadTargets()
+        this.loadUsers()
+      } else {
+        this.updateIsUserLogged(false)
+      }
     }
   }
 }

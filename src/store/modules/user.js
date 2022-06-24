@@ -13,7 +13,8 @@ export default ({
     selectedIdUser: '-1',
     manageMyOwnProfile: false,
     userLogsFiles: [],
-    errorUpdatingOwnerRole: false
+    errorUpdatingOwnerRole: false,
+    loggedUsername: localStorage.getItem('loggedUsername') || ''
   },
   mutations: {
     updateLoggedUserName (state, username) {
