@@ -47,8 +47,11 @@ export default {
       return this.operationStatus.status === this.$entityStatus.FAILED
     },
     entitiesAmount () {
-      if (this.filterColour !== '') {
-        return this.arrayFilterList.length
+      if (this.filterColour !== '' && this.isOnTargetView) {
+        return this.arrayTargetFilterList.length
+      }
+      if (this.filterColour !== '' && this.isOnAgentView) {
+        return this.arrayAgentFilterList.length
       }
       if (this.isOnTargetView) {
         return this.targetListStore.length

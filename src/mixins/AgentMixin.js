@@ -1,6 +1,6 @@
 const AgentMixin = {
   computed: {
-    arrayFilterList () {
+    arrayAgentFilterList () {
       if (this.filterColour === '') {
         return this.agentListStore
       } else {
@@ -8,7 +8,7 @@ const AgentMixin = {
       }
     },
     filteredAgentList () {
-      return this.arrayFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
+      return this.arrayAgentFilterList.slice(this.paginator.startIndex, this.paginator.endIndex)
     }
   },
   methods: {
