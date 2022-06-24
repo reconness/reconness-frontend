@@ -283,10 +283,10 @@ export default {
     }
   },
   created () {
+    this.updateTarget()
     this.updateOpenPortsInGraph()
     this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
-    this.updateTarget()
     this.updateLinearGradient()
   },
   mounted () {
