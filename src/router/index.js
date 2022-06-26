@@ -142,9 +142,17 @@ function isTheTokenExpired () {
   const initialDate = parseInt(localStorage.getItem('loginDate'))
   if (initialDate) {
     const elapsedTime = currentDate - initialDate
-    return Math.floor(elapsedTime / 1000) > parseInt(localStorage.getItem('expires_in'))
+    const isExpired = Math.floor(elapsedTime / 1000) > parseInt(localStorage.getItem('expires_in'))
+    if (isExpired) {
+      resetToken()
+    }
+    return isExpired
   }
   return true
+}
+
+function resetToken () {
+  localStorage.setItem('token', '')
 }
 
 export default router
