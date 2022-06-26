@@ -129,11 +129,22 @@ router.beforeEach((to, from, next) => {
   if (to.meta.guest) {
     next()
   } else {
-    if (store.state.auth.isUserLogged) {
+    if (store.state.auth.isUserLogged && !isTheTokenExpired()) {
       return next()
     } else {
       return next({ name: 'LogIn' })
     }
   }
 })
+
+function isTheTokenExpired () {
+  const currentDate = new Date().getTime()
+  const initialDate = parseInt(localStorage.getItem('loginDate'))
+  if (initialDate) {
+    const elapsedTime = currentDate - initialDate
+    return Math.floor(elapsedTime / 1000) > parseInt(localStorage.getItem('expires_in'))
+  }
+  return true
+}
+
 export default router

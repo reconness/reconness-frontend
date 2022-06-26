@@ -42,6 +42,7 @@ export default ({
           commit('updateAuthenticationToken', response.data.auth_token)
           localStorage.setItem('token', response.data.auth_token)
           localStorage.setItem('loggedUsername', credentials.username)
+          localStorage.setItem('loginDate', new Date().getTime())
           axios.defaults.headers.common.Authorization = 'Bearer ' + state.authentication_token
           if (response.data.auth_token) {
             dispatch('referent/loadResources', null, { root: true })
