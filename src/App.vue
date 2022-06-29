@@ -318,7 +318,6 @@ export default {
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
     ...mapActions('referent', ['loadResources']),
-    ...mapActions('agent', ['loadAgents']),
     ...mapActions('target', ['loadTargets']),
     ...mapActions('user', ['loadUsers']),
     mouseenter: function () {
@@ -398,7 +397,6 @@ export default {
       if (localStorage.getItem('token')) {
         this.updateIsUserLogged(true)
         this.loadResources()
-        this.loadAgents()
         this.loadTargets()
         this.loadUsers()
       } else {

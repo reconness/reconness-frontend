@@ -29,7 +29,7 @@ import AgentMiniList from '@/components/Agent/AgentMiniList.vue'
 import NavBarTwo from '@/components/General/NavBarTwo.vue'
 import AgentConfirmation from '@/components/Agent/AgentConfirmation.vue'
 import AgentForm from '@/components/Agent/AgentForm.vue'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import BottomBar from '@/components/General/BottomBar'
 
 export default {
@@ -43,6 +43,7 @@ export default {
     BottomBar
   },
   mounted () {
+    this.loadAgents()
     this.$store.commit('agent/updateLocView', 'Agents', true)
   },
   mixins: [AgentMixin],
@@ -53,6 +54,9 @@ export default {
     isOnAgentMinimalView () {
       return (this.$isOnAgentView && !this.$store.state.agent.isDefaultViewOnAgent)
     }
+  },
+  methods: {
+    ...mapActions('agent', ['loadAgents'])
   }
 }
 </script>
