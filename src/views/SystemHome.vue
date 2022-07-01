@@ -145,11 +145,14 @@ export default {
       }
     }
   },
+  created () {
+    this.updateSystemData()
+  },
   methods: {
     ...mapActions('referent', ['loadResources', 'addResource', 'deleteResource']),
-    ...mapActions('agent', ['loadAgents']),
     ...mapActions('target', ['loadTargets']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
+    ...mapActions('user', ['loadUsers']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('referent/setSelectedResource', selectedId)
@@ -209,6 +212,11 @@ export default {
           }
           jQuery('#simple-confirmation-modal').modal('hide')
         })
+    },
+    updateSystemData () {
+      this.loadResources()
+      this.loadTargets()
+      this.loadUsers()
     }
   },
   data () {
