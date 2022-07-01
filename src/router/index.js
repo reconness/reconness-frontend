@@ -145,8 +145,8 @@ function isTheTokenExpired () {
     const isExpired = Math.floor(elapsedTime / 1000) > parseInt(localStorage.getItem('expires_in'))
     if (isExpired) {
       resetToken()
-      return isExpired
     }
+    return isExpired
   }
   return true
 }

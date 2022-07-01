@@ -391,7 +391,7 @@ export default {
       this.$router.push({ name: 'Users' })
     },
     updateUserData () {
-      if (localStorage.getItem('token')) {
+      if (localStorage.getItem('token') === '') {
         this.updateIsUserLogged(true)
       } else {
         this.updateIsUserLogged(false)
