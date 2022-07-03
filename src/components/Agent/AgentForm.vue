@@ -350,7 +350,7 @@
                         <span v-if="showFileConfigLocation" class="mt-1 ml-2 text-truncate">{{ getFullFileConfigPath }}</span>
                       </div>
                     </div>
-                    <div v-if="isVisibleConfigSection && !this.$validateIsBlank(this.agent.configurationFile)"  id="config-section" class="col-12">
+                    <div v-if="isConnfigFileContentVisible"  id="config-section" class="col-12">
                       <v-ace-editor v-model:value="configurationFileContent" lang="csharp" class="mt-4" style="height:300px" theme="monokai"/>
                     </div>
                   </div><!-- /.row -->
@@ -514,6 +514,9 @@ export default {
     },
     isSubDomainTypeSelected () {
       return this.agent.type === this.$agentType.SUBDOMAIN
+    },
+    isConnfigFileContentVisible () {
+      return this.isVisibleConfigSection && !this.$validateIsBlank(this.agent.configurationFile)
     }
   },
   watch: {

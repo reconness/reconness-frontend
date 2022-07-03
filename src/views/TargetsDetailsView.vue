@@ -271,7 +271,7 @@ export default {
   computed: {
     ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),
-    ...mapState('target', ['rootDomainEliminationStatus']),
+    ...mapState('target', ['rootDomainEliminationStatus', 'targetListStore']),
     getTargetId () {
       if (this.isIdPropsUndefined) {
         return this.Target.id
@@ -282,18 +282,25 @@ export default {
       return this.$route.params.id === undefined
     }
   },
+  watch: {
+    'targetListStore.length': function (size) {
+      if (this.isIdPropsUndefined) {
+        this.updateTargetWhenUrlAccessedDirectly()
+        this.updateLinearGradient()
+      }
+    }
+  },
   created () {
+    this.updateTarget()
     this.updateOpenPortsInGraph()
     this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
-    this.updateTarget()
     this.updateLinearGradient()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
     this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
     this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor
-
     if (this.isElementDeleted) {
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The Root Domain has been deleted successfully', life: 3000 })
       this.setIsElementDeleted(false)
@@ -327,9 +334,7 @@ export default {
       return this.capitalizeFirstChartByMonth(dateData)
     },
     updateTarget () {
-      if (this.isIdPropsUndefined) {
-        this.updateTargetWhenUrlAccessedDirectly()
-      } else {
+      if (!this.isIdPropsUndefined) {
         this.Target = this.getTargetById(this.getTargetId)
       }
     },

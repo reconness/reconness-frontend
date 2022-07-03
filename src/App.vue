@@ -310,6 +310,7 @@ export default {
   },
   mounted () {
     this.location = this.viewloc
+    this.updateUserData()
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
@@ -388,6 +389,13 @@ export default {
     goToNotificationSettings () {
       this.goToSettingsSection()
       this.$router.push({ name: 'Users' })
+    },
+    updateUserData () {
+      if (localStorage.getItem('token') === '') {
+        this.updateIsUserLogged(true)
+      } else {
+        this.updateIsUserLogged(false)
+      }
     }
   }
 }

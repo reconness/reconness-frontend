@@ -2,7 +2,7 @@ import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
-    authentication_token: '',
+    authentication_token: localStorage.getItem('token') || '',
     showForgottenPasswordForm: false,
     showResetPasswordForm: false,
     showLoginForm: true,
@@ -40,6 +40,10 @@ export default ({
         })
         .then(function (response) {
           commit('updateAuthenticationToken', response.data.auth_token)
+          localStorage.setItem('token', response.data.auth_token)
+          localStorage.setItem('loggedUsername', credentials.username)
+          localStorage.setItem('loginDate', new Date().getTime())
+          localStorage.setItem('expires_in', response.data.expires_in)
           axios.defaults.headers.common.Authorization = 'Bearer ' + state.authentication_token
           if (response.data.auth_token) {
             dispatch('referent/loadResources', null, { root: true })
@@ -49,6 +53,7 @@ export default ({
           return { status: true, message: response.data }
         })
         .catch(function (error) {
+          localStorage.setItem('token', '')
           if (!error.response) {
             return { status: false, message: 'unknownError' }
           }

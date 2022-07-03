@@ -34,4 +34,8 @@ app.directive('clickOutside', {
   }
 })
 
+if (localStorage.getItem('token')) {
+  axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token')
+}
+
 app.use(store).use(router).use(PrimeVue).use(VueApexCharts).use(Reconness).mount('#app')
