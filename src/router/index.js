@@ -129,14 +129,13 @@ router.beforeEach((to, from, next) => {
   if (to.meta.guest) {
     next()
   } else {
-    if (store.state.auth.isUserLogged && !isTheTokenExpired()) {
+    if (store.getters['auth/isUserAlreadyLogged'] && !isTheTokenExpired()) {
       return next()
     } else {
       return next({ name: 'LogIn' })
     }
   }
 })
-
 function isTheTokenExpired () {
   const currentDate = new Date().getTime()
   const initialDate = parseInt(localStorage.getItem('loginDate'))
