@@ -225,7 +225,7 @@ export default {
     ...mapGetters('user', ['getLoggedUserData', 'roles', 'getGravatarUrlByEmail', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'getRoleById']),
     ...mapState('notification', ['isNotificationMenuActive']),
     ...mapState('general', ['notificationTimeSelected']),
-    ...mapState('auth', ['isUserLogged']),
+    ...mapGetters('auth', ['isUserAlreadyLogged']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
     },
@@ -248,7 +248,7 @@ export default {
       return this.getAllNewNotifications.length > 0
     },
     showTopAndLeftBars () {
-      return this.isUserLogged && !this.isUserManagementPage && !(this.isLoginPage || this.isUserManagementPage)
+      return this.isUserAlreadyLogged && !this.isUserManagementPage && !(this.isLoginPage || this.isUserManagementPage)
     },
     getLoggedUserDataFirstName () {
       if (this.getLoggedUserData) {

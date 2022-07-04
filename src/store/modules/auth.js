@@ -69,5 +69,9 @@ export default ({
       )
     }
   },
-  getters: {}
+  getters: {
+    isUserAlreadyLogged (state) {
+      return state.isUserLogged || localStorage.token !== ''
+    }
+  }
 })
