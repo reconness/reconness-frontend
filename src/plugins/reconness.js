@@ -73,6 +73,9 @@ export default {
     }
 
     app.config.globalProperties.$validateIsBlank = function (value) {
+      if (!value) {
+        return true
+      }
       if (value.match(/^ *$/) !== null) {
         return true
       }
