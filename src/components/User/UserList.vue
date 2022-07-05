@@ -3,11 +3,11 @@
               <div class="user-management-content-header mt-5 mx-5 d-flex justify-content-between align-items-center">
                     <div class="user-management-main-info d-flex align-items-center">
                       <div class="user-management-main-info-img rounded-circle user-border-admin-role">
-                          <img v-if="!this.$validateIsBlank(getLoggedUserData.profilePicture)" :src="getLoggedUserData.profilePicture" class="rounded-circle user-management-logo-avatar" alt="User Image">
-                          <img v-else :src="getGravatarUrlByEmail(getLoggedUserData.email)" class="rounded-circle user-management-logo-avatar" alt="User Image">
+                          <img v-if="!this.$validateIsBlank(getLoggedUserDataImage)" :src="getLoggedUserDataImage" class="rounded-circle user-management-logo-avatar" alt="User Image">
+                          <img v-else :src="getGravatarUrlByEmail(getLoggedUserDataEmail)" class="rounded-circle user-management-logo-avatar" alt="User Image">
                       </div>
                       <div class="ml-3 user-management-main-info-gdata d-flex flex-column">
-                          <span class="user-management-username">{{getLoggedUserData.firstname}} {{getLoggedUserData.lastname}}</span>
+                          <span class="user-management-username">{{getLoggedUserDataFirstName}} {{getLoggedUserDataLastName}}</span>
                           <UserManagementHeader/>
                       </div>
                   </div>
@@ -64,6 +64,7 @@ import UserForm from '@/components/User/UserForm.vue'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
+import { UserMixin } from '@/mixins/UserMixin'
 import jQuery from 'jquery'
 export default {
   name: 'UserList',
@@ -76,7 +77,7 @@ export default {
       idUserSelected: -1
     }
   },
-  mixins: [RemoveEntitiesMixin],
+  mixins: [RemoveEntitiesMixin, UserMixin],
   computed: {
     ...mapState('user', ['users']),
     ...mapGetters('user', ['getGravatarUrlByEmail', 'getRoleById', 'roles', 'isLoggedUserAdmin', 'getLoggedUserData', 'isLoggedUserMember'])

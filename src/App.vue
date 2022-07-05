@@ -182,7 +182,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import UserForm from '@/components/User/UserForm.vue'
 import jQuery from 'jquery'
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
@@ -190,6 +190,7 @@ import MessageBox from '@/components/General/MessageBox.vue'
 import MessageBoxNotification from '@/components/General/MessageBoxNotification.vue'
 import MessageBoxNotificationTime from '@/components/General/MessageBoxNotificationTime.vue'
 import NotificationsPanel from '@/components/General/NotificationsPanel'
+import { UserMixin } from '@/mixins/UserMixin'
 export default {
   name: 'App',
   components: {
@@ -218,6 +219,7 @@ export default {
       textFilter: ''
     }
   },
+  mixins: [UserMixin],
   computed: {
     ...mapState('agent', ['viewloc', 'styleAgentState', 'styleTargetState', 'stylePipelinesState', 'styleNotificationsState', 'styleLogsState', 'isNotesSectionOpened']),
     ...mapState('target', ['routePreviousToSearch']),
@@ -249,38 +251,6 @@ export default {
     },
     showTopAndLeftBars () {
       return this.isUserAlreadyLogged && !this.isUserManagementPage && !(this.isLoginPage || this.isUserManagementPage)
-    },
-    getLoggedUserDataFirstName () {
-      if (this.getLoggedUserData) {
-        return this.getLoggedUserData.firstname
-      }
-      return ''
-    },
-    getLoggedUserDataLastName () {
-      if (this.getLoggedUserData) {
-        return this.getLoggedUserData.lastname
-      }
-      return ''
-    },
-    getLoggedUserDataEmail () {
-      if (this.getLoggedUserData) {
-        return this.getLoggedUserData.email
-      }
-      return ''
-    },
-    getLoggedUserDataRoleId () {
-      if (this.getLoggedUserData) {
-        return this.getLoggedUserData.role
-      }
-      return this.roles.MEMBER
-    },
-    getLoggedUserDataImage () {
-      if (this.getLoggedUserData) {
-        if (!this.$validateIsBlank(this.getLoggedUserData.profilePicture)) {
-          return this.getLoggedUserData.profilePicture
-        }
-      }
-      return ''
     }
   },
   watch: {
@@ -317,6 +287,7 @@ export default {
     ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
+    ...mapActions('user', ['loadUsers']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -391,8 +362,9 @@ export default {
       this.$router.push({ name: 'Users' })
     },
     updateUserData () {
-      if (localStorage.getItem('token') === '') {
+      if (localStorage.getItem('token') !== '') {
         this.updateIsUserLogged(true)
+        this.loadUsers()
       } else {
         this.updateIsUserLogged(false)
       }
