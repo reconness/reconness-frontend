@@ -183,7 +183,8 @@ export default ({
       return logFileText
     },
     getLoggedUserData: (state) => {
-      return state.users.find(user => user.username === state.loggedUsername)
+      const username = localStorage.loggedUsername
+      return state.users.find(user => user.username === username)
     },
     getRoleByShortName: (state, getters) => (roleShortName) => {
       switch (roleShortName) {
