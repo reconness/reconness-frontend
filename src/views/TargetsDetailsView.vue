@@ -291,6 +291,7 @@ export default {
     }
   },
   created () {
+    this.loadTargets()
     this.updateTarget()
     this.updateOpenPortsInGraph()
     this.updateSubDomainsNumberByOpenPortInGraph()
@@ -313,7 +314,7 @@ export default {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['setCurrentView']),
     ...mapMutations('general', ['addEntityToDelete']),
-    ...mapActions('target', ['getTargetNotesFromServer', 'uploadRootDomainFileToServer']),
+    ...mapActions('target', ['getTargetNotesFromServer', 'uploadRootDomainFileToServer', 'loadTargets']),
     updateOpenPortsInGraph () {
       this.optionsBar.xaxis.categories = this.getOpenPorts
     },

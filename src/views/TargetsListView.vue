@@ -23,7 +23,7 @@
 <script>
 import TargetsList from '@/components/Target/TargetsList.vue'
 import NavBarTwoTarget from '@/components/Target/NavBarTwoTarget.vue'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import TargetMiniList from '@/components/Target/TargetMiniList.vue'
 import Toast from 'primevue/toast'
 import BottomBar from '@/components/General/BottomBar'
@@ -48,13 +48,15 @@ export default {
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
+    this.loadTargets()
     if (this.isElementDeleted) {
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The target has been deleted successfully', life: 3000 })
       this.setIsElementDeleted(false)
     }
   },
   methods: {
-    ...mapMutations('agent', ['setIsElementDeleted'])
+    ...mapMutations('agent', ['setIsElementDeleted']),
+    ...mapActions('target', ['loadTargets'])
   }
 }
 </script>

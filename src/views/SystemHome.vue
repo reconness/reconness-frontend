@@ -152,7 +152,6 @@ export default {
     ...mapActions('referent', ['loadResources', 'addResource', 'deleteResource']),
     ...mapActions('target', ['loadTargets']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
-    ...mapActions('user', ['loadUsers']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('referent/setSelectedResource', selectedId)
@@ -216,7 +215,6 @@ export default {
     updateSystemData () {
       this.loadResources()
       this.loadTargets()
-      this.loadUsers()
     }
   },
   data () {
