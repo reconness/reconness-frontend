@@ -12,7 +12,7 @@
                         <div class="d-flex flex-column">
                           <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
                             <input v-if="showNameInput" :disabled="!canEditTheField" v-model="user.username" :placeholder="user.username" @keyup="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
-                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
+                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{showUsernamePlaceHolder}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
                           <div class="d-flex flex-column">
@@ -129,7 +129,7 @@ export default {
     return {
       showNameInput: false,
       user: {
-        username: 'Username',
+        username: '',
         firstname: '',
         lastname: '',
         email: '',
@@ -237,6 +237,12 @@ export default {
     },
     previousPasswordsFieldsAreWritten () {
       return !this.isPasswordInBlank && this.isConfirmPasswordEqualToPassword && this.editable && this.passwordWasWritten
+    },
+    showUsernamePlaceHolder () {
+      if (this.isUserNameInBlank) {
+        return 'Username'
+      }
+      return this.user.username
     }
   },
   watch: {
@@ -352,7 +358,7 @@ export default {
     },
     resetUserForm () {
       this.user = {
-        username: 'Username',
+        username: '',
         firstname: '',
         lastname: '',
         email: '',
