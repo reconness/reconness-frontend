@@ -16,7 +16,7 @@
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
                           <div class="d-flex flex-column">
-                            <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
+                            <span v-if="isUserNameInvalid" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
                             <span v-if="isUsernameAlreadyUsedAndIsDifferentFromSaved && this.userNameWasWritten" class="mt-2 invalid">The username is already being used</span>
                           </div>
                         </div><!-- /.d-flex -->
@@ -243,6 +243,9 @@ export default {
         return 'Username'
       }
       return this.user.username
+    },
+    isUserNameInvalid () {
+      return (this.isUserNameInBlank && this.userNameWasWritten) || (this.isUserNameInBlank && this.userTryToAdd)
     }
   },
   watch: {
