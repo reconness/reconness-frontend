@@ -331,6 +331,8 @@ export default {
           this.updateUserToServer(this.user).then(response => {
             if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserEdition)
+              jQuery('#user-form-modal').modal('hide')
+              this.resetUserForm()
             } else {
               this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
@@ -339,13 +341,13 @@ export default {
           this.addUserToServer(this.user).then(response => {
             if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserInsertion)
+              jQuery('#user-form-modal').modal('hide')
+              this.resetUserForm()
             } else {
               this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
           })
         }
-        jQuery('#user-form-modal').modal('hide')
-        this.resetUserForm()
       }
     },
     resetUserForm () {
