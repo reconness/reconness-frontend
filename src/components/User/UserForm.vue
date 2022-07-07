@@ -12,11 +12,11 @@
                         <div class="d-flex flex-column">
                           <div class="d-flex align-items-center" :class="{'w-100': showNameInput}">
                             <input v-if="showNameInput" :disabled="!canEditTheField" v-model="user.username" :placeholder="user.username" @keyup="updateUserNameWasWritten" class="font-weight-medium form-control agent-placeholder w-100 agent-name-input">
-                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{user.username}}</span>
+                            <span v-if="!showNameInput" class="agent-name-input flex-fill pl-2 agent-form-name-font font-weight-medium">{{showUsernamePlaceHolder}}</span>
                             <span v-if="!showNameInput" class="material-icons cursor-pointer ml-2 blue-text" @click="switchNameInput"> open_in_new</span>
                           </div>
                           <div class="d-flex flex-column">
-                            <span v-if="(isUserNameInBlank && this.userNameWasWritten) || (isUserNameInBlank && userTryToAdd)" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
+                            <span v-if="isUserNameInvalid" :class="{invalid: isUserNameInBlank}" class="mt-2">The field username is required</span>
                             <span v-if="isUsernameAlreadyUsedAndIsDifferentFromSaved && this.userNameWasWritten" class="mt-2 invalid">The username is already being used</span>
                           </div>
                         </div><!-- /.d-flex -->
@@ -129,7 +129,7 @@ export default {
     return {
       showNameInput: false,
       user: {
-        username: 'Username',
+        username: '',
         firstname: '',
         lastname: '',
         email: '',
@@ -237,6 +237,15 @@ export default {
     },
     previousPasswordsFieldsAreWritten () {
       return !this.isPasswordInBlank && this.isConfirmPasswordEqualToPassword && this.editable && this.passwordWasWritten
+    },
+    showUsernamePlaceHolder () {
+      if (this.isUserNameInBlank) {
+        return 'Username'
+      }
+      return this.user.username
+    },
+    isUserNameInvalid () {
+      return (this.isUserNameInBlank && this.userNameWasWritten) || (this.isUserNameInBlank && this.userTryToAdd)
     }
   },
   watch: {
@@ -331,6 +340,8 @@ export default {
           this.updateUserToServer(this.user).then(response => {
             if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserEdition)
+              jQuery('#user-form-modal').modal('hide')
+              this.resetUserForm()
             } else {
               this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
@@ -339,18 +350,18 @@ export default {
           this.addUserToServer(this.user).then(response => {
             if (response.status) {
               this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForUserInsertion)
+              jQuery('#user-form-modal').modal('hide')
+              this.resetUserForm()
             } else {
               this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
             }
           })
         }
-        jQuery('#user-form-modal').modal('hide')
-        this.resetUserForm()
       }
     },
     resetUserForm () {
       this.user = {
-        username: 'Username',
+        username: '',
         firstname: '',
         lastname: '',
         email: '',
