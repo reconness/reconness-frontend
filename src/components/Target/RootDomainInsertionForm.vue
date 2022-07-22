@@ -10,7 +10,7 @@
                                 <p class="agent-placeholder agent-name-input root-domain-name mt-3 pl-2" v-bind:style ="{borderImage:gradient, 'border-image-slice': 1}">New Root Domain</p>
                             <p class="description-text pl-3">Choose an option to add a new rootdomain</p>
                             <div class="form-container">
-                                <div v-for="(item, index) in rootdomains" :key="item" class="subdomain-form-container mt-2">
+                                <div v-for="(item, index) in rootdomains" :key="item.id" class="subdomain-form-container mt-2">
                                   <input :data-index="index" v-model="item.root" @keyup.enter="createRootDomains" class="form-control agent-placeholder subdomains-items-field" placeholder="New rootdomain" @blur="enableValidationMessageRootDomainBlankName" @keyup="enableValidations" :id="'rootd-form-input-' + index">
                                   <div class="h-0">
                                     <span @click="removeRootDomainName" class="circle-minus-properties cursor-pointer" :data-index="index" v-show="index>0">
