@@ -88,14 +88,14 @@
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner || disableDowngradeRoleWhenLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
                                     Administrator
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || disableDowngradeRoleWhenLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
                                     <span class="material-icons green-text">person</span>
                                     Member
@@ -246,6 +246,9 @@ export default {
     },
     isUserNameInvalid () {
       return (this.isUserNameInBlank && this.userNameWasWritten) || (this.isUserNameInBlank && this.userTryToAdd)
+    },
+    disableDowngradeRoleWhenLoggedUserOwner () {
+      return this.editable && this.isLoggedUserOwner && this.editedUserSameLoggedIn
     }
   },
   watch: {
