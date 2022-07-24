@@ -249,7 +249,7 @@ export default ({
     },
     addRootDomain (state, params) {
       for (let index = 0; index < params.rootdomainsItems.length; index++) {
-        params.rootdomainsItems[index].id = state.idRootdomain++
+        params.rootdomainsItems[index].id = (state.idRootdomain++).toString()
       }
       const target = state.targetListStore.find(item => item.id === params.targetId)
       target.rootDomains = target.rootDomains.concat(params.rootdomainsItems)

@@ -1,7 +1,7 @@
 <template>
   <div>
   <!-- Contains navs-bar -->
-  <NavBarTwoDetailTarget :TargetName = "Target.name" />
+  <NavBarTwoDetailTarget :TargetName = "getCurrentTarget.name" />
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
@@ -32,10 +32,10 @@
                     <div class="row">
                       <div class="col-12">
                         <ul class="list-unstyled min-height" >
-                          <li v-for="item of Target.rootDomains" :key="item.id" class="d-flex justify-content-between align-items-center">
+                          <li v-for="item of getCurrentTarget.rootDomains" :key="item.id" class="d-flex justify-content-between align-items-center">
                             <div class="target-details-root-links">
                             <span  class="material-icons font-size-16px mt-1 black-text cursor-pointer"> chevron_right </span>
-                            <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: Target.id , id: item.id, targetName: Target.name, rootdomainName: item.root} }">
+                            <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: getCurrentTarget.id , id: item.id, targetName: getCurrentTarget.name, rootdomainName: item.root} }">
                               {{item.root}}
                             </router-link>
                             </div>
@@ -58,13 +58,13 @@
               <div class="card-body border-container m-3">
                 <dl>
                   <dt>Bug Bounty Program URL</dt>
-                  <dd>{{Target.bugBountyUrl}}</dd>
-                  <dt v-if="Target.isPrivateProgram">Is a private program</dt>
+                  <dd>{{getCurrentTarget.bugBountyUrl}}</dd>
+                  <dt v-if="getCurrentTarget.isPrivateProgram">Is a private program</dt>
                   <dt v-else>Is not a private program</dt>
                   <dt>In Scope</dt>
-                  <dd>{{Target.inScope}}</dd>
+                  <dd>{{getCurrentTarget.inScope}}</dd>
                   <dt>Out of Scope</dt>
-                  <dd>{{Target.outScope}}</dd>
+                  <dd>{{getCurrentTarget.outScope}}</dd>
                 </dl>
               </div>
               </div>
@@ -153,14 +153,10 @@ export default {
     RootDomainInsertionForm,
     BottomBar
   },
-  props: {
-    id: String
-  },
   data: function () {
     return {
       Target: Object,
       LinearGradient: String,
-      idTargetLoadedWhenIdPropsIsNull: Number,
       import_message: 'Import a Root Domain from external file',
       optionsBar: {
         chart: {
@@ -272,14 +268,16 @@ export default {
     ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),
     ...mapState('target', ['rootDomainEliminationStatus', 'targetListStore']),
-    getTargetId () {
-      if (this.isIdPropsUndefined) {
-        return this.Target.id
-      }
-      return this.id
-    },
     isIdPropsUndefined () {
       return this.$route.params.id === undefined
+    },
+    getCurrentTarget () {
+      const nameOfTarget = this.$route.params.targetName
+      const currentTarget = this.getTargetByName(nameOfTarget)
+      if (currentTarget) {
+        return currentTarget
+      }
+      return {}
     }
   },
   watch: {
@@ -292,7 +290,9 @@ export default {
   },
   created () {
     this.loadTargets()
-    this.updateTarget()
+    if (!this.isIdPropsUndefined) {
+      this.updateTarget()
+    }
     this.updateOpenPortsInGraph()
     this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
@@ -300,8 +300,8 @@ export default {
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.optionsBar.fill.gradient.colorStops[0].color = this.Target.primaryColor
-    this.optionsBar.fill.gradient.colorStops[1].color = this.Target.secondaryColor
+    this.optionsBar.fill.gradient.colorStops[0].color = this.getCurrentTarget.primaryColor
+    this.optionsBar.fill.gradient.colorStops[1].color = this.getCurrentTarget.secondaryColor
     if (this.isElementDeleted) {
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The Root Domain has been deleted successfully', life: 3000 })
       this.setIsElementDeleted(false)
@@ -335,17 +335,14 @@ export default {
       return this.capitalizeFirstChartByMonth(dateData)
     },
     updateTarget () {
-      if (!this.isIdPropsUndefined) {
-        this.Target = this.getTargetById(this.getTargetId)
-      }
-    },
-    updateTargetWhenUrlAccessedDirectly () {
       const nameOfTarget = this.$route.params.targetName
       this.Target = this.getTargetByName(nameOfTarget)
-      this.idTargetLoadedWhenIdPropsIsNull = this.Target.id
+    },
+    updateTargetWhenUrlAccessedDirectly () {
+      this.updateTarget()
     },
     updateLinearGradient () {
-      this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
+      this.LinearGradient = 'linear-gradient(160deg,' + this.getCurrentTarget.primaryColor + ' ' + '0%,' + this.getCurrentTarget.secondaryColor + ' ' + '100%)'
     },
     uploadRootDomainDataToServer (e) {
       const rootDataFile = e.target.files[0]
@@ -355,7 +352,7 @@ export default {
         const rootFileFormData = new FormData()
         rootFileFormData.append('file', rootDataFile)
         const targetAndRootData = {
-          targetName: self.Target.name,
+          targetName: self.getCurrentTarget.name,
           formData: rootFileFormData
         }
         self.uploadRootDomainFileToServer(targetAndRootData).then(response => {
