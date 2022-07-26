@@ -93,7 +93,6 @@
                       </div><!-- /.row -->
                     </div><!-- /.home-quote-box -->
                   </div> <!-- /.col-sm-12 -->
-                  <SimpleConfirmation />
                 </div><!-- /.row -->
               </div><!-- /.col-sm-12 -->
             </div><!-- /.row -->
@@ -110,7 +109,6 @@
 import HomeRigthSidebar from '@/components/General/HomeRigthSidebar.vue'
 import TargetsHighestInteraction from '@/components/General/TargetsHighestInteraction.vue'
 import DaysHighestInteraction from '@/components/General/DaysHighestInteraction.vue'
-import SimpleConfirmation from '@/components/General/SimpleConfirmation.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import Chips from 'primevue/chips'
 import jQuery from 'jquery'
@@ -120,7 +118,6 @@ export default {
     HomeRigthSidebar,
     TargetsHighestInteraction,
     DaysHighestInteraction,
-    SimpleConfirmation,
     Chips
   },
   computed: {

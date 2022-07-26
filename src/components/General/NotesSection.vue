@@ -46,7 +46,7 @@
                   <i class="note-sender-color">{{note.sender}} / {{new Date(note.sendDate).toISOString().substring(0, 10)}}</i>
                 </div>
                 <div class="col-3">
-                  <a class="float-right mr-2" @click="setSelectedNote" href="#" data-target="#note-confirmation-modal" :data-id="note.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
+                  <a class="float-right mr-2" @click="setSelectedNote" href="#" data-target="#message-box-notification-modal" :data-id="note.id" data-toggle="modal" data-backdrop="static" data-keyboard="false">Delete</a>
                 </div>
                 <div class="col-12">
                   <hr class="note-separator">
@@ -64,6 +64,7 @@
 <script>
 import CommentIco from '@/components/Icons/CommentIco.vue'
 import { mapMutations, mapGetters, mapState, mapActions } from 'vuex'
+import jQuery from 'jquery'
 export default {
   name: 'NotesSection',
   components: {
@@ -89,6 +90,7 @@ export default {
     ...mapState('target', ['idNote', 'currentView']),
     ...mapState('agent', ['isNotesSectionOpened']),
     ...mapState('user', ['loggedUsername']),
+    ...mapState('general', ['notificationMessageActionSelected']),
     getNotes: function () {
       if (this.order_by_date) {
         return this.orderNotesByDate()
@@ -97,10 +99,19 @@ export default {
       }
     }
   },
+  watch: {
+    notificationMessageActionSelected: function (value) {
+      if (value) {
+        this.removeNoteFn()
+      }
+    }
+  },
   methods: {
     ...mapMutations('agent', ['setIsNotesSectionOpened']),
-    ...mapActions('target', ['sendNoteToServer']),
-    ...mapMutations('target', ['sendTargetNote', 'setIdNote', 'sendRootDomainNote', 'sendSubDomainNote']),
+    ...mapActions('target', ['sendNoteToServer', 'removeTargetNoteFromServer']),
+    ...mapMutations('target', ['sendTargetNote', 'removeTargetNote', 'removeRootDomainNote', 'removeSubDomainNote', 'setIdNote', 'sendRootDomainNote', 'sendSubDomainNote']),
+    ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
+
     sendNotes: function () {
       if (this.$route.name === 'TargetDetail') {
         this.sendNoteToServer({
@@ -130,6 +141,9 @@ export default {
     setSelectedNote: function (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.setIdNote(selectedId)
+      const notificationMessageDesc = 'Are you sure to remove the selected note'
+      this.updateNotificationMessageDescription(notificationMessageDesc)
+      jQuery('#message-box-notification-modal').modal()
     },
     closeComments: function () {
       const isDeleteWindowsOpened = document.getElementById('note-confirmation-modal').getAttribute('aria-modal')
@@ -325,6 +339,26 @@ export default {
       }).sort(
         this.sortDescendingOrderByUserNameFn
       )
+    },
+    resetData: function () {
+      this.updateNotificationMessageActionSelected(false)
+    },
+    removeNoteFn: function () {
+      if (this.$route.name === 'TargetDetail') {
+        this.removeTargetNoteFromServer(this.$route.params.targetName)
+      } else if (this.$route.name === 'RootDomainDetails') {
+        this.removeRootDomainNote({
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName
+        })
+      } else if (this.$route.name === 'SubDomainDetails') {
+        this.removeSubDomainNote({
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName,
+          subdomainName: this.$route.params.subdomainName
+        })
+      }
+      jQuery('#message-box-notification-modal').modal('hide')
     }
   }
 }
