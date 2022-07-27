@@ -177,7 +177,7 @@ import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'SubdomainListTable',
@@ -222,6 +222,12 @@ export default {
     ...mapState('agent', ['isElementDeleted']),
     ...mapState('general', ['entitiesToDelete'])
   },
+  created () {
+    this.updateSubDomainsByTargetAndRootDomainFromServer({
+      targetName: this.$route.params.targetName,
+      rootDomainName: this.$route.params.rootdomainName
+    })
+  },
   mounted () {
     if (this.isElementDeleted) {
       this.$toast.add({ severity: 'success', sumary: 'Success', detail: 'The SubDomain has been deleted successfully', life: 3000 })
@@ -229,6 +235,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('agent', ['setIsElementDeleted']),
+    ...mapMutations('target', ['updateRemoveAllOption']),
+    ...mapMutations('general', ['addEntityToDelete']),
+    ...mapActions('target', ['updateSubDomainsByTargetAndRootDomainFromServer']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -369,10 +379,7 @@ export default {
         name: this.rootDomain.subdomain[0].name,
         type: this.$entityTypeData.SUBDOMAIN.id // this.$agentType.TARGET
       })
-    },
-    ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['updateRemoveAllOption']),
-    ...mapMutations('general', ['addEntityToDelete'])
+    }
   }
 }
 </script>

@@ -247,6 +247,12 @@ export default ({
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       roots.subdomain = roots.subdomain.concat(params.subdomainsItems)
     },
+    addSubdomainsByTargetNameAndRootDomainName (state, params) {
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+      roots.subdomain.splice(0, roots.subdomain.length)
+      roots.subdomain = roots.subdomain.concat(params.subDomainData)
+    },
     addRootDomain (state, params) {
       for (let index = 0; index < params.rootdomainsItems.length; index++) {
         params.rootdomainsItems[index].id = (state.idRootdomain++).toString()
@@ -584,6 +590,29 @@ export default ({
       }).catch(function (error) {
         return { status: false, message: error.response.data }
       })
+    },
+    updateSubDomainsByTargetAndRootDomainFromServer ({ state, commit, getters }, subdomainReference) {
+      if (state.authentication_token !== '') {
+        return axios.get('/subdomains/getpaginate/' + subdomainReference.targetName + '/' + subdomainReference.rootDomainName,
+          {
+            params: {
+              limit: 1,
+              page: 1
+            }
+          }).then(function (response) {
+          const subdomainsMapped = getters.mapSubdomainsFromServerToLocal(response.data.data)
+          const subDomainData = {
+            targetName: subdomainReference.targetName,
+            rootDomainName: subdomainReference.rootDomainName,
+            subDomainData: subdomainsMapped
+          }
+          commit('addSubdomainsByTargetNameAndRootDomainName', subDomainData)
+          return { status: true, message: '' }
+        })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
     }
   },
   modules: {
@@ -657,10 +686,21 @@ export default ({
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       return roots
     },
+    getRootDomainByTargetNameAndRootDomainNamte: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+      return roots
+    },
     getSubDomain: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idtarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)
       const subdomain = roots.subdomain.find(subdItem => subdItem.id === params.idsubdomain)
+      return subdomain
+    },
+    getSubDomainByTargetNameAndRootDomainName: (state) => (subdomainReference) => {
+      const target = state.targetListStore.find(item => item.name === subdomainReference.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
+      const subdomain = roots.subdomain.find(subdItem => subdItem.name === subdomainReference.subDomainName)
       return subdomain
     },
     checkIfSubdomainExistsByName: (state) => (params) => {
@@ -994,6 +1034,36 @@ export default ({
         sender: serverNote.createdBy
       }
       return localNote
+    },
+    mapSubdomainsFromServerToLocal: (state, getters) => (subdomains) => {
+      const mappedSubdomains = []
+      subdomains.forEach(subdomain => {
+        const mappedSubdomain = getters.mapSingleSubdomainFromServerToLocal(subdomain)
+        mappedSubdomains.push(mappedSubdomain)
+      })
+      return mappedSubdomains
+    },
+    mapSingleSubdomainFromServerToLocal: (state) => (subdomain) => {
+      const createdDate = new Date(subdomain.createdAt)
+      const newSubDomain = {
+        id: subdomain.id,
+        name: subdomain.name,
+        added: createdDate.getFullYear() + '-' + (createdDate.getMonth() + 1) + '-' + createdDate.getDate(),
+        checking: false,
+        interesting: false,
+        vulnerable: false,
+        boubty: false,
+        ignore: false,
+        scope: false,
+        agent: [],
+        ipAddress: subdomain.ipAddress,
+        http: subdomain.hasHttpOpen,
+        isAlive: subdomain.isAlive,
+        ports: [],
+        services: [],
+        directories: []
+      }
+      return newSubDomain
     }
   }
 })
