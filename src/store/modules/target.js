@@ -698,7 +698,7 @@ export default ({
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       return roots
     },
-    getRootDomainByTargetNameAndRootDomainNamte: (state) => (params) => {
+    getRootDomainByTargetNameAndRootDomainName: (state) => (params) => {
       const target = state.targetListStore.find(item => item.name === params.targetName)
       const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
       return roots

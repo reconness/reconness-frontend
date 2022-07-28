@@ -275,9 +275,14 @@ export default {
       this.redirectToRootDomainDetails()
     },
     clearRootdomainsRedirectToTargetDetailsAndUpdateOperationStatus: function () {
-      this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
-      this.redirectToTargetDetails()
-      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+      this.removeSingleRootDomainFromServer(this.getTargetName).then(response => {
+        if (response.status) {
+          this.redirectToTargetDetails()
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     },
     removeTargetsAndDisplayOperationStatus () {
       this.clearTargetEntitiesToDeleteToServer().then(response => {

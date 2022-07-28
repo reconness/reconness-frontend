@@ -37,7 +37,7 @@
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.TARGET.id)" :data-id="getTargetId" :data-name="this.$route.params.targetName">Delete Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
-          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getTargetId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
+          <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getRootDomainId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <label for="export-target" class="nav-link pos mb-0"> Export Target </label>
@@ -179,11 +179,22 @@ export default {
   computed: {
     ...mapState('target', ['targetListStore']),
     ...mapState('agent', ['isNotesSectionOpened']),
-    ...mapGetters('target', ['filterByColor', 'getTargetByName']),
+    ...mapGetters('target', ['filterByColor', 'getTargetByName', 'getRootDomainByTargetNameAndRootDomainName']),
     getTargetId () {
       const searchedTarget = this.getTargetByName(this.$route.params.targetName)
       if (searchedTarget) {
-        return this.getTargetByName(this.$route.params.targetName).id
+        return searchedTarget.id
+      }
+      return undefined
+    },
+    getRootDomainId () {
+      const rootDomainReference = {
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      }
+      const searchedRootDomain = this.getRootDomainByTargetNameAndRootDomainName(rootDomainReference)
+      if (searchedRootDomain) {
+        return searchedRootDomain.id
       }
       return undefined
     }
