@@ -46,7 +46,8 @@
     </div>
 </template>
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 import jQuery from 'jquery'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
@@ -73,6 +74,7 @@ export default {
       }
     }
   },
+  mixins: [StatusMessageMixin],
   computed: {
     isFormValid () {
       return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
@@ -108,6 +110,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions('target', ['addSubDomainToServer']),
     createSubdomains: function () {
       if (this.isFormValid || !this.enableValidationMessageSubDomainBlankNameManual()) {
         this.subdomains.push({
@@ -142,11 +145,17 @@ export default {
       }
       if (!this.enableValidationMessageSubDomainBlankNameManual() && !this.enableValidationMessageSubDomainUniqueNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
-          idTarget: this.target.id,
-          idRootDomain: this.rootDomain.id,
-          subdomainsItems: this.subdomains
+          subDomainData: this.subdomains[0],
+          targetName: this.$route.params.targetName,
+          rootDomainName: this.$route.params.rootdomainName
         }
-        this.addSubdomain(params)
+        this.addSubDomainToServer(params).then(response => {
+          if (response.status) {
+            this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
+          } else {
+            this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+          }
+        })
         this.validators.exist.subDomainName.length = this.validators.exist.subDomainName.length + 1
         jQuery('#subDomainInsertionForm').modal('hide')
         this.resetForm()

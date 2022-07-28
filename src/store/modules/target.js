@@ -596,7 +596,7 @@ export default ({
         return axios.get('/subdomains/getpaginate/' + subdomainReference.targetName + '/' + subdomainReference.rootDomainName,
           {
             params: {
-              limit: 1,
+              limit: 10,
               page: 1
             }
           }).then(function (response) {
@@ -609,6 +609,18 @@ export default ({
           commit('addSubdomainsByTargetNameAndRootDomainName', subDomainData)
           return { status: true, message: '' }
         })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    addSubDomainToServer ({ state, commit, getters }, subdomainReferenceAndData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/subdomains', getters.mapSingleSubdomainFromLocalToServer(subdomainReferenceAndData))
+          .then(function (response) {
+            commit('addSubdomainsByTargetNameAndRootDomainName', subdomainReferenceAndData)
+            return { status: true, message: '' }
+          })
           .catch(function (error) {
             return { status: false, message: error.response.data }
           })
@@ -1060,6 +1072,20 @@ export default ({
         http: subdomain.hasHttpOpen,
         isAlive: subdomain.isAlive,
         ports: [],
+        services: [],
+        directories: []
+      }
+      return newSubDomain
+    },
+    mapSingleSubdomainFromLocalToServer: (state) => (subdomain) => {
+      const newSubDomain = {
+        name: subdomain.subDomainData.name,
+        target: subdomain.targetName,
+        rootDomain: subdomain.rootDomainName,
+        agent: [],
+        ipAddress: subdomain.subDomainData.ipAddress,
+        hasHttpOpen: subdomain.subDomainData.hasHttpOpen,
+        isAlive: subdomain.subDomainData.isAlive,
         services: [],
         directories: []
       }
