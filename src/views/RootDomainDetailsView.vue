@@ -1,8 +1,8 @@
 <template>
   <div>
   <!-- Contains navs-bar -->
-  <NavBarTwoDetailTarget :TargetName = "Target.name"
-  :gradient = "LinearGradient" :rootName = "RootDomains.root" :showRootDomains = "showRoot"/>
+  <NavBarTwoDetailTarget :TargetName = "loadedTarget.name"
+  :gradient = "LinearGradient" :rootName = "loadedRootdomain.root" :showRootDomains = "showRoot"/>
       <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
@@ -10,12 +10,12 @@
         <div class="content">
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
             Subdomains
-            <span  class="text-muted-b3"> ({{  this.getSubdomainSize(this.routeParams)}})</span>
+            <span  class="text-muted-b3"> ({{  this.getSubdomainSizeByReferencesName(this.routeParams)}})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
             Agents <span class="text-muted-b3">({{getAgentsByType(this.$agentType.ROOTDOMAIN).length}})</span>
           </button>
-          <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'RootDomains' />
+          <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'loadedRootdomain' />
           <AgentListTable v-else :color = "secondaryColor"/>
         </div>
       </div>
@@ -24,10 +24,11 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 import SubdomainListTable from '@/components/Target/SubdomainListTable.vue'
 import AgentListTable from '@/components/Target/AgentListTable.vue'
+import { GeneralMixin } from '@/mixins/GeneralMixin'
 export default {
   name: 'RootDomainDetailsView',
   components: {
@@ -41,13 +42,6 @@ export default {
   },
   data: function () {
     return {
-      TargetName: String,
-      Target: Object,
-      RootDomains: {
-        type: Object,
-        default: () => {}
-      },
-      LinearGradient: '',
       showRoot: true,
       buttonGradSubd: '',
       buttonGradAg: '',
@@ -55,16 +49,33 @@ export default {
       shadowAg: '',
       secondaryColor: '',
       routeParams: {
-        idTarget: this.idTarget,
-        idRootDomain: this.id
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
       }
     }
   },
+  mixins: [GeneralMixin],
   computed: {
     ...mapState('target', ['countSubdomainList', 'isTableList']),
-    ...mapGetters('target', ['getTargetById', 'getSubdomainSize']),
+    ...mapGetters('target', ['getTargetById', 'getSubdomainSize', 'getSubdomainSizeByReferencesName', 'getTargetByName', 'getRootDomainByTargetNameAndRootDomainName']),
     ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
-    ...mapGetters('target', ['listRootDomainsAgents'])
+    loadedRootdomain () {
+      const rootdomainEmpty = this.createRootDomain()
+      const targetName = this.$route.params.targetName
+      const rootDomainName = this.$route.params.rootdomainName
+      return (this.getRootDomainByTargetNameAndRootDomainName({
+        targetName: targetName,
+        rootDomainName: rootDomainName
+      })) || rootdomainEmpty
+    },
+    loadedTarget () {
+      const targetName = this.$route.params.targetName
+      const targetEmpty = this.createTarget()
+      return this.getTargetByName(targetName) || targetEmpty
+    },
+    LinearGradient () {
+      return 'linear-gradient(160deg,' + this.loadedTarget.primaryColor + ' ' + '0%,' + this.loadedTarget.secondaryColor + ' ' + '100%)'
+    }
   },
   watch: {
     $route (to, from) {
@@ -72,17 +83,15 @@ export default {
     }
   },
   mounted () {
+    this.loadTargets()
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.Target = this.getTargetById(this.idTarget)
-    this.RootDomains = this.Target.rootDomains.find(item => item.id === this.id)
-    this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
-    this.secondaryColor = this.Target.secondaryColor
+    this.secondaryColor = this.loadedTarget.secondaryColor
     this.setCurrentView(this.$route.name)
   },
   methods: {
-    ...mapMutations('target', ['setIsDefaultTabButton']),
-    ...mapMutations('target', ['setCurrentView']),
+    ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
+    ...mapActions('target', ['loadTargets']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {

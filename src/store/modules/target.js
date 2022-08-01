@@ -249,9 +249,11 @@ export default ({
     },
     addSubdomainsByTargetNameAndRootDomainName (state, params) {
       const target = state.targetListStore.find(item => item.name === params.targetName)
-      const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
-      roots.subdomain.splice(0, roots.subdomain.length)
-      roots.subdomain = roots.subdomain.concat(params.subDomainData)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+        roots.subdomain.splice(0, roots.subdomain.length)
+        roots.subdomain = roots.subdomain.concat(params.subDomainData)
+      }
     },
     addRootDomain (state, params) {
       for (let index = 0; index < params.rootdomainsItems.length; index++) {
@@ -688,10 +690,23 @@ export default ({
     },
     getSubdomainSize: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
-      if (roots) {
-        return roots.subdomain.length
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
+        if (roots) {
+          return roots.subdomain.length
+        }
       }
+      return 0
+    },
+    getSubdomainSizeByReferencesName: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+        if (roots) {
+          return roots.subdomain.length
+        }
+      }
+      return 0
     },
     getRootDomainByIdTargetAndIdRootDomain: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
@@ -700,8 +715,11 @@ export default ({
     },
     getRootDomainByTargetNameAndRootDomainName: (state) => (params) => {
       const target = state.targetListStore.find(item => item.name === params.targetName)
-      const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
-      return roots
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+        return roots
+      }
+      return null
     },
     getSubDomain: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idtarget)
