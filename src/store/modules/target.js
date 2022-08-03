@@ -1082,7 +1082,7 @@ export default ({
         checking: false,
         interesting: false,
         vulnerable: false,
-        boubty: false,
+        bounty: false,
         ignore: false,
         scope: false,
         agent: [],

@@ -26,13 +26,12 @@ const GeneralMixin = {
     },
     createSubdomain () {
       return {
-        id: -1,
         name: '',
-        added: new Date(),
+        added: new Date().toISOString().slice(0, 10),
         checking: false,
         interesting: false,
         vulnerable: false,
-        boubty: false,
+        bounty: false,
         ignore: false,
         scope: false,
         agent: [],

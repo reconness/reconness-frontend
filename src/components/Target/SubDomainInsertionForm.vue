@@ -48,12 +48,14 @@
 <script>
 import { mapMutations, mapGetters, mapActions } from 'vuex'
 import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
+import { GeneralMixin } from '@/mixins/GeneralMixin'
 import jQuery from 'jquery'
 import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
   name: 'SubDomainInsertionForm',
   components: {
-    MinusCircleIco
+    MinusCircleIco,
+    GeneralMixin
   },
   props: {
     gradient: String
@@ -74,7 +76,7 @@ export default {
       }
     }
   },
-  mixins: [StatusMessageMixin],
+  mixins: [StatusMessageMixin, GeneralMixin],
   computed: {
     isFormValid () {
       return (this.validators.url.subDomainName || this.validators.exist.subDomainName)
@@ -91,45 +93,13 @@ export default {
     ...mapGetters('target', ['checkIfSubdomainExistsByName', 'getTargetByName', 'getTargetAndRootDomainByName'])
   },
   created: function () {
-    this.subdomains.push({
-      name: '',
-      added: new Date().toISOString().slice(0, 10),
-      checking: false,
-      interesting: false,
-      vulnerable: false,
-      boubty: false,
-      ignore: false,
-      scope: false,
-      agent: [],
-      ipAddress: '',
-      http: false,
-      isAlive: false,
-      ports: [],
-      services: [],
-      directories: []
-    })
+    this.subdomains.push(this.createSubdomain())
   },
   methods: {
     ...mapActions('target', ['addSubDomainToServer']),
     createSubdomains: function () {
       if (this.isFormValid || !this.enableValidationMessageSubDomainBlankNameManual()) {
-        this.subdomains.push({
-          name: '',
-          added: new Date().toISOString().slice(0, 10),
-          checking: false,
-          interesting: false,
-          vulnerable: false,
-          boubty: false,
-          ignore: false,
-          scope: false,
-          agent: [],
-          ipAddress: '',
-          http: false,
-          isAlive: false,
-          ports: [],
-          services: [],
-          directories: []
-        })
+        this.subdomains.push(this.createSubdomain())
         const self = this
         setTimeout(
           function () {
@@ -162,23 +132,7 @@ export default {
       }
     },
     resetForm: function () {
-      this.subdomains = [{
-        name: '',
-        added: new Date(),
-        checking: false,
-        interesting: false,
-        vulnerable: false,
-        boubty: false,
-        ignore: false,
-        scope: false,
-        agent: [],
-        ipAddress: '',
-        http: false,
-        isAlive: false,
-        ports: [],
-        services: [],
-        directories: []
-      }]
+      this.subdomains = [this.createSubdomain()]
       this.validators = {
         url: {
           subDomainName: [false]
