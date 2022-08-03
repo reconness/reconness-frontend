@@ -23,6 +23,26 @@ const GeneralMixin = {
         messages: [],
         agent: []
       }
+    },
+    createSubdomain () {
+      return {
+        id: -1,
+        name: '',
+        added: new Date(),
+        checking: false,
+        interesting: false,
+        vulnerable: false,
+        boubty: false,
+        ignore: false,
+        scope: false,
+        agent: [],
+        ipAddress: '',
+        http: false,
+        isAlive: false,
+        ports: [],
+        services: [],
+        directories: []
+      }
     }
   }
 }

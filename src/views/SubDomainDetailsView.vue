@@ -39,6 +39,7 @@ import SubDomainDetailsDashboard from '@/components/Target/SubDomainDetailsDashb
 import SubDomainDetailsAgents from '@/components/Target/SubDomainDetailsAgents.vue'
 import SubDomainDetailsServices from '@/components/Target/SubDomainDetailsServices.vue'
 import SubDomainDetailsDirectories from '@/components/Target/SubDomainDetailsDirectories.vue'
+import { GeneralMixin } from '@/mixins/GeneralMixin'
 
 export default {
   name: 'SubDomainDetailsView',
@@ -47,7 +48,8 @@ export default {
     SubDomainDetailsDashboard,
     SubDomainDetailsAgents,
     SubDomainDetailsDirectories,
-    SubDomainDetailsServices
+    SubDomainDetailsServices,
+    GeneralMixin
   },
   props: {
     idTarget: String,
@@ -57,15 +59,9 @@ export default {
   data: function () {
     return {
       TargetName: String,
-      Target: Object,
-      RootDomains: {
-        type: Object,
-        default: () => {}
-      },
-      Subdomain: {
-        type: Object,
-        default: () => {}
-      },
+      Target: this.createTarget(),
+      RootDomains: this.createRootDomain(),
+      Subdomain: this.createSubdomain(),
       LinearGradient: '',
       showRoot: true,
       buttonGradSubd: '',
@@ -90,9 +86,10 @@ export default {
 
     }
   },
+  mixins: [GeneralMixin],
   computed: {
     ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
-    ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain']),
+    ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain', 'getTargetByName']),
     getSubdomainSize () {
       const loadedSubdomain = this.getSubDomain({
         idtarget: this.idTarget,
@@ -105,16 +102,19 @@ export default {
       return [0, 0, 0]
     }
   },
+  created () {
+    const targetName = this.$route.params.targetName
+    this.Target = this.getTargetByName(targetName)
+  },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.Target = this.getTargetById(parseInt(this.idTarget))
-    this.RootDomains = this.Target.rootDomains.find(item => item.id === parseInt(this.id))
+    this.RootDomains = this.Target.rootDomains.find(item => item.id === this.id)
     this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.buttonGradSubd = this.LinearGradient
     this.secondaryColor = this.Target.secondaryColor
     this.gradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     if (this.idsubdomain) {
-      this.Subdomain = this.RootDomains.subdomain.find(item => item.id === parseInt(this.idsubdomain))
+      this.Subdomain = this.RootDomains.subdomain.find(item => item.id === this.idsubdomain)
       this.subdomainName = this.Subdomain.name
     }
     this.setCurrentView(this.$route.name)

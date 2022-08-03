@@ -10,13 +10,13 @@
         <div class="content">
           <button type="button" class="btn ml-4 border-grad" v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradSubd + 'border-box', 'box-shadow': shadowSubd}" v-on:click="activeTabButton(true)">
             Subdomains
-            <span  class="text-muted-b3"> ({{  this.getSubdomainSizeByReferencesName(this.routeParams)}})</span>
+            <span  class="text-muted-b3"> ({{ loadedRootdomain.subdomain.length }})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
             Agents <span class="text-muted-b3">({{getAgentsByType(this.$agentType.ROOTDOMAIN).length}})</span>
           </button>
-          <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= 'secondaryColor' :gradient = "LinearGradient" :rootDomain = 'loadedRootdomain' />
-          <AgentListTable v-else :color = "secondaryColor"/>
+          <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= "loadedTarget.secondaryColor" :gradient = "LinearGradient" :rootDomain = "loadedRootdomain" :routeParams="routeParams" />
+          <AgentListTable v-else :color = "loadedTarget.secondaryColor"/>
         </div>
       </div>
     </div>
@@ -61,12 +61,7 @@ export default {
     ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
     loadedRootdomain () {
       const rootdomainEmpty = this.createRootDomain()
-      const targetName = this.$route.params.targetName
-      const rootDomainName = this.$route.params.rootdomainName
-      return (this.getRootDomainByTargetNameAndRootDomainName({
-        targetName: targetName,
-        rootDomainName: rootDomainName
-      })) || rootdomainEmpty
+      return (this.getRootDomainByTargetNameAndRootDomainName(this.routeParams)) || rootdomainEmpty
     },
     loadedTarget () {
       const targetName = this.$route.params.targetName
@@ -86,12 +81,12 @@ export default {
     this.loadTargets()
     this.$store.commit('agent/updateLocView', 'Targets', true)
     this.buttonGradSubd = this.LinearGradient
-    this.secondaryColor = this.loadedTarget.secondaryColor
     this.setCurrentView(this.$route.name)
+    this.updateSubDomainsByTargetAndRootDomainFromServer(this.routeParams)
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
-    ...mapActions('target', ['loadTargets']),
+    ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {
