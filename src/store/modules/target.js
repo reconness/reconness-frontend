@@ -251,7 +251,6 @@ export default ({
       const target = state.targetListStore.find(item => item.name === params.targetName)
       if (target) {
         const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
-        roots.subdomain.splice(0, roots.subdomain.length)
         roots.subdomain = roots.subdomain.concat(params.subDomainData)
       }
     },
@@ -386,6 +385,13 @@ export default ({
     },
     clearSelectedTargetsList (state) {
       state.selectedTargets.splice(0, state.selectedTargets.length)
+    },
+    updateIdOfMultipleSubdomainFromServerToLocal: (state, getters) => (subdomainsData) => {
+      subdomainsData.remoteData.forEach(element => {
+        if (element.name === subdomainsData.localData.name) {
+          subdomainsData.localData.id = element.id
+        }
+      })
     }
   },
   actions: {
@@ -602,7 +608,7 @@ export default ({
               page: 1
             }
           }).then(function (response) {
-          const subdomainsMapped = getters.mapSubdomainsFromServerToLocal(response.data.data)
+          const subdomainsMapped = getters.mapMultipleSubdomainsFromServerToLocal(response.data.data)
           const subDomainData = {
             targetName: subdomainReference.targetName,
             rootDomainName: subdomainReference.rootDomainName,
@@ -618,14 +624,32 @@ export default ({
     },
     addSubDomainToServer ({ state, commit, getters }, subdomainReferenceAndData) {
       if (state.authentication_token !== '') {
-        return axios.post('/subdomains', getters.mapSingleSubdomainFromLocalToServer(subdomainReferenceAndData))
-          .then(function (response) {
-            commit('addSubdomainsByTargetNameAndRootDomainName', subdomainReferenceAndData)
-            return { status: true, message: '' }
-          })
-          .catch(function (error) {
-            return { status: false, message: error.response.data }
-          })
+        const subDomainParams = {
+          targetName: subdomainReferenceAndData.targetName,
+          rootDomainName: subdomainReferenceAndData.rootDomainName,
+          subDomainData: []
+        }
+        if (subdomainReferenceAndData.subDomainData instanceof Array) {
+          return axios.post('/subdomains/multiples', getters.mapMultipleSubdomainFromLocalToServer(subdomainReferenceAndData))
+            .then(function (response) {
+              subDomainParams.subDomainData = getters.mapMultipleSubdomainsFromServerToLocal(response.data)
+              commit('addSubdomainsByTargetNameAndRootDomainName', subDomainParams)
+              return { status: true, message: '' }
+            })
+            .catch(function (error) {
+              return { status: false, message: error.response.data }
+            })
+        } else {
+          return axios.post('/subdomains', getters.mapSingleSubdomainFromLocalToServer(subdomainReferenceAndData))
+            .then(function (response) {
+              subDomainParams.subDomainData = getters.mapSingleSubdomainFromServerToLocal(response.data)
+              commit('addSubdomainsByTargetNameAndRootDomainName', subDomainParams)
+              return { status: true, message: '' }
+            })
+            .catch(function (error) {
+              return { status: false, message: error.response.data }
+            })
+        }
       }
     }
   },
@@ -1065,7 +1089,7 @@ export default ({
       }
       return localNote
     },
-    mapSubdomainsFromServerToLocal: (state, getters) => (subdomains) => {
+    mapMultipleSubdomainsFromServerToLocal: (state, getters) => (subdomains) => {
       const mappedSubdomains = []
       subdomains.forEach(subdomain => {
         const mappedSubdomain = getters.mapSingleSubdomainFromServerToLocal(subdomain)
@@ -1105,9 +1129,23 @@ export default ({
         hasHttpOpen: subdomain.subDomainData.hasHttpOpen,
         isAlive: subdomain.subDomainData.isAlive,
         services: [],
-        directories: []
+        directories: [],
+        labels: []
       }
       return newSubDomain
+    },
+    mapMultipleSubdomainFromLocalToServer: (state, getters) => (subdomain) => {
+      const newMappedSubdomains = []
+      subdomain.subDomainData.forEach(item => {
+        newMappedSubdomains.push(
+          getters.mapSingleSubdomainFromLocalToServer({
+            subDomainData: item,
+            targetName: subdomain.targetName,
+            rootDomainName: subdomain.rootDomainName
+          })
+        )
+      })
+      return newMappedSubdomains
     }
   }
 })

@@ -54,8 +54,7 @@ import MinusCircleIco from '@/components/Icons/MinusCircleIco.vue'
 export default {
   name: 'SubDomainInsertionForm',
   components: {
-    MinusCircleIco,
-    GeneralMixin
+    MinusCircleIco
   },
   props: {
     gradient: String
@@ -115,9 +114,14 @@ export default {
       }
       if (!this.enableValidationMessageSubDomainBlankNameManual() && !this.enableValidationMessageSubDomainUniqueNameManual() && this.validators.url.subDomainName.indexOf(true) < 0 && this.validators.exist.subDomainName.indexOf(true) < 0 && this.validators.blank.subDomainName.indexOf(true) < 0) {
         const params = {
-          subDomainData: this.subdomains[0],
+          subDomainData: null,
           targetName: this.$route.params.targetName,
           rootDomainName: this.$route.params.rootdomainName
+        }
+        if (this.subdomains.length > 1) {
+          params.subDomainData = this.subdomains
+        } else {
+          params.subDomainData = this.subdomains[0]
         }
         this.addSubDomainToServer(params).then(response => {
           if (response.status) {

@@ -48,8 +48,7 @@ export default {
     SubDomainDetailsDashboard,
     SubDomainDetailsAgents,
     SubDomainDetailsDirectories,
-    SubDomainDetailsServices,
-    GeneralMixin
+    SubDomainDetailsServices
   },
   props: {
     idTarget: String,
