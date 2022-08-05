@@ -40,7 +40,8 @@ const GeneralMixin = {
         isAlive: false,
         ports: [],
         services: [],
-        directories: []
+        directories: [],
+        labels: []
       }
     }
   }

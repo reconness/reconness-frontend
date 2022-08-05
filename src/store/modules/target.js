@@ -1115,7 +1115,8 @@ export default ({
         isAlive: subdomain.isAlive,
         ports: [],
         services: [],
-        directories: []
+        directories: [],
+        labels: subdomain.labels
       }
       return newSubDomain
     },
