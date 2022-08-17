@@ -43,7 +43,10 @@ export default ({
     removeAll: false,
     textToSearch: '',
     routePreviousToSearch: '',
-    selectedTargets: []
+    selectedTargets: [],
+    targetLoadingProcessStatus: 1,
+    rootdomainLoadingProcessStatus: 1,
+    subDomainLoadingProcessStatus: 1
   },
   mutations: {
     updateRoutePreviousToSearch (state, route) {
@@ -392,18 +395,27 @@ export default ({
           subdomainsData.localData.id = element.id
         }
       })
+    },
+    updateTargetLoadingProcessStatus: (state) => (loadingStatus) => {
+      state.targetLoadingProcessStatus = loadingStatus
+    },
+    updateSubdomainLoadingProcessStatus: (state) => (loadingStatus) => {
+      state.subDomainLoadingProcessStatus = loadingStatus
     }
   },
   actions: {
     loadTargets ({ state, commit, getters }) {
       if (state.authentication_token !== '') {
+        commit('updateTargetLoadingProcessStatus', 1)
         return axios.get('/targets')
           .then(function (response) {
             const targetsMapped = getters.mapTargets(response.data)
             commit('updateTargets', targetsMapped)
+            commit('updateTargetLoadingProcessStatus', 2)
             return true
           })
           .catch(function () {
+            commit('updateTargetLoadingProcessStatus', 4)
             return false
           })
       }
@@ -601,6 +613,7 @@ export default ({
     },
     updateSubDomainsByTargetAndRootDomainFromServer ({ state, commit, getters }, subdomainReference) {
       if (state.authentication_token !== '') {
+        commit('updateSubdomainLoadingProcessStatus', 1)
         return axios.get('/subdomains/getpaginate/' + subdomainReference.targetName + '/' + subdomainReference.rootDomainName,
           {
             params: {
@@ -615,9 +628,11 @@ export default ({
             subDomainData: subdomainsMapped
           }
           commit('addSubdomainsByTargetNameAndRootDomainName', subDomainData)
+          commit('updateSubdomainLoadingProcessStatus', 2)
           return { status: true, message: '' }
         })
           .catch(function (error) {
+            commit('updateSubdomainLoadingProcessStatus', 4)
             return { status: false, message: error.response.data }
           })
       }

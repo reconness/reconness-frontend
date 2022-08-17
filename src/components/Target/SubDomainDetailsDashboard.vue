@@ -74,10 +74,17 @@ import { mapGetters, mapMutations } from 'vuex'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'SubDomainDetailsDashboard',
+  props: ['subdomainInstance', 'targetInstance'],
+  data: function () {
+    return {
+      loadedSubdomain: this.subdomainInstance,
+      loadedTarget: this.targetInstance
+    }
+  },
   mixins: [RemoveEntitiesMixin],
   computed: {
     ...mapGetters('target', ['getSubDomain', 'getTargetById', 'getTargetByName', 'getSubDomainByTargetNameAndRootDomainName']),
-    loadedSubdomain () {
+    getSubdomain () {
       const targetName = this.$route.params.targetName
       const rootDomainName = this.$route.params.rootdomainName
       const subDomainName = this.$route.params.subdomainName
@@ -86,10 +93,6 @@ export default {
         rootDomainName: rootDomainName,
         subDomainName: subDomainName
       })
-    },
-    loadedTarget () {
-      const targetName = this.$route.params.targetName
-      return this.getTargetByName(targetName)
     }
   },
   methods: {

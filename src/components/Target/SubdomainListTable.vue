@@ -162,16 +162,12 @@ There are no subdomains associated with this root domain. <br>
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Delete</small>
   </OverlayPanel>
-  <Confirmation></Confirmation>
-  <ConfirmationList :nameRoute= 'rName'></ConfirmationList>
   <SubDomainInsertionForm :gradient="gradient"/>
 </div>
 </template>
 <script>
 import SubDomainInsertionForm from '@/components/Target/SubDomainInsertionForm.vue'
 import OverlayPanel from 'primevue/overlaypanel'
-import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
-import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
@@ -184,11 +180,9 @@ export default {
   components: {
     SubDomainInsertionForm,
     OverlayPanel,
-    Confirmation,
     FileExportIco,
     FileImportIco,
-    HeartIco,
-    ConfirmationList
+    HeartIco
   },
   props: {
     color: String,
