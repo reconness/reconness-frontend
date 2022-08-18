@@ -506,11 +506,22 @@ export default ({
         commit('general/addEntityToDelete', entity, { root: true })
       })
     },
-    clearAllSubDomainEntitiesToDelete ({ state, rootState }, entities) {
-      const target = state.targetListStore.find(target => target.name === entities.targetName)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-      rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
-      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+    clearAllSubDomainEntitiesToDelete ({ state, rootState, getters }, entities) {
+      if (state.authentication_token !== '') {
+        return axios.delete('/subdomains/multiples/', {
+          data: getters.getSubDomainsIdsToDelete
+        })
+          .then(function () {
+            const target = state.targetListStore.find(target => target.name === entities.targetName)
+            const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
+            rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
+            rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
     },
     clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
       rootState.general.entitiesToDelete.forEach(entity => {
@@ -1162,6 +1173,13 @@ export default ({
         )
       })
       return newMappedSubdomains
+    },
+    getSubDomainsIdsToDelete (state, getters, rootState) {
+      const subDomainsNames = []
+      rootState.general.entitiesToDelete.forEach(entity => {
+        subDomainsNames.push(entity.id)
+      })
+      return subDomainsNames
     }
   }
 })

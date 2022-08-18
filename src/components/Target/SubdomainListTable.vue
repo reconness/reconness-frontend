@@ -358,10 +358,12 @@ export default {
     },
     removeAllSubDomains () {
       this.updateRemoveAllOption(true)
-      this.addEntityToDelete({
-        id: this.rootDomain.subdomain[0].id,
-        name: this.rootDomain.subdomain[0].name,
-        type: this.$entityTypeData.SUBDOMAIN.id // this.$agentType.TARGET
+      this.rootDomain.subdomain.forEach(element => {
+        this.addEntityToDelete({
+          id: element.id,
+          name: element.name,
+          type: this.$entityTypeData.SUBDOMAIN.id
+        })
       })
     }
   }
