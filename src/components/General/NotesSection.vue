@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['setIsNotesSectionOpened']),
-    ...mapActions('target', ['sendNoteToServer', 'removeTargetNoteFromServer']),
+    ...mapActions('target', ['sendNoteToServer', 'removeTargetNoteFromServer', 'removeRootDomainNoteFromServer', 'sendRootDomainNoteToServer']),
     ...mapMutations('target', ['sendTargetNote', 'removeTargetNote', 'removeRootDomainNote', 'removeSubDomainNote', 'setIdNote', 'sendRootDomainNote', 'sendSubDomainNote']),
     ...mapMutations('general', ['updateNotificationMessageDescription', 'updateNotificationMessageActionSelected']),
 
@@ -121,11 +121,12 @@ export default {
           id: ''
         })
       } else if (this.$route.name === 'RootDomainDetails') {
-        this.sendRootDomainNote({
+        this.sendRootDomainNoteToServer({
           targetName: this.$route.params.targetName,
-          rootdomainName: this.$route.params.rootdomainName,
+          rootDomainName: this.$route.params.rootdomainName,
           message: this.note,
-          username: this.loggedUsername
+          username: this.loggedUsername,
+          id: ''
         })
       } else if (this.$route.name === 'SubDomainDetails') {
         this.sendSubDomainNote({
@@ -347,7 +348,7 @@ export default {
       if (this.$route.name === 'TargetDetail') {
         this.removeTargetNoteFromServer(this.$route.params.targetName)
       } else if (this.$route.name === 'RootDomainDetails') {
-        this.removeRootDomainNote({
+        this.removeRootDomainNoteFromServer({
           targetName: this.$route.params.targetName,
           rootdomainName: this.$route.params.rootdomainName
         })

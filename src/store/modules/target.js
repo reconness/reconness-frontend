@@ -218,9 +218,9 @@ export default ({
     },
     sendRootDomainNote (state, messageInfo) {
       const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootdomainName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootDomainName)
       const note = {
-        id: state.idNote++,
+        id: messageInfo.id,
         message: messageInfo.message,
         sendDate: new Date(),
         sender: messageInfo.username
@@ -690,6 +690,32 @@ export default ({
               return { status: false, message: error.response.data }
             })
         }
+      }
+    },
+    removeRootDomainNoteFromServer ({ state, commit }, entityNames) {
+      if (state.authentication_token !== '') {
+        return axios.delete('/notes/' + state.idNote + '/rootdomain/' + entityNames.targetName + '/' + entityNames.rootdomainName)
+          .then(function (response) {
+            commit('removeRootDomainNote', entityNames)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
+    sendRootDomainNoteToServer ({ state, commit }, noteData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/notes/rootdomain/' + noteData.targetName + '/' + noteData.rootDomainName, {
+          comment: noteData.message
+        }).then(function (response) {
+          noteData.id = response.data.id
+          commit('sendRootDomainNote', noteData)
+          return { status: true, message: '' }
+        })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
       }
     }
   },
