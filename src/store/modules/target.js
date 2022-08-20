@@ -538,9 +538,23 @@ export default ({
       if (state.authentication_token !== '') {
         return axios.get('/notes/target/' + targetName)
           .then(function (response) {
-            const targetNotesMapped = getters.mapTargetNotesFromServerToLocal(response.data)
+            const targetNotesMapped = getters.mapNotesFromServerToLocal(response.data)
             const targetEntity = getters.getTargetByName(targetName)
             targetEntity.messages = targetNotesMapped
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
+    getRootDomainNotesFromServer ({ state, getters }, entitiesName) {
+      if (state.authentication_token !== '') {
+        return axios.get('/notes/rootdomain/' + entitiesName.targetName + '/' + entitiesName.rootDomainName)
+          .then(function (response) {
+            const rootDomainNotesMapped = getters.mapNotesFromServerToLocal(response.data)
+            const rootDomainEntity = getters.getRootDomainByTargetNameAndRootDomainName(entitiesName)
+            rootDomainEntity.messages = rootDomainNotesMapped
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -1098,15 +1112,15 @@ export default ({
       })
       return mappedRootDomains
     },
-    mapTargetNotesFromServerToLocal: (state, getters) => (targetNotes) => {
-      const mappedTargetNotes = []
+    mapNotesFromServerToLocal: (state, getters) => (targetNotes) => {
+      const mappedNotes = []
       targetNotes.forEach(note => {
-        const mappedNote = getters.mapSingleTargetNoteFromServerToLocal(note)
-        mappedTargetNotes.push(mappedNote)
+        const mappedNote = getters.mapSingleNoteFromServerToLocal(note)
+        mappedNotes.push(mappedNote)
       })
-      return mappedTargetNotes
+      return mappedNotes
     },
-    mapSingleTargetNoteFromServerToLocal: (state) => (serverNote) => {
+    mapSingleNoteFromServerToLocal: (state) => (serverNote) => {
       const localNote = {
         id: serverNote.id,
         message: serverNote.comment,

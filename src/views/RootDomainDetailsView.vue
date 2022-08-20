@@ -82,11 +82,16 @@ export default {
     this.$store.commit('agent/updateLocView', 'Targets', true)
     this.buttonGradSubd = this.LinearGradient
     this.setCurrentView(this.$route.name)
-    this.updateSubDomainsByTargetAndRootDomainFromServer(this.routeParams)
+    const self = this
+    this.updateSubDomainsByTargetAndRootDomainFromServer(this.routeParams).then(function (response) {
+      if (response.status) {
+        self.getRootDomainNotesFromServer(self.routeParams)
+      }
+    })
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
-    ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer']),
+    ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer', 'getRootDomainNotesFromServer']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {
