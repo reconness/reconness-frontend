@@ -10,7 +10,7 @@
   "dependencies": {
     "@hennge/vue3-pagination": "1.0.17",
     "@types/typography": "0.16.4",
-    "apexcharts": "3.25.0",
+    "apexcharts": "3.35.5",
     "axios": "0.27.2",
     "bootstrap": "4.6.1",
     "core-js": "3.19.1",
