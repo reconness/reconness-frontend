@@ -334,12 +334,6 @@ export default ({
         state.targetListStore.push(target)
       })
     },
-    removeTargetEntityToDelete ({ state, rootState }, idEntity) {
-      const index = rootState.general.entitiesToDelete.findIndex(target => target.id === idEntity)
-      if (index !== -1) {
-        rootState.general.entitiesToDelete.splice(index, 1)
-      }
-    },
     clearTargetEntitiesToDelete ({ state, rootState }) {
       rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.targetListStore.findIndex(target => target.id === entity.id)

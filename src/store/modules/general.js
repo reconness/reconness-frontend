@@ -34,6 +34,12 @@ export default ({
       if (exist < 0) {
         state.entitiesToDelete.push(entity)
       }
+    },
+    removeTargetEntityToDelete (state, idEntity) {
+      const index = state.entitiesToDelete.findIndex(target => target.id === idEntity)
+      if (index !== -1) {
+        state.entitiesToDelete.splice(index, 1)
+      }
     }
   },
   actions: {},
