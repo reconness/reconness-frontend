@@ -250,9 +250,9 @@ export default {
       for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = true
         this.isElementSelected = false
-        document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
-        const subdom = this.rootDomain.subdomain.find(item => item.id === Number(checkboxes[i].id.substr(14)))
-        this.$store.commit('target/addSelectedList', { idTarget: this.$route.params.idTarget, idRoot: this.rootDomain.id, idSubdom: checkboxes[i].id.substr(14), nameSubdom: subdom.name })
+        document.getElementById(checkboxes[i].id).style.background = 'rgb(242, 244, 246)'
+        const subdom = this.rootDomain.subdomain.find(item => item.id === checkboxes[i].id.substr(21))
+        this.$store.commit('target/addSelectedList', { idTarget: this.$route.params.idTarget, idRoot: this.rootDomain.id, idSubdom: checkboxes[i].id.substr(21), nameSubdom: subdom.name })
         this.$store.commit('target/addCountElementSelected')
       }
     },
@@ -263,7 +263,7 @@ export default {
           if (checkboxes[i].checked === true) {
             checkboxes[i].checked = false
             this.isElementSelected = true
-            document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = '#fff'
+            document.getElementById('row' + checkboxes[i].id.substr(21)).style.background = '#fff'
             this.$store.commit('target/removeCountElementSelected')
           }
         }
