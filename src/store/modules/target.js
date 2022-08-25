@@ -500,16 +500,14 @@ export default ({
         commit('general/addEntityToDelete', entity, { root: true })
       })
     },
-    clearAllSubDomainEntitiesToDelete ({ state, rootState, getters }, entities) {
+    clearMultipleSubDomainEntitiesToServer ({ state, commit, dispatch, getters }, entities) {
       if (state.authentication_token !== '') {
         return axios.delete('/subdomains/multiples/', {
           data: getters.getSubDomainsIdsToDelete
         })
           .then(function () {
-            const target = state.targetListStore.find(target => target.name === entities.targetName)
-            const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-            rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
-            rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+            dispatch('clearSubDomainEntitiesToDelete', entities)
+            commit('cancelElementSelected')
             return { status: true, message: '' }
           })
           .catch(function (error) {
