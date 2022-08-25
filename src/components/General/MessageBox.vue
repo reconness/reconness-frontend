@@ -153,7 +153,7 @@ export default {
     ...mapMutations('general', ['clearReferencesToDelete']),
     ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete', 'clearSingleAgentEntityToDelete']),
-    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearAllSubDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'removeSingleRootDomainFromServer']),
+    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearAllSubDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'removeSingleRootDomainFromServer', 'clearSubDomainEntitiesToDelete', 'removeSingleSubDomainFromServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
@@ -360,7 +360,7 @@ export default {
       this.updateRemoveAllOption(false)
     },
     singleSubDomainRemove () {
-      this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+      this.removeSingleSubDomainFromServer({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
       this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
     },
     clearInputAndCloseModal () {

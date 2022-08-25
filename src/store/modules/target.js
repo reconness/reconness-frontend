@@ -528,6 +528,19 @@ export default ({
       })
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
+    removeSingleSubDomainFromServer ({ state, dispatch, rootState }, entityReference) {
+      if (state.authentication_token !== '') {
+        const entity = rootState.general.entitiesToDelete[0]
+        return axios.delete('/subdomains/' + entity.id)
+          .then(function () {
+            dispatch('clearSubDomainEntitiesToDelete', entityReference)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
     getTargetNotesFromServer ({ state, getters }, targetName) {
       if (state.authentication_token !== '') {
         return axios.get('/notes/target/' + targetName)
