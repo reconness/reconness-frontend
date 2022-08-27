@@ -12,7 +12,7 @@
           <input type="file" id="export-target"/>
         </li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-         <a href="#"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
+         <a href="#" @click="downloadAllSubDomainsInCsvFile"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
         <a href="#" data-toggle="modal" data-target="#message-box-modal"  @click="removeAllSubDomains()"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: color}">delete</span> Delete All Subdomains</a></li>
       </ul>
@@ -173,7 +173,7 @@ import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'SubdomainListTable',
@@ -223,6 +223,7 @@ export default {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['updateRemoveAllOption']),
     ...mapMutations('general', ['addEntityToDelete']),
+    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -364,6 +365,19 @@ export default {
           name: element.name,
           type: this.$entityTypeData.SUBDOMAIN.id
         })
+      })
+    },
+    downloadAllSubDomainsInCsvFile () {
+      this.downloadAllSubDomainsNameInCsvFileFromServer({
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      }).then(response => {
+        const fileURL = window.URL.createObjectURL(new Blob([response.data]))
+        const fileLink = document.createElement('a')
+        fileLink.href = fileURL
+        fileLink.setAttribute('download', 'subdomains.csv')
+        document.body.appendChild(fileLink)
+        fileLink.click()
       })
     }
   }

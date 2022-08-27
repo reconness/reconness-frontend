@@ -722,6 +722,13 @@ export default ({
             return { status: false, message: error.response.data }
           })
       }
+    },
+    downloadAllSubDomainsNameInCsvFileFromServer ({ state }, referenceData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/rootdomains/exportSubdomains/' + referenceData.targetName + '/' + referenceData.rootDomainName, {
+          responseType: 'blob'
+        })
+      }
     }
   },
   modules: {
