@@ -155,7 +155,7 @@ export default {
       manageHisProfile: false,
       firstRoleSelection: false,
       oldUserName: '',
-      passwordMinimalLength: 7
+      passwordMinimalLength: 2
     }
   },
   computed: {

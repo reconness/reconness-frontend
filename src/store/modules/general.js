@@ -53,6 +53,15 @@ export default ({
         PIPELINE: { id: 5, description: 'Pipeline' },
         USER: { id: 6, description: 'User' }
       }
+    },
+    getFormattedErrorMessage: (state) => (messageData) => {
+      let constructedMessage = ''
+      for (const messageDataAttrName in messageData) {
+        if (Object.prototype.hasOwnProperty.call(messageData, messageDataAttrName)) {
+          constructedMessage += messageDataAttrName + ': ' + messageData[messageDataAttrName] + '\n'
+        }
+      }
+      return constructedMessage
     }
   }
 })
