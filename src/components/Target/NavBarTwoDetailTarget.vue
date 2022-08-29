@@ -40,8 +40,7 @@
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getRootDomainId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
-          <label for="export-target" class="nav-link pos mb-0"> Export Target </label>
-          <input type="file" id="export-target" accept=".json"/>
+          <a class="nav-link pos" href="#" @click="exportTargetDataToJsonFile" :data-id="getTargetId" :data-name="this.$route.params.targetName">Export Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
           <label for="export-target" class="nav-link pos mb-0"> Export Root Domain </label>
@@ -143,7 +142,7 @@
      </div>
 </template>
 <script>
-import { mapMutations, mapState, mapGetters } from 'vuex'
+import { mapMutations, mapState, mapGetters, mapActions } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
 import NotesBtn from '@/components/General/NotesBtn.vue'
 import NotesSection from '@/components/General/NotesSection.vue'
@@ -202,6 +201,7 @@ export default {
   methods: {
     ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),
     ...mapMutations('general', ['addEntityToDelete']),
+    ...mapActions('target', ['exportTargetWithRootDomains']),
     orderByCalendar: function () {
       this.targetListStore.find(item => item.id === parseInt(this.$route.params.id)).rootDomains.sort(this.$orderByCalendarSplitting)
     },
@@ -228,8 +228,17 @@ export default {
       } else {
         return this.$store.commit('agent/confirm', { name: this.TargetName, route: 'target' })
       }
+    },
+    exportTargetDataToJsonFile () {
+      this.exportTargetWithRootDomains(this.$route.params.targetName).then(response => {
+        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response.data))
+        const fileLink = document.createElement('a')
+        fileLink.href = dataStr
+        fileLink.setAttribute('download', this.$route.params.targetName + '.json')
+        document.body.appendChild(fileLink)
+        fileLink.click()
+      })
     }
-
   }
 }
 </script>

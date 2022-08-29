@@ -729,10 +729,14 @@ export default ({
           responseType: 'blob'
         })
       }
+    },
+    exportTargetWithRootDomains ({ state }, targetName) {
+      if (state.authentication_token !== '') {
+        return axios.post('/targets/export/alldata/' + targetName)
+      }
     }
   },
-  modules: {
-  },
+  modules: {},
   getters: {
     filterByColor (state) {
       return function (colour) {
