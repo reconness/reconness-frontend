@@ -734,6 +734,11 @@ export default ({
       if (state.authentication_token !== '') {
         return axios.post('/targets/export/alldata/' + targetName)
       }
+    },
+    exportRootDomainWithSubDomainsByName ({ state }, referenceData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/rootdomains/export/' + referenceData.targetName + '/' + referenceData.rootDomainName)
+      }
     }
   },
   modules: {},

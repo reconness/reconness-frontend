@@ -40,11 +40,10 @@
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getRootDomainId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
-          <a class="nav-link pos" href="#" @click="exportTargetDataToJsonFile" :data-id="getTargetId" :data-name="this.$route.params.targetName">Export Target</a>
+          <a class="nav-link pos" href="#" @click="exportTargetDataToJsonFile">Export Target</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
-          <label for="export-target" class="nav-link pos mb-0"> Export Root Domain </label>
-          <input type="file" id="export-target" accept=".json"/>
+          <a class="nav-link pos" href="#" @click="exportRootDomainDataToJsonFile">Export Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right border-left d-none d-sm-block" v-if= "showRootDomains && $route.params.idsubdomain">
           <label for="export-target" class="nav-link pos mb-0"> Export SubDomain </label>
@@ -201,7 +200,7 @@ export default {
   methods: {
     ...mapMutations('target', ['orderDomainsByCalendar', 'orderDomainByNameDesc', 'orderDomainsByNameAsc']),
     ...mapMutations('general', ['addEntityToDelete']),
-    ...mapActions('target', ['exportTargetWithRootDomains']),
+    ...mapActions('target', ['exportTargetWithRootDomains', 'exportRootDomainWithSubDomainsByName']),
     orderByCalendar: function () {
       this.targetListStore.find(item => item.id === parseInt(this.$route.params.id)).rootDomains.sort(this.$orderByCalendarSplitting)
     },
@@ -231,10 +230,23 @@ export default {
     },
     exportTargetDataToJsonFile () {
       this.exportTargetWithRootDomains(this.$route.params.targetName).then(response => {
-        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response.data))
+        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(response.data)
         const fileLink = document.createElement('a')
         fileLink.href = dataStr
         fileLink.setAttribute('download', this.$route.params.targetName + '.json')
+        document.body.appendChild(fileLink)
+        fileLink.click()
+      })
+    },
+    exportRootDomainDataToJsonFile () {
+      this.exportRootDomainWithSubDomainsByName({
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      }).then(response => {
+        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(response.data)
+        const fileLink = document.createElement('a')
+        fileLink.href = dataStr
+        fileLink.setAttribute('download', this.$route.params.rootdomainName + '.json')
         document.body.appendChild(fileLink)
         fileLink.click()
       })
