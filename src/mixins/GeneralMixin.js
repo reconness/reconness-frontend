@@ -35,6 +35,7 @@ const GeneralMixin = {
         ignore: false,
         scope: false,
         agent: [],
+        agentsRanBefore: '',
         ipAddress: '',
         http: false,
         isAlive: false,
