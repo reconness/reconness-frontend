@@ -732,7 +732,7 @@ export default ({
     },
     exportTargetWithRootDomains ({ state }, targetName) {
       if (state.authentication_token !== '') {
-        return axios.post('/targets/export/alldata/' + targetName)
+        return axios.post('/targets/export/' + targetName)
       }
     },
     exportRootDomainWithSubDomainsByName ({ state }, referenceData) {

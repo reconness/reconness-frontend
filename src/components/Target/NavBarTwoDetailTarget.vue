@@ -230,7 +230,7 @@ export default {
     },
     exportTargetDataToJsonFile () {
       this.exportTargetWithRootDomains(this.$route.params.targetName).then(response => {
-        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(response.data)
+        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response.data))
         const fileLink = document.createElement('a')
         fileLink.href = dataStr
         fileLink.setAttribute('download', this.$route.params.targetName + '.json')
