@@ -502,7 +502,7 @@ export default ({
     },
     clearMultipleSubDomainEntitiesToServer ({ state, commit, dispatch, getters }, entities) {
       if (state.authentication_token !== '') {
-        return axios.delete('/subdomains/multiples/', {
+        return axios.delete('/subdomains/' + entities.targetName + '/' + entities.rootDomainName + '/multiples/', {
           data: getters.getSubDomainsIdsToDelete
         })
           .then(function () {
