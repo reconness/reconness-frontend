@@ -39,7 +39,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('general', ['addEntityToDelete', 'removeTargetEntityToDelete'])
+    ...mapMutations('general', ['addEntityToDelete', 'removeSelectedEntities'])
   }
 }
 </script>

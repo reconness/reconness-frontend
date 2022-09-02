@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     ...mapMutations('pipelines', ['addIdPipeline', 'removebyIdPipelines', 'updateSelectedPipelines']),
-    ...mapMutations('general', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete', 'removeSelectedEntities']),
     ...mapActions('pipelines', ['addAndPrepareSelectedPipelineIdsToRemove']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex

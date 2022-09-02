@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     ...mapMutations('agent', ['updateSelectedAgents']),
-    ...mapMutations('general', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete', 'removeSelectedEntities']),
     ...mapActions('agent', ['addAndPrepareSelectedAgentIdsToRemove']),
     enableTooltips () {
       jQuery('[data-toggle="tooltip"]').tooltip()

@@ -91,7 +91,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('general', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete', 'removeSelectedEntities']),
     ...mapMutations('agent', ['updateSelectedAgents']),
     ...mapActions('agent', ['addAndPrepareSelectedAgentIdsToRemove']),
     hoverCard (selectedIndex) {

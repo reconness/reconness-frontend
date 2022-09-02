@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['addIdTarget', 'removebyIdTarget', 'updateSelectedTargets']),
-    ...mapMutations('general', ['addEntityToDelete', 'removeTargetEntityToDelete']),
+    ...mapMutations('general', ['addEntityToDelete', 'removeSelectedEntities']),
     ...mapActions('target', ['addAndPrepareSelectedTargetIdsToRemove']),
     hoverCard (selectedIndex) {
       this.selectedCard = selectedIndex
