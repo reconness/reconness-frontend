@@ -11,20 +11,20 @@
           <label for="export-target" class="domain-names-list mb-0"> Import Subdomains </label>
           <input type="file" id="export-target"/>
         </li>
-        <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
-         <a href="#"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
-        <li :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
+        <li :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
+         <a href="#" @click="downloadAllSubDomainsInCsvFile"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
+        <li :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
         <a href="#" data-toggle="modal" data-target="#message-box-modal"  @click="removeAllSubDomains()"><span class="material-icons icon-color-style gradient-style" v-bind:style ="{background: color}">delete</span> Delete All Subdomains</a></li>
       </ul>
     </nav>
     <div class="row mt-4">
     <div class="col-lg-8">
-    <div class="mb-3 has-search" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
+    <div class="mb-3 has-search" :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}">
       <span class="material-icons search-icon form-control-feddback">search</span>
       <input  id="input-search" class="form-control form-style" type="search" placeholder="Find"  v-model= "searchModel"  v-on:keyup.enter="enableSearchFilter" @mouseup="searchEvent(this.searchModel)">
     </div>
     </div>
-       <div class="col-lg-4" :class="{'isLinkDisabled' : this.getSubdomainSize(this.routeParams) === 0}">
+       <div class="col-lg-4" :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}">
          <label class="float-left mr-3 ml-3 label-style" for="dropdownMenuButton">Filter by</label>
          <div class="dropdown" >
     <button class="btn btn-style-dropd  dropdown-toggle pt-2 pb-1 w-50" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,7 +40,7 @@
       </div></div>
 <div class="card card-style">
 <div v-if="!isFilterResultEmpty" class="card-body">
-<div class="card card-table" v-if=" this.getSubdomainSize(this.routeParams) > 0">
+<div class="card card-table" v-if=" this.getSubdomainSizeByReferencesName(this.routeParams) > 0">
   <div class=" row mb-2"  v-if="this.showHeader">
    <div class="col-2 border-left-radius border-right text-light-white p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0"> Subdomain</p> </div>
    <div class="col-3 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> Details</div>
@@ -162,33 +162,27 @@ There are no subdomains associated with this root domain. <br>
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Delete</small>
   </OverlayPanel>
-  <Confirmation></Confirmation>
-  <ConfirmationList :nameRoute= 'rName'></ConfirmationList>
   <SubDomainInsertionForm :gradient="gradient"/>
 </div>
 </template>
 <script>
 import SubDomainInsertionForm from '@/components/Target/SubDomainInsertionForm.vue'
 import OverlayPanel from 'primevue/overlaypanel'
-import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
-import ConfirmationList from '@/components/Target/ConfirmationList.vue'
 import FileExportIco from '@/components/Icons/FileExportIco.vue'
 import FileImportIco from '@/components/Icons/FileImportIco.vue'
 import HeartIco from '@/components/Icons/HeartIco.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'SubdomainListTable',
   components: {
     SubDomainInsertionForm,
     OverlayPanel,
-    Confirmation,
     FileExportIco,
     FileImportIco,
-    HeartIco,
-    ConfirmationList
+    HeartIco
   },
   props: {
     color: String,
@@ -196,15 +190,12 @@ export default {
     rootDomain: {
       type: Object,
       default: () => {}
-    }
+    },
+    routeParams: Object
   },
   data: function () {
     return {
       dataColor: '',
-      routeParams: {
-        idTarget: this.$route.params.idTarget,
-        idRootDomain: this.$route.params.id
-      },
       showHeader: true,
       isElementSelected: true,
       rName: 'subdomains',
@@ -218,7 +209,7 @@ export default {
   },
   mixins: [RemoveEntitiesMixin, TargetMixin],
   computed: {
-    ...mapGetters('target', ['getSubdomainSize']),
+    ...mapGetters('target', ['getSubdomainSizeByReferencesName']),
     ...mapState('agent', ['isElementDeleted']),
     ...mapState('general', ['entitiesToDelete'])
   },
@@ -229,6 +220,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('agent', ['setIsElementDeleted']),
+    ...mapMutations('target', ['updateRemoveAllOption']),
+    ...mapMutations('general', ['addEntityToDelete']),
+    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -256,9 +251,9 @@ export default {
       for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = true
         this.isElementSelected = false
-        document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = 'rgb(242, 244, 246)'
-        const subdom = this.rootDomain.subdomain.find(item => item.id === Number(checkboxes[i].id.substr(14)))
-        this.$store.commit('target/addSelectedList', { idTarget: this.$route.params.idTarget, idRoot: this.rootDomain.id, idSubdom: checkboxes[i].id.substr(14), nameSubdom: subdom.name })
+        document.getElementById(checkboxes[i].id).style.background = 'rgb(242, 244, 246)'
+        const subdom = this.rootDomain.subdomain.find(item => item.id === checkboxes[i].id.substr(21))
+        this.$store.commit('target/addSelectedList', { idTarget: this.$route.params.idTarget, idRoot: this.rootDomain.id, idSubdom: checkboxes[i].id.substr(21), nameSubdom: subdom.name })
         this.$store.commit('target/addCountElementSelected')
       }
     },
@@ -269,7 +264,7 @@ export default {
           if (checkboxes[i].checked === true) {
             checkboxes[i].checked = false
             this.isElementSelected = true
-            document.getElementById('row' + checkboxes[i].id.substr(14)).style.background = '#fff'
+            document.getElementById('row' + checkboxes[i].id.substr(21)).style.background = '#fff'
             this.$store.commit('target/removeCountElementSelected')
           }
         }
@@ -292,7 +287,7 @@ export default {
     search () {
       if (this.searchCriteria === '' || this.searchCriteria === undefined) {
         if (this.dropdownCriteria === 1) {
-          const countElementList = this.getSubdomainSize(this.routeParams)
+          const countElementList = this.getSubdomainSizeByReferencesName(this.routeParams)
           this.$store.commit('target/changeCounterSubdom', countElementList)
           return this.rootDomain.subdomain
         }
@@ -364,15 +359,27 @@ export default {
     },
     removeAllSubDomains () {
       this.updateRemoveAllOption(true)
-      this.addEntityToDelete({
-        id: this.rootDomain.subdomain[0].id,
-        name: this.rootDomain.subdomain[0].name,
-        type: this.$entityTypeData.SUBDOMAIN.id // this.$agentType.TARGET
+      this.rootDomain.subdomain.forEach(element => {
+        this.addEntityToDelete({
+          id: element.id,
+          name: element.name,
+          type: this.$entityTypeData.SUBDOMAIN.id
+        })
       })
     },
-    ...mapMutations('agent', ['setIsElementDeleted']),
-    ...mapMutations('target', ['updateRemoveAllOption']),
-    ...mapMutations('general', ['addEntityToDelete'])
+    downloadAllSubDomainsInCsvFile () {
+      this.downloadAllSubDomainsNameInCsvFileFromServer({
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      }).then(response => {
+        const fileURL = window.URL.createObjectURL(new Blob([response.data]))
+        const fileLink = document.createElement('a')
+        fileLink.href = fileURL
+        fileLink.setAttribute('download', 'subdomains.csv')
+        document.body.appendChild(fileLink)
+        fileLink.click()
+      })
+    }
   }
 }
 </script>

@@ -54,7 +54,7 @@ export default ({
         })
         .catch(function (error) {
           localStorage.setItem('token', '')
-          if (!error.response) {
+          if (!error.response || !error.response.data) {
             return { status: false, message: 'unknownError' }
           }
           return { status: false, message: error.response.data }

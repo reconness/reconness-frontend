@@ -87,7 +87,7 @@ export default ({
       commit('general/clearReferencesToDelete', null, { root: true })
       return promiseResult
     },
-    addUserToServer ({ state, rootState, commit, getters, dispatch }, user) {
+    addUserToServer ({ state, rootState, commit, getters, dispatch, rootGetters }, user) {
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/users', getters.mapUserFromLocalToServer(user))
           .then(function (response) {
@@ -109,11 +109,12 @@ export default ({
             return { status: true, message: '' }
           })
           .catch(function (error) {
-            return { status: false, message: error.response.data }
+            const formattedErrorMessage = rootGetters['general/getFormattedErrorMessage'](error.response.data.errors)
+            return { status: false, message: formattedErrorMessage }
           })
       }
     },
-    updateUserToServer ({ state, rootState, commit, getters, dispatch }, user) {
+    updateUserToServer ({ state, rootState, commit, getters, dispatch, rootGetters }, user) {
       if (rootState.auth.authentication_token !== '') {
         return axios.put('/users/' + user.id, getters.mapUserFromLocalToServer(user))
           .then(function (response) {
@@ -130,7 +131,8 @@ export default ({
             return { status: true, message: '' }
           })
           .catch(function (error) {
-            return { status: false, message: error.response.data }
+            const formattedErrorMessage = rootGetters['general/getFormattedErrorMessage'](error.response.data.errors)
+            return { status: false, message: formattedErrorMessage }
           })
       }
     },

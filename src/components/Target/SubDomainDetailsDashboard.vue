@@ -74,23 +74,26 @@ import { mapGetters, mapMutations } from 'vuex'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'SubDomainDetailsDashboard',
+  props: ['subdomainInstance', 'targetInstance'],
   data: function () {
     return {
-      loadedSubdomain: {},
-      loadedTarget: {}
+      loadedSubdomain: this.subdomainInstance,
+      loadedTarget: this.targetInstance
     }
   },
   mixins: [RemoveEntitiesMixin],
   computed: {
-    ...mapGetters('target', ['getSubDomain', 'getTargetById'])
-  },
-  created () {
-    this.loadedSubdomain = this.getSubDomain({
-      idtarget: parseInt(this.$route.params.idTarget),
-      idrootdomain: parseInt(this.$route.params.id),
-      idsubdomain: parseInt(this.$route.params.idsubdomain)
-    })
-    this.loadedTarget = this.getTargetById(parseInt(this.$route.params.idTarget))
+    ...mapGetters('target', ['getSubDomain', 'getTargetById', 'getTargetByName', 'getSubDomainByTargetNameAndRootDomainName']),
+    getSubdomain () {
+      const targetName = this.$route.params.targetName
+      const rootDomainName = this.$route.params.rootdomainName
+      const subDomainName = this.$route.params.subdomainName
+      return this.getSubDomainByTargetNameAndRootDomainName({
+        targetName: targetName,
+        rootDomainName: rootDomainName,
+        subDomainName: subDomainName
+      })
+    }
   },
   methods: {
     ...mapMutations('general', ['addEntityToDelete']),

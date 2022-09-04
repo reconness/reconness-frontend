@@ -17,7 +17,7 @@ const RemoveEntitiesMixin = {
       if (!isCurrentCheckBoxChecked) {
         this.prepareToDelete(e, entityType)
       } else {
-        this.removeTargetEntityToDelete(entityId)
+        this.$store.commit('general/removeSelectedEntities', entityId)
       }
     }
   }

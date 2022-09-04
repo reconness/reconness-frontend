@@ -86,8 +86,8 @@ export default {
     this.enableTooltips()
   },
   methods: {
-    ...mapMutations('target', ['removeTargetEntityToDelete', 'updateSelectedTargets']),
-    ...mapMutations('general', ['addEntityToDelete']),
+    ...mapMutations('target', ['updateSelectedTargets']),
+    ...mapMutations('general', ['addEntityToDelete', 'removeSelectedEntities']),
     ...mapActions('target', ['addAndPrepareSelectedTargetIdsToRemove']),
     enableTooltips () {
       jQuery('[data-toggle="tooltip"]').tooltip()

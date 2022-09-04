@@ -153,7 +153,7 @@ export default {
     ...mapMutations('general', ['clearReferencesToDelete']),
     ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete', 'clearSingleAgentEntityToDelete']),
-    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearAllSubDomainEntitiesToDelete', 'clearSubDomainEntitiesToDelete', 'removeSingleRootDomainFromServer']),
+    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearMultipleSubDomainEntitiesToServer', 'clearSubDomainEntitiesToDelete', 'removeSingleRootDomainFromServer', 'clearSubDomainEntitiesToDelete', 'removeSingleSubDomainFromServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
@@ -275,9 +275,14 @@ export default {
       this.redirectToRootDomainDetails()
     },
     clearRootdomainsRedirectToTargetDetailsAndUpdateOperationStatus: function () {
-      this.clearRootDomainEntitiesToDelete({ targetName: this.getTargetName })
-      this.redirectToTargetDetails()
-      this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+      this.removeSingleRootDomainFromServer(this.getTargetName).then(response => {
+        if (response.status) {
+          this.redirectToTargetDetails()
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainDeletion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     },
     removeTargetsAndDisplayOperationStatus () {
       this.clearTargetEntitiesToDeleteToServer().then(response => {
@@ -344,18 +349,18 @@ export default {
       })
     },
     removeSubDomainsOnRootDomainView () {
-      if (this.removeAll) {
+      if (this.multipleItemsToDelete) {
         this.batchSubDomainsRemove()
       } else {
         this.singleSubDomainRemove()
       }
     },
     batchSubDomainsRemove () {
-      this.clearAllSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+      this.clearMultipleSubDomainEntitiesToServer({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
       this.updateRemoveAllOption(false)
     },
     singleSubDomainRemove () {
-      this.clearSubDomainEntitiesToDelete({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+      this.removeSingleSubDomainFromServer({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
       this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForSubDomainDeletion)
     },
     clearInputAndCloseModal () {

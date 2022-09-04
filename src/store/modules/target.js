@@ -43,7 +43,10 @@ export default ({
     removeAll: false,
     textToSearch: '',
     routePreviousToSearch: '',
-    selectedTargets: []
+    selectedTargets: [],
+    targetLoadingProcessStatus: 1,
+    rootdomainLoadingProcessStatus: 1,
+    subDomainLoadingProcessStatus: 1
   },
   mutations: {
     updateRoutePreviousToSearch (state, route) {
@@ -215,9 +218,9 @@ export default ({
     },
     sendRootDomainNote (state, messageInfo) {
       const target = state.targetListStore.find(item => item.name === messageInfo.targetName)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootdomainName)
+      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === messageInfo.rootDomainName)
       const note = {
-        id: state.idNote++,
+        id: messageInfo.id,
         message: messageInfo.message,
         sendDate: new Date(),
         sender: messageInfo.username
@@ -246,6 +249,13 @@ export default ({
       const target = state.targetListStore.find(item => item.id === params.idTarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       roots.subdomain = roots.subdomain.concat(params.subdomainsItems)
+    },
+    addSubdomainsByTargetNameAndRootDomainName (state, params) {
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+        roots.subdomain = roots.subdomain.concat(params.subDomainData)
+      }
     },
     addRootDomain (state, params) {
       for (let index = 0; index < params.rootdomainsItems.length; index++) {
@@ -324,12 +334,6 @@ export default ({
         state.targetListStore.push(target)
       })
     },
-    removeTargetEntityToDelete ({ state, rootState }, idEntity) {
-      const index = rootState.general.entitiesToDelete.findIndex(target => target.id === idEntity)
-      if (index !== -1) {
-        rootState.general.entitiesToDelete.splice(index, 1)
-      }
-    },
     clearTargetEntitiesToDelete ({ state, rootState }) {
       rootState.general.entitiesToDelete.forEach(entity => {
         const index = state.targetListStore.findIndex(target => target.id === entity.id)
@@ -378,18 +382,34 @@ export default ({
     },
     clearSelectedTargetsList (state) {
       state.selectedTargets.splice(0, state.selectedTargets.length)
+    },
+    updateIdOfMultipleSubdomainFromServerToLocal: (state, getters) => (subdomainsData) => {
+      subdomainsData.remoteData.forEach(element => {
+        if (element.name === subdomainsData.localData.name) {
+          subdomainsData.localData.id = element.id
+        }
+      })
+    },
+    updateTargetLoadingProcessStatus: (state) => (loadingStatus) => {
+      state.targetLoadingProcessStatus = loadingStatus
+    },
+    updateSubdomainLoadingProcessStatus: (state) => (loadingStatus) => {
+      state.subDomainLoadingProcessStatus = loadingStatus
     }
   },
   actions: {
     loadTargets ({ state, commit, getters }) {
       if (state.authentication_token !== '') {
+        commit('updateTargetLoadingProcessStatus', 1)
         return axios.get('/targets')
           .then(function (response) {
             const targetsMapped = getters.mapTargets(response.data)
             commit('updateTargets', targetsMapped)
+            commit('updateTargetLoadingProcessStatus', 2)
             return true
           })
           .catch(function () {
+            commit('updateTargetLoadingProcessStatus', 4)
             return false
           })
       }
@@ -480,11 +500,20 @@ export default ({
         commit('general/addEntityToDelete', entity, { root: true })
       })
     },
-    clearAllSubDomainEntitiesToDelete ({ state, rootState }, entities) {
-      const target = state.targetListStore.find(target => target.name === entities.targetName)
-      const rootdomain = target.rootDomains.find(rootdomain => rootdomain.root === entities.rootDomainName)
-      rootdomain.subdomain.splice(0, rootdomain.subdomain.length)
-      rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
+    clearMultipleSubDomainEntitiesToServer ({ state, commit, dispatch, getters }, entities) {
+      if (state.authentication_token !== '') {
+        return axios.delete('/subdomains/' + entities.targetName + '/' + entities.rootDomainName + '/multiples/', {
+          data: getters.getSubDomainsIdsToDelete
+        })
+          .then(function () {
+            dispatch('clearSubDomainEntitiesToDelete', entities)
+            commit('cancelElementSelected')
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
     },
     clearSubDomainEntitiesToDelete ({ state, rootState }, entities) {
       rootState.general.entitiesToDelete.forEach(entity => {
@@ -497,13 +526,40 @@ export default ({
       })
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
+    removeSingleSubDomainFromServer ({ state, dispatch, rootState }, entityReference) {
+      if (state.authentication_token !== '') {
+        const entity = rootState.general.entitiesToDelete[0]
+        return axios.delete('/subdomains/' + entity.id)
+          .then(function () {
+            dispatch('clearSubDomainEntitiesToDelete', entityReference)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
     getTargetNotesFromServer ({ state, getters }, targetName) {
       if (state.authentication_token !== '') {
         return axios.get('/notes/target/' + targetName)
           .then(function (response) {
-            const targetNotesMapped = getters.mapTargetNotesFromServerToLocal(response.data)
+            const targetNotesMapped = getters.mapNotesFromServerToLocal(response.data)
             const targetEntity = getters.getTargetByName(targetName)
             targetEntity.messages = targetNotesMapped
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
+    getRootDomainNotesFromServer ({ state, getters }, entitiesName) {
+      if (state.authentication_token !== '') {
+        return axios.get('/notes/rootdomain/' + entitiesName.targetName + '/' + entitiesName.rootDomainName)
+          .then(function (response) {
+            const rootDomainNotesMapped = getters.mapNotesFromServerToLocal(response.data)
+            const rootDomainEntity = getters.getRootDomainByTargetNameAndRootDomainName(entitiesName)
+            rootDomainEntity.messages = rootDomainNotesMapped
             return { status: true, message: '' }
           })
           .catch(function (error) {
@@ -584,10 +640,108 @@ export default ({
       }).catch(function (error) {
         return { status: false, message: error.response.data }
       })
+    },
+    updateSubDomainsByTargetAndRootDomainFromServer ({ state, commit, getters }, subdomainReference) {
+      if (state.authentication_token !== '') {
+        commit('updateSubdomainLoadingProcessStatus', 1)
+        return axios.get('/subdomains/getpaginate/' + subdomainReference.targetName + '/' + subdomainReference.rootDomainName,
+          {
+            params: {
+              limit: 10,
+              page: 1
+            }
+          }).then(function (response) {
+          const subdomainsMapped = getters.mapMultipleSubdomainsFromServerToLocal(response.data.data)
+          const subDomainData = {
+            targetName: subdomainReference.targetName,
+            rootDomainName: subdomainReference.rootDomainName,
+            subDomainData: subdomainsMapped
+          }
+          commit('addSubdomainsByTargetNameAndRootDomainName', subDomainData)
+          commit('updateSubdomainLoadingProcessStatus', 2)
+          return { status: true, message: '' }
+        })
+          .catch(function (error) {
+            commit('updateSubdomainLoadingProcessStatus', 4)
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    addSubDomainToServer ({ state, commit, getters }, subdomainReferenceAndData) {
+      if (state.authentication_token !== '') {
+        const subDomainParams = {
+          targetName: subdomainReferenceAndData.targetName,
+          rootDomainName: subdomainReferenceAndData.rootDomainName,
+          subDomainData: []
+        }
+        if (subdomainReferenceAndData.subDomainData instanceof Array) {
+          return axios.post('/subdomains/multiples', getters.mapMultipleSubdomainFromLocalToServer(subdomainReferenceAndData))
+            .then(function (response) {
+              subDomainParams.subDomainData = getters.mapMultipleSubdomainsFromServerToLocal(response.data)
+              commit('addSubdomainsByTargetNameAndRootDomainName', subDomainParams)
+              return { status: true, message: '' }
+            })
+            .catch(function (error) {
+              return { status: false, message: error.response.data }
+            })
+        } else {
+          return axios.post('/subdomains', getters.mapSingleSubdomainFromLocalToServer(subdomainReferenceAndData))
+            .then(function (response) {
+              subDomainParams.subDomainData = getters.mapSingleSubdomainFromServerToLocal(response.data)
+              commit('addSubdomainsByTargetNameAndRootDomainName', subDomainParams)
+              return { status: true, message: '' }
+            })
+            .catch(function (error) {
+              return { status: false, message: error.response.data }
+            })
+        }
+      }
+    },
+    removeRootDomainNoteFromServer ({ state, commit }, entityNames) {
+      if (state.authentication_token !== '') {
+        return axios.delete('/notes/' + state.idNote + '/rootdomain/' + entityNames.targetName + '/' + entityNames.rootdomainName)
+          .then(function (response) {
+            commit('removeRootDomainNote', entityNames)
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
+    sendRootDomainNoteToServer ({ state, commit }, noteData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/notes/rootdomain/' + noteData.targetName + '/' + noteData.rootDomainName, {
+          comment: noteData.message
+        }).then(function (response) {
+          noteData.id = response.data.id
+          commit('sendRootDomainNote', noteData)
+          return { status: true, message: '' }
+        })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    downloadAllSubDomainsNameInCsvFileFromServer ({ state }, referenceData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/rootdomains/exportSubdomains/' + referenceData.targetName + '/' + referenceData.rootDomainName, {
+          responseType: 'blob'
+        })
+      }
+    },
+    exportTargetWithRootDomains ({ state }, targetName) {
+      if (state.authentication_token !== '') {
+        return axios.post('/targets/export/' + targetName)
+      }
+    },
+    exportRootDomainWithSubDomainsByName ({ state }, referenceData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/rootdomains/export/' + referenceData.targetName + '/' + referenceData.rootDomainName)
+      }
     }
   },
-  modules: {
-  },
+  modules: {},
   getters: {
     filterByColor (state) {
       return function (colour) {
@@ -647,20 +801,47 @@ export default ({
     },
     getSubdomainSize: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
-      if (roots) {
-        return roots.subdomain.length
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
+        if (roots) {
+          return roots.subdomain.length
+        }
       }
+      return 0
+    },
+    getSubdomainSizeByReferencesName: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+        if (roots) {
+          return roots.subdomain.length
+        }
+      }
+      return 0
     },
     getRootDomainByIdTargetAndIdRootDomain: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idTarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idRootDomain)
       return roots
     },
+    getRootDomainByTargetNameAndRootDomainName: (state) => (params) => {
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
+        return roots
+      }
+      return null
+    },
     getSubDomain: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idtarget)
       const roots = target.rootDomains.find(roots => roots.id === params.idrootdomain)
       const subdomain = roots.subdomain.find(subdItem => subdItem.id === params.idsubdomain)
+      return subdomain
+    },
+    getSubDomainByTargetNameAndRootDomainName: (state) => (subdomainReference) => {
+      const target = state.targetListStore.find(item => item.name === subdomainReference.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
+      const subdomain = roots.subdomain.find(subdItem => subdItem.name === subdomainReference.subDomainName)
       return subdomain
     },
     checkIfSubdomainExistsByName: (state) => (params) => {
@@ -978,15 +1159,15 @@ export default ({
       })
       return mappedRootDomains
     },
-    mapTargetNotesFromServerToLocal: (state, getters) => (targetNotes) => {
-      const mappedTargetNotes = []
+    mapNotesFromServerToLocal: (state, getters) => (targetNotes) => {
+      const mappedNotes = []
       targetNotes.forEach(note => {
-        const mappedNote = getters.mapSingleTargetNoteFromServerToLocal(note)
-        mappedTargetNotes.push(mappedNote)
+        const mappedNote = getters.mapSingleNoteFromServerToLocal(note)
+        mappedNotes.push(mappedNote)
       })
-      return mappedTargetNotes
+      return mappedNotes
     },
-    mapSingleTargetNoteFromServerToLocal: (state) => (serverNote) => {
+    mapSingleNoteFromServerToLocal: (state) => (serverNote) => {
       const localNote = {
         id: serverNote.id,
         message: serverNote.comment,
@@ -994,6 +1175,74 @@ export default ({
         sender: serverNote.createdBy
       }
       return localNote
+    },
+    mapMultipleSubdomainsFromServerToLocal: (state, getters) => (subdomains) => {
+      const mappedSubdomains = []
+      subdomains.forEach(subdomain => {
+        const mappedSubdomain = getters.mapSingleSubdomainFromServerToLocal(subdomain)
+        mappedSubdomains.push(mappedSubdomain)
+      })
+      return mappedSubdomains
+    },
+    mapSingleSubdomainFromServerToLocal: (state) => (subdomain) => {
+      const createdDate = new Date(subdomain.createdAt)
+      const newSubDomain = {
+        id: subdomain.id,
+        name: subdomain.name,
+        added: createdDate.getFullYear() + '-' + (createdDate.getMonth() + 1) + '-' + createdDate.getDate(),
+        checking: false,
+        interesting: false,
+        vulnerable: false,
+        bounty: false,
+        ignore: false,
+        scope: false,
+        agent: [],
+        agentsRanBefore: '',
+        ipAddress: subdomain.ipAddress,
+        http: subdomain.hasHttpOpen,
+        isAlive: subdomain.isAlive,
+        ports: [],
+        services: [],
+        directories: [],
+        labels: subdomain.labels
+      }
+      return newSubDomain
+    },
+    mapSingleSubdomainFromLocalToServer: (state) => (subdomain) => {
+      const newSubDomain = {
+        name: subdomain.subDomainData.name,
+        target: subdomain.targetName,
+        rootDomain: subdomain.rootDomainName,
+        agent: [],
+        agentsRanBefore: '',
+        ipAddress: subdomain.subDomainData.ipAddress,
+        hasHttpOpen: subdomain.subDomainData.hasHttpOpen,
+        isAlive: subdomain.subDomainData.isAlive,
+        services: [],
+        directories: [],
+        labels: []
+      }
+      return newSubDomain
+    },
+    mapMultipleSubdomainFromLocalToServer: (state, getters) => (subdomain) => {
+      const newMappedSubdomains = []
+      subdomain.subDomainData.forEach(item => {
+        newMappedSubdomains.push(
+          getters.mapSingleSubdomainFromLocalToServer({
+            subDomainData: item,
+            targetName: subdomain.targetName,
+            rootDomainName: subdomain.rootDomainName
+          })
+        )
+      })
+      return newMappedSubdomains
+    },
+    getSubDomainsIdsToDelete (state, getters, rootState) {
+      const subDomainsNames = []
+      rootState.general.entitiesToDelete.forEach(entity => {
+        subDomainsNames.push(entity.id)
+      })
+      return subDomainsNames
     }
   }
 })

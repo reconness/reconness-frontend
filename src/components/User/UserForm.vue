@@ -49,8 +49,9 @@
                     </div>
                     <div class="form-group">
                       <label for="user-form-new-password" class="font-weight-regular black-text font-size-16px">New Password</label>
-                      <input type="password" id="user-form-new-password" @blur="updatePasswordWasWritten" @change="updatePasswordData" v-model="user.newPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
+                      <input type="password" id="user-form-new-password" @blur="updatePasswordWasWritten" @keypress="updatePasswordWasWritten" v-model="user.newPassword" class="font-size-14px font-weight-light ligth-gray-background userform-input-text form-control">
                       <span v-if="isPasswordInBlank && !editable" :class="{invalid: isPasswordInBlank}" class="mt-2">The field password is required</span>
+                      <span v-if="isPasswordLowerThanMinimalLength && passwordWasWritten" :class="{invalid: isPasswordLowerThanMinimalLength}" class="mt-2">Password must had more than 6 characters</span>
                     </div>
                     <div class="form-group">
                       <label for="user-form-confirm_password" class="font-weight-regular black-text font-size-16px">Confirm New Password</label>
@@ -153,7 +154,8 @@ export default {
       editable: false,
       manageHisProfile: false,
       firstRoleSelection: false,
-      oldUserName: ''
+      oldUserName: '',
+      passwordMinimalLength: 2
     }
   },
   computed: {
@@ -191,7 +193,7 @@ export default {
       return this.user.newPassword === this.user.confirmationPassword
     },
     isUserFormInvalid () {
-      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsedAndIsDifferentFromSaved || this.isCurrentPasswordInValid
+      return this.isUserNameInBlank || this.isEmailInBlank || this.isInValidEmail || (!this.editable && !this.passwordWasWritten) || !this.isConfirmPasswordEqualToPassword || this.isUsernameAlreadyUsedAndIsDifferentFromSaved || this.isCurrentPasswordInValid || this.isPasswordLowerThanMinimalLength
     },
     getUserFormStatus () {
       if (this.editable) {
@@ -249,6 +251,9 @@ export default {
     },
     disableDowngradeRoleWhenLoggedUserOwner () {
       return this.editable && this.isLoggedUserOwner && this.editedUserSameLoggedIn
+    },
+    isPasswordLowerThanMinimalLength () {
+      return this.user.newPassword.length < this.passwordMinimalLength
     }
   },
   watch: {
