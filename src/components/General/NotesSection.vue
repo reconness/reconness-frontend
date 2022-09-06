@@ -142,7 +142,7 @@ export default {
     setSelectedNote: function (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.setIdNote(selectedId)
-      const notificationMessageDesc = 'Are you sure to remove the selected note'
+      const notificationMessageDesc = 'Are you sure to remove the selected note?'
       this.updateNotificationMessageDescription(notificationMessageDesc)
       jQuery('#message-box-notification-modal').modal()
     },
