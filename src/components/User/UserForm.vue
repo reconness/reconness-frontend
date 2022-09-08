@@ -159,7 +159,7 @@ export default {
       manageHisProfile: false,
       firstRoleSelection: false,
       oldUserName: '',
-      passwordMinimalLength: 2
+      passwordMinimalLength: 7
     }
   },
   computed: {
@@ -259,15 +259,6 @@ export default {
     },
     isPasswordLowerThanMinimalLength () {
       return this.user.newPassword.length < this.passwordMinimalLength
-    },
-    showStatusBar () {
-      return (this.operationStatus.status !== this.$entityStatus.WAITING)
-    },
-    successOperation () {
-      return this.operationStatus.status === this.$entityStatus.SUCCESS
-    },
-    failedOperation () {
-      return this.operationStatus.status === this.$entityStatus.FAILED
     }
   },
   watch: {

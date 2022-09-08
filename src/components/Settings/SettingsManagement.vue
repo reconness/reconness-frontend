@@ -18,6 +18,7 @@ import { mapState } from 'vuex'
 import UserList from '@/components/User/UserList.vue'
 import LogsFilesManagement from '@/components/Settings/LogsFilesManagement.vue'
 import NotificationManagement from '@/components/Settings/NotificationManagement.vue'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 export default {
   name: 'SettingsManagement',
   components: {
@@ -25,20 +26,12 @@ export default {
     LogsFilesManagement,
     NotificationManagement
   },
+  mixins: [StatusMessageMixin],
   computed: {
     ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection']),
     ...mapState('target', ['operationStatus']),
-    successOperation () {
-      return this.operationStatus.status === this.$entityStatus.SUCCESS
-    },
-    failedOperation () {
-      return this.operationStatus.status === this.$entityStatus.FAILED
-    },
-    showStatusBar () {
-      return (this.operationStatus.status !== this.$entityStatus.WAITING) && !this.showSettingsSection
-    },
     showUserConditionalStatusBar () {
-      return this.showStatusBar && (this.showLogsSection || (this.showUsersSection && this.successOperation))
+      return this.showStatusBar && !this.showSettingsSection && (this.showLogsSection || (this.showUsersSection && this.successOperation))
     }
   }
 }
