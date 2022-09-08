@@ -75,7 +75,7 @@
                           <input id="uploadimage" type="file" @change="onFileChange"/>
                           <span class="agent-mini-color-gray mt-3 mb-4 font-weight-normal">Profile Picture</span>
                         </label>
-                        <div v-if="!isLoggedUserMember" class="userform-roles-container border mb-1">
+                        <div v-if="showRolesSection" class="userform-roles-container border mb-1">
                             <div class="userform-roles-title-container border-bottom pb-3 pt-2">
                             <span class="font-weight-regular black-text font-size-16px ml-3">Role</span>
                             </div>
@@ -89,14 +89,14 @@
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner || disableDowngradeRoleWhenLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
                                     Administrator
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || disableDowngradeRoleWhenLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
                                   <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
                                     <span class="material-icons green-text">person</span>
                                     Member
@@ -254,11 +254,17 @@ export default {
     isUserNameInvalid () {
       return (this.isUserNameInBlank && this.userNameWasWritten) || (this.isUserNameInBlank && this.userTryToAdd)
     },
-    disableDowngradeRoleWhenLoggedUserOwner () {
+    isUserOwnerEditingHisUser () {
       return this.editable && this.isLoggedUserOwner && this.editedUserSameLoggedIn
     },
     isPasswordLowerThanMinimalLength () {
       return this.user.newPassword.length < this.passwordMinimalLength
+    },
+    showRolesSection () {
+      if (this.isUserOwnerEditingHisUser) {
+        return false
+      }
+      return !this.isLoggedUserMember
     }
   },
   watch: {
