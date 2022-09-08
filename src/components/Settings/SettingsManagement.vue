@@ -5,7 +5,7 @@
         <UserList v-if="showUsersSection"/>
         <LogsFilesManagement v-else-if="showLogsSection"/>
         <NotificationManagement v-else/>
-        <div v-if="showStatusBar" class="d-flex justify-content-center w-100">
+        <div v-if="showUserConditionalStatusBar" class="d-flex justify-content-center w-100">
           <span :class="{'blue-text': successOperation, 'red-text': failedOperation}" class="material-icons mr-2 align-self-center">check</span>
           <p class="mt-4 text-center">{{operationStatus.message}}</p>
         </div>
@@ -36,6 +36,9 @@ export default {
     },
     showStatusBar () {
       return (this.operationStatus.status !== this.$entityStatus.WAITING) && !this.showSettingsSection
+    },
+    showUserConditionalStatusBar () {
+      return this.showStatusBar && (this.showLogsSection || (this.showUsersSection && this.successOperation))
     }
   }
 }

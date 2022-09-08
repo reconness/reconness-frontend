@@ -2,11 +2,13 @@ import { mapMutations } from 'vuex'
 const StatusMessageMixin = {
   methods: {
     ...mapMutations('target', ['updateOperationStatusInfo']),
-    updateOperationStatus (status, message) {
+    updateOperationStatus (status, message, messageDisappears = true) {
       this.updateOperationStatusInfo(
         { status: status, message: message }
       )
-      this.setWaitingOnOperationStatusAfterSeconds()
+      if (messageDisappears) {
+        this.setWaitingOnOperationStatusAfterSeconds()
+      }
     },
     setWaitingOnOperationStatusAfterSeconds () {
       const self = this

@@ -109,6 +109,10 @@
                     </div>
                   </div><!-- /.row -->
                 </div><!-- /.modal-body -->
+                <div v-if="showStatusBar" class="d-flex justify-content-center w-100">
+                  <span :class="{'blue-text': successOperation, 'red-text': failedOperation}" class="material-icons mr-2 align-self-center">check</span>
+                  <p class="mt-4 text-center">{{operationStatus.message}}</p>
+                </div>
                 <div class="border-top-none modal-footer">
                   <button :disabled="isUserFormInvalid" @click="addUser" type="button" class="blue-text agent-border btn create-agent-buttons-main-action">{{changeActionSaveBtnByFormStatus}}</button>
                   <button @click="close()" type="button" class="red-text agent-border btn create-agent-buttons-main-action" data-dismiss="modal">Cancel</button>
@@ -122,10 +126,10 @@
 <script>
 import { mapMutations, mapState, mapGetters, mapActions } from 'vuex'
 import jQuery from 'jquery'
-import { TargetMixin } from '@/mixins/TargetMixin'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 export default {
   name: 'UserForm',
-  mixins: [TargetMixin],
+  mixins: [StatusMessageMixin],
   data () {
     return {
       showNameInput: false,
@@ -162,6 +166,7 @@ export default {
     ...mapState('user', ['selectedIdUser', 'manageMyOwnProfile', 'errorUpdatingOwnerRole', 'loggedUserPassword']),
     ...mapState('general', ['notificationMessageActionSelected']),
     ...mapGetters('user', ['getUserById', 'getLoggedUserData', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'isUsernameAlreadyUsed']),
+    ...mapState('target', ['operationStatus']),
     isUserNameInBlank () {
       return this.$validateIsBlank(this.user.username)
     },
@@ -254,6 +259,15 @@ export default {
     },
     isPasswordLowerThanMinimalLength () {
       return this.user.newPassword.length < this.passwordMinimalLength
+    },
+    showStatusBar () {
+      return (this.operationStatus.status !== this.$entityStatus.WAITING)
+    },
+    successOperation () {
+      return this.operationStatus.status === this.$entityStatus.SUCCESS
+    },
+    failedOperation () {
+      return this.operationStatus.status === this.$entityStatus.FAILED
     }
   },
   watch: {
@@ -351,7 +365,7 @@ export default {
               jQuery('#user-form-modal').modal('hide')
               this.resetUserForm()
             } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message, false)
             }
           })
         } else {
@@ -361,7 +375,7 @@ export default {
               jQuery('#user-form-modal').modal('hide')
               this.resetUserForm()
             } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+              this.updateOperationStatus(this.$entityStatus.FAILED, response.message, false)
             }
           })
         }
