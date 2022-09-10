@@ -81,10 +81,10 @@
                     <i class="font-size-26px material-icons mt-2 icon-color-style gradient-style" v-bind:style ="{background:LinearGradient}">event</i>
                 </div>
                 <div v-for="novelty in getLatestThingsFoundedInRootDomains" :key="novelty" class="d-flex justify-content-between item-list">
-                  <p class="mb-0"> New port opened<br> in subdomain <em> {{novelty.entity}} </em> </p>
+                  <p class="mb-0"> {{novelty.data}} </p>
                   <div class="d-flex flex-column text-right">
-                    <span><span class="font-weight-bold">{{this.getMonthByDate(novelty.date)}}</span>{{novelty.date.getDate()}}</span>
-                    <span class="text-style-opacity">{{novelty.date.getFullYear()}}</span>
+                    <span><span class="font-weight-bold">{{this.getMonthByDate(createDateObjectFromString(novelty.date))}}</span>{{createDateObjectFromString(novelty.date).getDate()}}</span>
+                    <span class="text-style-opacity">{{createDateObjectFromString(novelty.date).getFullYear()}}</span>
                   </div>
                 </div>
               </div>
@@ -297,6 +297,7 @@ export default {
     this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
     this.updateLinearGradient()
+    this.loadGraphics()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
@@ -314,7 +315,7 @@ export default {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['setCurrentView']),
     ...mapMutations('general', ['addEntityToDelete']),
-    ...mapActions('target', ['getTargetNotesFromServer', 'uploadRootDomainFileToServer', 'loadTargets']),
+    ...mapActions('target', ['getTargetNotesFromServer', 'uploadRootDomainFileToServer', 'loadTargets', 'loadDashboardDataFromServer']),
     updateOpenPortsInGraph () {
       this.optionsBar.xaxis.categories = this.getOpenPorts
     },
@@ -367,6 +368,13 @@ export default {
     },
     resetInputFile (e) {
       e.target.value = null
+    },
+    loadGraphics () {
+      const targetName = this.$route.params.targetName
+      this.loadDashboardDataFromServer(targetName)
+    },
+    createDateObjectFromString (dateStr) {
+      return new Date(dateStr)
     }
   }
 }
