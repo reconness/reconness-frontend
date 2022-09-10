@@ -1,12 +1,25 @@
 import { mapMutations } from 'vuex'
 const StatusMessageMixin = {
+  computed: {
+    showStatusBar () {
+      return this.operationStatus.status !== this.$entityStatus.WAITING
+    },
+    successOperation () {
+      return this.operationStatus.status === this.$entityStatus.SUCCESS
+    },
+    failedOperation () {
+      return this.operationStatus.status === this.$entityStatus.FAILED
+    }
+  },
   methods: {
     ...mapMutations('target', ['updateOperationStatusInfo']),
-    updateOperationStatus (status, message) {
+    updateOperationStatus (status, message, messageDisappears = true) {
       this.updateOperationStatusInfo(
         { status: status, message: message }
       )
-      this.setWaitingOnOperationStatusAfterSeconds()
+      if (messageDisappears) {
+        this.setWaitingOnOperationStatusAfterSeconds()
+      }
     },
     setWaitingOnOperationStatusAfterSeconds () {
       const self = this

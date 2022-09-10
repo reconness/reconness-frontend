@@ -526,12 +526,13 @@ export default ({
       })
       rootState.general.entitiesToDelete.splice(0, rootState.general.entitiesToDelete.length)
     },
-    removeSingleSubDomainFromServer ({ state, dispatch, rootState }, entityReference) {
+    removeSingleSubDomainFromServer ({ state, dispatch, commit, rootState }, entityReference) {
       if (state.authentication_token !== '') {
         const entity = rootState.general.entitiesToDelete[0]
         return axios.delete('/subdomains/' + entity.id)
           .then(function () {
             dispatch('clearSubDomainEntitiesToDelete', entityReference)
+            commit('cancelElementSelected')
             return { status: true, message: '' }
           })
           .catch(function (error) {

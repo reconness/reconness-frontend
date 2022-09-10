@@ -5,7 +5,7 @@
         <UserList v-if="showUsersSection"/>
         <LogsFilesManagement v-else-if="showLogsSection"/>
         <NotificationManagement v-else/>
-        <div v-if="showStatusBar" class="d-flex justify-content-center w-100">
+        <div v-if="showUserConditionalStatusBar" class="d-flex justify-content-center w-100">
           <span :class="{'blue-text': successOperation, 'red-text': failedOperation}" class="material-icons mr-2 align-self-center">check</span>
           <p class="mt-4 text-center">{{operationStatus.message}}</p>
         </div>
@@ -18,6 +18,7 @@ import { mapState } from 'vuex'
 import UserList from '@/components/User/UserList.vue'
 import LogsFilesManagement from '@/components/Settings/LogsFilesManagement.vue'
 import NotificationManagement from '@/components/Settings/NotificationManagement.vue'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 export default {
   name: 'SettingsManagement',
   components: {
@@ -25,17 +26,12 @@ export default {
     LogsFilesManagement,
     NotificationManagement
   },
+  mixins: [StatusMessageMixin],
   computed: {
     ...mapState('user', ['showLogsSection', 'showUsersSection', 'showSettingsSection']),
     ...mapState('target', ['operationStatus']),
-    successOperation () {
-      return this.operationStatus.status === this.$entityStatus.SUCCESS
-    },
-    failedOperation () {
-      return this.operationStatus.status === this.$entityStatus.FAILED
-    },
-    showStatusBar () {
-      return (this.operationStatus.status !== this.$entityStatus.WAITING) && !this.showSettingsSection
+    showUserConditionalStatusBar () {
+      return this.showStatusBar && !this.showSettingsSection && (this.showLogsSection || (this.showUsersSection && this.successOperation))
     }
   }
 }

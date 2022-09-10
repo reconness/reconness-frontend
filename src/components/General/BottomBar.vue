@@ -18,6 +18,7 @@
 import { mapState, mapMutations, mapGetters } from 'vuex'
 import { AgentMixin } from '@/mixins/AgentMixin'
 import { TargetMixin } from '@/mixins/TargetMixin'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 import VPagination from '@hennge/vue3-pagination'
 import jQuery from 'jquery'
 export default {
@@ -32,20 +33,11 @@ export default {
       manualPageEntered: null
     }
   },
-  mixins: [AgentMixin, TargetMixin],
+  mixins: [AgentMixin, TargetMixin, StatusMessageMixin],
   computed: {
     ...mapState('target', ['operationStatus', 'targetListStore', 'filterColour', 'paginator']),
     ...mapState('agent', ['agentListStore']),
     ...mapGetters('target', ['filterByColor']),
-    showStatusBar () {
-      return this.operationStatus.status !== this.$entityStatus.WAITING
-    },
-    successOperation () {
-      return this.operationStatus.status === this.$entityStatus.SUCCESS
-    },
-    failedOperation () {
-      return this.operationStatus.status === this.$entityStatus.FAILED
-    },
     entitiesAmount () {
       if (this.filterColour !== '' && this.isOnTargetView) {
         return this.arrayTargetFilterList.length
