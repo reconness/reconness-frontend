@@ -202,8 +202,30 @@ export default ({
     getFilteredAgentsByName: (state) => (name) => {
       return state.agentListStore.filter(agent => agent.name.includes(name))
     },
-    daysWithMostInteractionsLastWeek (state) {
-      return [22, 30, 70, 77, 42, 20, 50]
+    mostInteractionsLastWeekPerDay (state, getters, rootState) {
+      const interactionsPerDay = []
+      if (rootState.target.dashboardData) {
+        for (let daysOfWeekIndex = 0; daysOfWeekIndex <= 6; daysOfWeekIndex++) {
+          const value = rootState.target.dashboardData.interactions.find(dayContent => dayContent.day === daysOfWeekIndex)
+          if (value) {
+            interactionsPerDay.push(value.count)
+          } else {
+            interactionsPerDay.push(0)
+          }
+        }
+      }
+      return interactionsPerDay
+    },
+    daysWithMostInteractionsLastWeek (state, getters, rootState) {
+      const interactionsDays = []
+      if (rootState.target.dashboardData) {
+        rootState.target.dashboardData.interactions.forEach(dayContent => {
+          interactionsDays.push(
+            getters.getWeekDayLetter(dayContent.day)
+          )
+        })
+        return interactionsDays
+      }
     },
     getEntityTypeByDescription: (state) => (descriptionEntity) => {
       if (descriptionEntity === null) {
@@ -367,6 +389,10 @@ export default ({
         USER: { id: 1, description: 'User' },
         SYSTEM: { id: 2, description: 'System' }
       }
+    },
+    getWeekDayLetter: (state) => (dayNumber) => {
+      const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+      return days[dayNumber]
     }
   },
   actions: {
