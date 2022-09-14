@@ -501,6 +501,19 @@ export default ({
         commit('general/addEntityToDelete', entity, { root: true })
       })
     },
+    clearAllSubDomainEntitiesToServer ({ state, commit, dispatch, getters }, entities) {
+      if (state.authentication_token !== '') {
+        return axios.delete('rootdomains/deletesubdomians/' + entities.targetName + '/' + entities.rootDomainName)
+          .then(function () {
+            dispatch('clearSubDomainEntitiesToDelete', entities)
+            commit('cancelElementSelected')
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
     clearMultipleSubDomainEntitiesToServer ({ state, commit, dispatch, getters }, entities) {
       if (state.authentication_token !== '') {
         return axios.delete('/subdomains/' + entities.targetName + '/' + entities.rootDomainName + '/multiples/', {
