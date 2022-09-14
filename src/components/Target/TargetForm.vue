@@ -454,6 +454,7 @@ export default {
           }
         )
       }
+      this.enableValidationMessageRootDomains()
     },
     removeItemToRootDomains (rootDomainParam) {
       const index = this.target.rootDomains.findIndex(item => item.root === rootDomainParam.value[0])
