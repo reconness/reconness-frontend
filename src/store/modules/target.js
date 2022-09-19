@@ -46,7 +46,8 @@ export default ({
     selectedTargets: [],
     targetLoadingProcessStatus: 1,
     rootdomainLoadingProcessStatus: 1,
-    subDomainLoadingProcessStatus: 1
+    subDomainLoadingProcessStatus: 1,
+    dashboardData: null
   },
   mutations: {
     updateRoutePreviousToSearch (state, route) {
@@ -500,6 +501,19 @@ export default ({
         commit('general/addEntityToDelete', entity, { root: true })
       })
     },
+    clearAllSubDomainEntitiesToServer ({ state, commit, dispatch, getters }, entities) {
+      if (state.authentication_token !== '') {
+        return axios.delete('rootdomains/deletesubdomians/' + entities.targetName + '/' + entities.rootDomainName)
+          .then(function () {
+            dispatch('clearSubDomainEntitiesToDelete', entities)
+            commit('cancelElementSelected')
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response }
+          })
+      }
+    },
     clearMultipleSubDomainEntitiesToServer ({ state, commit, dispatch, getters }, entities) {
       if (state.authentication_token !== '') {
         return axios.delete('/subdomains/' + entities.targetName + '/' + entities.rootDomainName + '/multiples/', {
@@ -739,6 +753,14 @@ export default ({
     exportRootDomainWithSubDomainsByName ({ state }, referenceData) {
       if (state.authentication_token !== '') {
         return axios.post('/rootdomains/export/' + referenceData.targetName + '/' + referenceData.rootDomainName)
+      }
+    },
+    loadDashboardDataFromServer ({ state }, targetName) {
+      if (state.authentication_token !== '') {
+        axios.get('/targets/dashboard/' + targetName)
+          .then(function (response) {
+            state.dashboardData = response.data
+          })
       }
     }
   },
@@ -988,33 +1010,11 @@ export default ({
     getPercentOfRunningTargets () {
       return 87
     },
-    getLatestThingsFoundedInRootDomains () {
-      return [
-        {
-          entity: 'yanet',
-          date: new Date('06/24/2020')
-        },
-        {
-          subdomain: 'yanet',
-          date: new Date('06/24/2020')
-        },
-        {
-          subdomain: 'yanet',
-          date: new Date('06/24/2020')
-        },
-        {
-          subdomain: 'yanet',
-          date: new Date('06/24/2020')
-        },
-        {
-          subdomain: 'yanet',
-          date: new Date('06/24/2020')
-        },
-        {
-          subdomain: 'yanet',
-          date: new Date('06/24/2020')
-        }
-      ]
+    getLatestThingsFoundedInRootDomains (state) {
+      if (state.dashboardData) {
+        return state.dashboardData.eventTracks
+      }
+      return []
     },
     mapTargets: (state, getters) => (targets) => {
       const newTargets = []

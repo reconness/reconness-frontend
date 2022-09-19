@@ -360,6 +360,7 @@ export default {
         })
       }
       jQuery('#message-box-notification-modal').modal('hide')
+      this.resetData()
     }
   }
 }

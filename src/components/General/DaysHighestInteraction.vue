@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'DaysHighestInteraction',
   data: function () {
@@ -68,14 +68,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('agent', ['daysWithMostInteractionsLastWeek'])
+    ...mapState('target', ['dashboardData']),
+    ...mapGetters('agent', ['mostInteractionsLastWeekPerDay', 'daysWithMostInteractionsLastWeek'])
   },
-  created: function () {
-    this.updateDaysInGraph()
+  watch: {
+    dashboardData: function (value) {
+      if (value) {
+        this.updateDaysInGraph()
+      }
+    }
   },
   methods: {
     updateDaysInGraph () {
-      this.series[0].data = this.daysWithMostInteractionsLastWeek
+      this.series[0].data = this.mostInteractionsLastWeekPerDay
     }
   }
 }

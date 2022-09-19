@@ -153,7 +153,7 @@ export default {
     ...mapMutations('general', ['clearReferencesToDelete']),
     ...mapMutations('pipelines', ['clearSelectedPipelinesList']),
     ...mapActions('agent', ['clearAgentEntitiesToDelete', 'clearSingleAgentEntityToDelete']),
-    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearMultipleSubDomainEntitiesToServer', 'clearSubDomainEntitiesToDelete', 'removeSingleRootDomainFromServer', 'clearSubDomainEntitiesToDelete', 'removeSingleSubDomainFromServer']),
+    ...mapActions('target', ['clearTargetEntitiesToDeleteToServer', 'clearSingleTargetEntityToDeleteToServer', 'clearAllSubDomainEntitiesToServer', 'clearSubDomainEntitiesToDelete', 'removeSingleRootDomainFromServer', 'clearSubDomainEntitiesToDelete', 'removeSingleSubDomainFromServer']),
     ...mapActions('pipelines', ['clearPipelineEntitiesToDelete']),
     ...mapActions('user', ['clearUserEntitiesToDelete']),
     removeEntities () {
@@ -356,7 +356,7 @@ export default {
       }
     },
     batchSubDomainsRemove () {
-      this.clearMultipleSubDomainEntitiesToServer({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
+      this.clearAllSubDomainEntitiesToServer({ targetName: this.getTargetName, rootDomainName: this.getRootDomainName })
       this.updateRemoveAllOption(false)
     },
     singleSubDomainRemove () {
