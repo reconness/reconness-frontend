@@ -25,7 +25,7 @@
       <ul class="navbar-nav ml-auto right-navbar">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item">
-        <form class="form-inline">
+        <form class="form-inline" @submit.prevent="onSubmit">
       <div class="form-group has-search input-group-sm">
                               <span class="material-icons search-icon form-control-feddback">search</span>
                               <input :class="{'ligth-gray-background': isSearcherView}" class="form-control url-input" type="search" placeholder="Search" aria-label="Search" @keyup="goToSearchView"  v-model="textFilter">
