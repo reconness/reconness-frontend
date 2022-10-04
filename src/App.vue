@@ -226,7 +226,7 @@ export default {
     ...mapGetters('notification', ['getAllNewNotifications']),
     ...mapGetters('user', ['getLoggedUserData', 'roles', 'getGravatarUrlByEmail', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'getRoleById']),
     ...mapState('notification', ['isNotificationMenuActive']),
-    ...mapState('general', ['notificationTimeSelected']),
+    ...mapState('general', ['notificationTimeSelected', 'notificationMessageActionSelected']),
     ...mapGetters('auth', ['isUserAlreadyLogged']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
@@ -263,19 +263,12 @@ export default {
         this.goToPreviousPage()
       }
     },
-    notificationTimeSelected: {
-      handler: function (notificationTime) {
-        if (notificationTime.today) {
-          this.clearTodayNotifications()
+    notificationMessageActionSelected: {
+      handler: function (notificationAction) {
+        if (notificationAction) {
+          this.removeUnreadStatusToAll()
         }
-        if (notificationTime.yesterday) {
-          this.clearYesterdayNotifications()
-        }
-        if (notificationTime.olders) {
-          this.clearOlderNotifications()
-        }
-      },
-      deep: true
+      }
     }
   },
   mounted () {
@@ -284,7 +277,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
-    ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
+    ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications', 'clearAllNotifications', 'removeUnreadStatusToAll']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
     ...mapActions('user', ['loadUsers']),

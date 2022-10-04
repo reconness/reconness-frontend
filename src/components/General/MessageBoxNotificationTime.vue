@@ -10,28 +10,6 @@
                       <HelpIco v-if="isNotificationMessageTypeConfirmSelected" :variableClass="'mt-3 question-mark-size question-mark-color'"/>
                       <span v-if="isNotificationMessageTypeConfirmSelected" class="message-box-notification-type-text black-text font-size-24px mt-2 font-weight-semibold">Confirm</span>
                       <span v-html="notificationMessageDescription" class="message-box-notification-description black-text font-size-16px px-2 mt-4"></span>
-                      <div class="mt-3 userform-role-title">
-                        <div class="form-group ml-3user mt-2 d-flex">
-                          <div class="ml-2 custom-control custom-checkbox form-check">
-                            <input v-model="toRemoveTodayNotifications" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox1">
-                            <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
-                              Today
-                            </label>
-                          </div>
-                          <div class="ml-2 custom-control custom-checkbox form-check ml-4">
-                            <input v-model="toRemoveYesterdayNotifications" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox2">
-                            <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
-                              Yesterday
-                            </label>
-                          </div>
-                          <div class="ml-2 custom-control custom-checkbox form-check ml-4">
-                            <input v-model="toRemoveOldersNotifications" class="form-check-input custom-control-input" type="checkbox" id="agent_customCheckbox3">
-                            <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
-                              Olders
-                            </label>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
