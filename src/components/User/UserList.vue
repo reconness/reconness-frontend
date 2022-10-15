@@ -15,7 +15,7 @@
                      <img src="@/assets/user-icon.png" class="rounded-circle user-management-plus-logo" alt="User Logo">
                       <div class="user-management-new-container-action-btn d-flex align-items-center">
                         <span class="material-icons blue-text font-size-16px m-auto">add</span>
-                        <a href="#" class="blue-text font-size-16px" data-toggle="modal" data-target="#user-form-modal">New User</a>
+                        <a href="#" class="blue-text font-size-16px" data-toggle="modal" @click="unlinkUserValues()" data-target="#user-form-modal">New User</a>
                       </div>
                   </div>
               </div>
@@ -56,11 +56,9 @@
             <!-- /.card -->
                   </div>
               </div>
-              <UserForm/>
           </div>
 </template>
 <script>
-import UserForm from '@/components/User/UserForm.vue'
 import UserManagementHeader from '@/components/User/UserManagementHeader.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
@@ -69,7 +67,6 @@ import jQuery from 'jquery'
 export default {
   name: 'UserList',
   components: {
-    UserForm,
     UserManagementHeader
   },
   data () {
@@ -79,14 +76,19 @@ export default {
   },
   mixins: [RemoveEntitiesMixin, UserMixin],
   computed: {
-    ...mapState('user', ['users']),
+    ...mapState('user', ['users', 'selectedIdUser', 'isUerFormAccessedFromSystemBar']),
     ...mapGetters('user', ['getGravatarUrlByEmail', 'getRoleById', 'roles', 'isLoggedUserAdmin', 'getLoggedUserData', 'isLoggedUserMember'])
+  },
+  mounted () {
+    this.updateSelectedIdUser(this.getLoggedUserData.id)
+    this.showUserFormIfRequired()
   },
   methods: {
     ...mapMutations('general', ['addEntityToDelete', 'removeSelectedEntities']),
+    ...mapMutations('user', ['updateSelectedIdUser']),
     editUser (e) {
       const selectedUserId = e.currentTarget.getAttribute('data-id')
-      this.$store.commit('user/updateSelectedIdUser', selectedUserId)
+      this.updateSelectedIdUser(selectedUserId)
     },
     removeUser (e) {
       const selectedUserId = e.currentTarget.getAttribute('data-id')
@@ -123,6 +125,14 @@ export default {
     },
     disableBy (userId, userRole) {
       return this.isThisUserLogged(userId) || this.loggedUserIsAdminAndParameterRoleIsAdminOrOwner(userRole)
+    },
+    showUserFormIfRequired () {
+      if (this.selectedIdUser !== '-1' && this.isUerFormAccessedFromSystemBar) {
+        jQuery('#user-form-modal').modal()
+      }
+    },
+    unlinkUserValues () {
+      this.updateSelectedIdUser('-1')
     }
   }
 }

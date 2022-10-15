@@ -279,7 +279,7 @@ export default {
     ...mapMutations('auth', ['updateIsUserLogged']),
     ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications', 'clearAllNotifications', 'removeUnreadStatusToAll']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
-    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
+    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection', 'updateIsUerFormAccessedFromSystemBarAttribute']),
     ...mapActions('user', ['loadUsers']),
     mouseenter: function () {
       if (this.button_module) {
@@ -335,9 +335,9 @@ export default {
     },
     manageMyUser () {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
+        this.updateIsUerFormAccessedFromSystemBarAttribute(true)
         this.$router.push({ name: 'Users' })
       } else {
-        this.updateSelectedIdUser(this.getLoggedUserData.id)
         this.updateManageMyOwnProfile(true)
         jQuery('#user-form-modal').modal()
       }
