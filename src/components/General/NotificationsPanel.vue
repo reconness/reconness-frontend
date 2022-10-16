@@ -3,7 +3,7 @@
           <div class="notifications-aside notifications-container-border-radius control-sidebar-dark installer-agents">
         <div class="p-3 notifications-top-container control-sidebar-content sticky-top d-flex align-items-center justify-content-between">
             <span class="font-size-20px font-weight-medium">Notifications</span>
-            <span class="cursor-pointer clear-all font-weight-light" @click="removeNotifications">Clear All</span>
+            <span class="cursor-pointer clear-all font-weight-light" @click="removeNotifications">Mark All as Read</span>
         </div>
         <div class="sidebar-list marketplace-agent-container">
           <dl class="row h-100">
@@ -94,7 +94,7 @@ export default {
       )
     },
     removeNotifications () {
-      const notificationMessageDesc = 'Please select the logs to remove'
+      const notificationMessageDesc = 'Are you sure to mark all this notifications to read?'
       this.updateNotificationMessageDescription(notificationMessageDesc)
       jQuery('#notifications-time-message-box-modal').modal()
     }

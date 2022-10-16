@@ -25,7 +25,7 @@
       <ul class="navbar-nav ml-auto right-navbar">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item">
-        <form class="form-inline">
+        <form class="form-inline" @submit.prevent="onSubmit">
       <div class="form-group has-search input-group-sm">
                               <span class="material-icons search-icon form-control-feddback">search</span>
                               <input :class="{'ligth-gray-background': isSearcherView}" class="form-control url-input" type="search" placeholder="Search" aria-label="Search" @keyup="goToSearchView"  v-model="textFilter">
@@ -226,7 +226,7 @@ export default {
     ...mapGetters('notification', ['getAllNewNotifications']),
     ...mapGetters('user', ['getLoggedUserData', 'roles', 'getGravatarUrlByEmail', 'isLoggedUserOwner', 'isLoggedUserAdmin', 'isLoggedUserMember', 'getRoleById']),
     ...mapState('notification', ['isNotificationMenuActive']),
-    ...mapState('general', ['notificationTimeSelected']),
+    ...mapState('general', ['notificationTimeSelected', 'notificationMessageActionSelected']),
     ...mapGetters('auth', ['isUserAlreadyLogged']),
     isLoginPage () {
       return this.$route.name === 'LogIn'
@@ -263,19 +263,12 @@ export default {
         this.goToPreviousPage()
       }
     },
-    notificationTimeSelected: {
-      handler: function (notificationTime) {
-        if (notificationTime.today) {
-          this.clearTodayNotifications()
+    notificationMessageActionSelected: {
+      handler: function (notificationAction) {
+        if (notificationAction) {
+          this.removeUnreadStatusToAll()
         }
-        if (notificationTime.yesterday) {
-          this.clearYesterdayNotifications()
-        }
-        if (notificationTime.olders) {
-          this.clearOlderNotifications()
-        }
-      },
-      deep: true
+      }
     }
   },
   mounted () {
@@ -284,9 +277,9 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateIsUserLogged']),
-    ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications']),
+    ...mapMutations('notification', ['showNotificationsMenu', 'clearTodayNotifications', 'clearYesterdayNotifications', 'clearOlderNotifications', 'clearAllNotifications', 'removeUnreadStatusToAll']),
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
-    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection']),
+    ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection', 'updateIsUerFormAccessedFromSystemBarAttribute']),
     ...mapActions('user', ['loadUsers']),
     mouseenter: function () {
       if (this.button_module) {
@@ -342,9 +335,9 @@ export default {
     },
     manageMyUser () {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
+        this.updateIsUerFormAccessedFromSystemBarAttribute(true)
         this.$router.push({ name: 'Users' })
       } else {
-        this.updateSelectedIdUser(this.getLoggedUserData.id)
         this.updateManageMyOwnProfile(true)
         jQuery('#user-form-modal').modal()
       }

@@ -82,22 +82,22 @@
                             <div class="userform-role-title">
                               <div class="form-group ml-3user mt-2">
                                 <div class="d-none ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" @click="userSelectARole" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox1">
-                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox1">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" @click="userSelectARole" v-model="user.role" :value="this.$roles.OWNER.id" class="form-check-input custom-control-input" type="radio" id="user_customCheckbox1">
+                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="user_customCheckbox1">
                                     <span class="material-icons blue-text">manage_accounts</span>
                                     Owner
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox2" :value="this.$roles.ADMIN.id">
-                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox2">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile || !isLoggedUserOwner" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="user_customCheckbox2" :value="this.$roles.ADMIN.id">
+                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="user_customCheckbox2">
                                     <span class="material-icons green-text">manage_accounts</span>
                                     Administrator
                                   </label>
                                 </div>
                                 <div class="ml-2 custom-control custom-radio form-check">
-                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="agent_customCheckbox3" :value="this.$roles.MEMBER.id">
-                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="agent_customCheckbox3">
+                                  <input :disabled="this.$store.state.user.manageMyOwnProfile" userSelectARole v-model="user.role" class="form-check-input custom-control-input" type="radio" id="user_customCheckbox3" :value="this.$roles.MEMBER.id">
+                                  <label class="form-check-label custom-control-label agent-regular-font black-text agent-disable-weigth d-flex align-items-center" for="user_customCheckbox3">
                                     <span class="material-icons green-text">person</span>
                                     Member
                                   </label>
@@ -293,6 +293,8 @@ export default {
         this.user.id = selectedUser.id
         this.editable = true
         this.oldUserName = selectedUser.username
+      } else {
+        this.resetUserForm()
       }
     },
     notificationMessageActionSelected: function (value) {
@@ -307,7 +309,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateUserEntity', 'updateSelectedIdUser', 'updateLoggedUserRole']),
+    ...mapMutations('user', ['updateManageMyOwnProfile', 'addUserEntity', 'updateUserEntity', 'updateSelectedIdUser', 'updateLoggedUserRole', 'updateIsUerFormAccessedFromSystemBarAttribute']),
     ...mapMutations('general', ['updateNotificationMessageType', 'updateNotificationMessageDescription']),
     ...mapMutations('auth', ['updateIsUserLogged']),
     ...mapActions('user', ['addUserToServer', 'updateUserToServer']),
@@ -406,6 +408,7 @@ export default {
       this.oldUserName = ''
       this.updateSelectedIdUser('-1')
       this.updateManageMyOwnProfile(false)
+      this.updateIsUerFormAccessedFromSystemBarAttribute(false)
     },
     logoutUser () {
       this.updateIsUserLogged(false)

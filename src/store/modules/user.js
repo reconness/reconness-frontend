@@ -14,7 +14,8 @@ export default ({
     manageMyOwnProfile: false,
     userLogsFiles: [],
     errorUpdatingOwnerRole: false,
-    loggedUsername: localStorage.getItem('loggedUsername') || ''
+    loggedUsername: localStorage.getItem('loggedUsername') || '',
+    isUerFormAccessedFromSystemBar: false
   },
   mutations: {
     updateLoggedUserName (state, username) {
@@ -65,6 +66,9 @@ export default ({
       users.forEach(user => {
         state.users.push(user)
       })
+    },
+    updateIsUerFormAccessedFromSystemBarAttribute (state, value) {
+      state.isUerFormAccessedFromSystemBar = value
     }
   },
   actions: {

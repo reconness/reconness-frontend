@@ -98,6 +98,9 @@ export default ({
         state.notifications.splice(notificationIndex, 1)
       }
     },
+    clearAllNotifications (state) {
+      state.notifications.splice(0, state.notifications.length)
+    },
     saveNotificationsSettings (state, notificationsSettings) {
       state.notificationSettingData = notificationsSettings
     }
