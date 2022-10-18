@@ -54,7 +54,7 @@
      <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="selectedAll()"> Selected All</div>
      <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="unselectedAll()"> Unselected All</div>
      <div class="col border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> </div>
-     <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> <a>Export</a></div>
+     <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> <a @click="exportSelectedSubdomains">Export</a></div>
      <div data-toggle="modal" data-target="#message-box-modal" :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}">
        <a>Delete</a></div>
      <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="done()"> Done</div>
@@ -223,7 +223,7 @@ export default {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['updateRemoveAllOption']),
     ...mapMutations('general', ['addEntityToDelete']),
-    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer']),
+    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer', 'downloadSelectedSubdomainsFromServerInCsvFormat']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -369,6 +369,19 @@ export default {
     },
     downloadAllSubDomainsInCsvFile () {
       this.downloadAllSubDomainsNameInCsvFileFromServer({
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      }).then(response => {
+        const fileURL = window.URL.createObjectURL(new Blob([response.data]))
+        const fileLink = document.createElement('a')
+        fileLink.href = fileURL
+        fileLink.setAttribute('download', 'subdomains.csv')
+        document.body.appendChild(fileLink)
+        fileLink.click()
+      })
+    },
+    exportSelectedSubdomains () {
+      this.downloadSelectedSubdomainsFromServerInCsvFormat({
         targetName: this.$route.params.targetName,
         rootDomainName: this.$route.params.rootdomainName
       }).then(response => {

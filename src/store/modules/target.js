@@ -762,6 +762,16 @@ export default ({
             state.dashboardData = response.data
           })
       }
+    },
+    downloadSelectedSubdomainsFromServerInCsvFormat ({ state, getters }, referenceData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/subdomains/export/' + referenceData.targetName + '/' + referenceData.rootDomainName,
+          getters.mapSelectedSubDomainsDataToIdsList,
+          {
+            responseType: 'blob'
+          }
+        )
+      }
     }
   },
   modules: {},
@@ -1244,6 +1254,13 @@ export default ({
         subDomainsNames.push(entity.id)
       })
       return subDomainsNames
+    },
+    mapSelectedSubDomainsDataToIdsList (state) {
+      const subdomainsIds = []
+      state.elementSelectedList.forEach(subdomain => {
+        subdomainsIds.push(subdomain.idSubdom)
+      })
+      return subdomainsIds
     }
   }
 })
