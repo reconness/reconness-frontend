@@ -15,7 +15,7 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <label for="import-target" class="nav-link pos mb-0"> Import Target </label>
-          <input type="file" id="import-target" accept=".json"/>
+          <input type="file" id="import-target" @change="loadTargetDataFromFile" accept=".json"/>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block">
           <a class="nav-link pos" v-show= "check" href="#" @click="close()">Cancel</a>
@@ -169,11 +169,13 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import TargetForm from '@/components/Target/TargetForm.vue'
 import Toast from 'primevue/toast'
 import TargetConfirmList from '@/components/Target/TargetConfirmList.vue'
 import jQuery from 'jquery'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
+
 export default {
   name: 'NavBarTwoTarget',
   components: {
@@ -193,6 +195,7 @@ export default {
       isListView: true
     }
   },
+  mixins: [StatusMessageMixin],
   computed: {
     ...mapState('target', ['targetListStore', 'check', 'colorDelete', 'targetIdList']),
     ...mapState('general', ['entitiesToDelete']),
@@ -216,6 +219,7 @@ export default {
     },
     ...mapMutations('target', ['isFilter', 'editList', 'cancelIdTarget', 'clearSelectedTargetsList']),
     ...mapMutations('general', ['clearReferencesToDelete']),
+    ...mapActions('target', ['importTargetWithRootDomainsToServer']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -263,14 +267,35 @@ export default {
       }
     },
     close () {
-      var checkboxes = document.getElementsByName('checkitem')
-      for (var i = 0, n = checkboxes.length; i < n; i++) {
+      const checkboxes = document.getElementsByName('checkitem')
+      for (let i = 0, n = checkboxes.length; i < n; i++) {
         checkboxes[i].checked = false
       }
       this.nameTyped = ''
       this.cancelIdTarget()
       this.clearReferencesToDelete()
       this.clearSelectedTargetsList()
+    },
+    loadTargetDataFromFile (e) {
+      const textfile = e.target.files[0]
+      const reader = new FileReader()
+      reader.readAsText(textfile, 'UTF-8')
+      const self = this
+      reader.onload = function (evt) {
+        try {
+          const targetFileFormData = new FormData()
+          targetFileFormData.append('file', textfile)
+          self.importTargetWithRootDomainsToServer(targetFileFormData).then(response => {
+            if (response.status) {
+              self.updateOperationStatus(self.$entityStatus.SUCCESS, self.$message.successMessageForImport)
+            } else {
+              self.updateOperationStatus(self.$entityStatus.FAILED, response.message)
+            }
+          })
+        } catch (error) {
+          self.updateOperationStatus(self.$entityStatus.SUCCESS, self.$message.errorMessageForAllPurpose)
+        }
+      }
     }
   }
 }

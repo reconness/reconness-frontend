@@ -292,7 +292,9 @@ export default {
         successMessageForFileUpload: 'The file was successfully uploaded',
         successMessageForWordlistEdition: 'The wordlist content has been edited successfully',
         successMessageForNotificationsSettingsEdition: 'The notifications settings has been edited successfully',
-        successMessageForLogFileCleaning: 'The log file has been cleaned successfully'
+        successMessageForLogFileCleaning: 'The log file has been cleaned successfully',
+        successMessageForImport: 'The file has been imported successfully'
+
       }
     )
 

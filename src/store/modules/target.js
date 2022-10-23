@@ -772,6 +772,21 @@ export default ({
           }
         )
       }
+    },
+    importTargetWithRootDomainsToServer ({ state, getters, commit }, targetFormData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/targets/import/', targetFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          const newImportedTarget = getters.mapTargetFromServerToLocal(response.data)
+          commit('addTarget', newImportedTarget)
+          return { status: true, message: '' }
+        }).catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
+      }
     }
   },
   modules: {},
