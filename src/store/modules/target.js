@@ -787,6 +787,33 @@ export default ({
           return { status: false, message: error.response.data }
         })
       }
+    },
+    importSubdomainsFromCsvFileToServer ({ state, getters, commit }, subdomainsData) {
+      if (state.authentication_token !== '') {
+        return axios.post('/rootdomains/uploadSubdomains/' + subdomainsData.targetName + '/' + subdomainsData.rootdomainName, subdomainsData.formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          const newSubDomains = getters.getSubdomainsNotPresentIn({
+            subdomainComparisonList: response.data,
+            subdomainsStore: getters.getRootDomainByTargetNameAndRootDomainName({
+              targetName: subdomainsData.targetName,
+              rootDomainName: subdomainsData.rootdomainName
+            }).subdomain
+          })
+          const mappedSubdomains = getters.mapMultipleSubdomainsFromServerToLocal(newSubDomains)
+          const subdomainData = {
+            targetName: subdomainsData.targetName,
+            rootDomainName: subdomainsData.rootdomainName,
+            subDomainData: mappedSubdomains
+          }
+          commit('addSubdomainsByTargetNameAndRootDomainName', subdomainData)
+          return { status: true, message: '' }
+        }).catch(function (error) {
+          return { status: false, message: error.response.data }
+        })
+      }
     }
   },
   modules: {},
@@ -1276,6 +1303,19 @@ export default ({
         subdomainsIds.push(subdomain.idSubdom)
       })
       return subdomainsIds
+    },
+    getSubdomainsNotPresentIn: (state) => (lists) => {
+      const newItems = []
+      lists.subdomainComparisonList.forEach(item => {
+        let i = 0
+        while (i < lists.subdomainsStore.length && lists.subdomainsStore[i].name !== item.name) {
+          i++
+        }
+        if (i === lists.subdomainsStore.length) {
+          newItems.push(item)
+        }
+      })
+      return newItems
     }
   }
 })

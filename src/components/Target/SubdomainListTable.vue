@@ -8,8 +8,8 @@
          Add Subdomain</a></li>
         <li class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
           <FileImportIco  v-bind:style ="{ 'fill': color}"/>
-          <label for="export-target" class="domain-names-list mb-0"> Import Subdomains </label>
-          <input type="file" id="export-target"/>
+          <label for="import-subdomains" class="domain-names-list mb-0"> Import Subdomains </label>
+          <input type="file" id="import-subdomains" accept=".csv" @change="loadSubdomainsDataFromFile"/>
         </li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
          <a href="#" @click="downloadAllSubDomainsInCsvFile"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
@@ -223,7 +223,7 @@ export default {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['updateRemoveAllOption']),
     ...mapMutations('general', ['addEntityToDelete']),
-    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer', 'downloadSelectedSubdomainsFromServerInCsvFormat']),
+    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer', 'downloadSelectedSubdomainsFromServerInCsvFormat', 'importSubdomainsFromCsvFileToServer']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -392,6 +392,32 @@ export default {
         document.body.appendChild(fileLink)
         fileLink.click()
       })
+    },
+    loadSubdomainsDataFromFile (e) {
+      const textfile = e.target.files[0]
+      const reader = new FileReader()
+      reader.readAsText(textfile, 'UTF-8')
+      const self = this
+      reader.onload = function (evt) {
+        try {
+          const subdomainsListFileFormData = new FormData()
+          subdomainsListFileFormData.append('file', textfile)
+          const payload = {
+            targetName: self.$route.params.targetName,
+            rootdomainName: self.$route.params.rootdomainName,
+            formData: subdomainsListFileFormData
+          }
+          self.importSubdomainsFromCsvFileToServer(payload).then(response => {
+            if (response.status) {
+              self.updateOperationStatus(self.$entityStatus.SUCCESS, self.$message.successMessageForImport)
+            } else {
+              self.updateOperationStatus(self.$entityStatus.FAILED, response.message)
+            }
+          })
+        } catch (error) {
+          self.updateOperationStatus(self.$entityStatus.FAILED, self.$message.errorMessageForAllPurpose)
+        }
+      }
     }
   }
 }
@@ -470,7 +496,7 @@ font-size: 16px;
 .nav-item svg, .nav-item .material-icons{
     vertical-align: text-bottom;
 }
-#export-target {
+#import-subdomains {
   opacity: 0;
   position: absolute;
   z-index: -1;
