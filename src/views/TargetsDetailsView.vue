@@ -35,7 +35,7 @@
                           <li v-for="item of getCurrentTarget.rootDomains" :key="item.id" class="d-flex justify-content-between align-items-center">
                             <div class="target-details-root-links">
                             <span  class="material-icons font-size-16px mt-1 black-text cursor-pointer"> chevron_right </span>
-                            <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: getCurrentTarget.id , id: item.id, targetName: getCurrentTarget.name, rootdomainName: item.root} }">
+                            <router-link :to="{ name: 'RootDomainDetails', params: {targetName: getCurrentTarget.name, rootdomainName: item.root} }">
                               {{item.root}}
                             </router-link>
                             </div>

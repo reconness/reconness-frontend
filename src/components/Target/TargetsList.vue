@@ -10,7 +10,7 @@
           <span class="info-box-icon icon-style" :style ="{background: 'linear-gradient(135deg,'+primaryColor+' '+ '0%,' + secondaryColor + ' ' + '100%) 0% 0% no-repeat padding-box'}"><BullseyeArrowIco :variableClass="'w-50 h-50'"/></span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
-           <router-link :to="{ name: 'TargetDetail', params: {id:id, targetName: name} }" class="text-body" >
+           <router-link :to="{ name: 'TargetDetail', params: {targetName: name} }" class="text-body" >
             {{name}}</router-link>
           </span>
           <a class="nav-link target-detail-popover active agent-mini-agent-details pt-0 pb-0 black-text border-right-0 cursor-pointer" @click="showDetailsPopover" :data-id="id" :data-name="name">Details</a>

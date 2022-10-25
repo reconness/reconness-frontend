@@ -8,8 +8,8 @@
          Add Subdomain</a></li>
         <li class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
           <FileImportIco  v-bind:style ="{ 'fill': color}"/>
-          <label for="export-target" class="domain-names-list mb-0"> Import Subdomains </label>
-          <input type="file" id="export-target"/>
+          <label for="import-subdomains" class="domain-names-list mb-0"> Import Subdomains </label>
+          <input type="file" id="import-subdomains" accept=".csv" @change="loadSubdomainsDataFromFile"/>
         </li>
         <li :class="{'isLinkDisabled' : this.getSubdomainSizeByReferencesName(this.routeParams) === 0}" class="nav-item nav-margin border-right d-none d-sm-block mr-4 pr-4">
          <a href="#" @click="downloadAllSubDomainsInCsvFile"><FileExportIco  v-bind:style ="{'fill': color}"/>  Export All Subdomains</a></li>
@@ -54,7 +54,7 @@
      <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="selectedAll()"> Selected All</div>
      <div class="col-2 border-right text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="unselectedAll()"> Unselected All</div>
      <div class="col border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> </div>
-     <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> <a>Export</a></div>
+     <div :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}"> <a @click="exportSelectedSubdomains">Export</a></div>
      <div data-toggle="modal" data-target="#message-box-modal" :class="{'isLinkDisabled' : isElementSelected, 'domain-names-list' : !isElementSelected}" class="col-1 border-right text-light-white p-2 text-center" v-bind:style ="{'background':color}">
        <a>Delete</a></div>
      <div class="col-1 border-right-radius text-light-white p-2 text-center domain-names-list" v-bind:style ="{'background':color}" @click="done()"> Done</div>
@@ -128,7 +128,7 @@
     </div>
     <div class="col-2 ml-3 border-table abs-center border p-0" v-if="this.showHeader">
         <div class="border-right abs-center h-100 w-75 float-left">
-          <router-link :to="{ name: 'SubDomainDetails', params: {idTarget: routeParams.idTarget, id: routeParams.idRootDomain, idsubdomain: item.id, subdomainName: item.name} }">
+          <router-link :to="{ name: 'SubDomainDetails', params: {subdomainName: item.name} }">
           <span class="material-icons gradient-style" style="font-size:44px; opacity: 1;" v-bind:style ="{background: color}">forward</span>
           </router-link>
         </div>
@@ -223,7 +223,7 @@ export default {
     ...mapMutations('agent', ['setIsElementDeleted']),
     ...mapMutations('target', ['updateRemoveAllOption']),
     ...mapMutations('general', ['addEntityToDelete']),
-    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer']),
+    ...mapActions('target', ['downloadAllSubDomainsNameInCsvFileFromServer', 'downloadSelectedSubdomainsFromServerInCsvFormat', 'importSubdomainsFromCsvFileToServer']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -379,6 +379,45 @@ export default {
         document.body.appendChild(fileLink)
         fileLink.click()
       })
+    },
+    exportSelectedSubdomains () {
+      this.downloadSelectedSubdomainsFromServerInCsvFormat({
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      }).then(response => {
+        const fileURL = window.URL.createObjectURL(new Blob([response.data]))
+        const fileLink = document.createElement('a')
+        fileLink.href = fileURL
+        fileLink.setAttribute('download', 'subdomains.csv')
+        document.body.appendChild(fileLink)
+        fileLink.click()
+      })
+    },
+    loadSubdomainsDataFromFile (e) {
+      const textfile = e.target.files[0]
+      const reader = new FileReader()
+      reader.readAsText(textfile, 'UTF-8')
+      const self = this
+      reader.onload = function (evt) {
+        try {
+          const subdomainsListFileFormData = new FormData()
+          subdomainsListFileFormData.append('file', textfile)
+          const payload = {
+            targetName: self.$route.params.targetName,
+            rootdomainName: self.$route.params.rootdomainName,
+            formData: subdomainsListFileFormData
+          }
+          self.importSubdomainsFromCsvFileToServer(payload).then(response => {
+            if (response.status) {
+              self.updateOperationStatus(self.$entityStatus.SUCCESS, self.$message.successMessageForImport)
+            } else {
+              self.updateOperationStatus(self.$entityStatus.FAILED, response.message)
+            }
+          })
+        } catch (error) {
+          self.updateOperationStatus(self.$entityStatus.FAILED, self.$message.errorMessageForAllPurpose)
+        }
+      }
     }
   }
 }
@@ -457,7 +496,7 @@ font-size: 16px;
 .nav-item svg, .nav-item .material-icons{
     vertical-align: text-bottom;
 }
-#export-target {
+#import-subdomains {
   opacity: 0;
   position: absolute;
   z-index: -1;

@@ -21,7 +21,7 @@
           </span>
           <div class="info-box-content">
           <span class="info-box-text domain-names-target">
-          <router-link :to="{ name: 'TargetDetail', params: {id: item.id, targetName: item.name} }"  class="text-dark" >{{item.name}}</router-link>
+          <router-link :to="{ name: 'TargetDetail', params: {targetName: item.name} }"  class="text-dark" >{{item.name}}</router-link>
           <span  class="material-icons float-right vert" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more_vert</span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
             <a href="#" class="color-blue" data-toggle="modal" data-target="#message-box-modal">
@@ -36,19 +36,17 @@
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
       </div><!-- /.targets-list-home -->
-      <Confirmation :valueName = selectedTargetName ></Confirmation>
+      <!-- <Confirmation :valueName = selectedTargetName ></Confirmation> -->
     </div>
 </template>
 <script>
 import BullseyeArrowIco from '@/components/Icons/BullseyeArrowIco.vue'
-import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
 export default {
   name: 'HomeRigthSidebar',
   components: {
-    BullseyeArrowIco,
-    Confirmation
+    BullseyeArrowIco
   },
   mixins: [RemoveEntitiesMixin],
   data: function () {

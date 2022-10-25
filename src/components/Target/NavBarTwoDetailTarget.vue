@@ -8,7 +8,7 @@
             <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: $route.params.targetName} }" v-if = showRootDomains>
+            <router-link :to="{ name: 'TargetDetail', params: {targetName: $route.params.targetName} }" v-if = showRootDomains>
             <p class="float-right ml-2 font-weight-bold color-black">{{TargetName}}</p>
             </router-link>
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
@@ -18,11 +18,11 @@
           <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
         </li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
-          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: this.$route.params.targetName,  rootdomainName: $route.params.rootdomainName } }">
+          <router-link :to="{ name: 'RootDomainDetails', params: {targetName: this.$route.params.targetName,  rootdomainName: $route.params.rootdomainName } }">
           <span class="material-icons ml-2 icon-color-style chevron-line-height-1-7rem"> chevron_right </span>
         </router-link></li>
         <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
-          <router-link :to="{ name: 'RootDomainDetails', params: {idTarget: $route.params.idTarget , id: $route.params.id, targetName: this.$route.params.targetName, rootdomainName: $route.params.rootdomainName} }">
+          <router-link :to="{ name: 'RootDomainDetails', params: {targetName: this.$route.params.targetName, rootdomainName: $route.params.rootdomainName} }">
           <span class="ml-2 font-weight-bold">{{rootName}}</span>
           </router-link>
         </li>
@@ -83,7 +83,7 @@
             <router-link :to="{name: 'Targets'}" class="color-blue">
             <span class="material-icons" @mouseover="toggle" aria:haspopup="true" aria-controls="overlay_panel">arrow_back</span>
             </router-link>
-            <router-link :to="{ name: 'TargetDetail', params: {id: $route.params.idTarget, targetName: $route.params.targetName} }" v-if = showRootDomains>
+            <router-link :to="{ name: 'TargetDetail', params: {targetName: $route.params.targetName} }" v-if = showRootDomains>
             <p class="float-right ml-2 font-weight-bold color-black">{{TargetName}}</p>
             </router-link>
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
@@ -136,7 +136,6 @@
   <OverlayPanel :baseZIndex=100 ref="op" appendTo="body" id="overlay_panel"  >
     <small class="font-weight-bold">Back to main</small>
   </OverlayPanel>
-  <Confirmation ></Confirmation>
   <NoteConfirmation />
      </div>
 </template>
@@ -145,7 +144,6 @@ import { mapMutations, mapState, mapGetters, mapActions } from 'vuex'
 import OverlayPanel from 'primevue/overlaypanel'
 import NotesBtn from '@/components/General/NotesBtn.vue'
 import NotesSection from '@/components/General/NotesSection.vue'
-import Confirmation from '@/components/Target/TargetConfirmationV2.vue'
 import NoteConfirmation from '@/components/Target/NoteConfirmation.vue'
 import { TargetMixin } from '@/mixins/TargetMixin'
 import { RemoveEntitiesMixin } from '@/mixins/RemoveEntitiesMixin'
@@ -154,7 +152,6 @@ export default {
   name: 'NavBarTwoDetailTarget',
   components: {
     OverlayPanel,
-    Confirmation,
     NotesBtn,
     NotesSection,
     NoteConfirmation
