@@ -183,7 +183,10 @@ export default ({
       }
       if (agentsData.type === 3) {
         state.subDomainAgents.splice(0, state.subDomainAgents.length)
-        state.subDomainAgents.push(...agentsData.list)
+        const filteredAgents = agentsData.list.filter(item => item.type === 3)
+        filteredAgents.forEach(item => {
+          state.subDomainAgents.push(item)
+        })
       }
     }
   },

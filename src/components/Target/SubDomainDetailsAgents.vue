@@ -3,7 +3,7 @@
     <h6 class="text-center mt-2">List of Agents</h6>
   <div class="card card-style">
     <div class="card-body">
-      <div v-if="agentsList.length > 0" class="card card-table">
+      <div v-if="subDomainAgents.length > 0" class="card card-table">
         <div class=" row mb-2"  >
           <div class="col-2 border-left-radius border-right text-light-white domain-names-list p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0" v-on:click="orderByName()"> Name
            <i class="material-icons right float-right" v-show="active_arrow_down">keyboard_arrow_down</i>
@@ -18,7 +18,7 @@
           <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-        <div class="row mb-2" v-for="item of this.agentsList" :key="item.id">
+        <div class="row mb-2" v-for="item of this.subDomainAgents" :key="item.id">
           <div class="col-2  border-left-radius border">
              <p class="m-2"> {{item.name}}</p>
           </div>
@@ -64,27 +64,27 @@ export default {
       lastrun_arrow_down: true,
       lastrun_arrow_up: false,
       selectedAgentName: '',
-      selectedAgentId: -1
+      selectedAgentId: '-1'
     }
   },
   computed: {
     ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
     ...mapGetters('target', ['listSubdDomainsAgents', 'listCurrentRunningSubDomainsAgent']),
     ...mapState('target', ['agentStatus']),
-    ...mapState('agent', ['agentListStore']),
+    ...mapState('agent', ['agentListStore', 'subDomainAgents']),
     listAgents () {
       return this.listSubdDomainsAgents({
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id),
-        idSubd: parseInt(this.$route.params.idsubdomain)
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName,
+        subdomainName: this.$route.params.subdomainName
       })
     },
     isRunningAgent: function () {
       return this.listCurrentRunningSubDomainsAgent({
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id),
-        idSubd: parseInt(this.$route.params.idsubdomain),
-        idAgent: parseInt(this.selectedAgentId)
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName,
+        subdomainName: this.$route.params.subdomainName,
+        idAgent: this.selectedAgentId
       })
     },
     agentsList: function () {

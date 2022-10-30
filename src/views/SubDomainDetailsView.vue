@@ -13,7 +13,7 @@
               Dashboard
             </button>
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.AGENTS}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="setActiveTabButton(activeTab.AGENTS)">
-              Agents ({{getAgentsByType(this.$agentType.SUBDOMAIN).length}})
+              Agents ({{subDomainAgents.length}})
             </button>
             <button type="button" :class="{'subdomain_active_tab' : parseInt(this.selectedTab) === this.activeTab.SERVICES}" class="btn ml-4 border-grad pl-5 pr-5" v-on:click="this.selectedTab = this.activeTab.SERVICES">
               Services ({{Subdomain.services.length}})
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue'
 import SubDomainDetailsDashboard from '@/components/Target/SubDomainDetailsDashboard.vue'
 import SubDomainDetailsAgents from '@/components/Target/SubDomainDetailsAgents.vue'
@@ -80,6 +80,7 @@ export default {
   },
   mixins: [GeneralMixin],
   computed: {
+    ...mapState('agent', ['subDomainAgents']),
     ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
     ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain', 'getTargetByName', 'getSubDomainByTargetNameAndRootDomainName'])
   },
@@ -108,13 +109,26 @@ export default {
     this.secondaryColor = this.Target.secondaryColor
     this.gradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
     this.setCurrentView(this.$route.name)
+    this.loadSubdomainAgents()
   },
   methods: {
-    ...mapMutations('target', ['setIsDefaultTabButton']),
-    ...mapMutations('target', ['setCurrentView']),
+    ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
+    ...mapMutations('agent', ['updateFilteredAgentsByType']),
     ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer']),
+    ...mapActions('agent', ['loadAgentsFromServer']),
     setActiveTabButton: function (tab) {
       this.selectedTab = tab
+    },
+    loadSubdomainAgents: function () {
+      const self = this
+      this.loadAgentsFromServer().then(function (response) {
+        if (response) {
+          self.updateFilteredAgentsByType({
+            type: self.$entityTypeData.SUBDOMAIN.id,
+            list: response
+          })
+        }
+      })
     }
   }
 }
