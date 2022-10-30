@@ -3,7 +3,7 @@
     <h6 class="text-center mt-2">List of Agents</h6>
   <div class="card card-style">
     <div class="card-body">
-      <div v-if="agentsList.length > 0" class="card card-table">
+      <div v-if="rootDomainAgents.length > 0" class="card card-table">
         <div class=" row mb-2"  >
           <div class="col-2 border-left-radius border-right text-light-white domain-names-list p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0" v-on:click="orderByName()"> Name
            <i class="material-icons right float-right" v-show="active_arrow_down">keyboard_arrow_down</i>
@@ -17,7 +17,7 @@
         <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-        <div class="row mb-2" v-for="item of this.agentsList" :key="item.id">
+        <div class="row mb-2" v-for="item of rootDomainAgents" :key="item.id">
           <div class="col-2  border-left-radius border">
             <p class="m-2"> {{item.name}}</p>
           </div>
@@ -69,21 +69,15 @@ export default {
     ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents', 'listCurrentRunningRootDomainsAgent']),
     ...mapState('target', ['agentStatus']),
-    ...mapState('agent', ['agentListStore']),
-    listAgents: function () {
-      return this.listRootDomainsAgents({
-        idTarget: this.$route.params.idTarget,
-        idRoot: this.$route.params.id
-      })
-    },
+    ...mapState('agent', ['agentListStore', 'rootDomainAgents']),
     isRunningAgent: function () {
-      return this.listCurrentRunningRootDomainsAgent({ idTarget: this.$route.params.idTarget, idRoot: this.$route.params.id, idAgent: this.selectedAgentId })
+      return this.listCurrentRunningRootDomainsAgent({ idTarget: this.$route.params.targetName, idRoot: this.$route.params.rootdomainName, idAgent: this.selectedAgentId })
     },
     agentsList: function () {
       const rootDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(this.$agentType.ROOTDOMAIN)))
       const rootDoaminsAgentsCurentView = this.listRootDomainsAgents({
-        idTarget: this.$route.params.idTarget,
-        idRoot: this.$route.params.id
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
       })
       let searchedAgent = null
       rootDomainAgentsType.forEach(element => {

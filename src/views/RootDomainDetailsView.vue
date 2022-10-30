@@ -13,7 +13,7 @@
             <span  class="text-muted-b3"> ({{ loadedRootdomain.subdomain.length }})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
-            Agents <span class="text-muted-b3">({{getAgentsByType(this.$agentType.ROOTDOMAIN).length}})</span>
+            Agents <span class="text-muted-b3">({{rootDomainAgents.length}})</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= "loadedTarget.secondaryColor" :gradient = "LinearGradient" :rootDomain = "loadedRootdomain" :routeParams="routeParams" />
           <AgentListTable v-else :color = "loadedTarget.secondaryColor"/>
@@ -57,8 +57,9 @@ export default {
   mixins: [GeneralMixin],
   computed: {
     ...mapState('target', ['countSubdomainList', 'isTableList']),
+    ...mapState('agent', ['rootDomainAgents']),
     ...mapGetters('target', ['getTargetById', 'getSubdomainSize', 'getSubdomainSizeByReferencesName', 'getTargetByName', 'getRootDomainByTargetNameAndRootDomainName']),
-    ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
+    ...mapGetters('agent', ['getLastAgentRootDomain']),
     loadedRootdomain () {
       const rootdomainEmpty = this.createRootDomain()
       return (this.getRootDomainByTargetNameAndRootDomainName(this.routeParams)) || rootdomainEmpty
@@ -79,6 +80,7 @@ export default {
   },
   mounted () {
     this.loadTargets()
+    this.loadRootdomainAgents()
     this.$store.commit('agent/updateLocView', 'Targets', true)
     this.buttonGradSubd = this.LinearGradient
     this.setCurrentView(this.$route.name)
@@ -91,7 +93,9 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
+    ...mapMutations('agent', ['updateFilteredAgentsByType']),
     ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer', 'getRootDomainNotesFromServer']),
+    ...mapActions('agent', ['loadAgentsFromServer']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {
@@ -105,6 +109,17 @@ export default {
         this.shadowSubd = ''
         this.shadowAg = '13px 19px 41px #d6d6d6'
       }
+    },
+    loadRootdomainAgents: function () {
+      const self = this
+      this.loadAgentsFromServer().then(function (response) {
+        if (response) {
+          self.updateFilteredAgentsByType({
+            type: self.$entityTypeData.ROOTDOMAIN.id,
+            list: response
+          })
+        }
+      })
     }
   }
 }

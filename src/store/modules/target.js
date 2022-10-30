@@ -1021,8 +1021,8 @@ export default ({
       return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
     },
     listRootDomainsAgents: (state) => (params) => {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
       return roots.agent.slice(-4)
     },
     listSubdDomainsAgents: (state) => (params) => {
@@ -1032,11 +1032,13 @@ export default ({
       return subdomain.agent.slice(-4)
     },
     listCurrentRunningRootDomainsAgent: (state) => (params) => {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
-      const runningAgent = roots.agent.find(agent => agent.status === 1)
-      if (runningAgent) {
-        return runningAgent.id
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
+        const runningAgent = roots.agent.find(agent => agent.status === 1)
+        if (runningAgent) {
+          return runningAgent.id
+        }
       }
       return -1
     },

@@ -47,7 +47,9 @@ export default ({
     isDefaultViewOnAgent: true,
     agentSequence: 30,
     selectedAgents: [],
-    configFilePath: ''
+    configFilePath: '',
+    rootDomainAgents: [],
+    subDomainAgents: []
   },
   mutations: {
     confirm (state, valueIN) {
@@ -170,6 +172,19 @@ export default ({
     },
     clearSelectedAgentsList (state) {
       state.selectedAgents.splice(0, state.selectedAgents.length)
+    },
+    updateFilteredAgentsByType (state, agentsData) {
+      if (agentsData.type === 2) {
+        state.rootDomainAgents.splice(0, state.rootDomainAgents.length)
+        const filteredAgents = agentsData.list.filter(item => item.type === 2)
+        filteredAgents.forEach(item => {
+          state.rootDomainAgents.push(item)
+        })
+      }
+      if (agentsData.type === 3) {
+        state.subDomainAgents.splice(0, state.subDomainAgents.length)
+        state.subDomainAgents.push(...agentsData.list)
+      }
     }
   },
   getters: {
@@ -393,6 +408,10 @@ export default ({
     getWeekDayLetter: (state) => (dayNumber) => {
       const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
       return days[dayNumber]
+    },
+    filterAgentsByType (state, agentsData) {
+      const filteredAgents = agentsData.list.filter(agent => (agent.type === agentsData.type))
+      return filteredAgents
     }
   },
   actions: {
@@ -468,6 +487,18 @@ export default ({
           })
           .catch(function () {
             return false
+          })
+      }
+    },
+    loadAgentsFromServer ({ state, getters, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents')
+          .then(function (response) {
+            const agentsMapped = getters.mapAgents(response.data)
+            return agentsMapped
+          })
+          .catch(function () {
+            return []
           })
       }
     },
