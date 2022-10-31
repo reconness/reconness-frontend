@@ -296,8 +296,8 @@ export default ({
       state.currentView = viewName
     },
     updateStatusRootDomainAgent (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
       const agent = roots.agent.find(agentItem => agentItem.id === params.idAgent)
       agent.status = params.status
     },
@@ -309,8 +309,8 @@ export default ({
       agent.status = params.status
     },
     insertAgentIfNotExistInRootDomain (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
       const agent = roots.agent.find(agentItem => agentItem.id === params.agentData.id)
       if (!agent) {
         roots.agent.push(

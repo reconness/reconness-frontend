@@ -103,15 +103,15 @@ export default {
       this.addNewNotification('Running agent' + ' ' + this.selectedAgentName)
       this.insertAgentIfNotExistInRootDomain(
         {
-          idTarget: this.$route.params.idTarget,
-          idRoot: this.$route.params.id,
+          targetName: this.$route.params.targetName,
+          rootdomainName: this.$route.params.rootdomainName,
           agentData: this.agentListStore.find(item => item.id === this.selectedAgentId)
         }
       )
       this.updateStatusRootDomainAgent({
         status: this.$entityStatus.RUNNING,
-        idTarget: this.$route.params.idTarget,
-        idRoot: this.$route.params.id,
+        targetName: this.$route.params.targetName,
+        rootdomainName: this.$route.params.rootdomainName,
         idAgent: this.selectedAgentId
       })
       this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: this.selectedAgentId })

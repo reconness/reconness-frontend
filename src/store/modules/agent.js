@@ -361,8 +361,8 @@ export default ({
         triggerSkipIfRunBefore: agent.triggerSkipIfRunBefore,
         triggerRootdomainName: agent.triggerRootdomainName,
         triggerRootdomainIncExcName: agent.triggerRootdomainIncExcName,
-        triggerSubdomainIsMainPortal: agent.triggerSubdomainIsMainPortal
-
+        triggerSubdomainIsMainPortal: agent.triggerSubdomainIsMainPortal,
+        status: 3
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -611,6 +611,17 @@ export default ({
     getConfigurationContent ({ state, rootState }, agentName) {
       if (rootState.auth.authentication_token !== '') {
         return axios.get('/agents/' + agentName)
+          .then(function (response) {
+            return { status: true, message: '', data: response.data.configurationContent }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    stopRunningAgent ({ state, rootState }, payload) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/stop', payload)
           .then(function (response) {
             return { status: true, message: '', data: response.data.configurationContent }
           })
