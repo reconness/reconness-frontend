@@ -188,6 +188,10 @@ export default ({
           state.subDomainAgents.push(item)
         })
       }
+    },
+    updateStatusRootDomainAgent (state, params) {
+      const filteredAgent = state.rootDomainAgents.find(agent => agent.id === params.idAgent)
+      filteredAgent.status = params.status
     }
   },
   getters: {

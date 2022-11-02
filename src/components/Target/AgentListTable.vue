@@ -90,6 +90,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'insertAgentIfNotExistInRootDomain']),
+    ...mapMutations('agent', ['updateStatusRootDomainAgent']),
+    ...mapMutations('notification', ['addNewNotification']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -101,17 +104,8 @@ export default {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
       this.selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.addNewNotification('Running agent' + ' ' + this.selectedAgentName)
-      this.insertAgentIfNotExistInRootDomain(
-        {
-          targetName: this.$route.params.targetName,
-          rootdomainName: this.$route.params.rootdomainName,
-          agentData: this.agentListStore.find(item => item.id === this.selectedAgentId)
-        }
-      )
       this.updateStatusRootDomainAgent({
         status: this.$entityStatus.RUNNING,
-        targetName: this.$route.params.targetName,
-        rootdomainName: this.$route.params.rootdomainName,
         idAgent: this.selectedAgentId
       })
       this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: this.selectedAgentId })
@@ -149,9 +143,7 @@ export default {
         }
         )
       }
-    },
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'insertAgentIfNotExistInRootDomain']),
-    ...mapMutations('notification', ['addNewNotification'])
+    }
   }
 }
 </script>
