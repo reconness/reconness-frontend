@@ -105,6 +105,9 @@ export default {
     }
   },
   methods: {
+
+    ...mapMutations('target', ['setAgentStatus', 'insertAgentIfNotExistInSubDomain']),
+    ...mapMutations('agent', ['updateStatusSubDomainAgent']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -147,25 +150,13 @@ export default {
     },
     selectAgent (e) {
       this.selectedAgentName = e.currentTarget.getAttribute('data-name')
-      this.selectedAgentId = parseInt(e.currentTarget.getAttribute('data-id'))
-      this.insertAgentIfNotExistInSubDomain(
-        {
-          idTarget: parseInt(this.$route.params.idTarget),
-          idRoot: parseInt(this.$route.params.id),
-          idSubDomain: parseInt(this.$route.params.idsubdomain),
-          agentData: this.agentListStore.find(item => item.id === this.selectedAgentId)
-        }
-      )
+      this.selectedAgentId = e.currentTarget.getAttribute('data-id')
       this.updateStatusSubDomainAgent({
         status: this.$entityStatus.RUNNING,
-        idTarget: parseInt(this.$route.params.idTarget),
-        idRoot: parseInt(this.$route.params.id),
-        idAgent: parseInt(this.selectedAgentId),
-        idSubDomain: parseInt(this.$route.params.idsubdomain)
+        idAgent: this.selectedAgentId
       })
-      this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: parseInt(this.selectedAgentId) })
-    },
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusSubDomainAgent', 'insertAgentIfNotExistInSubDomain'])
+      this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: this.selectedAgentId })
+    }
   }
 }
 </script>

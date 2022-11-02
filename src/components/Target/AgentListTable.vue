@@ -90,7 +90,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'insertAgentIfNotExistInRootDomain']),
+    ...mapMutations('target', ['setAgentStatus', 'insertAgentIfNotExistInRootDomain']),
     ...mapMutations('agent', ['updateStatusRootDomainAgent']),
     ...mapMutations('notification', ['addNewNotification']),
     orderByName: function () {

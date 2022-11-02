@@ -159,10 +159,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusSubDomainAgent']),
-    ...mapMutations('agent', ['updateStatusRootDomainAgent']),
+    ...mapMutations('target', ['setAgentStatus']),
+    ...mapMutations('agent', ['updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
     ...mapMutations('pipelines', ['setIsAgentInfoOpenedForTerminal']),
-    ...mapActions('agent', ['stopRunningAgent']),
+    ...mapActions('agent', ['stopRunningAgentToServer']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -192,38 +192,53 @@ export default {
     },
     closeWindow () {
       if (this.$route.name !== 'PipelineRunView') {
-        this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: parseInt(-1) })
+        this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: '-1' })
         if (this.$route.name === 'RootDomainDetails') {
-          this.stopRunningAgent(
-            {
-              agent: this.nameAgent,
-              target: this.$route.params.targetName,
-              rootdomain: this.$route.params.rootdomainName
-            }
-          ).then(response => {
-            if (response.status) {
-              this.updateStatusRootDomainAgent({
-                status: this.$entityStatus.FINISHED,
-                targetName: this.$route.params.targetName,
-                rootdomainName: this.$route.params.rootdomainName,
-                idAgent: this.idAgent
-              })
-              this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
-            } else {
-              this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
-            }
-          })
+          this.stopRootDomainRunningAgent()
         } else {
-          this.updateStatusSubDomainAgent({
-            status: this.$entityStatus.FINISHED,
-            idTarget: this.$route.params.idTarget,
-            idRoot: this.$route.params.id,
-            idAgent: this.idAgent,
-            idSubDomain: this.$route.params.idsubdomain
-          })
+          this.stopSubDomainRunningAgent()
         }
         this.stopClock()
       }
+    },
+    stopRootDomainRunningAgent () {
+      this.stopRunningAgentToServer(
+        {
+          agent: this.nameAgent,
+          target: this.$route.params.targetName,
+          rootdomain: this.$route.params.rootdomainName
+        }
+      ).then(response => {
+        if (response.status) {
+          this.updateStatusRootDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idAgent: this.idAgent
+          })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
+    },
+    stopSubDomainRunningAgent () {
+      this.stopRunningAgentToServer(
+        {
+          agent: this.nameAgent,
+          target: this.$route.params.targetName,
+          rootdomain: this.$route.params.rootdomainName,
+          subdomain: this.$route.params.subdomainName
+        }
+      ).then(response => {
+        if (response.status) {
+          this.updateStatusSubDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idAgent: this.idAgent
+          })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     }
   }
 }

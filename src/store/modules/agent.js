@@ -192,6 +192,10 @@ export default ({
     updateStatusRootDomainAgent (state, params) {
       const filteredAgent = state.rootDomainAgents.find(agent => agent.id === params.idAgent)
       filteredAgent.status = params.status
+    },
+    updateStatusSubDomainAgent (state, params) {
+      const filteredAgent = state.subDomainAgents.find(agentItem => agentItem.id === params.idAgent)
+      filteredAgent.status = params.status
     }
   },
   getters: {
@@ -580,7 +584,7 @@ export default ({
         const name = getters.getAgentById(element).name
         const entity = {
           id: element,
-          name: name,
+          name,
           type: rootGetters['general/entityTypeData'].AGENT
         }
         commit('general/addEntityToDelete', entity, { root: true })
@@ -623,7 +627,7 @@ export default ({
           })
       }
     },
-    stopRunningAgent ({ state, rootState }, payload) {
+    stopRunningAgentToServer ({ state, rootState }, payload) {
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/agents/stop', payload)
           .then(function (response) {
