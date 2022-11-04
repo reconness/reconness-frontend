@@ -32,9 +32,10 @@
           </div>
           <div class="col-2 border border-right-radius text-center">
               <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-              <button v-else type="button" :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+              <button v-else type="button" :disabled="isRunningAgent !== -1 && isRunningAgent !== item.id" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#confirmation-before-run-an-agent" :data-id="item.id" :data-name="item.name">Run</button>
           </div>
           <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
+          <ConfirmationBeforeRunAnAgent @run-agent="runAgent" :dataId="item.id" :dataName="item.name"/>
         </div>
       </div>
       <div v-else>
@@ -47,12 +48,16 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
+import ConfirmationBeforeRunAnAgent from '@/components/Target/ConfirmationBeforeRunAnAgent.vue'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
+import jQuery from 'jquery'
 export default {
   name: 'SubDomainDetailsAgents',
   components: {
-    AgentExecution
+    AgentExecution,
+    ConfirmationBeforeRunAnAgent
   },
   props: {
     color: String
@@ -67,6 +72,7 @@ export default {
       selectedAgentId: '-1'
     }
   },
+  mixins: [StatusMessageMixin],
   computed: {
     ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
     ...mapGetters('target', ['listSubdDomainsAgents', 'listCurrentRunningSubDomainsAgent']),
@@ -105,9 +111,9 @@ export default {
     }
   },
   methods: {
-
     ...mapMutations('target', ['setAgentStatus', 'insertAgentIfNotExistInSubDomain']),
     ...mapMutations('agent', ['updateStatusSubDomainAgent']),
+    ...mapActions('agent', ['runAgentToServer']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -149,13 +155,40 @@ export default {
       }
     },
     selectAgent (e) {
-      this.selectedAgentName = e.currentTarget.getAttribute('data-name')
-      this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.selectedAgentName = ''
+      this.selectedAgentId = ''
+      if (e.currentTarget) {
+        this.selectedAgentName = e.currentTarget.getAttribute('data-name')
+        this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      } else {
+        this.selectedAgentName = e.dataName
+        this.selectedAgentId = e.dataId
+      }
       this.updateStatusSubDomainAgent({
         status: this.$entityStatus.RUNNING,
         idAgent: this.selectedAgentId
       })
       this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: this.selectedAgentId })
+    },
+    runAgent (e) {
+      jQuery('#agentExecutionModalForm').modal('show')
+      this.runAgentToServer(
+        {
+          agent: e.dataName,
+          target: this.$route.params.targetName,
+          rootdomain: this.$route.params.rootdomainName,
+          subdomain: this.$route.params.subdomainName,
+          command: e.command,
+          activateNotification: e.activateNotification
+        }
+      ).then(response => {
+        if (response.status) {
+          this.selectAgent(e)
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, '')
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     }
   }
 }

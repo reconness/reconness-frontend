@@ -50,6 +50,7 @@ import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
 import ConfirmationBeforeRunAnAgent from '@/components/Target/ConfirmationBeforeRunAnAgent.vue'
 import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
+import jQuery from 'jquery'
 export default {
   name: 'AgentListTable',
   components: {
@@ -66,9 +67,7 @@ export default {
       lastrun_arrow_down: true,
       lastrun_arrow_up: false,
       selectedAgentName: '',
-      selectedAgentId: '-1',
-      command: '',
-      activateNotification: false
+      selectedAgentId: '-1'
     }
   },
   mixins: [StatusMessageMixin],
@@ -160,6 +159,7 @@ export default {
       }
     },
     runAgent (e) {
+      jQuery('#agentExecutionModalForm').modal('show')
       this.runAgentToServer(
         {
           agent: e.dataName,
