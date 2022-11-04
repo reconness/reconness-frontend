@@ -93,8 +93,9 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
+    ...mapMutations('agent', ['updateStatusRootDomainAgentByName']),
     ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer', 'getRootDomainNotesFromServer']),
-    ...mapActions('agent', ['loadAgentsFromServer', 'updateFilteredAgentsByType']),
+    ...mapActions('agent', ['loadAgentsFromServer', 'updateFilteredAgentsByType', 'loadRunningAgentsFromServer']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {
@@ -111,11 +112,22 @@ export default {
     },
     loadRootdomainAgents: function () {
       const self = this
-      this.loadAgentsFromServer().then(function (response) {
-        if (response) {
+      this.loadAgentsFromServer().then(function (fullAgents) {
+        if (fullAgents) {
           self.updateFilteredAgentsByType({
             type: self.$entityTypeData.ROOTDOMAIN.id,
-            list: response
+            list: fullAgents
+          })
+          self.loadRunningAgentsFromServer().then(function (runningAgentsRespose) {
+            runningAgentsRespose.data.forEach(runningAgent => {
+              const searchedAgent = self.rootDomainAgents.find(agent => agent.name === runningAgent)
+              if (searchedAgent) {
+                self.updateStatusRootDomainAgentByName({
+                  status: self.$entityStatus.RUNNING,
+                  agentName: searchedAgent.name
+                })
+              }
+            })
           })
         }
       })

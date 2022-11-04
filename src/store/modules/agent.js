@@ -177,6 +177,10 @@ export default ({
       const filteredAgent = state.rootDomainAgents.find(agent => agent.id === params.idAgent)
       filteredAgent.status = params.status
     },
+    updateStatusRootDomainAgentByName (state, params) {
+      const filteredAgent = state.rootDomainAgents.find(agent => agent.name === params.agentName)
+      filteredAgent.status = params.status
+    },
     updateStatusSubDomainAgent (state, params) {
       const filteredAgent = state.subDomainAgents.find(agentItem => agentItem.id === params.idAgent)
       filteredAgent.status = params.status
@@ -491,6 +495,17 @@ export default ({
           .then(function (response) {
             const agentsMapped = getters.mapAgents(response.data)
             return agentsMapped
+          })
+          .catch(function () {
+            return []
+          })
+      }
+    },
+    loadRunningAgentsFromServer ({ state, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents/running')
+          .then(function (response) {
+            return response
           })
           .catch(function () {
             return []
