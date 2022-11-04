@@ -184,6 +184,10 @@ export default ({
     updateStatusSubDomainAgent (state, params) {
       const filteredAgent = state.subDomainAgents.find(agentItem => agentItem.id === params.idAgent)
       filteredAgent.status = params.status
+    },
+    updateStatusSubDomainAgentByName (state, params) {
+      const filteredAgent = state.subDomainAgents.find(agentItem => agentItem.name === params.agentName)
+      filteredAgent.status = params.status
     }
   },
   getters: {
