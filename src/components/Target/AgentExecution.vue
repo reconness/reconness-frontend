@@ -79,8 +79,9 @@ import { VAceEditor } from 'vue3-ace-editor'
 import MotionPlayOutlineIco from '@/components/Icons/MotionPlayOutlineIco.vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import CircleProgress from 'vue3-circle-progress'
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 import { ProgressBarMixin } from '@/mixins/ProgressBarMixin'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 import jQuery from 'jquery'
 export default {
   name: 'AgentExecution ',
@@ -123,7 +124,7 @@ export default {
       minimized: false
     }
   },
-  mixins: [ProgressBarMixin],
+  mixins: [ProgressBarMixin, StatusMessageMixin],
   computed: {
     ...mapState('target', ['agentStatus']),
     ...mapState('pipelines', ['isAgentInfoOpenedForTerminal']),
@@ -158,8 +159,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
+    ...mapMutations('target', ['setAgentStatus']),
+    ...mapMutations('agent', ['updateStatusRootDomainAgent', 'updateStatusSubDomainAgent']),
     ...mapMutations('pipelines', ['setIsAgentInfoOpenedForTerminal']),
+    ...mapActions('agent', ['stopRunningAgentToServer']),
     toggle (event) {
       this.$refs.op.toggle(event)
     },
@@ -189,25 +192,53 @@ export default {
     },
     closeWindow () {
       if (this.$route.name !== 'PipelineRunView') {
-        this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: parseInt(-1) })
+        this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: '-1' })
         if (this.$route.name === 'RootDomainDetails') {
-          this.updateStatusRootDomainAgent({
-            status: this.$entityStatus.FINISHED,
-            idTarget: this.$route.params.idTarget,
-            idRoot: this.$route.params.id,
-            idAgent: this.idAgent
-          })
+          this.stopRootDomainRunningAgent()
         } else {
-          this.updateStatusSubDomainAgent({
-            status: this.$entityStatus.FINISHED,
-            idTarget: this.$route.params.idTarget,
-            idRoot: this.$route.params.id,
-            idAgent: this.idAgent,
-            idSubDomain: this.$route.params.idsubdomain
-          })
+          this.stopSubDomainRunningAgent()
         }
         this.stopClock()
       }
+    },
+    stopRootDomainRunningAgent () {
+      this.stopRunningAgentToServer(
+        {
+          agent: this.nameAgent,
+          target: this.$route.params.targetName,
+          rootdomain: this.$route.params.rootdomainName
+        }
+      ).then(response => {
+        if (response.status) {
+          this.updateStatusRootDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idAgent: this.idAgent
+          })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
+    },
+    stopSubDomainRunningAgent () {
+      this.stopRunningAgentToServer(
+        {
+          agent: this.nameAgent,
+          target: this.$route.params.targetName,
+          rootdomain: this.$route.params.rootdomainName,
+          subdomain: this.$route.params.subdomainName
+        }
+      ).then(response => {
+        if (response.status) {
+          this.updateStatusSubDomainAgent({
+            status: this.$entityStatus.FINISHED,
+            idAgent: this.idAgent
+          })
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForRootDomainInsertion)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     }
   }
 }

@@ -3,7 +3,7 @@
     <h6 class="text-center mt-2">List of Agents</h6>
   <div class="card card-style">
     <div class="card-body">
-      <div v-if="agentsList.length > 0" class="card card-table">
+      <div v-if="rootDomainAgents.length > 0" class="card card-table">
         <div class=" row mb-2"  >
           <div class="col-2 border-left-radius border-right text-light-white domain-names-list p-2" v-bind:style ="{'background':color}"> <p class="ml-2 m-0" v-on:click="orderByName()"> Name
            <i class="material-icons right float-right" v-show="active_arrow_down">keyboard_arrow_down</i>
@@ -17,7 +17,7 @@
         <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-        <div class="row mb-2" v-for="item of this.agentsList" :key="item.id">
+        <div class="row mb-2" v-for="item of rootDomainAgents" :key="item.id">
           <div class="col-2  border-left-radius border">
             <p class="m-2"> {{item.name}}</p>
           </div>
@@ -31,9 +31,10 @@
           </div>
           <div class="col-2 border border-right-radius text-center">
               <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-              <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+              <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== item.id" type="button" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#confirmation-before-run-an-agent" :data-id="item.id" :data-name="item.name">Run</button>
           </div>
           <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
+          <ConfirmationBeforeRunAnAgent @run-agent="runAgent" :dataId="item.id" :dataName="item.name"/>
         </div>
       </div>
       <div v-else>
@@ -45,12 +46,16 @@
   </div></div>
 </template>
 <script>
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
+import ConfirmationBeforeRunAnAgent from '@/components/Target/ConfirmationBeforeRunAnAgent.vue'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
+import jQuery from 'jquery'
 export default {
   name: 'AgentListTable',
   components: {
-    AgentExecution
+    AgentExecution,
+    ConfirmationBeforeRunAnAgent
   },
   props: {
     color: String
@@ -65,25 +70,20 @@ export default {
       selectedAgentId: '-1'
     }
   },
+  mixins: [StatusMessageMixin],
   computed: {
     ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents', 'listCurrentRunningRootDomainsAgent']),
     ...mapState('target', ['agentStatus']),
-    ...mapState('agent', ['agentListStore']),
-    listAgents: function () {
-      return this.listRootDomainsAgents({
-        idTarget: this.$route.params.idTarget,
-        idRoot: this.$route.params.id
-      })
-    },
+    ...mapState('agent', ['agentListStore', 'rootDomainAgents']),
     isRunningAgent: function () {
-      return this.listCurrentRunningRootDomainsAgent({ idTarget: this.$route.params.idTarget, idRoot: this.$route.params.id, idAgent: this.selectedAgentId })
+      return this.listCurrentRunningRootDomainsAgent({ idTarget: this.$route.params.targetName, idRoot: this.$route.params.rootdomainName, idAgent: this.selectedAgentId })
     },
     agentsList: function () {
       const rootDomainAgentsType = JSON.parse(JSON.stringify(this.getAgentsByType(this.$agentType.ROOTDOMAIN)))
       const rootDoaminsAgentsCurentView = this.listRootDomainsAgents({
-        idTarget: this.$route.params.idTarget,
-        idRoot: this.$route.params.id
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
       })
       let searchedAgent = null
       rootDomainAgentsType.forEach(element => {
@@ -96,6 +96,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('target', ['setAgentStatus', 'insertAgentIfNotExistInRootDomain']),
+    ...mapMutations('agent', ['updateStatusRootDomainAgent']),
+    ...mapMutations('notification', ['addNewNotification']),
+    ...mapActions('agent', ['runAgentToServer']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -104,20 +108,18 @@ export default {
       }
     },
     selectAgent (e) {
-      this.selectedAgentName = e.currentTarget.getAttribute('data-name')
-      this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.selectedAgentName = ''
+      this.selectedAgentId = ''
+      if (e.currentTarget) {
+        this.selectedAgentName = e.currentTarget.getAttribute('data-name')
+        this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      } else {
+        this.selectedAgentName = e.dataName
+        this.selectedAgentId = e.dataId
+      }
       this.addNewNotification('Running agent' + ' ' + this.selectedAgentName)
-      this.insertAgentIfNotExistInRootDomain(
-        {
-          idTarget: this.$route.params.idTarget,
-          idRoot: this.$route.params.id,
-          agentData: this.agentListStore.find(item => item.id === this.selectedAgentId)
-        }
-      )
       this.updateStatusRootDomainAgent({
         status: this.$entityStatus.RUNNING,
-        idTarget: this.$route.params.idTarget,
-        idRoot: this.$route.params.id,
         idAgent: this.selectedAgentId
       })
       this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: this.selectedAgentId })
@@ -156,8 +158,25 @@ export default {
         )
       }
     },
-    ...mapMutations('target', ['setAgentStatus', 'updateStatusRootDomainAgent', 'insertAgentIfNotExistInRootDomain']),
-    ...mapMutations('notification', ['addNewNotification'])
+    runAgent (e) {
+      jQuery('#agentExecutionModalForm').modal('show')
+      this.runAgentToServer(
+        {
+          agent: e.dataName,
+          target: this.$route.params.targetName,
+          rootdomain: this.$route.params.rootdomainName,
+          command: e.command,
+          activateNotification: e.activateNotification
+        }
+      ).then(response => {
+        if (response.status) {
+          this.selectAgent(e)
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, '')
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
+    }
   }
 }
 </script>

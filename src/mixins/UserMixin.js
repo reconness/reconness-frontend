@@ -1,5 +1,11 @@
 const UserMixin = {
   computed: {
+    getLoggedUserDataUserName () {
+      if (this.getLoggedUserData) {
+        return this.getLoggedUserData.username
+      }
+      return ''
+    },
     getLoggedUserDataFirstName () {
       if (this.getLoggedUserData) {
         return this.getLoggedUserData.firstname

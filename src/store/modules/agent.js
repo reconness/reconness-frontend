@@ -47,7 +47,9 @@ export default ({
     isDefaultViewOnAgent: true,
     agentSequence: 30,
     selectedAgents: [],
-    configFilePath: ''
+    configFilePath: '',
+    rootDomainAgents: [],
+    subDomainAgents: []
   },
   mutations: {
     confirm (state, valueIN) {
@@ -170,6 +172,22 @@ export default ({
     },
     clearSelectedAgentsList (state) {
       state.selectedAgents.splice(0, state.selectedAgents.length)
+    },
+    updateStatusRootDomainAgent (state, params) {
+      const filteredAgent = state.rootDomainAgents.find(agent => agent.id === params.idAgent)
+      filteredAgent.status = params.status
+    },
+    updateStatusRootDomainAgentByName (state, params) {
+      const filteredAgent = state.rootDomainAgents.find(agent => agent.name === params.agentName)
+      filteredAgent.status = params.status
+    },
+    updateStatusSubDomainAgent (state, params) {
+      const filteredAgent = state.subDomainAgents.find(agentItem => agentItem.id === params.idAgent)
+      filteredAgent.status = params.status
+    },
+    updateStatusSubDomainAgentByName (state, params) {
+      const filteredAgent = state.subDomainAgents.find(agentItem => agentItem.name === params.agentName)
+      filteredAgent.status = params.status
     }
   },
   getters: {
@@ -312,7 +330,7 @@ export default ({
       })
       return newAgents
     },
-    mapAgentFromServerToLocal: (state, getters) => (agent) => {
+    mapAgentFromServerToLocal: (state, getters, rootState, rootGetters) => (agent) => {
       const mappedAgent = {
         name: agent.name,
         primaryColor: getters.getPrimaryColor(agent.primaryColor),
@@ -343,8 +361,8 @@ export default ({
         triggerSkipIfRunBefore: agent.triggerSkipIfRunBefore,
         triggerRootdomainName: agent.triggerRootdomainName,
         triggerRootdomainIncExcName: agent.triggerRootdomainIncExcName,
-        triggerSubdomainIsMainPortal: agent.triggerSubdomainIsMainPortal
-
+        triggerSubdomainIsMainPortal: agent.triggerSubdomainIsMainPortal,
+        status: rootGetters['general/entityStatus'].WAITING
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -393,6 +411,10 @@ export default ({
     getWeekDayLetter: (state) => (dayNumber) => {
       const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
       return days[dayNumber]
+    },
+    filterAgentsByType (state, agentsData) {
+      const filteredAgents = agentsData.list.filter(agent => (agent.type === agentsData.type))
+      return filteredAgents
     }
   },
   actions: {
@@ -471,6 +493,29 @@ export default ({
           })
       }
     },
+    loadAgentsFromServer ({ state, getters, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents')
+          .then(function (response) {
+            const agentsMapped = getters.mapAgents(response.data)
+            return agentsMapped
+          })
+          .catch(function () {
+            return []
+          })
+      }
+    },
+    loadRunningAgentsFromServer ({ state, rootState }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/agents/running')
+          .then(function (response) {
+            return response
+          })
+          .catch(function () {
+            return []
+          })
+      }
+    },
     addAgentToServer ({ state, rootState, getters }, agent) {
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/agents', getters.mapAgentFromLocalToServer(agent))
@@ -542,7 +587,7 @@ export default ({
         const name = getters.getAgentById(element).name
         const entity = {
           id: element,
-          name: name,
+          name,
           type: rootGetters['general/entityTypeData'].AGENT
         }
         commit('general/addEntityToDelete', entity, { root: true })
@@ -583,6 +628,46 @@ export default ({
           .catch(function (error) {
             return { status: false, message: error.response.data }
           })
+      }
+    },
+    stopRunningAgentToServer ({ state, rootState }, payload) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/stop', payload)
+          .then(function (response) {
+            return { status: true, message: '', data: response.data }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    runAgentToServer ({ state, rootState }, payload) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/run', payload)
+          .then(function (response) {
+            return { status: true, message: '', data: response.data }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    updateFilteredAgentsByType ({ state, rootGetters }, agentsData) {
+      const rootDomainType = rootGetters['general/entityTypeData'].ROOTDOMAIN.id
+      if (agentsData.type === rootDomainType) {
+        state.rootDomainAgents.splice(0, state.rootDomainAgents.length)
+        const filteredAgents = agentsData.list.filter(item => item.type === rootDomainType)
+        filteredAgents.forEach(item => {
+          state.rootDomainAgents.push(item)
+        })
+      }
+      const subDomainType = rootGetters['general/entityTypeData'].SUBDOMAIN.id
+      if (agentsData.type === subDomainType) {
+        state.subDomainAgents.splice(0, state.subDomainAgents.length)
+        const filteredAgents = agentsData.list.filter(item => item.type === subDomainType)
+        filteredAgents.forEach(item => {
+          state.subDomainAgents.push(item)
+        })
       }
     }
   }

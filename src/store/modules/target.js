@@ -296,8 +296,8 @@ export default ({
       state.currentView = viewName
     },
     updateStatusRootDomainAgent (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
       const agent = roots.agent.find(agentItem => agentItem.id === params.idAgent)
       agent.status = params.status
     },
@@ -309,8 +309,8 @@ export default ({
       agent.status = params.status
     },
     insertAgentIfNotExistInRootDomain (state, params) {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
       const agent = roots.agent.find(agentItem => agentItem.id === params.agentData.id)
       if (!agent) {
         roots.agent.push(
@@ -1021,29 +1021,34 @@ export default ({
       return entities.filter((item, index) => entities.findIndex(obj => obj.name === item.name) === index)
     },
     listRootDomainsAgents: (state) => (params) => {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
       return roots.agent.slice(-4)
     },
     listSubdDomainsAgents: (state) => (params) => {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
-      const subdomain = roots.subdomain.find(subd => subd.id === params.idSubd)
-      return subdomain.agent.slice(-4)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
+        const subdomain = roots.subdomain.find(subd => subd.name === params.subdomainName)
+        return subdomain.agent.slice(-4)
+      }
+      return []
     },
     listCurrentRunningRootDomainsAgent: (state) => (params) => {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
-      const runningAgent = roots.agent.find(agent => agent.status === 1)
-      if (runningAgent) {
-        return runningAgent.id
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
+        const runningAgent = roots.agent.find(agent => agent.status === 1)
+        if (runningAgent) {
+          return runningAgent.id
+        }
       }
       return -1
     },
     listCurrentRunningSubDomainsAgent: (state) => (params) => {
-      const target = state.targetListStore.find(item => item.id === params.idTarget)
-      const roots = target.rootDomains.find(roots => roots.id === params.idRoot)
-      const subdomain = roots.subdomain.find(subd => subd.id === params.idSubd)
+      const target = state.targetListStore.find(item => item.name === params.targetName)
+      const roots = target.rootDomains.find(roots => roots.root === params.rootdomainName)
+      const subdomain = roots.subdomain.find(subd => subd.name === params.subdomainName)
       const runningAgent = subdomain.agent.find(agent => agent.status === 1)
       if (runningAgent) {
         return runningAgent.id
