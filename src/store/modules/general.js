@@ -54,6 +54,15 @@ export default ({
         USER: { id: 6, description: 'User' }
       }
     },
+    entityStatus (state) {
+      return {
+        RUNNING: 1,
+        FINISHED: 2,
+        WAITING: 3,
+        FAILED: 4,
+        SUCCESS: 5
+      }
+    },
     getFormattedErrorMessage: (state) => (messageData) => {
       let constructedMessage = ''
       for (const messageDataAttrName in messageData) {

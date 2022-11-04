@@ -53,8 +53,7 @@
         <li @mouseenter="showUserConfigurationMenu" @mouseleave="hideUserConfigurationMenu" class="nav-item dropdown">
           <div class="image nav-link cursor-pointer d-flex" data-toggle="dropdown">
             <div class="main-bar-user-data d-flex flex-column">
-              <span v-if="isUserRealNameDefined" class="loged-user-name font-size-16px">{{getLoggedUserDataFirstName}} {{getLoggedUserDataLastName}}</span>
-              <span v-else class="loged-user-name font-size-16px">{{getLoggedUserDataUserName}}</span>
+              <span class="loged-user-name font-size-16px">{{getLoggedUserDataUserName}}</span>
               <span class="font-size-10px font-weight-light">{{getRoleById(getLoggedUserDataRoleId).longName}}</span>
             </div>
             <div>

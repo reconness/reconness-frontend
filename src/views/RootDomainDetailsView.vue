@@ -93,9 +93,8 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
-    ...mapMutations('agent', ['updateFilteredAgentsByType']),
     ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer', 'getRootDomainNotesFromServer']),
-    ...mapActions('agent', ['loadAgentsFromServer']),
+    ...mapActions('agent', ['loadAgentsFromServer', 'updateFilteredAgentsByType']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {

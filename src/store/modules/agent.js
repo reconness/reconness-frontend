@@ -173,22 +173,6 @@ export default ({
     clearSelectedAgentsList (state) {
       state.selectedAgents.splice(0, state.selectedAgents.length)
     },
-    updateFilteredAgentsByType (state, agentsData) {
-      if (agentsData.type === 2) {
-        state.rootDomainAgents.splice(0, state.rootDomainAgents.length)
-        const filteredAgents = agentsData.list.filter(item => item.type === 2)
-        filteredAgents.forEach(item => {
-          state.rootDomainAgents.push(item)
-        })
-      }
-      if (agentsData.type === 3) {
-        state.subDomainAgents.splice(0, state.subDomainAgents.length)
-        const filteredAgents = agentsData.list.filter(item => item.type === 3)
-        filteredAgents.forEach(item => {
-          state.subDomainAgents.push(item)
-        })
-      }
-    },
     updateStatusRootDomainAgent (state, params) {
       const filteredAgent = state.rootDomainAgents.find(agent => agent.id === params.idAgent)
       filteredAgent.status = params.status
@@ -338,7 +322,7 @@ export default ({
       })
       return newAgents
     },
-    mapAgentFromServerToLocal: (state, getters) => (agent) => {
+    mapAgentFromServerToLocal: (state, getters, rootState, rootGetters) => (agent) => {
       const mappedAgent = {
         name: agent.name,
         primaryColor: getters.getPrimaryColor(agent.primaryColor),
@@ -370,7 +354,7 @@ export default ({
         triggerRootdomainName: agent.triggerRootdomainName,
         triggerRootdomainIncExcName: agent.triggerRootdomainIncExcName,
         triggerSubdomainIsMainPortal: agent.triggerSubdomainIsMainPortal,
-        status: 3
+        status: rootGetters['general/entityStatus'].WAITING
       }
       if (agent.script != null) {
         mappedAgent.script = agent.script
@@ -647,6 +631,24 @@ export default ({
           .catch(function (error) {
             return { status: false, message: error.response.data }
           })
+      }
+    },
+    updateFilteredAgentsByType ({ state, rootGetters }, agentsData) {
+      const rootDomainType = rootGetters['general/entityTypeData'].ROOTDOMAIN.id
+      if (agentsData.type === rootDomainType) {
+        state.rootDomainAgents.splice(0, state.rootDomainAgents.length)
+        const filteredAgents = agentsData.list.filter(item => item.type === rootDomainType)
+        filteredAgents.forEach(item => {
+          state.rootDomainAgents.push(item)
+        })
+      }
+      const subDomainType = rootGetters['general/entityTypeData'].SUBDOMAIN.id
+      if (agentsData.type === subDomainType) {
+        state.subDomainAgents.splice(0, state.subDomainAgents.length)
+        const filteredAgents = agentsData.list.filter(item => item.type === subDomainType)
+        filteredAgents.forEach(item => {
+          state.subDomainAgents.push(item)
+        })
       }
     }
   }
