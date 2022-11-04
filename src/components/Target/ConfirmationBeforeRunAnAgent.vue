@@ -37,7 +37,6 @@ export default {
       const self = this
       setTimeout(
         function () {
-          // jQuery('#agentExecutionModalForm').modal('show')
           self.$emit('run-agent', { dataId: self.dataId, dataName: self.dataName, command: self.command, activateNotification: self.activateNotification })
           self.resetData()
         },
