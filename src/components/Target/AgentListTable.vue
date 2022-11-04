@@ -31,9 +31,10 @@
           </div>
           <div class="col-2 border border-right-radius text-center">
               <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-              <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== parseInt(item.id)" @click="selectAgent" type="button" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Run</button>
+              <button v-else :disabled="isRunningAgent !== -1 && isRunningAgent !== item.id" type="button" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#confirmation-before-run-an-agent" :data-id="item.id" :data-name="item.name">Run</button>
           </div>
           <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
+          <ConfirmationBeforeRunAnAgent @run-agent="runAgent" :dataId="item.id" :dataName="item.name"/>
         </div>
       </div>
       <div v-else>
@@ -45,12 +46,15 @@
   </div></div>
 </template>
 <script>
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 import AgentExecution from '@/components/Target/AgentExecution.vue'
+import ConfirmationBeforeRunAnAgent from '@/components/Target/ConfirmationBeforeRunAnAgent.vue'
+import { StatusMessageMixin } from '@/mixins/StatusMessageMixin'
 export default {
   name: 'AgentListTable',
   components: {
-    AgentExecution
+    AgentExecution,
+    ConfirmationBeforeRunAnAgent
   },
   props: {
     color: String
@@ -62,9 +66,12 @@ export default {
       lastrun_arrow_down: true,
       lastrun_arrow_up: false,
       selectedAgentName: '',
-      selectedAgentId: '-1'
+      selectedAgentId: '-1',
+      command: '',
+      activateNotification: false
     }
   },
+  mixins: [StatusMessageMixin],
   computed: {
     ...mapGetters('agent', ['getLastAgentRootDomain', 'getAgentsByType']),
     ...mapGetters('target', ['listRootDomainsAgents', 'listCurrentRunningRootDomainsAgent']),
@@ -93,6 +100,7 @@ export default {
     ...mapMutations('target', ['setAgentStatus', 'insertAgentIfNotExistInRootDomain']),
     ...mapMutations('agent', ['updateStatusRootDomainAgent']),
     ...mapMutations('notification', ['addNewNotification']),
+    ...mapActions('agent', ['runAgentToServer']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
         return this.orderByNameDesc()
@@ -101,8 +109,15 @@ export default {
       }
     },
     selectAgent (e) {
-      this.selectedAgentName = e.currentTarget.getAttribute('data-name')
-      this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.selectedAgentName = ''
+      this.selectedAgentId = ''
+      if (e.currentTarget) {
+        this.selectedAgentName = e.currentTarget.getAttribute('data-name')
+        this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      } else {
+        this.selectedAgentName = e.dataName
+        this.selectedAgentId = e.dataId
+      }
       this.addNewNotification('Running agent' + ' ' + this.selectedAgentName)
       this.updateStatusRootDomainAgent({
         status: this.$entityStatus.RUNNING,
@@ -143,6 +158,24 @@ export default {
         }
         )
       }
+    },
+    runAgent (e) {
+      this.runAgentToServer(
+        {
+          agent: e.dataName,
+          target: this.$route.params.targetName,
+          rootdomain: this.$route.params.rootdomainName,
+          command: e.command,
+          activateNotification: e.activateNotification
+        }
+      ).then(response => {
+        if (response.status) {
+          this.selectAgent(e)
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, '')
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
+      })
     }
   }
 }

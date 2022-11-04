@@ -631,7 +631,18 @@ export default ({
       if (rootState.auth.authentication_token !== '') {
         return axios.post('/agents/stop', payload)
           .then(function (response) {
-            return { status: true, message: '', data: response.data.configurationContent }
+            return { status: true, message: '', data: response.data }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    runAgentToServer ({ state, rootState }, payload) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.post('/agents/run', payload)
+          .then(function (response) {
+            return { status: true, message: '', data: response.data }
           })
           .catch(function (error) {
             return { status: false, message: error.response.data }
