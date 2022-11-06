@@ -13,20 +13,20 @@
             </router-link>
             <p class="float-right ml-2 font-weight-bold" v-else>{{TargetName}}</p>
         </li>
-        <li class="nav-item d-flex float-left" v-if = "showRootDomains && !$route.params.idsubdomain">
+        <li class="nav-item d-flex float-left" v-if = "showRootDomains && !$route.params.subdomainName">
           <span v-bind:style ="{background:gradient}"  class="material-icons ml-2 icon-color-style gradient-style line-height-1-6 chevron-line-height-1-7rem"> chevron_right </span>
           <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style">{{rootName}}</span>
         </li>
-        <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
+        <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.subdomainName">
           <router-link :to="{ name: 'RootDomainDetails', params: {targetName: this.$route.params.targetName,  rootdomainName: $route.params.rootdomainName } }">
           <span class="material-icons ml-2 icon-color-style chevron-line-height-1-7rem"> chevron_right </span>
         </router-link></li>
-        <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.idsubdomain">
+        <li class="nav-item d-flex float-left" v-if = "showRootDomains && $route.params.subdomainName">
           <router-link :to="{ name: 'RootDomainDetails', params: {targetName: this.$route.params.targetName, rootdomainName: $route.params.rootdomainName} }">
           <span class="ml-2 font-weight-bold">{{rootName}}</span>
           </router-link>
         </li>
-        <li class="nav-item d-flex" v-if = "$route.params.idsubdomain">
+        <li class="nav-item d-flex" v-if = "$route.params.subdomainName">
           <span v-bind:style ="{background:gradient}"  class="material-icons ml-2 icon-color-style gradient-style chevron-line-height-1-7rem"> chevron_right </span>
           <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style font-weight-bold">{{subDomainName}}</span>
         </li>
@@ -36,16 +36,16 @@
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!showRootDomains">
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.TARGET.id)" :data-id="getTargetId" :data-name="this.$route.params.targetName">Delete Target</a>
         </li>
-        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
+        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.subdomainName">
           <a class="nav-link pos" href="#" data-toggle="modal" data-target="#message-box-modal" v-on:click="prepareToDelete($event, this.$entityTypeData.ROOTDOMAIN.id)" :data-id="getRootDomainId" :data-name="this.$route.params.rootdomainName" >Delete Root Domain</a>
         </li>
         <li class="nav-item nav-margin border-right d-none d-sm-block"  v-if= "!this.showRootDomains">
           <a class="nav-link pos" href="#" @click="exportTargetDataToJsonFile">Export Target</a>
         </li>
-        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.idsubdomain">
+        <li class="nav-item nav-margin border-right d-none d-sm-block" v-if= "showRootDomains && !$route.params.subdomainName">
           <a class="nav-link pos" href="#" @click="exportRootDomainDataToJsonFile">Export Root Domain</a>
         </li>
-        <li class="nav-item nav-margin border-right border-left d-none d-sm-block" v-if= "showRootDomains && $route.params.idsubdomain">
+        <li class="nav-item nav-margin border-right border-left d-none d-sm-block" v-if= "showRootDomains && $route.params.subdomainName">
           <label for="export-target" class="nav-link pos mb-0"> Export SubDomain </label>
           <input type="file" id="export-target" accept=".json"/>
         </li>
@@ -108,12 +108,12 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right scroll">
             <a class="dropdown-item" v-if= "!this.showRootDomains">Delete Target</a>
-            <a class="dropdown-item" v-if="!$route.params.idsubdomain">Delete Root Domain</a>
-            <div class="dropdown-divider" v-if="!$route.params.idsubdomain"></div>
+            <a class="dropdown-item" v-if="!$route.params.subdomainName">Delete Root Domain</a>
+            <div class="dropdown-divider" v-if="!$route.params.subdomainName"></div>
             <label for="export-target" class="nav-link pos mb-0 comments-page" v-if= "!this.showRootDomains"> Export Target </label>
-            <label for="export-target" v-if="!$route.params.idsubdomain" class="nav-link pos mb-0 comments-page"> Export Root Domain </label>
-            <input v-if="!$route.params.idsubdomain" type="file" id="export-target" accept=".json"/>
-           <div class="dropdown-divider" v-if="!$route.params.idsubdomain"></div>
+            <label for="export-target" v-if="!$route.params.subdomainName" class="nav-link pos mb-0 comments-page"> Export Root Domain </label>
+            <input v-if="!$route.params.subdomainName" type="file" id="export-target" accept=".json"/>
+           <div class="dropdown-divider" v-if="!$route.params.subdomainName"></div>
             <h6 class="dropdown-header header-style">Sort by</h6>
              <div class="dropdown-item">
                <a class="dropdown-item item-sort" href="#" v-on:click="orderByName()">
