@@ -149,6 +149,29 @@ export default ({
             return { status: false, message: error.response.data }
           })
       }
+    },
+    loadYesterdayAndTodayEventTracks ({ state, rootState, getters, commit }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/eventtrack/yesterdayAndToday')
+          .then(function (response) {
+            const eventTracksMapped = getters.mapEventTracksFromServerToLocal(response.data)
+            return { status: true, message: '', data: eventTracksMapped }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    markYesterdayAndTodayNotificationsAsReadedToServer ({ state, rootState, getters, commit }) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.put('/eventtrack/markReadYesterdayAndToday')
+          .then(function () {
+            return { status: true, message: '' }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
     }
   },
   getters: {
