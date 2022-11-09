@@ -415,6 +415,9 @@ export default ({
     filterAgentsByType (state, agentsData) {
       const filteredAgents = agentsData.list.filter(agent => (agent.type === agentsData.type))
       return filteredAgents
+    },
+    subDomainAndRootDomainAgents: (state) => {
+      return state.rootDomainAgents.concat(state.subDomainAgents)
     }
   },
   actions: {

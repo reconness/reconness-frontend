@@ -18,7 +18,7 @@
           <div class="col-2 p-2 border-right-radius text-light-white text-center domain-names-list" v-bind:style ="{'background':color}">
            Actions</div>
         </div>
-        <div class="row mb-2" v-for="item of this.subDomainAgents" :key="item.id">
+        <div class="row mb-2" v-for="item of this.subDomainAndRootDomainAgents" :key="item.id">
           <div class="col-2  border-left-radius border">
              <p class="m-2"> {{item.name}}</p>
           </div>
@@ -74,7 +74,7 @@ export default {
   },
   mixins: [StatusMessageMixin],
   computed: {
-    ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType']),
+    ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType', 'subDomainAndRootDomainAgents']),
     ...mapGetters('target', ['listSubdDomainsAgents', 'listCurrentRunningSubDomainsAgent']),
     ...mapState('target', ['agentStatus']),
     ...mapState('agent', ['agentListStore', 'subDomainAgents']),
