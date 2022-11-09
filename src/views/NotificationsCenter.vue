@@ -28,7 +28,7 @@
                     {{notification.description}}
                   </div>
                   <div class="col-2 my-2 font-size-14px agent-mini-color-gray font-weight-light">
-                    {{this.$getFormatedTime(notification.created)}}
+                    {{this.$getFormatedTime(new Date(notification.created))}}
                   </div>
               </div>
             </div>
@@ -47,7 +47,7 @@
                     {{notification.description}}
                   </div>
                   <div class="col-2 my-2 font-size-14px agent-mini-color-gray font-weight-light">
-                    {{this.$getFormatedTime(notification.created)}}
+                    {{this.$getFormatedTime(new Date(notification.created))}}
                   </div>
               </div>
             </div>
@@ -66,7 +66,7 @@
                     {{notification.description}}
                   </div>
                   <div class="col-2 my-2 font-size-14px agent-mini-color-gray font-weight-light">
-                    {{ notification.created.toISOString().slice(0, 10) + ' ' + this.$getFormatedTime(notification.created) }}
+                    {{ new Date(notification.created).toISOString().slice(0, 10) + ' ' + this.$getFormatedTime(new Date(notification.created)) }}
                   </div>
               </div>
             </div>
@@ -81,7 +81,7 @@
 </div>
 </template>
 <script>
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'NotificationsCenter',
   computed: {
@@ -103,9 +103,11 @@ export default {
   mounted () {
     this.$store.commit('agent/updateLocView', 'NotificationsCenter', true)
     this.updateNotificationsStatus()
+    this.loadLastSevenEventTracks()
   },
   methods: {
     ...mapMutations('notification', ['removeUnreadStatusToAll']),
+    ...mapActions('notification', ['loadLastSevenEventTracks']),
     setSelectedReference (e) {
       const selectedId = e.currentTarget.getAttribute('data-id')
       this.$store.commit('referent/setSelectedResource', selectedId)
