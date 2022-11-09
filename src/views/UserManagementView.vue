@@ -22,7 +22,7 @@
               <BullseyeArrowIco/>
             </div>
           </router-link>
-          <router-link @click="updateLocView('Pipelines')" :to="{name: 'Pipelines'}">
+          <router-link v-show="false" @click="updateLocView('Pipelines')" :to="{name: 'Pipelines'}">
             <div class="ml-3 quick-access-icon-container d-flex justify-content-center align-items-center">
               <CodeNotEqualVariantIco/>
             </div>

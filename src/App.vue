@@ -109,7 +109,7 @@
                 <span v-show="arrow_up" class="material-icons float-right">arrow_drop_up</span>
                 </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item" ><router-link :to="{ name: 'Pipelines'}">
+                <li v-show="false" class="nav-item" ><router-link :to="{ name: 'Pipelines'}">
                   <a class="nav-link" id ='pipelineNav' v-on:click="this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)" v-bind:class="{'nav2': stylePipelinesState}">
                     <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
                         <p>Pipelines</p>
