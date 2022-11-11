@@ -21,10 +21,6 @@ export default {
   components: {
     BasicModal
   },
-  props: {
-    dataId: String,
-    dataName: String
-  },
   data () {
     return {
       command: '',
@@ -37,7 +33,7 @@ export default {
       const self = this
       setTimeout(
         function () {
-          self.$emit('run-agent', { dataId: self.dataId, dataName: self.dataName, command: self.command, activateNotification: self.activateNotification })
+          self.$emit('run-agent', { command: self.command, activateNotification: self.activateNotification })
           self.resetData()
         },
         500
