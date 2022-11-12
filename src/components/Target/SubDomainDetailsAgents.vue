@@ -31,10 +31,10 @@
           <p class="m-2"> Never</p>
           </div>
           <div class="col-2 border border-right-radius text-center">
-              <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name">Running...</button>
-              <button v-else type="button" :disabled="isRunningAgent !== -1 && isRunningAgent !== item.id" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#confirmation-before-run-an-agent" :data-id="item.id" :data-name="item.name">Run</button>
+              <button v-if="parseInt(item.status) === parseInt(this.$entityStatus.RUNNING)" type="button" @click="selectAgent" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#agentExecutionModalForm" :data-id="item.id" :data-name="item.name" :data-type="item.type">Running...</button>
+              <button v-else type="button" :disabled="isRunningAgent !== -1 && isRunningAgent !== item.id" class="color-rgb-0-177-255 agent-border btn create-agent-buttons-main-action m-1 p-0" data-toggle="modal" data-target="#confirmation-before-run-an-agent" :data-id="item.id" :data-name="item.name" @click="selectAgentData" :data-type="item.type">Run</button>
           </div>
-          <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName"/>
+          <AgentExecution :id-agent="this.selectedAgentId" :name-agent="selectedAgentName" :type-agent="selectedAgentType"/>
           <ConfirmationBeforeRunAnAgent @run-agent="runAgent" :dataId="item.id" :dataName="item.name"/>
         </div>
       </div>
@@ -69,7 +69,8 @@ export default {
       lastrun_arrow_down: true,
       lastrun_arrow_up: false,
       selectedAgentName: '',
-      selectedAgentId: '-1'
+      selectedAgentId: '-1',
+      selectedAgentType: this.$entityTypeData.SUBDOMAIN.id
     }
   },
   mixins: [StatusMessageMixin],
@@ -112,7 +113,7 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setAgentStatus', 'insertAgentIfNotExistInSubDomain']),
-    ...mapMutations('agent', ['updateStatusSubDomainAgent']),
+    ...mapMutations('agent', ['updateStatusSubDomainAgent', 'updateStatusRootDomainAgent']),
     ...mapActions('agent', ['runAgentToServer']),
     orderByName: function () {
       if (this.active_arrow_down === true) {
@@ -155,26 +156,24 @@ export default {
       }
     },
     selectAgent (e) {
-      this.selectedAgentName = ''
-      this.selectedAgentId = ''
-      if (e.currentTarget) {
-        this.selectedAgentName = e.currentTarget.getAttribute('data-name')
-        this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      if (this.selectedAgentType === this.$entityTypeData.ROOTDOMAIN.id) {
+        this.updateStatusRootDomainAgent({
+          status: this.$entityStatus.RUNNING,
+          idAgent: this.selectedAgentId
+        })
       } else {
-        this.selectedAgentName = e.dataName
-        this.selectedAgentId = e.dataId
+        this.updateStatusSubDomainAgent({
+          status: this.$entityStatus.RUNNING,
+          idAgent: this.selectedAgentId
+        })
       }
-      this.updateStatusSubDomainAgent({
-        status: this.$entityStatus.RUNNING,
-        idAgent: this.selectedAgentId
-      })
       this.setAgentStatus({ status: this.$entityStatus.RUNNING, id: this.selectedAgentId })
     },
     runAgent (e) {
       jQuery('#agentExecutionModalForm').modal('show')
       this.runAgentToServer(
         {
-          agent: e.dataName,
+          agent: this.selectedAgentName,
           target: this.$route.params.targetName,
           rootdomain: this.$route.params.rootdomainName,
           subdomain: this.$route.params.subdomainName,
@@ -189,6 +188,11 @@ export default {
           this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
         }
       })
+    },
+    selectAgentData (e) {
+      this.selectedAgentName = e.currentTarget.getAttribute('data-name')
+      this.selectedAgentId = e.currentTarget.getAttribute('data-id')
+      this.selectedAgentType = parseInt(e.currentTarget.getAttribute('data-type'))
     }
   }
 }
