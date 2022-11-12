@@ -20,6 +20,7 @@
         </div>
       </div>
     </div>
+    <BottomBar :show-pagination="false"/>
   </div>
 </template>
 
@@ -31,12 +32,14 @@ import AgentListTable from '@/components/Target/AgentListTable.vue'
 import { GeneralMixin } from '@/mixins/GeneralMixin'
 import { RootDomainsLoadingMixin } from '@/mixins/RootDomainsLoadingMixin'
 import { SubDomainsLoadingMixin } from '@/mixins/SubDomainsLoadingMixin'
+import BottomBar from '@/components/General/BottomBar'
 export default {
   name: 'RootDomainDetailsView',
   components: {
     NavBarTwoDetailTarget,
     SubdomainListTable,
-    AgentListTable
+    AgentListTable,
+    BottomBar
   },
   props: {
     id: String,

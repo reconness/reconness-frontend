@@ -293,8 +293,8 @@ export default {
         successMessageForWordlistEdition: 'The wordlist content has been edited successfully',
         successMessageForNotificationsSettingsEdition: 'The notifications settings has been edited successfully',
         successMessageForLogFileCleaning: 'The log file has been cleaned successfully',
-        successMessageForImport: 'The file has been imported successfully'
-
+        successMessageForImport: 'The file has been imported successfully',
+        successMessageForExport: 'The file has been exported successfully'
       }
     )
 

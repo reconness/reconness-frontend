@@ -378,6 +378,11 @@ export default {
         fileLink.setAttribute('download', 'subdomains.csv')
         document.body.appendChild(fileLink)
         fileLink.click()
+        if (response.status) {
+          this.updateOperationStatus(this.$entityStatus.SUCCESS, this.$message.successMessageForExport)
+        } else {
+          this.updateOperationStatus(this.$entityStatus.FAILED, response.message)
+        }
       })
     },
     exportSelectedSubdomains () {
