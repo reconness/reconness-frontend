@@ -28,7 +28,7 @@
         <form class="form-inline" @submit.prevent="onSubmit">
       <div class="form-group has-search input-group-sm">
                               <span class="material-icons search-icon form-control-feddback">search</span>
-                              <input :class="{'ligth-gray-background': isSearcherView}" class="form-control url-input" type="search" placeholder="Search" aria-label="Search" @keyup="goToSearchView"  v-model="textFilter">
+                              <input :class="{'ligth-gray-background': isSearcherView}" class="form-control url-input" type="search" placeholder="Search" aria-label="Search" @keyup.enter="filterAndGoToSearchView"  v-model="textFilter">
                             </div>
         </form>
         </li>
@@ -260,12 +260,6 @@ export default {
     isNotesSectionOpened: function (value) {
       this.isNoteSectionOpenedReference = value
     },
-    textFilter: function (value) {
-      this.updateTextToSearch(value)
-      if (this.$validateIsBlank(value)) {
-        this.goToPreviousPage()
-      }
-    },
     notificationMessageActionSelected: {
       handler: function (notificationAction) {
         if (notificationAction) {
@@ -363,6 +357,13 @@ export default {
         this.loadUsers()
       } else {
         this.updateIsUserLogged(false)
+      }
+    },
+    filterAndGoToSearchView () {
+      this.goToSearchView()
+      this.updateTextToSearch(this.textFilter)
+      if (this.$validateIsBlank(this.textFilter)) {
+        this.goToPreviousPage()
       }
     }
   }

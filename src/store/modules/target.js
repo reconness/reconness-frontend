@@ -1131,7 +1131,7 @@ export default ({
       return state.targetListStore.filter(target => target.name.includes(name))
     },
     getFilteredOthers: (state) => {
-      return [{ name: 'Completed repository 2' }]
+      return []
     },
     getFilteredRootDomainsByName: (state) => (name) => {
       let searchResult = []
