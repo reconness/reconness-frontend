@@ -495,7 +495,7 @@ export default ({
         const name = getters.getTargetById(element).name
         const entity = {
           id: element,
-          name: name,
+          name,
           type: rootGetters['general/entityTypeData'].TARGET
         }
         commit('general/addEntityToDelete', entity, { root: true })

@@ -332,6 +332,7 @@ export default {
     },
     manageMyUser () {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
+        this.goToUsersSection()
         this.updateIsUerFormAccessedFromSystemBarAttribute(true)
         this.$router.push({ name: 'Users' })
       } else {
