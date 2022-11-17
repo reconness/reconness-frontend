@@ -22,11 +22,11 @@ export default {
   },
   computed: {
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
-    ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
+    ...mapGetters('target', ['getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
     ...mapState('target', ['textToSearch']),
-    ...mapState('searcher', ['agentsSearchResult']),
+    ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult']),
     totalSearchedItems () {
-      return this.agentsSearchResult.length + this.getFilteredPipelinesByName(this.textToSearch).length + this.getFilteredTargetsByName(this.textToSearch).length + this.getFilteredRootDomainsByName(this.textToSearch).size + this.getFilteredSubDomainsByName(this.textToSearch).size
+      return this.agentsSearchResult.length + this.getFilteredPipelinesByName(this.textToSearch).length + this.targetsSearchResult.length + this.getFilteredRootDomainsByName(this.textToSearch).size + this.getFilteredSubDomainsByName(this.textToSearch).size
     }
   }
 }

@@ -1127,9 +1127,6 @@ export default ({
         1000
       )
     },
-    getFilteredTargetsByName: (state) => (name) => {
-      return state.targetListStore.filter(target => target.name.includes(name))
-    },
     getFilteredOthers: (state) => {
       return []
     },

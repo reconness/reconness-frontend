@@ -17,11 +17,11 @@
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Results for targets</span>
-                <span class="ml-2 font-size-14px">{{getFilteredTargetsByName(textToSearch).length + getFilteredRootDomainsByName(textToSearch).size + getFilteredSubDomainsByName(textToSearch).size }} results</span>
+                <span class="ml-2 font-size-14px">{{targetsSearchResult.length + getFilteredRootDomainsByName(textToSearch).size + getFilteredSubDomainsByName(textToSearch).size }} results</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="target of getFilteredTargetsByName(textToSearch)" :key="target.id" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="target of targetsSearchResult" :key="target.name" class="entity-result-items-cell pt-2 pb-2">
                 <span class="ml-5  font-size-14px">{{target.name}}</span>
             </div>
         </div>
@@ -70,9 +70,9 @@ export default {
   name: 'SearchResultItem',
   computed: {
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
-    ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredOthers', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
+    ...mapGetters('target', ['getFilteredOthers', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
     ...mapState('target', ['textToSearch']),
-    ...mapState('searcher', ['agentsSearchResult'])
+    ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult'])
   }
 }
 </script>
