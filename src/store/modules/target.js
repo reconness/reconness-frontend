@@ -1130,25 +1130,6 @@ export default ({
     getFilteredOthers: (state) => {
       return []
     },
-    getFilteredRootDomainsByName: (state) => (name) => {
-      let searchResult = []
-      state.targetListStore.forEach(target => {
-        searchResult = searchResult.concat(
-          target.rootDomains.filter(rootDomains => rootDomains.root.includes(name))
-        )
-      })
-      let sequence = 0
-      const finalSearchResult = []
-      searchResult.forEach(element => {
-        sequence++
-        const elementClone = Object.assign({ idSearch: sequence }, element)
-        finalSearchResult.push(elementClone)
-      })
-      return {
-        result: finalSearchResult,
-        size: finalSearchResult.length
-      }
-    },
     getFilteredSubDomainsByName: (state) => (name) => {
       let searchResult = []
       state.targetListStore.forEach(target => {

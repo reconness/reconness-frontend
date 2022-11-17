@@ -3,7 +3,8 @@ export default ({
   namespaced: true,
   state: {
     agentsSearchResult: [],
-    targetsSearchResult: []
+    targetsSearchResult: [],
+    rootdomainsSearchResult: []
   },
   mutations: {
     updateAgentsSearchResult (state, newList) {
@@ -11,6 +12,9 @@ export default ({
     },
     updateTargetsSearchResult (state, newList) {
       state.targetsSearchResult = newList
+    },
+    updateRootDomainsSearchResult (state, newList) {
+      state.rootdomainsSearchResult = newList
     }
   },
   actions: {
@@ -31,6 +35,18 @@ export default ({
         return axios.get('/search/target/' + textFilter)
           .then(function (response) {
             commit('updateTargetsSearchResult', response.data)
+            return { status: true, message: response.data, data: response.data }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    searchRootDomainsFromServer ({ state, commit, rootState }, textFilter) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/search/rootdomain/' + textFilter)
+          .then(function (response) {
+            commit('updateRootDomainsSearchResult', response.data)
             return { status: true, message: response.data, data: response.data }
           })
           .catch(function (error) {
