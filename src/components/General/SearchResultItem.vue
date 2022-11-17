@@ -4,11 +4,11 @@
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Results for agents</span>
-                <span class="ml-2 font-size-14px">{{getFilteredAgentsByName(textToSearch).length}} results</span>
+                <span class="ml-2 font-size-14px">{{agentsSearchResult.length}} results</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="agent of getFilteredAgentsByName(textToSearch)" :key="agent.id" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="agent of agentsSearchResult" :key="agent.name" class="entity-result-items-cell pt-2 pb-2">
                 <span class="ml-5  font-size-14px">{{agent.name}}</span>
             </div>
         </div>
@@ -69,10 +69,10 @@ import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'SearchResultItem',
   computed: {
-    ...mapGetters('agent', ['getFilteredAgentsByName']),
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
     ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredOthers', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
-    ...mapState('target', ['textToSearch'])
+    ...mapState('target', ['textToSearch']),
+    ...mapState('searcher', ['agentsSearchResult'])
   }
 }
 </script>

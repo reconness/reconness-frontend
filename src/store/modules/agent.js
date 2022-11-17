@@ -217,9 +217,6 @@ export default ({
     getAgentsByType: (state) => (type) => {
       return state.agentListStore.filter(item => item.type === type)
     },
-    getFilteredAgentsByName: (state) => (name) => {
-      return state.agentListStore.filter(agent => agent.name.includes(name))
-    },
     mostInteractionsLastWeekPerDay (state, getters, rootState) {
       const interactionsPerDay = []
       if (rootState.target.dashboardData) {
