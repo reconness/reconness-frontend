@@ -24,9 +24,9 @@ export default {
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
     ...mapGetters('target', ['getFilteredSubDomainsByName']),
     ...mapState('target', ['textToSearch']),
-    ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult', 'rootdomainsSearchResult']),
+    ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult', 'rootdomainsSearchResult', 'subdomainsSearchResult']),
     totalSearchedItems () {
-      return this.agentsSearchResult.length + this.getFilteredPipelinesByName(this.textToSearch).length + this.targetsSearchResult.length + this.rootdomainsSearchResult.length + this.getFilteredSubDomainsByName(this.textToSearch).size
+      return this.agentsSearchResult.length + this.getFilteredPipelinesByName(this.textToSearch).length + this.targetsSearchResult.length + this.rootdomainsSearchResult.length + this.subdomainsSearchResult.length
     }
   }
 }

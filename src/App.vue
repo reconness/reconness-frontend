@@ -278,7 +278,7 @@ export default {
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection', 'updateIsUerFormAccessedFromSystemBarAttribute']),
     ...mapActions('user', ['loadUsers']),
-    ...mapActions('searcher', ['searchAgentsFromServer', 'searchTargetsFromServer']),
+    ...mapActions('searcher', ['searchAgentsFromServer', 'searchTargetsFromServer', 'searchRootDomainsFromServer', 'searchSubDomainsFromServer']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -369,6 +369,8 @@ export default {
       } else {
         this.searchAgentsFromServer(this.textFilter)
         this.searchTargetsFromServer(this.textFilter)
+        this.searchRootDomainsFromServer(this.textFilter)
+        this.searchSubDomainsFromServer(this.textFilter)
       }
     }
   }

@@ -4,7 +4,8 @@ export default ({
   state: {
     agentsSearchResult: [],
     targetsSearchResult: [],
-    rootdomainsSearchResult: []
+    rootdomainsSearchResult: [],
+    subdomainsSearchResult: []
   },
   mutations: {
     updateAgentsSearchResult (state, newList) {
@@ -15,6 +16,9 @@ export default ({
     },
     updateRootDomainsSearchResult (state, newList) {
       state.rootdomainsSearchResult = newList
+    },
+    updateSubDomainsSearchResult (state, newList) {
+      state.subdomainsSearchResult = newList
     }
   },
   actions: {
@@ -47,6 +51,18 @@ export default ({
         return axios.get('/search/rootdomain/' + textFilter)
           .then(function (response) {
             commit('updateRootDomainsSearchResult', response.data)
+            return { status: true, message: response.data, data: response.data }
+          })
+          .catch(function (error) {
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    searchSubDomainsFromServer ({ state, commit, rootState }, textFilter) {
+      if (rootState.auth.authentication_token !== '') {
+        return axios.get('/search/subdomain/' + textFilter)
+          .then(function (response) {
+            commit('updateSubDomainsSearchResult', response.data)
             return { status: true, message: response.data, data: response.data }
           })
           .catch(function (error) {
