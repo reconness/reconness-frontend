@@ -8,17 +8,17 @@
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="target of targetsSearchResult" :key="target.name" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="target of targetsSearchResult" :key="target.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
                 <router-link :to="generateRouteFromRelativeUrl(target.relativeUrl)"><span class="ml-5  font-size-14px">{{target.name}}</span></router-link>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="rootDomain of rootdomainsSearchResult" :key="rootDomain.name" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="rootDomain of rootdomainsSearchResult" :key="rootDomain.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
                 <router-link :to="generateRouteFromRelativeUrl(rootDomain.relativeUrl)"><span class="ml-5  font-size-14px">{{rootDomain.name}}</span></router-link>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="subdomain of subdomainsSearchResult" :key="subdomain.name" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="subdomain of subdomainsSearchResult" :key="subdomain.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
                 <router-link :to="generateRouteFromRelativeUrl(subdomain.relativeUrl)"><span class="ml-5  font-size-14px">{{subdomain.name}}</span></router-link>
             </div>
         </div>
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="other of getFilteredOthers" :key="other.name" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="other of getFilteredOthers" :key="other.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
                 <span class="ml-5  font-size-14px">{{ other.name }}</span>
             </div>
         </div>
