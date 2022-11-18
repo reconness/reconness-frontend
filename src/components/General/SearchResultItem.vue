@@ -1,18 +1,5 @@
 <template>
 <div >
-    <div class="entity-result-main-container poppins mt-2">
-        <div class="entity-result-header d-flex align-items-center">
-            <div class="ml-5">
-                <span class="font-size-20px font-weight-semibold">Results for agents</span>
-                <span class="ml-2 font-size-14px">{{agentsSearchResult.length}} results</span>
-            </div>
-        </div>
-        <div class="entity-result-items">
-            <div v-for="agent of agentsSearchResult" :key="agent.name" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{agent.name}}</span>
-            </div>
-        </div>
-    </div>
     <div class="entity-result-main-container poppins">
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
@@ -22,17 +9,17 @@
         </div>
         <div class="entity-result-items">
             <div v-for="target of targetsSearchResult" :key="target.name" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{target.name}}</span>
+                <router-link :to="generateRouteFromRelativeUrl(target.relativeUrl)"><span class="ml-5  font-size-14px">{{target.name}}</span></router-link>
             </div>
         </div>
         <div class="entity-result-items">
             <div v-for="rootDomain of rootdomainsSearchResult" :key="rootDomain.name" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{rootDomain.name}}</span>
+                <router-link :to="generateRouteFromRelativeUrl(rootDomain.relativeUrl)"><span class="ml-5  font-size-14px">{{rootDomain.name}}</span></router-link>
             </div>
         </div>
         <div class="entity-result-items">
             <div v-for="subdomain of subdomainsSearchResult" :key="subdomain.name" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{subdomain.name}}</span>
+                <router-link :to="generateRouteFromRelativeUrl(subdomain.relativeUrl)"><span class="ml-5  font-size-14px">{{subdomain.name}}</span></router-link>
             </div>
         </div>
     </div>
@@ -70,9 +57,20 @@ export default {
   name: 'SearchResultItem',
   computed: {
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
-    ...mapGetters('target', ['getFilteredOthers', 'getFilteredSubDomainsByName']),
     ...mapState('target', ['textToSearch']),
-    ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult', 'rootdomainsSearchResult', 'subdomainsSearchResult'])
+    ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult', 'rootdomainsSearchResult', 'subdomainsSearchResult']),
+    getFilteredOthers () {
+      const concatenatedEntities = []
+      this.agentsSearchResult.forEach(element => {
+        concatenatedEntities.push(element)
+      })
+      return concatenatedEntities
+    }
+  },
+  methods: {
+    generateRouteFromRelativeUrl (relativeUrl) {
+      return '/targets/' + relativeUrl
+    }
   }
 }
 </script>

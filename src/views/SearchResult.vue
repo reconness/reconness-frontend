@@ -22,7 +22,6 @@ export default {
   },
   computed: {
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
-    ...mapGetters('target', ['getFilteredSubDomainsByName']),
     ...mapState('target', ['textToSearch']),
     ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult', 'rootdomainsSearchResult', 'subdomainsSearchResult']),
     totalSearchedItems () {
