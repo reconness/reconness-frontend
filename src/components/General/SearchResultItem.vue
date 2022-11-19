@@ -1,38 +1,25 @@
 <template>
 <div >
-    <div class="entity-result-main-container poppins mt-2">
-        <div class="entity-result-header d-flex align-items-center">
-            <div class="ml-5">
-                <span class="font-size-20px font-weight-semibold">Results for agents</span>
-                <span class="ml-2 font-size-14px">{{getFilteredAgentsByName(textToSearch).length}} results</span>
-            </div>
-        </div>
-        <div class="entity-result-items">
-            <div v-for="agent of getFilteredAgentsByName(textToSearch)" :key="agent.id" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{agent.name}}</span>
-            </div>
-        </div>
-    </div>
     <div class="entity-result-main-container poppins">
         <div class="entity-result-header d-flex align-items-center">
             <div class="ml-5">
                 <span class="font-size-20px font-weight-semibold">Results for targets</span>
-                <span class="ml-2 font-size-14px">{{getFilteredTargetsByName(textToSearch).length + getFilteredRootDomainsByName(textToSearch).size + getFilteredSubDomainsByName(textToSearch).size }} results</span>
+                <span class="ml-2 font-size-14px">{{targetsSearchResult.length + rootdomainsSearchResult.length + subdomainsSearchResult.length }} results</span>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="target of getFilteredTargetsByName(textToSearch)" :key="target.id" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{target.name}}</span>
+            <div v-for="target of targetsSearchResult" :key="target.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
+                <router-link :to="generateRouteFromRelativeUrl(target.relativeUrl)"><span class="ml-5  font-size-14px">{{target.name}}</span></router-link>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="rootDomain of getFilteredRootDomainsByName(textToSearch).result" :key="rootDomain.idSearch" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{rootDomain.root}}</span>
+            <div v-for="rootDomain of rootdomainsSearchResult" :key="rootDomain.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
+                <router-link :to="generateRouteFromRelativeUrl(rootDomain.relativeUrl)"><span class="ml-5  font-size-14px">{{rootDomain.name}}</span></router-link>
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="subdomain of getFilteredSubDomainsByName(textToSearch).result" :key="subdomain.idSearch" class="entity-result-items-cell pt-2 pb-2">
-                <span class="ml-5  font-size-14px">{{subdomain.name}}</span>
+            <div v-for="subdomain of subdomainsSearchResult" :key="subdomain.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
+                <router-link :to="generateRouteFromRelativeUrl(subdomain.relativeUrl)"><span class="ml-5  font-size-14px">{{subdomain.name}}</span></router-link>
             </div>
         </div>
     </div>
@@ -57,7 +44,7 @@
             </div>
         </div>
         <div class="entity-result-items">
-            <div v-for="other of getFilteredOthers" :key="other.name" class="entity-result-items-cell pt-2 pb-2">
+            <div v-for="other of getFilteredOthers" :key="other.relativeUrl" class="entity-result-items-cell pt-2 pb-2">
                 <span class="ml-5  font-size-14px">{{ other.name }}</span>
             </div>
         </div>
@@ -69,10 +56,21 @@ import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'SearchResultItem',
   computed: {
-    ...mapGetters('agent', ['getFilteredAgentsByName']),
     ...mapGetters('pipelines', ['getFilteredPipelinesByName']),
-    ...mapGetters('target', ['getFilteredTargetsByName', 'getFilteredOthers', 'getFilteredRootDomainsByName', 'getFilteredSubDomainsByName']),
-    ...mapState('target', ['textToSearch'])
+    ...mapState('target', ['textToSearch']),
+    ...mapState('searcher', ['agentsSearchResult', 'targetsSearchResult', 'rootdomainsSearchResult', 'subdomainsSearchResult']),
+    getFilteredOthers () {
+      const concatenatedEntities = []
+      this.agentsSearchResult.forEach(element => {
+        concatenatedEntities.push(element)
+      })
+      return concatenatedEntities
+    }
+  },
+  methods: {
+    generateRouteFromRelativeUrl (relativeUrl) {
+      return '/targets/' + relativeUrl
+    }
   }
 }
 </script>

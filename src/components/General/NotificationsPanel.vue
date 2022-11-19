@@ -10,12 +10,12 @@
             <dt class="col-12">
                 <div class="justify-content-between d-flex h-100 align-items-center">
                     <p class="font-weight-medium font-size-14px">Today</p>
-                    <span class="notifications-count font-weight-light">{{getTodaysTotalUnreadNotifications}} new notifications</span>
+                    <span class="notifications-count font-weight-light">{{filterTodayTotalUnreadNotifications}} new notifications</span>
               </div>
             </dt>
           </dl>
         </div>
-        <div class="sidebar-list marketplace-agent-container" v-for="notification of getTodaysNotifications" :key="notification.id">
+        <div class="sidebar-list marketplace-agent-container" v-for="notification of filterTodayNotifications" :key="notification.id">
           <dl class="row h-100" :class="{'notification-new-indicator': notification.readed===false}">
               <dt class="col-10">
                   <div class="d-flex h-100 align-items-center">
@@ -36,12 +36,12 @@
             <dt class="col-12">
                 <div class="justify-content-between  d-flex h-100 align-items-center">
                     <p class="font-weight-medium font-size-14px">Yesterday</p>
-                    <span class="notifications-count font-weight-light">{{getYesterdayTotalUnreadNotifications}} new notifications</span>
+                    <span class="notifications-count font-weight-light">{{filterYesterdayTotalUnreadNotifications}} new notifications</span>
                 </div>
             </dt>
           </dl>
         </div>
-        <div class="sidebar-list marketplace-agent-container" v-for="notification of getYesterdayNotifications" :key="notification.id">
+        <div class="sidebar-list marketplace-agent-container" v-for="notification of filterYesterdayNotifications" :key="notification.id">
           <dl class="row h-100" :class="{'notification-new-indicator': notification.readed===false}">
               <dt class="col-10">
                   <div class="d-flex h-100 align-items-center">
@@ -70,20 +70,49 @@
       </div>
 </template>
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import jQuery from 'jquery'
 export default {
   name: 'NotificationsPanel',
+  data () {
+    return {
+      recentNotifications: []
+    }
+  },
   computed: {
     ...mapState('notification', ['notifications']),
-    ...mapGetters('notification', ['getTodaysNotifications', 'getTodaysTotalUnreadNotifications', 'getYesterdayNotifications', 'getYesterdayTotalUnreadNotifications', 'getOlderNotifications'])
+    ...mapGetters('notification', ['getTodaysNotifications', 'getTodaysTotalUnreadNotifications', 'getYesterdayNotifications', 'getYesterdayTotalUnreadNotifications', 'getOlderNotifications']),
+    filterTodayNotifications: function () {
+      const today = new Date()
+      return this.recentNotifications.filter(item => new Date(item.created).getDate() === today.getDate())
+    },
+    filterTodayTotalUnreadNotifications () {
+      const today = new Date()
+      const todayNotifications = this.recentNotifications.filter(item => new Date(item.created).getDate() === today.getDate())
+      return todayNotifications.filter(item => item.readed === false).length
+    },
+    filterYesterdayNotifications () {
+      const today = new Date()
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      return this.recentNotifications.filter(item => new Date(item.created).getDate() === yesterday.getDate())
+    },
+    filterYesterdayTotalUnreadNotifications () {
+      const today = new Date()
+      const yesterday = new Date()
+      yesterday.setDate(today.getDate() - 1)
+      const yesterdayNotifications = this.recentNotifications.filter(item => new Date(item.created).getDate() === yesterday.getDate())
+      return yesterdayNotifications.filter(item => item.readed === false).length
+    }
   },
   mounted () {
     this.updateNotificationsStatus()
+    this.updateRecentEventTracksData()
   },
   methods: {
     ...mapMutations('notification', ['showNotificationsMenu', 'removeUnreadStatusTodayAndYesterday']),
     ...mapMutations('general', ['updateNotificationMessageDescription']),
+    ...mapActions('notification', ['loadYesterdayAndTodayEventTracks', 'markYesterdayAndTodayNotificationsAsReadedToServer']),
     updateNotificationsStatus () {
       const self = this
       setTimeout(
@@ -97,6 +126,31 @@ export default {
       const notificationMessageDesc = 'Are you sure to mark all this notifications to read?'
       this.updateNotificationMessageDescription(notificationMessageDesc)
       jQuery('#notifications-time-message-box-modal').modal()
+    },
+    updateRecentEventTracksData () {
+      this.loadYesterdayAndTodayEventTracks().then(loadEventsTracksResponse => {
+        if (loadEventsTracksResponse.status) {
+          this.recentNotifications.splice(0, this.recentNotifications.length)
+          loadEventsTracksResponse.data.forEach(eventTrack => {
+            this.recentNotifications.push(eventTrack)
+          })
+          if (this.recentNotifications.length !== 0) {
+            const self = this
+            setTimeout(
+              function () {
+                self.markYesterdayAndTodayNotificationsAsReadedToServer().then(markedEventsTrackResponse => {
+                  if (self.markYesterdayAndTodayNotificationsAsReadedToServer.status) {
+                    this.recentNotifications.forEach(eventTrack => {
+                      eventTrack.readed = true
+                    })
+                  }
+                })
+              },
+              5000
+            )
+          }
+        }
+      })
     }
   }
 }
@@ -136,8 +190,6 @@ export default {
  color: #707070;;
 }
 .notification-new-indicator{
-    /* background: #00B1FF 0% 0% no-repeat padding-box;
-border-radius: 0px 4px 4px 0px; */
     border-left: 2px solid #00B1FF;
     border-right: 2px solid #00B1FF;;
 }

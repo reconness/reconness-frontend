@@ -13,13 +13,14 @@
             <span  class="text-muted-b3"> ({{ loadedRootdomain.subdomain.length }})</span>
           </button>
           <button type="button" class="btn  ml-5 border-grad " v-bind:style ="{background: 'linear-gradient(#f2f4f6, #f2f4f6) padding-box,' + buttonGradAg + 'border-box', 'box-shadow': shadowAg}" v-on:click="activeTabButton(false)">
-            Agents <span class="text-muted-b3">({{rootDomainAgents.length}})</span>
+            Agents <span class="text-muted-b3">({{subDomainAndRootDomainAgents.length}})</span>
           </button>
           <SubdomainListTable v-if="this.$store.state.target.isTableList" :color= "loadedTarget.secondaryColor" :gradient = "LinearGradient" :rootDomain = "loadedRootdomain" :routeParams="routeParams" />
           <AgentListTable v-else :color = "loadedTarget.secondaryColor"/>
         </div>
       </div>
     </div>
+    <BottomBar :show-pagination="false"/>
   </div>
 </template>
 
@@ -29,12 +30,16 @@ import NavBarTwoDetailTarget from '@/components/Target/NavBarTwoDetailTarget.vue
 import SubdomainListTable from '@/components/Target/SubdomainListTable.vue'
 import AgentListTable from '@/components/Target/AgentListTable.vue'
 import { GeneralMixin } from '@/mixins/GeneralMixin'
+import { RootDomainsLoadingMixin } from '@/mixins/RootDomainsLoadingMixin'
+import { SubDomainsLoadingMixin } from '@/mixins/SubDomainsLoadingMixin'
+import BottomBar from '@/components/General/BottomBar'
 export default {
   name: 'RootDomainDetailsView',
   components: {
     NavBarTwoDetailTarget,
     SubdomainListTable,
-    AgentListTable
+    AgentListTable,
+    BottomBar
   },
   props: {
     id: String,
@@ -54,12 +59,12 @@ export default {
       }
     }
   },
-  mixins: [GeneralMixin],
+  mixins: [GeneralMixin, RootDomainsLoadingMixin, SubDomainsLoadingMixin],
   computed: {
     ...mapState('target', ['countSubdomainList', 'isTableList']),
     ...mapState('agent', ['rootDomainAgents']),
     ...mapGetters('target', ['getTargetById', 'getSubdomainSize', 'getSubdomainSizeByReferencesName', 'getTargetByName', 'getRootDomainByTargetNameAndRootDomainName']),
-    ...mapGetters('agent', ['getLastAgentRootDomain']),
+    ...mapGetters('agent', ['getLastAgentRootDomain', 'subDomainAndRootDomainAgents']),
     loadedRootdomain () {
       const rootdomainEmpty = this.createRootDomain()
       return (this.getRootDomainByTargetNameAndRootDomainName(this.routeParams)) || rootdomainEmpty
@@ -81,6 +86,7 @@ export default {
   mounted () {
     this.loadTargets()
     this.loadRootdomainAgents()
+    this.loadSubdomainAgents()
     this.$store.commit('agent/updateLocView', 'Targets', true)
     this.buttonGradSubd = this.LinearGradient
     this.setCurrentView(this.$route.name)
@@ -93,9 +99,7 @@ export default {
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
-    ...mapMutations('agent', ['updateStatusRootDomainAgentByName']),
     ...mapActions('target', ['loadTargets', 'updateSubDomainsByTargetAndRootDomainFromServer', 'getRootDomainNotesFromServer']),
-    ...mapActions('agent', ['loadAgentsFromServer', 'updateFilteredAgentsByType', 'loadRunningAgentsFromServer']),
     activeTabButton: function (valueIn) {
       this.setIsDefaultTabButton(valueIn)
       if (valueIn) {
@@ -109,28 +113,6 @@ export default {
         this.shadowSubd = ''
         this.shadowAg = '13px 19px 41px #d6d6d6'
       }
-    },
-    loadRootdomainAgents: function () {
-      const self = this
-      this.loadAgentsFromServer().then(function (fullAgents) {
-        if (fullAgents) {
-          self.updateFilteredAgentsByType({
-            type: self.$entityTypeData.ROOTDOMAIN.id,
-            list: fullAgents
-          })
-          self.loadRunningAgentsFromServer().then(function (runningAgentsRespose) {
-            runningAgentsRespose.data.forEach(runningAgent => {
-              const searchedAgent = self.rootDomainAgents.find(agent => agent.name === runningAgent)
-              if (searchedAgent) {
-                self.updateStatusRootDomainAgentByName({
-                  status: self.$entityStatus.RUNNING,
-                  agentName: searchedAgent.name
-                })
-              }
-            })
-          })
-        }
-      })
     }
   }
 }

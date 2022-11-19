@@ -15,7 +15,7 @@
             </div>
             <div class="d-flex align-self-center" v-else-if="isNotificationsCenterView">
               <span class="arrow-cancel-search blue-text material-icons arrow-cancel-search" aria:haspopup="true" aria-controls="overlay_panel" @click="redirectToHomePage">arrow_back</span>
-              <p class="float-right loc"><strong>Notification Center</strong></p>
+              <p class="float-right loc"><strong>Notifications Center</strong></p>
             </div>
             <p v-else class="mt-03 float-right loc"><strong>{{viewloc}}</strong></p>
           </a>
@@ -28,7 +28,7 @@
         <form class="form-inline" @submit.prevent="onSubmit">
       <div class="form-group has-search input-group-sm">
                               <span class="material-icons search-icon form-control-feddback">search</span>
-                              <input :class="{'ligth-gray-background': isSearcherView}" class="form-control url-input" type="search" placeholder="Search" aria-label="Search" @keyup="goToSearchView"  v-model="textFilter">
+                              <input :class="{'ligth-gray-background': isSearcherView}" class="form-control url-input" type="search" placeholder="Search" aria-label="Search" @keyup.enter="filterAndGoToSearchView"  v-model="textFilter">
                             </div>
         </form>
         </li>
@@ -109,7 +109,7 @@
                 <span v-show="arrow_up" class="material-icons float-right">arrow_drop_up</span>
                 </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item" ><router-link :to="{ name: 'Pipelines'}">
+                <li v-show="false" class="nav-item" ><router-link :to="{ name: 'Pipelines'}">
                   <a class="nav-link" id ='pipelineNav' v-on:click="this.$store.commit('pipelines/setIsDefaultViewOnPipelines', true)" v-bind:class="{'nav2': stylePipelinesState}">
                     <span class="material-icons badge badge-dark float-left" v-bind:class="{'style-badge': stylePipelinesState}">code</span>
                         <p>Pipelines</p>
@@ -132,7 +132,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item" >
-                  <a href="#" class="nav-link" v-on:click="goToNotificationSettings" v-bind:class="{'nav2': styleNotificationsState}">
+                  <a href="#" class="nav-link" v-on:click="goToNotificationSettings">
                     <span class="material-icons">circle_notifications</span>
                         <p>Notifications</p>
                   </a>
@@ -260,12 +260,6 @@ export default {
     isNotesSectionOpened: function (value) {
       this.isNoteSectionOpenedReference = value
     },
-    textFilter: function (value) {
-      this.updateTextToSearch(value)
-      if (this.$validateIsBlank(value)) {
-        this.goToPreviousPage()
-      }
-    },
     notificationMessageActionSelected: {
       handler: function (notificationAction) {
         if (notificationAction) {
@@ -284,6 +278,7 @@ export default {
     ...mapMutations('target', ['updateTextToSearch', 'updateRoutePreviousToSearch']),
     ...mapMutations('user', ['updateSelectedIdUser', 'updateManageMyOwnProfile', 'goToSettingsSection', 'goToUsersSection', 'goToLogsSection', 'updateIsUerFormAccessedFromSystemBarAttribute']),
     ...mapActions('user', ['loadUsers']),
+    ...mapActions('searcher', ['searchAgentsFromServer', 'searchTargetsFromServer', 'searchRootDomainsFromServer', 'searchSubDomainsFromServer']),
     mouseenter: function () {
       if (this.button_module) {
         this.hide_logo = !this.hide_logo
@@ -338,6 +333,7 @@ export default {
     },
     manageMyUser () {
       if (this.isLoggedUserOwner || this.isLoggedUserAdmin) {
+        this.goToUsersSection()
         this.updateIsUerFormAccessedFromSystemBarAttribute(true)
         this.$router.push({ name: 'Users' })
       } else {
@@ -363,6 +359,18 @@ export default {
         this.loadUsers()
       } else {
         this.updateIsUserLogged(false)
+      }
+    },
+    filterAndGoToSearchView () {
+      this.goToSearchView()
+      this.updateTextToSearch(this.textFilter)
+      if (this.$validateIsBlank(this.textFilter)) {
+        this.goToPreviousPage()
+      } else {
+        this.searchAgentsFromServer(this.textFilter)
+        this.searchTargetsFromServer(this.textFilter)
+        this.searchRootDomainsFromServer(this.textFilter)
+        this.searchSubDomainsFromServer(this.textFilter)
       }
     }
   }

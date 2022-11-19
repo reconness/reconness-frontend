@@ -63,6 +63,22 @@ export default ({
         SUCCESS: 5
       }
     },
+    getEntityStatusByName: (state, getters) => (statusName) => {
+      if (statusName === 'RUNNING') {
+        return getters.entityStatus.RUNNING
+      }
+      if (statusName === 'FINISHED') {
+        return getters.entityStatus.FINISHED
+      }
+      if (statusName === 'WAITING') {
+        return getters.entityStatus.WAITING
+      }
+      if (statusName === 'SUCCESS') {
+        return getters.entityStatus.SUCCESS
+      } else {
+        return getters.entityStatus.FAILED
+      }
+    },
     getFormattedErrorMessage: (state) => (messageData) => {
       let constructedMessage = ''
       for (const messageDataAttrName in messageData) {

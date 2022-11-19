@@ -9,6 +9,7 @@ import general from './modules/general'
 import user from './modules/user'
 import notification from './modules/notification'
 import logfile from './modules/logfile'
+import searcher from './modules/searcher'
 
 export default createStore({
   modules: {
@@ -21,6 +22,7 @@ export default createStore({
     user,
     general,
     notification,
-    logfile
+    logfile,
+    searcher
   }
 })

@@ -94,6 +94,7 @@ export default {
   props: {
     idAgent: String,
     nameAgent: String,
+    typeAgent: Number,
     status: {
       type: Number,
       default: 2
@@ -167,7 +168,7 @@ export default {
       this.$refs.op.toggle(event)
     },
     switchAgentStatus (event) {
-      if (this.$route.name === 'RootDomainDetails') {
+      if (this.typeAgent === this.$entityTypeData.ROOTDOMAIN.id) {
         this.updateStatusRootDomainAgent({
           status: event,
           idTarget: this.$route.params.idTarget,
@@ -193,7 +194,7 @@ export default {
     closeWindow () {
       if (this.$route.name !== 'PipelineRunView') {
         this.setAgentStatus({ status: this.$entityStatus.FINISHED, id: '-1' })
-        if (this.$route.name === 'RootDomainDetails') {
+        if (this.typeAgent === this.$entityTypeData.ROOTDOMAIN.id) {
           this.stopRootDomainRunningAgent()
         } else {
           this.stopSubDomainRunningAgent()
