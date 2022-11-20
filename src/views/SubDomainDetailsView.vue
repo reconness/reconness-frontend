@@ -40,6 +40,8 @@ import SubDomainDetailsAgents from '@/components/Target/SubDomainDetailsAgents.v
 import SubDomainDetailsServices from '@/components/Target/SubDomainDetailsServices.vue'
 import SubDomainDetailsDirectories from '@/components/Target/SubDomainDetailsDirectories.vue'
 import { GeneralMixin } from '@/mixins/GeneralMixin'
+import { RootDomainsLoadingMixin } from '@/mixins/RootDomainsLoadingMixin'
+import { SubDomainsLoadingMixin } from '@/mixins/SubDomainsLoadingMixin'
 
 export default {
   name: 'SubDomainDetailsView',
@@ -79,7 +81,7 @@ export default {
       }
     }
   },
-  mixins: [GeneralMixin],
+  mixins: [GeneralMixin, RootDomainsLoadingMixin, SubDomainsLoadingMixin],
   computed: {
     ...mapState('agent', ['subDomainAgents', 'rootDomainAgents']),
     ...mapState('target', ['targetListStore']),
@@ -99,7 +101,6 @@ export default {
       return (this.getSubDomainByTargetNameAndRootDomainName(this.routeParams)) || subdomainEmpty
     },
     LinearGradient () {
-      console.log(this.loadedTarget)
       return 'linear-gradient(160deg,' + this.loadedTarget.primaryColor + ' ' + '0%,' + this.loadedTarget.secondaryColor + ' ' + '100%)'
     }
   },
@@ -124,6 +125,12 @@ export default {
     this.secondaryColor = this.loadedTarget.secondaryColor
     this.gradient = 'linear-gradient(160deg,' + this.loadedTarget.primaryColor + ' ' + '0%,' + this.loadedTarget.secondaryColor + ' ' + '100%)'
     this.setCurrentView(this.$route.name)
+    if (this.subDomainAgents.length === 0) {
+      this.loadSubdomainAgents()
+    }
+    if (this.rootDomainAgents.length === 0) {
+      this.loadRootdomainAgents()
+    }
   },
   methods: {
     ...mapMutations('target', ['setIsDefaultTabButton', 'setCurrentView']),
