@@ -108,19 +108,6 @@
                 <apexchart width="100%" height="270px"  type="bar" :options="optionsBar" :series="seriesBar"></apexchart>
               </div>
               </div>
-            <div class="card card-style" v-bind:style ="{background:LinearGradient}">
-              <div class="card-body">
-                <div class="row align-items-center">
-                <div class="col donut-legend link-color">
-                 <p> All running targets </p>
-                 <hr>
-                 <p class="text-right">{{ getNumberOfRunningTargets }}</p>
-                </div>
-                <div class="col-7">
-                <apexchart  height="200" type="radialBar" :options="chartOptions" :series="seriesRadial"></apexchart>
-                </div>
-              </div></div>
-            </div>
             </div> <!-- /.row -->
           </div>
         </div>
