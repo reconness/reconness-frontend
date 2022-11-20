@@ -28,7 +28,7 @@
         </li>
         <li class="nav-item d-flex" v-if = "$route.params.subdomainName">
           <span v-bind:style ="{background:gradient}"  class="material-icons ml-2 icon-color-style gradient-style chevron-line-height-1-7rem"> chevron_right </span>
-          <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style font-weight-bold">{{subDomainName}}</span>
+          <span v-bind:style ="{background:gradient}" class="ml-2 gradient-style font-weight-bold">{{$route.params.subdomainName}}</span>
         </li>
       </ul>
       <!-- Right navbar links -->

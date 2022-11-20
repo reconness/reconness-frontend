@@ -915,9 +915,14 @@ export default ({
     },
     getSubDomainByTargetNameAndRootDomainName: (state) => (subdomainReference) => {
       const target = state.targetListStore.find(item => item.name === subdomainReference.targetName)
-      const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
-      const subdomain = roots.subdomain.find(subdItem => subdItem.name === subdomainReference.subDomainName)
-      return subdomain
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
+        if (roots) {
+          const subdomain = roots.subdomain.find(subdItem => subdItem.name === subdomainReference.subDomainName)
+          return subdomain
+        }
+      }
+      return []
     },
     checkIfSubdomainExistsByName: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idtarget)

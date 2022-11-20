@@ -1,8 +1,8 @@
 <template>
   <div>
   <!-- Contains navs-bar -->
-  <NavBarTwoDetailTarget :TargetName = "Target.name"
-  :gradient = "LinearGradient" :rootName = "RootDomains.root" :showRootDomains = "showRoot" :subDomainName="Subdomain.name"/>
+  <NavBarTwoDetailTarget :TargetName = "loadedTarget.name"
+  :gradient = "LinearGradient" :rootName = "loadedRootdomain.root" :showRootDomains = "showRoot" :subDomainName="loadedSubdomain.name"/>
       <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <div class="container-fluid">
@@ -22,7 +22,7 @@
               Directories ({{Subdomain.directories.length}})
             </button>
           </div>
-          <SubDomainDetailsDashboard v-if="parseInt(this.selectedTab) === this.activeTab.DASHBOARD" :targetInstance="Target" :subdomainInstance="Subdomain"/>
+          <SubDomainDetailsDashboard v-if="parseInt(this.selectedTab) === this.activeTab.DASHBOARD" :targetInstance="loadedTarget" :subdomainInstance="Subdomain"/>
           <SubDomainDetailsAgents v-if="parseInt(this.selectedTab) === this.activeTab.AGENTS" :color = "secondaryColor"/>
           <SubDomainDetailsServices v-if="parseInt(this.selectedTab) === this.activeTab.SERVICES" :color = "secondaryColor"/>
           <SubDomainDetailsDirectories v-if="parseInt(this.selectedTab) === this.activeTab.DIRECTORIES" :color = "secondaryColor" />
@@ -52,12 +52,9 @@ export default {
   },
   data: function () {
     return {
-      Target: this.createTarget(),
       RootDomains: this.createRootDomain(),
       Subdomain: this.createSubdomain(),
-      LinearGradient: '',
       showRoot: true,
-      buttonGradSubd: '',
       buttonGradAg: '',
       shadowSubd: '3px 12px 23px #d6d6d6',
       shadowAg: '',
@@ -75,14 +72,36 @@ export default {
       ),
       serviceCount: 0,
       agentCount: 0,
-      directoriesCount: 0
+      directoriesCount: 0,
+      routeParams: {
+        targetName: this.$route.params.targetName,
+        rootDomainName: this.$route.params.rootdomainName
+      }
     }
   },
   mixins: [GeneralMixin],
   computed: {
-    ...mapState('agent', ['subDomainAgents']),
+    ...mapState('agent', ['subDomainAgents', 'rootDomainAgents']),
+    ...mapState('target', ['targetListStore']),
     ...mapGetters('agent', ['getLastAgentSubdom', 'getAgentsByType', 'subDomainAndRootDomainAgents']),
-    ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain', 'getTargetByName', 'getSubDomainByTargetNameAndRootDomainName'])
+    ...mapGetters('target', ['listSubdDomainsAgents', 'getTargetById', 'getSubDomain', 'getTargetByName', 'getSubDomainByTargetNameAndRootDomainName', 'getRootDomainByTargetNameAndRootDomainName']),
+    loadedTarget () {
+      const targetName = this.$route.params.targetName
+      const targetEmpty = this.createTarget()
+      return this.getTargetByName(targetName) || targetEmpty
+    },
+    loadedRootdomain () {
+      const rootdomainEmpty = this.createRootDomain()
+      return (this.getRootDomainByTargetNameAndRootDomainName(this.routeParams)) || rootdomainEmpty
+    },
+    loadedSubdomain () {
+      const subdomainEmpty = this.createSubdomain()
+      return (this.getSubDomainByTargetNameAndRootDomainName(this.routeParams)) || subdomainEmpty
+    },
+    LinearGradient () {
+      console.log(this.loadedTarget)
+      return 'linear-gradient(160deg,' + this.loadedTarget.primaryColor + ' ' + '0%,' + this.loadedTarget.secondaryColor + ' ' + '100%)'
+    }
   },
   watch: {
     RootDomains: {
@@ -98,16 +117,12 @@ export default {
       targetName: this.$route.params.targetName,
       rootDomainName: this.$route.params.rootdomainName
     })
-    const targetName = this.$route.params.targetName
-    this.Target = this.getTargetByName(targetName) || this.createTarget()
   },
   mounted () {
     this.$store.commit('agent/updateLocView', 'Targets', true)
-    this.RootDomains = this.Target.rootDomains.find(item => item.root === this.$route.params.rootdomainName) || this.createRootDomain()
-    this.LinearGradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
-    this.buttonGradSubd = this.LinearGradient
-    this.secondaryColor = this.Target.secondaryColor
-    this.gradient = 'linear-gradient(160deg,' + this.Target.primaryColor + ' ' + '0%,' + this.Target.secondaryColor + ' ' + '100%)'
+    this.RootDomains = this.loadedTarget.rootDomains.find(item => item.root === this.$route.params.rootdomainName) || this.createRootDomain()
+    this.secondaryColor = this.loadedTarget.secondaryColor
+    this.gradient = 'linear-gradient(160deg,' + this.loadedTarget.primaryColor + ' ' + '0%,' + this.loadedTarget.secondaryColor + ' ' + '100%)'
     this.setCurrentView(this.$route.name)
   },
   methods: {
