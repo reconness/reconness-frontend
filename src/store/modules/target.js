@@ -47,7 +47,9 @@ export default ({
     targetLoadingProcessStatus: 1,
     rootdomainLoadingProcessStatus: 1,
     subDomainLoadingProcessStatus: 1,
-    dashboardData: null
+    dashboardData: null,
+    subdomainFilterResult: [],
+    subdomainFilter: ''
   },
   mutations: {
     updateRoutePreviousToSearch (state, route) {
@@ -407,6 +409,12 @@ export default ({
         const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
         roots.subdomain.splice(0, roots.subdomain.length)
       }
+    },
+    updateSubdomainFilterResult (state, filterResult) {
+      state.subdomainFilterResult = filterResult
+    },
+    updateSubdomainFilter (state, filter) {
+      state.searchFilter = filter
     }
   },
   actions: {
