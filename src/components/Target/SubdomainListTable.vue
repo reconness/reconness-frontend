@@ -205,7 +205,8 @@ export default {
       searchCriteria: '',
       dropdownCriteria: 1,
       isFilterResultEmpty: false,
-      subdomains: []
+      subdomains: [],
+      filterTypes: Object.freeze({ ALL: 0, SUBDOMAIN: 1, LABEL: 2, SERVICE: 3, PORT: 4, AGENT: 5, DATE: 6 })
     }
   },
   mixins: [RemoveEntitiesMixin, TargetMixin],
@@ -311,13 +312,13 @@ export default {
     },
     search () {
       if (this.searchCriteria === '' || this.searchCriteria === undefined) {
-        if (this.dropdownCriteria === 1) {
+        if (this.dropdownCriteria ===  this.filterTypes.SUBDOMAIN) {
           const countElementList = this.getSubdomainSizeByReferencesName(this.routeParams)
           this.$store.commit('target/changeCounterSubdom', countElementList)
           this.subdomains = this.rootDomain.subdomain
           this.updateSubdomainFilterResult([])
         }
-      } else if (this.dropdownCriteria === 2) {
+      } else if (this.dropdownCriteria === this.filterTypes.LABEL) {
         if ('interesting'.includes(this.searchCriteria.toLowerCase())) {
           this.subdomains = this.rootDomain.subdomain.filter(item => (item.interesting === true))
           this.updateSubdomainFilterResult(this.subdomains)
@@ -343,19 +344,19 @@ export default {
           this.updateSubdomainFilterResult(this.subdomains)
           this.$store.commit('target/changeCounterSubdom', this.subdomains.length)
         }
-      } else if (this.dropdownCriteria === 3) {
+      } else if (this.dropdownCriteria ===  this.filterTypes.SERVICE) {
         this.subdomains = this.rootDomain.subdomain.filter(item => (item.services.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
         this.updateSubdomainFilterResult(this.subdomains)
         this.$store.commit('target/changeCounterSubdom', this.subdomains.length)
-      } else if (this.dropdownCriteria === 4) {
+      } else if (this.dropdownCriteria === this.filterTypes.PORT) {
         this.subdomains = this.rootDomain.subdomain.filter(item => (item.ports.find(item2 => item2 === Number(this.searchCriteria))))
         this.updateSubdomainFilterResult(this.subdomains)
         this.$store.commit('target/changeCounterSubdom', this.subdomains.length)
-      } else if (this.dropdownCriteria === 5) {
+      } else if (this.dropdownCriteria === this.filterTypes.AGENT) {
         this.subdomains = this.rootDomain.subdomain.filter(item => (item.agent.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
         this.updateSubdomainFilterResult(this.subdomains)
         this.$store.commit('target/changeCounterSubdom', this.subdomains.length)
-      } else if (this.dropdownCriteria === 6) {
+      } else if (this.dropdownCriteria === this.filterTypes.DATE) {
         this.subdomains = this.rootDomain.subdomain.filter(item => (item.added === this.searchCriteria))
         this.updateSubdomainFilterResult(this.subdomains)
         this.$store.commit('target/changeCounterSubdom', this.subdomains.length)
