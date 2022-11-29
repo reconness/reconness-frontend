@@ -8,72 +8,19 @@
             </div>
             <div class="col-3">
                 <div class = "number float-right">
-                <span>92</span>
+                <span>{{subdomainByDirectories.length}}</span>
                 </div>
             </div>
             </div>
-            <div class="progress-group">
+            <div v-for="subdomain of subdomainByDirectories" :key="subdomain.subdomain" class="progress-group mb-3">
             <div class="row">
                 <div class="col-12">
-                <small class="float-right progress-group-color">92</small>
-                </div>
-                <div class="col-12">
-                <small class="name float-left">Yanet</small>
+                    <div class="d-flex justify-content-between">
+                        <small class="name">{{subdomain.subdomain}}</small>
+                        <small class="float-right progress-group-color">{{subdomain.port}}</small>
+                    </div>
                 <div class="progress progress-sm">
                     <div class="progress-bar bg-primary" style="width: 92%"></div>
-                </div>
-                </div><!-- /.col-12 -->
-            </div><!-- /.row -->
-            </div><!-- /.progress-group -->
-            <div class="progress-group">
-            <div class="row">
-                <div class="col-12">
-                <small class="float-right progress-group-color">88</small>
-                </div>
-                <div class="col-12">
-                 <small class="name float-left">Portraite</small>
-                <div class="progress progress-sm line-height: 10px">
-                    <div class="progress-bar bg-primary" style="width: 88%"></div>
-                </div>
-                </div><!-- /.col-12 -->
-            </div><!-- /.row -->
-            </div><!-- /.progress-group -->
-            <div class="progress-group">
-            <div class="row">
-                <div class="col-12">
-                <small class="float-right progress-group-color">70</small>
-                </div>
-                <div class="col-12">
-                 <small class="name float-left">Yanet</small>
-                <div class="progress progress-sm line-height: 10px">
-                    <div class="progress-bar bg-primary" style="width: 70%"></div>
-                </div>
-                </div><!-- /.col-12 -->
-            </div><!-- /.row -->
-            </div><!-- /.progress-group -->
-
-            <div class="progress-group">
-            <div class="row">
-                <div class="col-12">
-                <small class="float-right progress-group-color">60</small>
-                </div>
-                <div class="col-12">
-                 <small class="name float-left">Portraite</small>
-                <div class="progress progress-sm line-height: 10px">
-                    <div class="progress-bar bg-primary" style="width: 60%"></div>
-                </div>
-                </div><!-- /.col-12 -->
-            </div><!-- /.row -->
-            </div><!-- /.progress-group -->
-              <div class="progress-group">
-            <div class="row">
-                <div class="col-12">
-                <small class="float-right progress-group-color">51</small>
-                </div>
-                <div class="col-12">
-                 <small class="name float-left"> Yanet </small>
-                <div class="progress progress-sm line-height: 10px">
-                    <div class="progress-bar bg-primary" style="width: 51%"></div>
                 </div>
                 </div><!-- /.col-12 -->
             </div><!-- /.row -->
@@ -86,7 +33,11 @@ export default {
   name: 'TargetsHighestInteraction',
   props: {
     background: String,
-    title: String
+    title: String,
+    subdomainByDirectories: {
+      type: Array,
+      default: () => []
+    }
   }
 }
 </script>

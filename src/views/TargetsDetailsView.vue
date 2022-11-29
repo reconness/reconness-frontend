@@ -68,7 +68,7 @@
                 </dl>
               </div>
               </div>
-            <TargetsHighestInteraction v-bind:style ="{background:LinearGradient}" :title= "'Subdomains with more numbers of directories'"></TargetsHighestInteraction>
+            <TargetsHighestInteraction v-if="isSubdomainByDirectoriesListNotEmpty" v-bind:style ="{background:LinearGradient}" :title= "'Subdomains with more numbers of directories'" :subdomainByDirectories="subdomainByDirectoriesInitialized"></TargetsHighestInteraction>
             </div>
             <div class="col-12 col-lg-4">
             <DaysHighestInteraction v-bind:style ="{background:LinearGradient}"></DaysHighestInteraction>
@@ -254,7 +254,7 @@ export default {
   computed: {
     ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),
-    ...mapState('target', ['rootDomainEliminationStatus', 'targetListStore']),
+    ...mapState('target', ['rootDomainEliminationStatus', 'targetListStore', 'dashboardData']),
     isIdPropsUndefined () {
       return this.$route.params.id === undefined
     },
@@ -265,6 +265,15 @@ export default {
         return currentTarget
       }
       return {}
+    },
+    subdomainByDirectoriesInitialized () {
+      if (this.dashboardData) {
+        return this.dashboardData.subdomainByDirectories
+      }
+      return []
+    },
+    isSubdomainByDirectoriesListNotEmpty () {
+      return this.subdomainByDirectoriesInitialized.length > 0
     }
   },
   watch: {
