@@ -312,7 +312,7 @@ export default {
     },
     search () {
       if (this.searchCriteria === '' || this.searchCriteria === undefined) {
-        if (this.dropdownCriteria ===  this.filterTypes.SUBDOMAIN) {
+        if (this.dropdownCriteria === this.filterTypes.SUBDOMAIN) {
           const countElementList = this.getSubdomainSizeByReferencesName(this.routeParams)
           this.$store.commit('target/changeCounterSubdom', countElementList)
           this.subdomains = this.rootDomain.subdomain
@@ -344,7 +344,7 @@ export default {
           this.updateSubdomainFilterResult(this.subdomains)
           this.$store.commit('target/changeCounterSubdom', this.subdomains.length)
         }
-      } else if (this.dropdownCriteria ===  this.filterTypes.SERVICE) {
+      } else if (this.dropdownCriteria === this.filterTypes.SERVICE) {
         this.subdomains = this.rootDomain.subdomain.filter(item => (item.services.find(item2 => item2.name.toLowerCase().includes(this.searchCriteria.toLowerCase()))))
         this.updateSubdomainFilterResult(this.subdomains)
         this.$store.commit('target/changeCounterSubdom', this.subdomains.length)
