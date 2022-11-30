@@ -68,7 +68,7 @@
                 </dl>
               </div>
               </div>
-            <TargetsHighestInteraction v-bind:style ="{background:LinearGradient}" :title= "'Subdomains with more numbers of directories'"></TargetsHighestInteraction>
+            <TargetsHighestInteraction v-if="isSubdomainByDirectoriesListNotEmpty" v-bind:style ="{background:LinearGradient}" :title= "'Subdomains with more numbers of directories'" :subdomainByDirectories="subdomainByDirectoriesInitialized"></TargetsHighestInteraction>
             </div>
             <div class="col-12 col-lg-4">
             <DaysHighestInteraction v-bind:style ="{background:LinearGradient}"></DaysHighestInteraction>
@@ -108,19 +108,6 @@
                 <apexchart width="100%" height="270px"  type="bar" :options="optionsBar" :series="seriesBar"></apexchart>
               </div>
               </div>
-            <div class="card card-style" v-bind:style ="{background:LinearGradient}">
-              <div class="card-body">
-                <div class="row align-items-center">
-                <div class="col donut-legend link-color">
-                 <p> All running targets </p>
-                 <hr>
-                 <p class="text-right">{{ getNumberOfRunningTargets }}</p>
-                </div>
-                <div class="col-7">
-                <apexchart  height="200" type="radialBar" :options="chartOptions" :series="seriesRadial"></apexchart>
-                </div>
-              </div></div>
-            </div>
             </div> <!-- /.row -->
           </div>
         </div>
@@ -267,7 +254,7 @@ export default {
   computed: {
     ...mapGetters('target', ['getTargetById', 'getOpenPorts', 'getNumberSubDomainsByOpenPorts', 'getNumberOfRunningTargets', 'getPercentOfRunningTargets', 'getLatestThingsFoundedInRootDomains', 'getTargetByName']),
     ...mapState('agent', ['isElementDeleted']),
-    ...mapState('target', ['rootDomainEliminationStatus', 'targetListStore']),
+    ...mapState('target', ['rootDomainEliminationStatus', 'targetListStore', 'dashboardData']),
     isIdPropsUndefined () {
       return this.$route.params.id === undefined
     },
@@ -278,6 +265,15 @@ export default {
         return currentTarget
       }
       return {}
+    },
+    subdomainByDirectoriesInitialized () {
+      if (this.dashboardData) {
+        return this.dashboardData.subdomainByDirectories
+      }
+      return []
+    },
+    isSubdomainByDirectoriesListNotEmpty () {
+      return this.subdomainByDirectoriesInitialized.length > 0
     }
   },
   watch: {

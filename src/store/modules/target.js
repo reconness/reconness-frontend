@@ -47,7 +47,9 @@ export default ({
     targetLoadingProcessStatus: 1,
     rootdomainLoadingProcessStatus: 1,
     subDomainLoadingProcessStatus: 1,
-    dashboardData: null
+    dashboardData: null,
+    subdomainFilterResult: [],
+    subdomainFilter: ''
   },
   mutations: {
     updateRoutePreviousToSearch (state, route) {
@@ -255,7 +257,11 @@ export default ({
       const target = state.targetListStore.find(item => item.name === params.targetName)
       if (target) {
         const roots = target.rootDomains.find(roots => roots.root === params.rootDomainName)
-        roots.subdomain = roots.subdomain.concat(params.subDomainData)
+        if (params.isFilter) {
+          roots.subdomain = params.subDomainData
+        } else {
+          roots.subdomain = roots.subdomain.concat(params.subDomainData)
+        }
       }
     },
     addRootDomain (state, params) {
@@ -396,6 +402,19 @@ export default ({
     },
     updateSubdomainLoadingProcessStatus: (state) => (loadingStatus) => {
       state.subDomainLoadingProcessStatus = loadingStatus
+    },
+    clearAllSubdomainsByTargetNameAndRootDomainName (state, subdomainReference) {
+      const target = state.targetListStore.find(item => item.name === subdomainReference.targetName)
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
+        roots.subdomain.splice(0, roots.subdomain.length)
+      }
+    },
+    updateSubdomainFilterResult (state, filterResult) {
+      state.subdomainFilterResult = filterResult
+    },
+    updateSubdomainFilter (state, filter) {
+      state.searchFilter = filter
     }
   },
   actions: {
@@ -663,7 +682,8 @@ export default ({
           {
             params: {
               limit: 10,
-              page: 1
+              page: 1,
+              query: subdomainReference.searchByName
             }
           }).then(function (response) {
           const subdomainsMapped = getters.mapMultipleSubdomainsFromServerToLocal(response.data.data)
@@ -674,10 +694,28 @@ export default ({
           }
           commit('addSubdomainsByTargetNameAndRootDomainName', subDomainData)
           commit('updateSubdomainLoadingProcessStatus', 2)
-          return { status: true, message: '' }
+          return { status: true, message: '', data: subdomainsMapped }
         })
           .catch(function (error) {
             commit('updateSubdomainLoadingProcessStatus', 4)
+            return { status: false, message: error.response.data }
+          })
+      }
+    },
+    getSubDomainsByTargetAndRootDomainFromServer ({ state, commit, getters }, subdomainReference) {
+      if (state.authentication_token !== '') {
+        return axios.get('/subdomains/getpaginate/' + subdomainReference.targetName + '/' + subdomainReference.rootDomainName,
+          {
+            params: {
+              limit: 10,
+              page: 1,
+              query: subdomainReference.searchByName
+            }
+          }).then(function (response) {
+          const subdomainsMapped = getters.mapMultipleSubdomainsFromServerToLocal(response.data.data)
+          return { status: true, message: '', data: subdomainsMapped }
+        })
+          .catch(function (error) {
             return { status: false, message: error.response.data }
           })
       }
@@ -915,9 +953,14 @@ export default ({
     },
     getSubDomainByTargetNameAndRootDomainName: (state) => (subdomainReference) => {
       const target = state.targetListStore.find(item => item.name === subdomainReference.targetName)
-      const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
-      const subdomain = roots.subdomain.find(subdItem => subdItem.name === subdomainReference.subDomainName)
-      return subdomain
+      if (target) {
+        const roots = target.rootDomains.find(roots => roots.root === subdomainReference.rootDomainName)
+        if (roots) {
+          const subdomain = roots.subdomain.find(subdItem => subdItem.name === subdomainReference.subDomainName)
+          return subdomain
+        }
+      }
+      return []
     },
     checkIfSubdomainExistsByName: (state) => (params) => {
       const target = state.targetListStore.find(item => item.id === params.idtarget)

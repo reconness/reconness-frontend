@@ -267,13 +267,15 @@ export default {
       )
     },
     orderSubDomainsNotesDescendingByDate () {
-      return this.getSubDomainNotes({
+      const subDomainNotes = this.getSubDomainNotes({
         targetName: this.$route.params.targetName,
         rootdomainName: this.$route.params.rootdomainName,
         subdomainName: this.$route.params.subdomainName
-      }).sort(
-        this.sortDescendingOrderByDateFn
-      )
+      })
+      if (subDomainNotes) {
+        return subDomainNotes.sort(this.sortDescendingOrderByDateFn)
+      }
+      return []
     },
     orderDescendingByUser () {
       if (this.$isOnTargetDetailView()) {

@@ -2,29 +2,7 @@ import axios from 'axios'
 export default ({
   namespaced: true,
   state: {
-    notifications: [
-      {
-        id: 1,
-        status: 1,
-        created: new Date('11-27-2021'),
-        description: 'Completed Pipeline',
-        readed: false
-      },
-      {
-        id: 2,
-        status: 4,
-        created: new Date('11-25-2021'),
-        description: 'Started Agent',
-        readed: false
-      },
-      {
-        id: 3,
-        status: 5,
-        created: new Date(),
-        description: 'Failed Subdomain',
-        readed: false
-      }
-    ],
+    notifications: [],
     notificationSequence: 34,
     isNotificationMenuActive: false,
     notificationSettingData: {
