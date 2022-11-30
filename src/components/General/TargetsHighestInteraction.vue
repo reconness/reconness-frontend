@@ -37,6 +37,15 @@ export default {
     subdomainByDirectories: {
       type: Array,
       default: () => []
+    },
+    amountToDisplay: {
+      type: Number,
+      default: () => 4
+    }
+  },
+  computed: {
+    subdomainByDirectoriesLimited () {
+      return this.subdomainByDirectories.slice(0, this.amountToDisplay)
     }
   }
 }
