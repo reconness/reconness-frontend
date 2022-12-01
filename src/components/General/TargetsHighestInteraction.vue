@@ -12,7 +12,7 @@
                 </div>
             </div>
             </div>
-            <div v-for="subdomain of subdomainByDirectories" :key="subdomain.subdomain" class="progress-group mb-3">
+            <div v-for="subdomain of subdomainByDirectoriesLimited" :key="subdomain.subdomain" class="progress-group mb-3">
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-between">
