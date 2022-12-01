@@ -1098,11 +1098,25 @@ export default ({
       }
       return -1
     },
-    getOpenPorts () {
-      return [21, 22, 53, 80, 443, 62]
+    getOpenPorts (state) {
+      if (state.dashboardData) {
+        const ports = []
+        state.dashboardData.subdomainByPort.forEach(portData => {
+          ports.push(portData.port)
+        })
+        return ports
+      }
+      return []
     },
-    getNumberSubDomainsByOpenPorts () {
-      return [62, 44, 38, 50, 78, 57]
+    getNumberSubDomainsByOpenPorts (state) {
+      if (state.dashboardData) {
+        const subDomainsByPorts = []
+        state.dashboardData.subdomainByPort.forEach(portData => {
+          subDomainsByPorts.push(portData.count)
+        })
+        return subDomainsByPorts
+      }
+      return []
     },
     getNumberOfRunningTargets () {
       return 110

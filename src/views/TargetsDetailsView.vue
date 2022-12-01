@@ -282,6 +282,11 @@ export default {
         this.updateTargetWhenUrlAccessedDirectly()
         this.updateLinearGradient()
       }
+    },
+    dashboardData: function (value) {
+      if (value) {
+        this.updateSubdomainByPortGraph()
+      }
     }
   },
   created () {
@@ -289,8 +294,6 @@ export default {
     if (!this.isIdPropsUndefined) {
       this.updateTarget()
     }
-    this.updateOpenPortsInGraph()
-    this.updateSubDomainsNumberByOpenPortInGraph()
     this.updatePercentOfRunningTargetsInGraph()
     this.updateLinearGradient()
     this.loadGraphics()
@@ -371,6 +374,10 @@ export default {
     },
     createDateObjectFromString (dateStr) {
       return new Date(dateStr)
+    },
+    updateSubdomainByPortGraph () {
+      this.updateOpenPortsInGraph()
+      this.updateSubDomainsNumberByOpenPortInGraph()
     }
   }
 }
