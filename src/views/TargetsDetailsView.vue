@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-3">
                 <span class = "number float-right background-clip-content-box-border-box" v-bind:style ="{backgroundImage: 'linear-gradient(white, white),' + LinearGradient}">
-                <div v-bind:style ="{background:LinearGradient}">43</div>
+                <div v-bind:style ="{background:LinearGradient}">{{totalOpenPorts}}</div>
                 </span>
                </div>
                </div>
@@ -274,6 +274,13 @@ export default {
     },
     isSubdomainByDirectoriesListNotEmpty () {
       return this.subdomainByDirectoriesInitialized.length > 0
+    },
+    totalOpenPorts () {
+      const initialValue = 0
+      const totalPorts = this.getNumberSubDomainsByOpenPorts.reduce(
+        (accumulator, currentValue) => accumulator + currentValue, initialValue
+      )
+      return totalPorts
     }
   },
   watch: {
